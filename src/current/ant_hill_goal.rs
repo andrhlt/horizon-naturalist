@@ -19,6 +19,7 @@ pub(super) fn install(game: &mut Game<'_>, id: u32) {
     // Wolf's untamed sheep/rabbit/fox and turtle prey goals do not exist on Ant.
     if let Some(mob) = game.entity(id).and_then(|entity| game.mob(entity)) {
         mob.remove_target_goal(game, "NonTameRandomTargetGoal");
+        mob.remove_target_goal(game, "hurt_by_target");
         // Both the angry-player goal and Wolf's skeleton goal share an ID;
         // remove them together and reinstall only the former below.
         mob.remove_target_goal(game, "nearest_target");
@@ -62,6 +63,12 @@ pub(super) fn install(game: &mut Game<'_>, id: u32) {
             goals.add(5, goals::Stroll::new(1.0));
             goals.add(6, goals::LookAtPlayer::new(6.0));
             goals.add(7, goals::RandomLookAround::default());
+            ant.ai.targets.add(
+                2,
+                goals::HurtByTarget::new()
+                    .alert()
+                    .alert_if(|seen| seen.kind.id == "naturalist:ant"),
+            );
             ant.ai
                 .targets
                 .add(3, goals::NearestTarget::player(true).when(angry_player));
