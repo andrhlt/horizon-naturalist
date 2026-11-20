@@ -60,6 +60,18 @@ def generate(jar: Path):
         for subtree in ('data/naturalist/neoforge/biome_modifier', 'data/c/tags/worldgen/biome'):
             paths.extend(p for p in (stage / subtree).rglob('*') if p.is_file())
         paths = sorted(p for p in paths if original_files.get(p.relative_to(stage).as_posix()) != p.read_bytes())
+        # NeoForge adds vanilla eggs to the common cooking tag at runtime.
+        # Horizon reads the jar's tag as-is, so carry the composed Java tag as
+        # a small datapack overlay alongside the generated Naturalist data.
+        eggs = stage / 'data/c/tags/item/eggs.json'
+        eggs.parent.mkdir(parents=True, exist_ok=True)
+        eggs.write_text(json.dumps({'values': [
+            'naturalist:alligator_egg', 'naturalist:tortoise_egg',
+            'naturalist:ostrich_egg', 'naturalist:duck_egg',
+            'minecraft:blue_egg', 'minecraft:brown_egg', 'minecraft:egg',
+        ]}, indent=2) + '\n')
+        paths.append(eggs)
+        paths = sorted(set(paths))
         names = [p.relative_to(stage).as_posix() for p in paths]
         counts = {kind: sum(n.startswith(f'data/naturalist/horizon/{kind}/') for n in names)
                   for kind in ('entity_type', 'item', 'block')}

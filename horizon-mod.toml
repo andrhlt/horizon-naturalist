@@ -418,3 +418,14 @@ bindings = [
  {name = "projectile", ty = "&Projectile", value = "p"},
  {name = "hit", ty = "Hit", value = "hit"},
 ]
+
+[[native.mixin]]
+id = "crab-net-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/crab_net_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
