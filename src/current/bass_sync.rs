@@ -13,7 +13,18 @@ fn bass_sync(game: &mut Game<'_>, entity: u32, kind: &str) {
     let variant = game
         .entity(entity)
         .and_then(|e| e.nbt(game))
-        .and_then(|data| naturalist::bass_hunt::variant(data.get(&"Variant".into())))
+        .and_then(|data| match data.get(&"Variant".into()) {
+            Some(mod_api::Tag::String(s)) => Some(s.to_string_lossy()),
+            Some(mod_api::Tag::Int(n)) => Some(
+                match n.rem_euclid(3) {
+                    1 => "naturalist:bass_medium",
+                    2 => "naturalist:bass_large",
+                    _ => "naturalist:bass",
+                }
+                .to_owned(),
+            ),
+            _ => None,
+        })
         .unwrap_or_else(|| "naturalist:bass".to_owned());
     let texture = variant
         .split_once(':')
