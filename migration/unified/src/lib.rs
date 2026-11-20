@@ -1,4 +1,5 @@
 //! Naturalist current-nightly development port.
+mod ant_hill;
 mod appearance;
 pub mod bass_fx;
 pub mod bass_hunt;
@@ -103,6 +104,7 @@ impl Default for Naturalist {
 impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
+        ant_hill::register(registrar);
         bass_fx::register(registrar);
         for &(id, template, attributes) in profiles::PROFILES {
             let values = attributes
