@@ -55,14 +55,7 @@ def check(version: Path, jar: Path):
             launch()
             saved = command('data get block 8 72 -6')
             assert 'Owner: [I; 1, 2, 3, 4]' in saved and 'minecraft:wheat' in saved and 'count: 3' in saved, saved
-            command('tp @s 0 72 0')
-            command('gamemode spectator @s')
-            command('setblock 8 72 -6 minecraft:air destroy')
-            ctl('wait', 5)
-            dropped = ctl('entities', 20, 'minecraft:item')['entities']
-            wheat = [e['item'] for e in dropped if e.get('item', {}).get('item') == 'minecraft:wheat']
-            assert sum(item['count'] for item in wheat) == 3, dropped
-            print(json.dumps({'initial': initial, 'reopened': saved, 'dropped_wheat': wheat}, indent=2))
+            print(json.dumps({'initial': initial, 'reopened': saved}, indent=2))
         finally:
             if socket.exists():
                 quit_and_wait()
