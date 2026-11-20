@@ -296,3 +296,24 @@ bindings = [
   {name = "target", ty = "Pos", value = "target"},
   {name = "stack", ty = "&ItemStack", value = "stack"},
 ]
+
+[[native.mixin]]
+id = "bass-sync"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/bass_sync.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "entity", ty = "u32", value = "entity" },
+  { name = "kind", ty = "&str", value = "kind" },
+]
+
+[[native.mixin]]
+id = "ant-hill-spill"
+target = "horizon_client::game::api_values::super::GameLevel<'_>::api_pre_remove_side_effects"
+kind = "HEAD"
+helper = "src/current/ant_hill_spill.rs"
+bindings = [
+ { name = "entity", ty = "&crate::containers::ModBlockEntity", value = "entity" },
+ { name = "drops", ty = "&mut Vec<EngineStack>", value = "&mut *drops" },
+]

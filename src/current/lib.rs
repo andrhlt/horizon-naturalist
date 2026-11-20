@@ -1,9 +1,11 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
 mod appearance;
+pub mod bass_appearance;
+mod bass_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
-mod bass_bucket_item;
+mod bass_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -93,11 +95,13 @@ pub fn tick(
 
 struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
+    bass: Arc<bass_renderer::BassRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
         Self {
             deer: Arc::new(renderer::DeerRenderer::new()),
+            bass: Arc::new(bass_renderer::BassRenderer::new()),
         }
     }
 }
@@ -222,6 +226,9 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:deer".into(), self.deer.clone());
+        event
+            .renderers
+            .register("naturalist:bass".into(), self.bass.clone());
     }
 
     fn render_living_pre(
@@ -249,6 +256,23 @@ impl mod_api::Hooks for Naturalist {
                 );
             }
         }
+        if event.entity.kind == "naturalist:bass" {
+            if let Some(id) = host.entity(event.entity.id) {
+                let appearance = match host.query(&bass_appearance::BASS_APPEARANCE) {
+                    Ok(query) => query
+                        .get(mod_api::AttachmentHolder::Entity(id))
+                        .map_err(|e| format!("{e:?}")),
+                    Err(e) => Err(format!("{e:?}")),
+                };
+                let height = id.bounding_box(host).map(|b| (b[1][1] - b[0][1]) as f32);
+                self.bass.observe(
+                    id,
+                    event.entity.age.floor() as i32,
+                    appearance,
+                    height,
+                );
+            }
+        }
         mod_api::Flow::Continue
     }
 
@@ -258,6 +282,7 @@ impl mod_api::Hooks for Naturalist {
         _: &mut mod_api::ClientTickPostEvent,
     ) {
         self.deer.retain_live(host);
+        self.bass.retain_live(host);
     }
 
     fn client_level_unload(
@@ -266,6 +291,7 @@ impl mod_api::Hooks for Naturalist {
         _: &mut mod_api::ClientLevelUnloadEvent<'_>,
     ) {
         self.deer.clear();
+        self.bass.clear();
     }
 }
 
