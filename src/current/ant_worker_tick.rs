@@ -5,12 +5,6 @@ use mod_api::{Holder, Host, SoundSource};
 use naturalist::ant_worker::{Food, STATE};
 
 pub(super) fn prepare(game: &mut Game<'_>, id: u32) {
-    // Wolf's wet/shake state is not part of Java Ant behavior. The next
-    // Wolf tick may mark it wet, so clear it before each server mob tick.
-    if let Some(ant) = game.mobs.iter_mut().find(|mob| mob.id == id) {
-        ant.extra.flag2 = false;
-        ant.extra.counter2 = 0;
-    }
     let Ok(shared) = STATE.get(game, Holder::Entity(id)) else {
         return;
     };

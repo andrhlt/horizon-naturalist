@@ -1,5 +1,6 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
+pub mod ant_worker;
 mod appearance;
 mod ant_queen;
 pub mod bass_appearance;
@@ -220,6 +221,7 @@ impl mod_api::Hooks for Naturalist {
             }
         }
     }
+    fn item_picked_up_post(&self, _: &mut dyn mod_api::ServerHost, _: &mut mod_api::ItemPickedUpPostEvent<'_>) {}
     fn register_entity_renderers(
         &self,
         _: &mod_api::RegistrationContext,

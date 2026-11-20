@@ -4,26 +4,10 @@ use horizon_client::mobs::{
     goals::{self, Cx, Goal, JUMP, LOOK, MOVE, MoveToBlock, reduced},
 };
 use horizon_core::{nbt::Tag, random::RandomSource};
-use mod_api::{Holder, Host};
+use mod_api::Holder;
 use naturalist::ant_worker::{STATE, Shared};
 
 pub(super) fn install(game: &mut Game<'_>, id: u32) {
-    if game
-        .mobs
-        .iter()
-        .find(|m| m.id == id)
-        .is_some_and(|m| m.ai.goals.has("NaturalistAntStore"))
-    {
-        return;
-    }
-    // Wolf's untamed sheep/rabbit/fox and turtle prey goals do not exist on Ant.
-    if let Some(mob) = game.entity(id).and_then(|entity| game.mob(entity)) {
-        mob.remove_target_goal(game, "NonTameRandomTargetGoal");
-        mob.remove_target_goal(game, "hurt_by_target");
-        // Both the angry-player goal and Wolf's skeleton goal share an ID;
-        // remove them together and reinstall only the former below.
-        mob.remove_target_goal(game, "nearest_target");
-    }
     let Ok(shared) = STATE.get(game, Holder::Entity(id)) else {
         return;
     };
@@ -63,15 +47,6 @@ pub(super) fn install(game: &mut Game<'_>, id: u32) {
             goals.add(5, goals::Stroll::new(1.0));
             goals.add(6, goals::LookAtPlayer::new(6.0));
             goals.add(7, goals::RandomLookAround::default());
-            ant.ai.targets.add(
-                2,
-                goals::HurtByTarget::new()
-                    .alert()
-                    .alert_if(|seen| seen.kind.id == "naturalist:ant"),
-            );
-            ant.ai
-                .targets
-                .add(3, goals::NearestTarget::player(true).when(angry_player));
         }
     }
 }
@@ -243,9 +218,4 @@ impl Goal for Gather {
             state.pick_up = Some(food.id);
         }
     }
-}
-
-fn angry_player(ant: &Mob, world: &MobWorld) -> bool {
-    ant.extra.angry_at == Some(horizon_client::mobs::Who::Player)
-        || (world.universal_anger && ant.extra.anger > 0 && ant.extra.angry_at.is_none())
 }
