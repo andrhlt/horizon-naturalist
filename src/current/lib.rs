@@ -1,6 +1,7 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
 mod appearance;
+mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
 pub mod bass_fx;
@@ -111,6 +112,7 @@ impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
         ant_hill::register(registrar);
+        ant_queen::register(registrar);
         land_placements::register(registrar);
         registrar
             .declare_spawn_placement(

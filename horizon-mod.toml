@@ -317,3 +317,36 @@ bindings = [
  { name = "entity", ty = "&crate::containers::ModBlockEntity", value = "entity" },
  { name = "drops", ty = "&mut Vec<EngineStack>", value = "&mut *drops" },
 ]
+
+[[native.module]]
+id = "ant-queen"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_ant_queen"
+source = "src/current/ant_queen_game.rs"
+
+[[native.mixin]]
+id = "ant-queen-use"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_use_on"
+kind = "WRAP_OPERATION"
+selector = "self.fire_use_on"
+ordinal = 0
+require = 1
+helper = "src/current/ant_queen_hook.rs"
+bindings = [
+ {name="game", ty="&mut Game<'_>", value="$receiver"},
+ {name="call", ty="mod_api::__private::UseOnCall<'_>", value="$arg0"},
+ {name="original", ty="impl FnOnce(&mut Game<'_>, mod_api::__private::UseOnCall<'_>) -> ()", value="$operation"},
+]
+
+[[native.mixin]]
+id = "duck_egg_drop"
+target = "horizon_client::game::creatures::Game<'_>::drop_gift_loot"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/duck_egg_drop.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "mob", ty = "u32", value = "mob"},
+ {name = "table", ty = "&'static str", value = "table"},
+ {name = "at", ty = "[f64; 3]", value = "at"},
+]
