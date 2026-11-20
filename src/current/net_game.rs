@@ -106,6 +106,7 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
                 game.spawn_item(leftover, [x, y - f64::from(0.3_f32), z], motion, 40);
             }
         }
+        if kind == "naturalist:ant" { crate::game::naturalist_ant_worker::release(game, id as u32); }
         game.break_leash(id as u32, false, false);
         game.mobs[index].removed = true;
         return true;

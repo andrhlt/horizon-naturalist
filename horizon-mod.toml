@@ -429,3 +429,71 @@ bindings = [
  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
  {name = "target", ty = "Option<InteractTarget>", value = "target"},
 ]
+
+[[native.module]]
+id = "ant-worker"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_ant_worker"
+source = "src/current/ant_worker_tick.rs"
+
+[[native.mixin]]
+id = "ant-worker-pre"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/ant_worker_pre.rs"
+bindings = [ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" }, { name = "entity", ty = "u32", value = "entity" }, { name = "kind", ty = "&str", value = "kind" } ]
+
+[[native.mixin]]
+id = "ant-worker-post"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/ant_worker_post.rs"
+bindings = [ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" }, { name = "entity", ty = "u32", value = "entity" }, { name = "kind", ty = "&str", value = "kind" } ]
+
+[[native.mixin]]
+id = "ant-carried-save"
+target = "horizon_client::game::persist::Game<'_>::save_item"
+kind = "OVERWRITE"
+helper = "src/current/ant_carried_save.rs"
+bindings = [{ name = "game", ty = "&mut Game<'_>", value = "&mut *self" }, { name = "i", ty = "usize", value = "i" }, { name = "keys", ty = "&HashSet<(i32, i32)>", value = "keys" }]
+
+[[native.mixin]]
+id = "ant-carried-load"
+target = "horizon_client::game::persist::Game<'_>::load_unlisted_transferred"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/ant_carried_load.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "kind", ty = "&str", value = "kind" },
+ { name = "tag", ty = "&Tag", value = "&tag" },
+ { name = "uuid", ty = "Option<[i32; 4]>", value = "uuid" },
+ { name = "transferred", ty = "&mut Option<crate::game::entity_initialization::TransferredEntityState>", value = "transferred" },
+]
+
+[[native.mixin]]
+id = "ant-carried-food-taken"
+target = "horizon_client::game::native_hooks::item_picked_up::Game<'_>::native_item_picked_up_post"
+kind = "HEAD"
+helper = "src/current/ant_food_taken.rs"
+bindings = [{ name = "game", ty = "&mut Game<'_>", value = "&mut *self" }, { name = "player", ty = "u128", value = "player" }, { name = "item", ty = "mod_api::ItemEntityRef", value = "item" }]
+
+[[native.module]]
+id = "ant-hill-goal"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_ant_hill_goal"
+source = "src/current/ant_hill_goal.rs"
+
+[[native.mixin]]
+id = "ant-hill-goal-join"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
+kind = "HEAD"
+helper = "src/current/ant_hill_goal_join.rs"
+bindings = [{ name = "game", ty = "&mut Game<'_>", value = "&mut *self" }, { name = "entity", ty = "u32", value = "entity" }, { name = "kind", ty = "&str", value = "kind" }]
+
+[[native.mixin]]
+id = "ant-anger-save"
+target = "horizon_client::game::persist::hurt_by_refs::Game<'_>::put_last_hurt_by_mob"
+kind = "HEAD"
+helper = "src/current/ant_anger_save.rs"
+bindings = [{ name = "game", ty = "&Game<'_>", value = "self" }, { name = "mob", ty = "&Mob", value = "m" }, { name = "tag", ty = "&mut Tag", value = "&mut *tag" }]
