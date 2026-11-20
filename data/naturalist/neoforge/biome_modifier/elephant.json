@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_elephant",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_elephant"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:elephant",
+    "weight": 5,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:beef",
+  "components": {
+    "minecraft:food": {
+      "nutrition": 2,
+      "saturation": 1.2
+    }
+  }
+}

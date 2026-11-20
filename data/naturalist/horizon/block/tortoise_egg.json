@@ -1,0 +1,16 @@
+{
+  "template": "minecraft:turtle_egg",
+  "state_properties": {
+    "variant": {
+      "type": "enum",
+      "values": [
+        "0",
+        "1",
+        "2"
+      ]
+    }
+  },
+  "default_state": {
+    "variant": "0"
+  }
+}

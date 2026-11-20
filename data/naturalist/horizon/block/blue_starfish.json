@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:resin_clump",
+  "properties": {
+    "hardness": 0.0,
+    "light": 0,
+    "sounds": "minecraft:seagrass",
+    "occludes": false
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:wandering_trader",
+  "attributes": {
+    "minecraft:max_health": 30,
+    "minecraft:movement_speed": 0.2,
+    "minecraft:knockback_resistance": 0.6,
+    "minecraft:step_height": 1
+  }
+}

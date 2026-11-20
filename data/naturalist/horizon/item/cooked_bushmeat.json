@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:cooked_beef",
+  "components": {
+    "minecraft:food": {
+      "nutrition": 8,
+      "saturation": 12.800000190734863
+    }
+  }
+}

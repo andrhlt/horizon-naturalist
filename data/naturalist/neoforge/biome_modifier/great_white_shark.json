@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_great_white_shark",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_great_white_shark"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:great_white_shark",
+    "weight": 4,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}

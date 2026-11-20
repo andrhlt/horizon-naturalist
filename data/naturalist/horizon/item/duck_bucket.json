@@ -1,0 +1,8 @@
+{
+  "template": "minecraft:water_bucket",
+  "components": {
+    "minecraft:bucket_entity_data": {
+      "Age": -24000
+    }
+  }
+}

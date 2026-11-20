@@ -1,0 +1,298 @@
+id = "naturalist"
+name = "Naturalist development"
+version = "0.8.0-dev.1"
+api = "0.2"
+side = "both"
+capabilities = ["registries"]
+[native]
+game = "26.3"
+horizon = "0a875da91dbb0fdcb7ba8c42c11341aa229af51a"
+mixins = "e59da9094f0c2fdda6c627fe9eff22dec6a906f0"
+[[native.mixin]]
+id = "metadata"
+target = "horizon_client::game::resource_load::take_modified_attribute_rows"
+kind = "HEAD"
+helper = "src/current/metadata.rs"
+bindings = [
+ {name = "types", ty = "&mut HashMap<String, horizon_client::mobs::MobType>", value = "&mut *types"},
+ {name = "catalog", ty = "&horizon_world::attributes::entity::Catalog", value = "catalog"},
+]
+
+[[native.module]]
+id = "biome-routes"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_spawn_routes"
+source = "src/current/biome_routes.rs"
+
+[[native.mixin]]
+id = "route-level"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_level_load"
+kind = "HEAD"
+helper = "src/current/route_level.rs"
+bindings = [{ name = "game", ty = "&mut Game<'_>", value = "&mut *self" }]
+
+[[native.mixin]]
+id = "bass-save"
+target = "horizon_client::game::persist::hurt_by_refs::Game<'_>::put_last_hurt_by_mob"
+kind = "HEAD"
+helper = "src/current/bass_save.rs"
+bindings = [
+  {name = "game", ty = "&Game<'_>", value = "self"},
+  {name = "mob", ty = "&Mob", value = "m"},
+  {name = "tag", ty = "&mut Tag", value = "&mut *tag"},
+]
+
+[[native.mixin]]
+id = "bass-devour"
+target = "horizon_client::game::combat::Game<'_>::mob_attacks_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/bass_devour.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "target", ty = "u32", value = "target"},
+  {name = "source", ty = "Damage", value = "source"},
+]
+
+[[native.mixin]]
+id = "bass-movement"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/bass_movement.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "entity", ty = "u32", value = "entity"},
+  {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.module]]
+id = "bass-avoid"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_bass_avoid"
+source = "src/current/bass_avoid.rs"
+
+[[native.module]]
+id = "bass-school"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_bass_school"
+source = "src/current/bass_school.rs"
+
+[[native.module]]
+id = "deer_goals_native"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_deer_goals"
+source = "src/current/deer_goals_native.rs"
+
+[[native.module]]
+id = "deer_appearance"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_appearance"
+source = "src/current/appearance.rs"
+
+[[native.mixin]]
+id = "deer_sync"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/deer_sync.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "entity", ty = "u32", value = "entity" },
+  { name = "kind", ty = "&str", value = "kind" },
+]
+
+[[native.mixin]]
+id = "deer_load_love"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
+kind = "HEAD"
+helper = "src/current/deer_load_love.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "entity", ty = "u32", value = "entity" },
+  { name = "kind", ty = "&str", value = "kind" },
+]
+
+[[native.mixin]]
+id = "deer_merge_love"
+target = "horizon_client::game::commands::data::Game<'_>::set_data_of"
+kind = "WRAP_OPERATION"
+selector = "self.apply_entity_nbt"
+ordinal = 0
+require = 1
+helper = "src/current/deer_merge_love.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
+  { name = "target", ty = "crate::game::commands::Target", value = "$arg0" },
+  { name = "tag", ty = "horizon_core::nbt::Tag", value = "$arg1" },
+  { name = "original", ty = "impl FnOnce(&mut Game<'_>, crate::game::commands::Target, horizon_core::nbt::Tag) -> R<()>", value = "$operation" },
+]
+
+[[native.mixin]]
+id = "deer_item_love"
+target = "horizon_client::game::spawner::Game<'_>::apply_item_stack_config"
+kind = "WRAP_OPERATION"
+selector = "self.apply_entity_nbt"
+ordinal = 0
+require = 1
+helper = "src/current/deer_extra_love.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
+  { name = "target", ty = "crate::game::commands::Target", value = "$arg0" },
+  { name = "tag", ty = "horizon_core::nbt::Tag", value = "$arg1" },
+  { name = "original", ty = "impl FnOnce(&mut Game<'_>, crate::game::commands::Target, horizon_core::nbt::Tag) -> crate::game::commands::R<()>", value = "$operation" },
+]
+
+[[native.mixin]]
+id = "deer_api_love"
+target = "horizon_client::game::native_entity_data::Game<'_>::entity_merge_nbt"
+kind = "WRAP_OPERATION"
+selector = "self.apply_entity_nbt"
+ordinal = 0
+require = 1
+helper = "src/current/deer_extra_love.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
+  { name = "target", ty = "crate::game::commands::Target", value = "$arg0" },
+  { name = "tag", ty = "horizon_core::nbt::Tag", value = "$arg1" },
+  { name = "original", ty = "impl FnOnce(&mut Game<'_>, crate::game::commands::Target, horizon_core::nbt::Tag) -> crate::game::commands::R<()>", value = "$operation" },
+]
+[[native.mixin]]
+id = "deer_reload"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_data_pack_files"
+kind = "HEAD"
+helper = "src/current/deer_reload.rs"
+
+[[native.module]]
+id = "capture-net"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_capture_net"
+source = "src/current/net_game.rs"
+
+[[native.mixin]]
+id = "capture-net-interact"
+target = "horizon_client::game::native_hooks::item_interact_mob::Game<'_>::native_item_interact_mob"
+kind = "HEAD"
+helper = "src/current/net_interact.rs"
+bindings = [
+ {name="game", ty="&mut Game<'_>", value="&mut *self"},
+ {name="entity", ty="i32", value="entity"},
+ {name="stack", ty="&ItemStack", value="stack"},
+ {name="result", ty="&mut Option<mod_api::InteractionResult>", value="&mut *result"},
+]
+
+[[native.mixin]]
+id = "capture-net-air"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_use_item"
+kind = "WRAP_OPERATION"
+selector = "self.fire_use_item"
+ordinal = 0
+require = 1
+helper = "src/current/net_air.rs"
+bindings = [
+ {name="game", ty="&mut Game<'_>", value="$receiver"},
+ {name="call", ty="mod_api::__private::UseItemCall<'_>", value="$arg0"},
+ {name="original", ty="impl FnOnce(&mut Game<'_>, mod_api::__private::UseItemCall<'_>) -> ()", value="$operation"},
+]
+
+[[native.mixin]]
+id = "deer_breed_variant"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_breed"
+kind = "HEAD"
+helper = "src/current/deer_breed_variant.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "parent", ty = "u32", value = "parent" },
+  { name = "partner", ty = "u32", value = "partner" },
+  { name = "child", ty = "Option<u32>", value = "child" },
+]
+
+
+[[native.mixin]]
+id = "deer_load_variants"
+target = "horizon_client::game::server_reload::functions_store"
+kind = "HEAD"
+helper = "src/current/deer_load_variants.rs"
+bindings = [
+  { name = "stack", ty = "&crate::game::functions::PackStack", value = "stack" },
+]
+
+[[native.mixin]]
+id = "deer_finalize_variant"
+target = "horizon_client::game::creatures::Game<'_>::finalize_with"
+kind = "BEFORE_CALL"
+selector = "self.finalize_grouped"
+ordinal = 0
+require = 1
+helper = "src/current/deer_finalize_variant.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "mob", ty = "&horizon_client::mobs::Mob", value = "&*mob" },
+]
+
+[[native.mixin]]
+id = "deer_finalize_plain_variant"
+target = "horizon_client::game::finalize_spawn::Game<'_>::finalize_plain"
+kind = "HEAD"
+helper = "src/current/deer_finalize_plain_variant.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "mob", ty = "&horizon_client::mobs::Mob", value = "&*mob" },
+]
+
+[[native.mixin]]
+id = "capture-net-saved"
+target = "horizon_client::game::persist::hurt_by_refs::Game<'_>::put_last_hurt_by_mob"
+kind = "HEAD"
+helper = "src/current/net_saved.rs"
+bindings = [
+ {name="game", ty="&Game<'_>", value="self"},
+ {name="mob", ty="&Mob", value="m"},
+ {name="tag", ty="&mut Tag", value="&mut *tag"},
+]
+
+[[jar]]
+id = "naturalist"
+version = "2.0.7"
+sha512 = "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd"
+
+[[native.mixin]]
+id = "bass-bucket-pickup"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/bass_bucket_pickup.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "bass-bucket-release"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_use_item"
+kind = "WRAP_OPERATION"
+selector = "self.fire_use_item"
+require = 1
+ordinal = 0
+helper = "src/current/bass_bucket_release.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "$receiver"},
+  {name = "call", ty = "mod_api::__private::UseItemCall<'_>", value = "$arg0"},
+  {name = "original", ty = "impl FnOnce(&mut Game<'_>, mod_api::__private::UseItemCall<'_>) -> ()", value = "$operation"},
+]
+
+[[native.module]]
+id = "bass-bucket"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_bass_bucket"
+source = "src/current/bass_bucket.rs"
+
+[[native.mixin]]
+id = "bass-bucket-dispense"
+target = "horizon_client::game::dispense_bucket::Game<'_>::empty_bucket_contents"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/bass_bucket_dispense.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "target", ty = "Pos", value = "target"},
+  {name = "stack", ty = "&ItemStack", value = "stack"},
+]

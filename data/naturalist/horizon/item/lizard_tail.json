@@ -1,0 +1,24 @@
+{
+  "template": "minecraft:cooked_chicken",
+  "components": {
+    "minecraft:food": {
+      "nutrition": 2,
+      "saturation": 3.200000047683716
+    },
+    "minecraft:consumable": {
+      "on_consume_effects": [
+        {
+          "type": "minecraft:apply_effects",
+          "effects": [
+            {
+              "id": "minecraft:poison",
+              "duration": 100,
+              "show_icon": true
+            }
+          ],
+          "probability": 1.0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "template": "minecraft:snowball",
+  "item": "naturalist:duck_egg",
+  "damage": 0
+}

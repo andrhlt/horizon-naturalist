@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_jungle_scorpion",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_jungle_scorpion"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:jungle_scorpion",
+    "weight": 30,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}
