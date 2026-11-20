@@ -2,8 +2,7 @@
 
 The `main` branch is the historical 0.7.4-preview.45 port, not a current
 `.hmod`. This branch is an unfinished migration to Horizon commit
-`0a875da91dbb0fdcb7ba8c42c11341aa229af51a`. No gameplay parity or current
-native build is claimed.
+`0a875da91dbb0fdcb7ba8c42c11341aa229af51a`. The development native build has been tested, but complete gameplay parity and release readiness are not claimed.
 
 Run `python3 migration/state_inventory.py` to locate every direct accessor of
 the old injected state. The legacy manifest declares 54 fields on Navigation,
