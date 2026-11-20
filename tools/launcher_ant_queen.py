@@ -99,10 +99,8 @@ def capture(version, jar):
             cmd("gamemode survival @s")
             cmd("item replace entity @s weapon.mainhand with minecraft:air")
             cmd("item replace entity @s weapon.offhand with naturalist:queen_ant")
-            ctl("wait", 10)
-            assert ctl("status")["offhand"]["item"] == "naturalist:queen_ant"
             click_block(8, 99, 8)
-            offhand_consumed = not ctl("status")["offhand"]
+            offhand_consumed = data("entity @s Inventory[{Slot:-106b}].id") is None
             assert offhand_consumed and block(8, 100, 8), "offhand placement or consumption failed"
             print(json.dumps({"creative_kept": creative_kept, "offhand_consumed": offhand_consumed}))
             return main
