@@ -60,7 +60,6 @@ def generate(jar: Path):
         for subtree in ('data/naturalist/neoforge/biome_modifier', 'data/c/tags/worldgen/biome'):
             paths.extend(p for p in (stage / subtree).rglob('*') if p.is_file())
         paths = sorted(p for p in paths if original_files.get(p.relative_to(stage).as_posix()) != p.read_bytes())
-<<<<<<< HEAD
         # NeoForge adds vanilla eggs to the common cooking tag at runtime.
         # Horizon reads the jar's tag as-is, so carry the composed Java tag as
         # a small datapack overlay alongside the generated Naturalist data.
@@ -73,27 +72,10 @@ def generate(jar: Path):
         ]}, indent=2) + '\n')
         paths.append(eggs)
         paths = sorted(set(paths))
-=======
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         names = [p.relative_to(stage).as_posix() for p in paths]
         counts = {kind: sum(n.startswith(f'data/naturalist/horizon/{kind}/') for n in names)
                   for kind in ('entity_type', 'item', 'block')}
         result = {name: path.read_bytes() for name, path in zip(names, paths)}
-<<<<<<< HEAD
-        # Naturalist's Duck feeding references the common raw-fish tag. Keep
-        # this project-owned compatibility tag in the generated inventory so
-        # refresh --write cannot remove it as an unexpected extra file.
-        result['data/c/tags/item/foods/raw_fish.json'] = (json.dumps({
-            'values': [
-                'minecraft:cod',
-                'minecraft:salmon',
-                'minecraft:tropical_fish',
-                'minecraft:pufferfish',
-                {'id': '#c:foods/raw_fishes', 'required': False},
-            ],
-        }, indent=2) + '\n').encode()
-=======
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         result['README-omitted-attributes.txt'] = (json.dumps(omitted, sort_keys=True, indent=2) + '\n').encode()
         return result
 

@@ -48,6 +48,7 @@ fn full_item(kind: &str) -> Option<&'static str> {
 fn hand_item(kind: &str) -> Option<&'static str> {
     match kind {
         "naturalist:ant" => Some("naturalist:ant"),
+        "naturalist:crab" => Some("naturalist:crab"),
         "naturalist:butterfly" => Some("naturalist:butterfly"),
         "naturalist:caterpillar" => Some("naturalist:caterpillar"),
         "naturalist:desert_scorpion" => Some("naturalist:scorpion"),
@@ -62,6 +63,9 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
     let mounted = mob.extra.mount.is_some() || mob.extra.rider.is_some() || mob.rider.is_some();
     let kind = mob.kind.id.clone();
     let tamed_with_owner = mob.extra.tame && mob.extra.owner.is_some();
+    let crab_held = (kind == "naturalist:crab").then(|| horizon_client::mobs::finalize::item_stack(mob, 0)).flatten();
+    let crab_sitting = mob.extra.sitting;
+    let crab_following = game.persist.raw.get(&mob.id).and_then(|raw| raw.get("FollowingOwner")).cloned().unwrap_or(Tag::Byte(1));
     let full = full_item(&kind).filter(|_| !mounted);
     if let Some(item) = full.or_else(|| hand_item(&kind)) {
         let mut saved = game.mob_tree_nbt(index);
@@ -71,14 +75,21 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
             caught.data_mut().set_other("minecraft:custom_name", name);
             fields.retain(|key, value| match key.to_string_lossy().as_str() {
                 "Health" | "Variant" => true,
-                "Owner" => kind == "naturalist:ant" && tamed_with_owner,
-                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar"),
+                "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab") && tamed_with_owner,
+                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab"),
                 "Color" => kind == "naturalist:snail",
                 "NoAI" | "Silent" | "NoGravity" | "Glowing" | "Invulnerable" => !matches!(value, Tag::Byte(0)),
                 _ => false,
             });
-            if kind == "naturalist:ant" && tamed_with_owner {
+            if matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab") && tamed_with_owner {
                 fields.insert("Tame".into(), Tag::Byte(1));
+            }
+            if kind == "naturalist:crab" {
+                if let Some(stack) = crab_held { fields.insert("HeldItem".into(), horizon_client::save::item_to_nbt(&stack)); }
+                if tamed_with_owner {
+                    fields.insert("FollowingOwner".into(), crab_following);
+                    fields.insert("Sitting".into(), Tag::Byte(i8::from(crab_sitting)));
+                }
             }
             if kind == "naturalist:snail" && let Some(Tag::Byte(color)) = fields.get(&"Color".into()) {
                 fields.insert("Color".into(), Tag::Int(i32::from(*color)));
@@ -145,6 +156,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
         "naturalist:dragonfly" => "naturalist:dragonfly",
         "naturalist:firefly" => "naturalist:firefly",
         "naturalist:ant" => "naturalist:ant",
+        "naturalist:crab" => "naturalist:crab",
         "naturalist:butterfly" => "naturalist:butterfly",
         "naturalist:caterpillar" => "naturalist:caterpillar",
         "naturalist:scorpion" => "naturalist:desert_scorpion",
@@ -172,15 +184,23 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                 configured.data_mut().set_other("minecraft:bucket_entity_data", Some(Tag::Compound(fields.clone())));
                 horizon_client::entity_nbt::apply_item_components(mob, &configured);
                 mob.persistent = true;
-                if kind == "naturalist:ant" {
+                if matches!(kind, "naturalist:ant" | "naturalist:crab") {
                     let saved = Tag::Compound(fields.clone());
                     let tame = saved.get("Tame").and_then(horizon_world::datafix::dynamic::as_number)
                         .is_some_and(|n| n.int_value() != 0);
                     if tame && let Some(owner) = horizon_client::entity_nbt::owner_uuid(&saved) {
-                        // Ant uses TamableClimbingAnimal, without Wolf's health side effects.
+                        // Naturalist pets do not inherit the Wolf template's taming health side effects.
                         mob.extra.owner = Some(owner);
                         mob.extra.tame = true;
+                        if kind == "naturalist:crab" {
+                            let sitting = saved.get("Sitting").and_then(horizon_world::datafix::dynamic::as_number).is_some_and(|n| n.int_value() != 0);
+                            horizon_client::mobs::tame::restore_sitting(mob, sitting);
+                        }
                     }
+                }
+                if kind == "naturalist:crab" && let Some(held) = fields.get(&"HeldItem".into()).and_then(horizon_client::save::item_from_nbt) {
+                    horizon_client::mobs::finalize::set_item_stack(mob, 0, held);
+                    horizon_client::mobs::finalize::set_drop_chance(mob, 0, 2.0);
                 }
             }
             let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
