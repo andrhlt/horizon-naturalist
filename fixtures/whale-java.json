@@ -1,0 +1,191 @@
+{
+  "variant": "naturalist:whale",
+  "adult_dims": [
+    30000,
+    25000,
+    21250
+  ],
+  "max_health": 80.0,
+  "speed": 0.6,
+  "range": 24.0,
+  "knockback_resistance": 0.9,
+  "step": 0.6,
+  "cluster": 4,
+  "pushable": false,
+  "current_push": false,
+  "adult_part_dims": [
+    [
+      220,
+      220
+    ],
+    [
+      300,
+      250
+    ],
+    [
+      300,
+      250
+    ],
+    [
+      220,
+      200
+    ],
+    [
+      140,
+      120
+    ]
+  ],
+  "adult_part_offsets": [
+    400,
+    150,
+    -100,
+    -350,
+    -530
+  ],
+  "baby_dims": [
+    15000,
+    12500,
+    10625
+  ],
+  "baby_part_dims": [
+    [
+      110,
+      110
+    ],
+    [
+      150,
+      125
+    ],
+    [
+      150,
+      125
+    ],
+    [
+      110,
+      100
+    ],
+    [
+      70,
+      60
+    ]
+  ],
+  "baby_part_offsets": [
+    200,
+    75,
+    -50,
+    -175,
+    -265
+  ],
+  "baby_max_health": 16.0,
+  "regrowth_before_tick_max_health": 16.0,
+  "regrowth_after_tick_max_health": 80.0,
+  "food": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false
+  ],
+  "healing": [
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      2
+    ]
+  ],
+  "jellyfish_immune": true,
+  "pufferfish_immune": true,
+  "cod_hit": true,
+  "cod_health": 76.0,
+  "dry_air": 4,
+  "dry_spray": false,
+  "mate_dry": false,
+  "mate_one_wet": false,
+  "mate_both_wet": true,
+  "offspring": "naturalist:whale",
+  "wet_air": 300,
+  "deep_spray": false,
+  "surface_spray": true,
+  "natural_group_ages": [
+    0,
+    -24000,
+    -24000
+  ],
+  "spawn_three_water": true,
+  "spawn_two_water": false,
+  "spawn_one_water": false,
+  "spawn_dry": false,
+  "surface_before_cooldown": false,
+  "dive_before_cooldown": false,
+  "surface_open": true,
+  "surface_closed": false,
+  "surface_wanted": [
+    8.499999999999998,
+    121.6,
+    15.5,
+    1.2
+  ],
+  "surface_skim_velocity_y": 0.052499999999999145,
+  "surface_forced_breach_velocity": [
+    -7.347881115511007e-17,
+    0.85,
+    0.6
+  ],
+  "surface_after_stop": false,
+  "dive_below_six_depth": false,
+  "dive_at_six_depth": true,
+  "dive_state_started": true,
+  "dive_wanted": [
+    8.499999999999998,
+    111.0,
+    15.5,
+    1.2
+  ],
+  "dive_state_stopped": false,
+  "dive_after_stop": false,
+  "seek_deep": false,
+  "seek_shallow_still": true,
+  "seek_shallow_moving": false,
+  "seek_wanted_depth_speed": [
+    120.75,
+    1.2
+  ],
+  "seek_shallow_continue": true,
+  "swim_open": true,
+  "swim_blocked_lateral": false
+}

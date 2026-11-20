@@ -1,0 +1,14 @@
+{
+  "herd_panic_roll": [
+    100,
+    199
+  ],
+  "shares_roll_in_range": true,
+  "shares_roll_at_16_blocks": false,
+  "timer_stops_at": -1,
+  "clears_attacker": true,
+  "player_avoidance": {
+    "standing": true,
+    "sneaking": false
+  }
+}

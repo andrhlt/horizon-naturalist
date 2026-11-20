@@ -1,0 +1,12 @@
+{
+  "naturalist:firefly": {
+    "edible": true,
+    "hit": true,
+    "glowing_ticks": 60
+  },
+  "naturalist:dragonfly": {
+    "edible": true,
+    "hit": true,
+    "glowing_ticks": 0
+  }
+}

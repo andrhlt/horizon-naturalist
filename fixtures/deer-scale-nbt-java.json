@@ -1,0 +1,9 @@
+{
+  "initial": "1.0",
+  "modified": "3.0",
+  "modified_nbt": "{id: \"minecraft:scale\", modifiers: [{amount: 0.5d, id: \"naturalist:fixture_scale\", operation: \"add_multiplied_total\"}], base: 2.0d}",
+  "after_unrelated_merge": "3.0",
+  "after_remove": "3.0",
+  "after_remove_nbt": "{id: \"minecraft:scale\", modifiers: [{amount: 0.5d, id: \"naturalist:fixture_scale\", operation: \"add_multiplied_total\"}], base: 2.0d}",
+  "after_explicit_replacement": "6.0"
+}

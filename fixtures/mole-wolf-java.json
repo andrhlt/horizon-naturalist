@@ -1,0 +1,95 @@
+{
+  "default_variant": "naturalist:mole",
+  "adult_dimensions": [
+    0.7,
+    0.65,
+    0.5525
+  ],
+  "attributes": [
+    8.0,
+    0.2,
+    0.6
+  ],
+  "food": [
+    true,
+    false,
+    false
+  ],
+  "baby_dimensions": [
+    0.35,
+    0.325,
+    0.27625
+  ],
+  "states": {
+    "0": {
+      "step_height": 0.6,
+      "hurt": true,
+      "saved": 0,
+      "pushable": true,
+      "hide_goal": false
+    },
+    "1": {
+      "step_height": 1.0,
+      "hurt": false,
+      "saved": 1,
+      "pushable": false,
+      "hide_goal": true
+    },
+    "2": {
+      "step_height": 1.0,
+      "hurt": false,
+      "saved": 2,
+      "pushable": false,
+      "hide_goal": false
+    },
+    "3": {
+      "step_height": 1.0,
+      "hurt": true,
+      "saved": 3,
+      "pushable": false,
+      "hide_goal": true
+    },
+    "4": {
+      "step_height": 1.0,
+      "hurt": false,
+      "saved": 4,
+      "pushable": false,
+      "hide_goal": true
+    }
+  },
+  "undead_triggers_dig": 1,
+  "dig_centres": [
+    8.5,
+    8.5
+  ],
+  "dig_tick_19": 1,
+  "dig_tick_20": 2,
+  "mound_count": 1,
+  "mound_persisted": false,
+  "mound_small": false,
+  "mound_hurt": false,
+  "mound_at_49": true,
+  "mound_at_50": false,
+  "diggable_tick_59": false,
+  "diggable_tick_60": true,
+  "calm_tick_59": 2,
+  "calm_tick_60": 3,
+  "peek_tick_56": 3,
+  "peek_tick_57": 4,
+  "emerge_tick_24": 4,
+  "emerge_tick_25": 0,
+  "wolf_dig": {
+    "grace_tick_59": false,
+    "grace_tick_60": true,
+    "starts_over_two": false,
+    "digging_pose_during": true,
+    "continues_over_two_point_five": false,
+    "continues_inside_two_point_five": true,
+    "phase_at_49": 2,
+    "holds_mole": true,
+    "phase_at_50": 4,
+    "anger_target": true,
+    "ends_goal": true,
+    "digging_pose_after": false
+  }
+}

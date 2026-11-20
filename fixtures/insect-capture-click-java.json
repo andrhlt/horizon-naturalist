@@ -1,0 +1,15 @@
+{
+  "butterfly_saves_id": false,
+  "butterfly_saves_uuid": false,
+  "butterfly_saves_variant": true,
+  "butterfly_saves_no_ai": true,
+  "butterfly_saves_health": true,
+  "butterfly_saves_name_component": true,
+  "caterpillar_saves_age": true,
+  "caterpillar_saves_id": false,
+  "scorpion_saves_id": false,
+  "dragonfly_saves_id": true,
+  "firefly_saves_id": true,
+  "all_removed": true,
+  "damage_each": true
+}

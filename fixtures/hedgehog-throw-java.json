@@ -1,0 +1,20 @@
+{
+  "roll": true,
+  "consumed": true,
+  "launch": [
+    8.5,
+    94.32000000476837,
+    7.1
+  ],
+  "motion": [
+    0.0,
+    0.0,
+    1.4
+  ],
+  "pig_health": 6.0,
+  "pig_fire": 100,
+  "return": true,
+  "returned_health": 10.0,
+  "returned_owner": true,
+  "enchants": true
+}

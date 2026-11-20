@@ -1,0 +1,32 @@
+{
+  "day": [
+    false,
+    false,
+    true
+  ],
+  "night": [
+    true,
+    true,
+    true
+  ],
+  "other_rat": [
+    true,
+    true,
+    true
+  ],
+  "cow": [
+    false,
+    false,
+    true
+  ],
+  "cow_gone": [
+    true,
+    true,
+    true
+  ],
+  "morning": [
+    false,
+    false,
+    true
+  ]
+}

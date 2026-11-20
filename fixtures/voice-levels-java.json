@@ -1,0 +1,30 @@
+{
+  "boar": {
+    "source": "neutral",
+    "volume": 1.0
+  },
+  "turkey": {
+    "source": "neutral",
+    "volume": 1.0
+  },
+  "black_bear": {
+    "source": "neutral",
+    "volume": 1.0
+  },
+  "jungle_scorpion": {
+    "source": "neutral",
+    "volume": 0.9
+  },
+  "bear": {
+    "source": "neutral",
+    "volume": 1.0
+  },
+  "capybara": {
+    "source": "neutral",
+    "volume": 1.0
+  },
+  "desert_scorpion": {
+    "source": "neutral",
+    "volume": 0.7
+  }
+}

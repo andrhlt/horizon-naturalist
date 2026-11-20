@@ -1,0 +1,26 @@
+{
+  "open_mud": {
+    "butterfly": 64,
+    "dragonfly": 64,
+    "firefly": 0,
+    "raw_light": 15
+  },
+  "open_stone": {
+    "butterfly": 0,
+    "dragonfly": 0,
+    "firefly": 0,
+    "raw_light": 15
+  },
+  "dark_grass": {
+    "butterfly": 0,
+    "dragonfly": 0,
+    "firefly": 64,
+    "raw_light": 0
+  },
+  "dark_stone": {
+    "butterfly": 0,
+    "dragonfly": 0,
+    "firefly": 0,
+    "raw_light": 0
+  }
+}

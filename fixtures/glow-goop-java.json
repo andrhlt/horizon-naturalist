@@ -1,0 +1,102 @@
+{
+  "ai_paths": {
+    "false": [
+      "OPEN",
+      true,
+      true,
+      true,
+      true
+    ],
+    "true": [
+      "WATER",
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "stacking": [
+    "true/1:false:5/minecraft:air",
+    "true/2:false:10/minecraft:air",
+    "true/3:false:15/minecraft:air",
+    "true/3:false:15/1:false:5"
+  ],
+  "stack_remaining": "naturalist:glow_goop*1",
+  "sneak_placement": [
+    true,
+    "1:false:5",
+    "1:false:5"
+  ],
+  "main_outline": true,
+  "collision": false,
+  "empty_outline": false,
+  "off_outline": false,
+  "mine": [
+    "true/2:false:10/[naturalist:glow_goop*1]",
+    "true/1:false:5/[naturalist:glow_goop*1]",
+    "true/minecraft:air/[naturalist:glow_goop*1]"
+  ],
+  "replace": [
+    true,
+    "minecraft:stone",
+    [
+      "naturalist:glow_goop*3"
+    ]
+  ],
+  "failed_replace": [
+    false,
+    "minecraft:air",
+    [
+      "naturalist:glow_goop*3"
+    ],
+    "minecraft:cactus*1"
+  ],
+  "water": [
+    true,
+    "1:true:5",
+    true,
+    "2:true:10",
+    true,
+    "1:true:5",
+    [
+      "naturalist:glow_goop*1"
+    ],
+    true,
+    "minecraft:water",
+    [
+      "naturalist:glow_goop*1"
+    ]
+  ],
+  "creative": [
+    true,
+    "minecraft:air",
+    []
+  ],
+  "offhand_stack_on_floor": [
+    true,
+    "2:false:10",
+    "empty"
+  ],
+  "cooking": {
+    "minecraft:furnace": [
+      "empty",
+      "naturalist:glow_goop*1"
+    ],
+    "minecraft:smoker": [
+      "empty",
+      "naturalist:glow_goop*1"
+    ]
+  },
+  "campfire": [
+    true,
+    "empty",
+    [],
+    [
+      "naturalist:glow_goop*1"
+    ]
+  ],
+  "craft": [
+    "naturalist:spectral_arrow_from_glow_goop",
+    "minecraft:spectral_arrow*2"
+  ]
+}

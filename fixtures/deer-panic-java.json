@@ -1,0 +1,17 @@
+{
+  "extended_water_offset": [
+    9,
+    2,
+    0
+  ],
+  "water_tie_offset": [
+    0,
+    1,
+    7
+  ],
+  "random_search": {
+    "horizontal_bound": 15,
+    "vertical_bound": 4,
+    "outside_vanilla_range": true
+  }
+}

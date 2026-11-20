@@ -1,0 +1,25 @@
+{
+  "adult": [
+    0.6,
+    1.0,
+    0.85
+  ],
+  "baby": [
+    0.3,
+    0.5,
+    0.425
+  ],
+  "tamed": true,
+  "fish_left": 7,
+  "sit": true,
+  "dye": 14,
+  "dye_left": 1,
+  "dye_cleared": true,
+  "shears_wear": 1,
+  "following": false,
+  "stand": true,
+  "healed": 3.0,
+  "bucket": true,
+  "bucket_age": -12345,
+  "bucket_variant": "naturalist:duck"
+}

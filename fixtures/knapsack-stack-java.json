@@ -1,0 +1,67 @@
+{
+  "eligible": [
+    true,
+    true,
+    true,
+    false,
+    false,
+    true
+  ],
+  "default_max_stack": 1,
+  "empty_tooltip": [],
+  "capture": [
+    true,
+    true,
+    true,
+    "naturalist:deer",
+    -1234,
+    5.0
+  ],
+  "named_tooltip": [
+    "Twig|aaaaaa"
+  ],
+  "filled_rejects_second": true,
+  "release": [
+    true,
+    true,
+    10.5,
+    102.0,
+    8.5,
+    -1234,
+    5.0,
+    "Twig",
+    47.0,
+    12.0,
+    false
+  ],
+  "unnamed_tooltip": [
+    "Zombie|aaaaaa"
+  ],
+  "offhand_non_ageable_baby": [
+    true,
+    true
+  ],
+  "vehicle": [
+    true,
+    true,
+    true,
+    1,
+    true,
+    false
+  ],
+  "overstack_capture": [
+    1,
+    true,
+    1
+  ],
+  "overstack_release": [
+    true,
+    1,
+    true,
+    1
+  ],
+  "invalid_release_clears": [
+    true,
+    true
+  ]
+}

@@ -1,0 +1,496 @@
+{
+  "alligator": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "ant": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "anglerfish": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "ray": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "blobfish": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "piranha": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "bass": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "bear": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "black_bear": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "bird": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "boar": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "butterfly": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "capybara": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "caterpillar": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "catfish": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "clam": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "crab": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "deer": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "dragonfly": {
+    "adult": [
+      0
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "duck": {
+    "adult": [
+      10
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "elephant": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "firefly": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "giant_isopod": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "giraffe": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "great_white_shark": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "hedgehog": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "hippo": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "jellyfish": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "komodo_dragon": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "lion": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "lizard": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "lizard_tail": {
+    "adult": [
+      0
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "mammoth": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "mole": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "ostrich": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "desert_scorpion": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "jungle_scorpion": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "rat": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "rhino": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "snail": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "snake": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "starfish": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      1,
+      2,
+      3
+    ]
+  },
+  "tiger": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "tortoise": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "turkey": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "vulture": {
+    "adult": [
+      0
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "zebra": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  },
+  "whale": {
+    "adult": [
+      1,
+      2,
+      3
+    ],
+    "juvenile_tag": [
+      0
+    ]
+  }
+}

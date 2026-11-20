@@ -1,0 +1,81 @@
+{
+  "default_variant": "naturalist:mole",
+  "adult_dimensions": [
+    0.7,
+    0.65,
+    0.5525
+  ],
+  "attributes": [
+    8.0,
+    0.2,
+    0.6
+  ],
+  "food": [
+    true,
+    false,
+    false
+  ],
+  "baby_dimensions": [
+    0.35,
+    0.325,
+    0.27625
+  ],
+  "states": {
+    "0": {
+      "step_height": 0.6,
+      "hide_goal": false,
+      "pushable": true,
+      "saved": 0,
+      "hurt": true
+    },
+    "1": {
+      "step_height": 1.0,
+      "hide_goal": true,
+      "pushable": false,
+      "saved": 1,
+      "hurt": false
+    },
+    "2": {
+      "step_height": 1.0,
+      "hide_goal": false,
+      "pushable": false,
+      "saved": 2,
+      "hurt": false
+    },
+    "3": {
+      "step_height": 1.0,
+      "hide_goal": true,
+      "pushable": false,
+      "saved": 3,
+      "hurt": true
+    },
+    "4": {
+      "step_height": 1.0,
+      "hide_goal": true,
+      "pushable": false,
+      "saved": 4,
+      "hurt": false
+    }
+  },
+  "undead_triggers_dig": 1,
+  "dig_centres": [
+    8.5,
+    8.5
+  ],
+  "dig_tick_19": 1,
+  "dig_tick_20": 2,
+  "mound_count": 1,
+  "mound_persisted": false,
+  "mound_small": false,
+  "mound_hurt": false,
+  "mound_at_49": true,
+  "mound_at_50": false,
+  "diggable_tick_59": false,
+  "diggable_tick_60": true,
+  "calm_tick_59": 2,
+  "calm_tick_60": 3,
+  "peek_tick_56": 3,
+  "peek_tick_57": 4,
+  "emerge_tick_24": 4,
+  "emerge_tick_25": 0
+}

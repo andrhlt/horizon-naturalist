@@ -1,0 +1,544 @@
+{
+  "elephant_unmounted": [
+    {
+      "tick": 0,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        0.0,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 1,
+      "position": [
+        6.592351522529582,
+        100.0,
+        8.530774199596001
+      ],
+      "rotation": [
+        288.43497,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 2,
+      "position": [
+        6.6486952395121754,
+        100.0,
+        8.549550187114342
+      ],
+      "rotation": [
+        288.4353,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 4,
+      "position": [
+        6.963082429845867,
+        100.0,
+        8.65433903139147
+      ],
+      "rotation": [
+        288.4358,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 8,
+      "position": [
+        7.745419447893927,
+        100.0,
+        8.892999774414024
+      ],
+      "rotation": [
+        275.99237,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    }
+  ],
+  "elephant_chicken": [
+    {
+      "tick": 0,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        0.0,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": [
+        6.5,
+        100.0,
+        8.5
+      ]
+    },
+    {
+      "tick": 1,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        101.61,
+        8.5
+      ]
+    },
+    {
+      "tick": 2,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        101.61,
+        8.5
+      ]
+    },
+    {
+      "tick": 4,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        101.61,
+        8.5
+      ]
+    },
+    {
+      "tick": 8,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        101.61,
+        8.5
+      ]
+    }
+  ],
+  "elephant_item": [
+    {
+      "tick": 0,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        0.0,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": [
+        6.5,
+        100.0,
+        8.5
+      ]
+    },
+    {
+      "tick": 1,
+      "position": [
+        6.55464586662147,
+        100.0,
+        8.518209583994318
+      ],
+      "rotation": [
+        288.43497,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.55464586662147,
+        101.61,
+        8.518209583994318
+      ]
+    },
+    {
+      "tick": 2,
+      "position": [
+        6.5890361898547924,
+        100.0,
+        8.529669919934998
+      ],
+      "rotation": [
+        288.43515,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5890361898547924,
+        101.61,
+        8.529669919934998
+      ]
+    },
+    {
+      "tick": 4,
+      "position": [
+        6.776542494094239,
+        100.0,
+        8.592167950048571
+      ],
+      "rotation": [
+        288.4354,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.776542494094239,
+        101.61,
+        8.592167950048571
+      ]
+    },
+    {
+      "tick": 8,
+      "position": [
+        7.237394245183354,
+        100.0,
+        8.745784454317626
+      ],
+      "rotation": [
+        288.43576,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        7.237394245183354,
+        101.61,
+        8.745784454317626
+      ]
+    }
+  ],
+  "mammoth_unmounted": [
+    {
+      "tick": 0,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        0.0,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 1,
+      "position": [
+        6.592351522529582,
+        100.0,
+        8.530774199596001
+      ],
+      "rotation": [
+        288.43497,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 2,
+      "position": [
+        6.6486952395121754,
+        100.0,
+        8.549550187114342
+      ],
+      "rotation": [
+        288.4353,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 4,
+      "position": [
+        6.963082429845867,
+        100.0,
+        8.65433903139147
+      ],
+      "rotation": [
+        288.4358,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    },
+    {
+      "tick": 8,
+      "position": [
+        7.745419447893927,
+        100.0,
+        8.892999774414024
+      ],
+      "rotation": [
+        275.99237,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": null
+    }
+  ],
+  "mammoth_chicken": [
+    {
+      "tick": 0,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        0.0,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": [
+        6.5,
+        100.0,
+        8.5
+      ]
+    },
+    {
+      "tick": 1,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        102.1,
+        8.5
+      ]
+    },
+    {
+      "tick": 2,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        102.1,
+        8.5
+      ]
+    },
+    {
+      "tick": 4,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        102.1,
+        8.5
+      ]
+    },
+    {
+      "tick": 8,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        90.0,
+        15.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5,
+        102.1,
+        8.5
+      ]
+    }
+  ],
+  "mammoth_item": [
+    {
+      "tick": 0,
+      "position": [
+        6.5,
+        100.0,
+        8.5
+      ],
+      "rotation": [
+        0.0,
+        0.0
+      ],
+      "at_java_world_seat": false,
+      "attached": true,
+      "passenger": [
+        6.5,
+        100.0,
+        8.5
+      ]
+    },
+    {
+      "tick": 1,
+      "position": [
+        6.55464586662147,
+        100.0,
+        8.518209583994318
+      ],
+      "rotation": [
+        288.43497,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.55464586662147,
+        102.1,
+        8.518209583994318
+      ]
+    },
+    {
+      "tick": 2,
+      "position": [
+        6.5890361898547924,
+        100.0,
+        8.529669919934998
+      ],
+      "rotation": [
+        288.43515,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.5890361898547924,
+        102.1,
+        8.529669919934998
+      ]
+    },
+    {
+      "tick": 4,
+      "position": [
+        6.776542494094239,
+        100.0,
+        8.592167950048571
+      ],
+      "rotation": [
+        288.4354,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        6.776542494094239,
+        102.1,
+        8.592167950048571
+      ]
+    },
+    {
+      "tick": 8,
+      "position": [
+        7.237394245183354,
+        100.0,
+        8.745784454317626
+      ],
+      "rotation": [
+        288.43576,
+        0.0
+      ],
+      "at_java_world_seat": true,
+      "attached": true,
+      "passenger": [
+        7.237394245183354,
+        102.1,
+        8.745784454317626
+      ]
+    }
+  ]
+}

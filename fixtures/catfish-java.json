@@ -1,0 +1,15 @@
+{
+  "max_health": 6.0,
+  "attack_damage": 1.0,
+  "movement_speed": 0.7,
+  "variant": "naturalist:catfish",
+  "bite_landed": true,
+  "prey_alive_after_bite": true,
+  "cooldown_after_bite": 2400,
+  "prey_alive_after_seven": true,
+  "prey_gone_after_eight": true,
+  "bone_meal": true,
+  "cooldown_after_eight": 2392,
+  "bucket_has_variant": false,
+  "bucket_has_cooldown": false
+}

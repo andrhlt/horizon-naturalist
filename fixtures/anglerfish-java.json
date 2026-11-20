@@ -1,0 +1,19 @@
+{
+  "max_health": 8.0,
+  "movement_speed": 1.2,
+  "attack_damage": 2.0,
+  "default_variant": "naturalist:red",
+  "retaliated": true,
+  "extended_reach": true,
+  "cooldown": 2400,
+  "next_cooldown": 2399,
+  "dark_spawn": true,
+  "bright_spawn": false,
+  "middle_spawn": false,
+  "surface_spawn": true,
+  "deep_variant": "naturalist:glow",
+  "bucket_variant": "naturalist:glow",
+  "custom_variant": "naturalist:glow",
+  "released_variant": "naturalist:glow",
+  "legacy_variant": "naturalist:glow"
+}

@@ -1,0 +1,9 @@
+{
+  "cactus_immune": true,
+  "hunger_immune": true,
+  "zombie_damage": 3.9,
+  "startle": true,
+  "steals_one_without_damage": true,
+  "took_rotten_flesh": 3,
+  "eats_at_tick_601": true
+}

@@ -1,0 +1,19 @@
+{
+  "breeds_caterpillar": true,
+  "nectar_after_40_goal_ticks": false,
+  "nectar_after_41_goal_ticks": true,
+  "grew_each_crop": true,
+  "nectar_after_tenth_crop_before_step": true,
+  "nectar_after_tenth_crop_after_step": false,
+  "baby_makes_cocoon": false,
+  "adult_makes_cocoon": true,
+  "caterpillar_discarded": true,
+  "chrysalis_faces_log": true,
+  "chrysalis_ages": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "butterfly_hatches_at_center": true
+}

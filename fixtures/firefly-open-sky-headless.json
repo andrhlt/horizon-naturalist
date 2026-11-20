@@ -1,0 +1,15 @@
+{
+  "launcher_build": "native-9f42064-2b793761a525",
+  "difficulty": "peaceful",
+  "counts": {
+    "noon": {"butterfly": 0, "dragonfly": 0, "firefly": 0},
+    "midnight": {"butterfly": 0, "dragonfly": 0, "firefly": 2}
+  },
+  "firefly_sites": {
+    "noon": [],
+    "midnight": [
+      [-52.42919921875, 100.0, -22.241292249411345],
+      [-41.5, 101.58816595666576, 32.47789757139981]
+    ]
+  }
+}

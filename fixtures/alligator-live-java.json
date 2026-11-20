@@ -1,0 +1,47 @@
+{
+  "prey": {
+    "targeted": true,
+    "injured": true,
+    "wet": false
+  },
+  "sated": {
+    "targeted": false,
+    "injured": false,
+    "wet": false
+  },
+  "nest": {
+    "targeted": true,
+    "injured": true,
+    "wet": false
+  },
+  "nest_three_away": {
+    "targeted": false,
+    "injured": false,
+    "wet": false
+  },
+  "day_player": {
+    "targeted": false,
+    "injured": false,
+    "wet": false
+  },
+  "dark_player": {
+    "targeted": true,
+    "injured": true,
+    "wet": false
+  },
+  "pregnant_player": {
+    "targeted": true,
+    "injured": true,
+    "wet": false
+  },
+  "water_player": {
+    "targeted": true,
+    "injured": true,
+    "wet": true
+  },
+  "baby": {
+    "targeted": false,
+    "injured": false,
+    "wet": false
+  }
+}

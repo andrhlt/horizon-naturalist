@@ -1,0 +1,166 @@
+{
+  "adult_dims": [
+    9000,
+    6000,
+    5100
+  ],
+  "baby_dims": [
+    4500,
+    3000,
+    2550
+  ],
+  "attributes": [
+    6.0,
+    0.2,
+    16.0,
+    0.6
+  ],
+  "attack_damage_exists": false,
+  "default_variant": "naturalist:black",
+  "carry_slots": 27,
+  "portal_allowed": false,
+  "food_ids": [
+    "minecraft:bread"
+  ],
+  "tame_rows": [
+    [
+      1,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      42,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      100,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      4000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      5000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      9000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      14000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      18000,
+      true,
+      1,
+      false,
+      false
+    ],
+    [
+      22000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      36000,
+      true,
+      1,
+      false,
+      false
+    ]
+  ],
+  "heal": [
+    4.0,
+    1
+  ],
+  "offspring": [
+    true,
+    true,
+    "naturalist:white"
+  ],
+  "short_tag": [
+    true,
+    true,
+    true,
+    "naturalist:white",
+    0,
+    true,
+    false,
+    false,
+    false
+  ],
+  "released": [
+    true,
+    true,
+    true,
+    false,
+    false,
+    true,
+    true
+  ],
+  "work_no_grief": {
+    "crop_ages": [
+      0,
+      0
+    ],
+    "deposited": [
+      1,
+      true
+    ],
+    "carried_empty": true,
+    "near_workstation": true,
+    "ticks": 421,
+    "position": "(10.387499988079071, 92.0, 5.0703227411450476)",
+    "workstation_active": true,
+    "ai_enabled": true,
+    "can_sleep": false,
+    "sleeping": false,
+    "sitting": false,
+    "on_ground": true
+  },
+  "work_griefing": {
+    "crop_ages": [
+      0,
+      0
+    ],
+    "deposited": [
+      1,
+      true
+    ],
+    "carried_empty": true,
+    "near_workstation": true,
+    "ticks": 842,
+    "position": "(10.387499988079071, 92.0, 6.184644415627755)",
+    "workstation_active": true,
+    "ai_enabled": true,
+    "can_sleep": false,
+    "sleeping": false,
+    "sitting": false,
+    "on_ground": true
+  }
+}

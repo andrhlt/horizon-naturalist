@@ -1,0 +1,57 @@
+// Based on Naturalist 2.0.7 Java model source (MIT).
+use horizon_client::mobs::model_layers::{CubeDeformation, CubeListBuilder, LayerDefinition, MeshDefinition, ModelPart, PartPose};
+pub(super) fn adult() -> ModelPart {
+    let mut mesh = MeshDefinition::new();
+    let partdefinition = mesh.root();
+    let root = mesh.add_or_replace_child(partdefinition, "root", CubeListBuilder::create(), PartPose::offset(0.0, 25.0, -3.0));
+    let body = mesh.add_or_replace_child(root, "body", CubeListBuilder::create().tex_offs(0, 0).add_box_with([-14.0, -15.0, -24.0], [28.0, 30.0, 48.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, -40.0, 3.0));
+    let seat = mesh.add_or_replace_child(body, "seat", CubeListBuilder::create(), PartPose::offset(0.0, -13.0, -2.0));
+    let saddle = mesh.add_or_replace_child(body, "saddle", CubeListBuilder::create().tex_offs(0, 123).add_box_with([-14.0, -15.0, -24.0], [28.0, 30.0, 48.0], CubeDeformation::new(0.5)), PartPose::offset(0.0, 0.0, 0.0));
+    let saddleFront = mesh.add_or_replace_child(saddle, "saddleFront", CubeListBuilder::create(), PartPose::offset(0.0, -15.0, -15.75));
+    let chests = mesh.add_or_replace_child(body, "chests", CubeListBuilder::create(), PartPose::offset(0.0, 30.75, 1.0));
+    let leftChest = mesh.add_or_replace_child(chests, "leftChest", CubeListBuilder::create().tex_offs(177, 6).add_box_with([14.0, -35.0, 3.0], [4.0, 12.0, 20.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 0.0, 0.0));
+    let rightChest = mesh.add_or_replace_child(chests, "rightChest", CubeListBuilder::create().tex_offs(177, 6).set_mirror(true).add_box_with([-18.0, -35.0, 3.0], [4.0, 12.0, 20.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset(0.0, 0.0, 0.0));
+    let tail = mesh.add_or_replace_child(body, "tail", CubeListBuilder::create().tex_offs(144, 45).add_box_with([-2.0, 0.0, -2.0], [4.0, 0.0, 20.0], CubeDeformation::new(0.0)), PartPose::offset_and_rotation(0.0, -4.0, 24.0, -1.4399, 0.0, 0.0));
+    let skullRot = mesh.add_or_replace_child(body, "skullRot", CubeListBuilder::create(), PartPose::offset(0.0, -5.0, -22.3333));
+    let attack = mesh.add_or_replace_child(skullRot, "attack", CubeListBuilder::create(), PartPose::offset(0.0, 0.0, 0.0));
+    let neck = mesh.add_or_replace_child(attack, "neck", CubeListBuilder::create().tex_offs(0, 79).add_box_with([-10.0, -17.0, -15.6667], [20.0, 23.0, 18.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 0.0, 0.0));
+    let rightEar = mesh.add_or_replace_child(neck, "rightEar", CubeListBuilder::create().tex_offs(79, 92).add_box_with([-21.0, -9.0, -1.0], [21.0, 26.0, 2.0], CubeDeformation::new(0.0)), PartPose::offset_and_rotation(-9.0, -11.0, -6.6667, 0.0, 0.3927, 0.2182));
+    let leftEar = mesh.add_or_replace_child(neck, "leftEar", CubeListBuilder::create().tex_offs(79, 92).set_mirror(true).add_box_with([0.0, -9.0, -1.0], [21.0, 26.0, 2.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset_and_rotation(9.0, -11.0, -6.6667, 0.0, -0.3927, -0.2182));
+    let tusks = mesh.add_or_replace_child(neck, "tusks", CubeListBuilder::create(), PartPose::offset(8.0, 7.5, -15.6667));
+    let left_tusk = mesh.add_or_replace_child(tusks, "left_tusk", CubeListBuilder::create(), PartPose::offset_and_rotation(0.0, 0.0, 0.0, -0.2618, 0.0, 0.0));
+    let left_tusk_r1 = mesh.add_or_replace_child(left_tusk, "left_tusk_r1", CubeListBuilder::create().tex_offs(106, 0).add_box_with([-3.0, -7.5, -3.0], [6.0, 10.0, 6.0], CubeDeformation::new(0.0)), PartPose::offset_and_rotation(0.0, 0.0, 0.0, -0.0873, 0.0, 0.0));
+    let left_tusk_r2 = mesh.add_or_replace_child(left_tusk, "left_tusk_r2", CubeListBuilder::create().tex_offs(107, 17).add_box_with([-2.0, 4.5, -2.0], [4.0, 19.0, 4.0], CubeDeformation::new(0.02)).tex_offs(122, 8).add_box_with([-2.0, 19.5, -11.0], [4.0, 4.0, 9.0], CubeDeformation::new(0.0)), PartPose::offset_and_rotation(0.0, -7.0, 0.5, -0.0873, 0.0, 0.0));
+    let right_tusk = mesh.add_or_replace_child(tusks, "right_tusk", CubeListBuilder::create(), PartPose::offset_and_rotation(-16.0, 0.0, 0.0, -0.2618, 0.0, 0.0));
+    let right_tusk_r1 = mesh.add_or_replace_child(right_tusk, "right_tusk_r1", CubeListBuilder::create().tex_offs(106, 0).set_mirror(true).add_box_with([-3.0, -7.5, -3.0], [6.0, 10.0, 6.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset_and_rotation(0.0, 0.0, 0.0, -0.0873, 0.0, 0.0));
+    let right_tusk_r2 = mesh.add_or_replace_child(right_tusk, "right_tusk_r2", CubeListBuilder::create().tex_offs(107, 17).set_mirror(true).add_box_with([-2.0, 4.5, -2.0], [4.0, 19.0, 4.0], CubeDeformation::new(0.02)).set_mirror(false).tex_offs(122, 8).set_mirror(true).add_box_with([-2.0, 19.5, -11.0], [4.0, 4.0, 9.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset_and_rotation(0.0, -7.0, 0.5, -0.0873, 0.0, 0.0));
+    let trunk = mesh.add_or_replace_child(neck, "trunk", CubeListBuilder::create().tex_offs(0, 0).add_box_with([-5.0, -5.0, -8.0], [10.0, 14.0, 10.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 0.0, -13.6667));
+    let trunk2 = mesh.add_or_replace_child(trunk, "trunk2", CubeListBuilder::create().tex_offs(0, 25).add_box_with([-4.0, 0.0, -4.0], [8.0, 10.0, 8.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 9.0, -3.0));
+    let trunk3 = mesh.add_or_replace_child(trunk2, "trunk3", CubeListBuilder::create().tex_offs(124, 22).add_box_with([-3.0, 0.0, -3.0], [6.0, 10.0, 6.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 10.0, 0.0));
+    let trunk4 = mesh.add_or_replace_child(trunk3, "trunk4", CubeListBuilder::create().tex_offs(150, 21).add_box_with([-3.0, 0.0, -3.0], [6.0, 10.0, 6.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 10.0, 0.0));
+    let legs = mesh.add_or_replace_child(root, "legs", CubeListBuilder::create(), PartPose::offset(0.0, 0.0, 0.0));
+    let leftArm = mesh.add_or_replace_child(legs, "leftArm", CubeListBuilder::create().tex_offs(128, 82).add_box_with([-5.0, 0.0, -6.0], [10.0, 26.0, 12.0], CubeDeformation::new(0.0)), PartPose::offset(8.0, -27.0, -13.0));
+    let rightArm = mesh.add_or_replace_child(legs, "rightArm", CubeListBuilder::create().tex_offs(128, 82).add_box_with([-5.0, 0.0, -6.0], [10.0, 26.0, 12.0], CubeDeformation::new(0.0)), PartPose::offset(-8.0, -27.0, -13.0));
+    let leftLeg = mesh.add_or_replace_child(legs, "leftLeg", CubeListBuilder::create().tex_offs(128, 82).add_box_with([-5.0, 0.0, -6.0], [10.0, 26.0, 12.0], CubeDeformation::new(0.0)), PartPose::offset(8.0, -27.0, 19.0));
+    let rightLeg = mesh.add_or_replace_child(legs, "rightLeg", CubeListBuilder::create().tex_offs(128, 82).add_box_with([-5.0, 0.0, -6.0], [10.0, 26.0, 12.0], CubeDeformation::new(0.0)), PartPose::offset(-8.0, -27.0, 19.0));
+    LayerDefinition::create(mesh, 256, 256).bake_root()
+}
+pub(super) fn baby() -> ModelPart {
+    let mut mesh = MeshDefinition::new();
+    let partdefinition = mesh.root();
+    let root = mesh.add_or_replace_child(partdefinition, "root", CubeListBuilder::create(), PartPose::offset(0.0, 24.0, 0.0));
+    let body = mesh.add_or_replace_child(root, "body", CubeListBuilder::create().tex_offs(0, 0).add_box_with([-6.0, -8.0, -8.0], [12.0, 13.0, 16.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, -15.0, 0.25));
+    let saddle = mesh.add_or_replace_child(body, "saddle", CubeListBuilder::create().tex_offs(62, 30).add_box_with([-6.0, -6.5, -8.0], [12.0, 13.0, 16.0], CubeDeformation::new(0.5)), PartPose::offset(0.0, -1.5, 0.0));
+    let tail = mesh.add_or_replace_child(body, "tail", CubeListBuilder::create().tex_offs(0, 29).add_box_with([-6.0, 0.0, 0.0], [12.0, 0.0, 13.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, -8.0, 8.0));
+    let neck = mesh.add_or_replace_child(body, "neck", CubeListBuilder::create(), PartPose::offset(0.0, -2.875, -6.25));
+    let awake = mesh.add_or_replace_child(neck, "awake", CubeListBuilder::create().tex_offs(0, 42).add_box_with([-5.0, -26.0, -13.75], [10.0, 11.0, 8.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 17.875, 6.0));
+    let asleep = mesh.add_or_replace_child(neck, "asleep", CubeListBuilder::create().tex_offs(0, 61).add_box_with([-5.0, -26.0, -13.75], [10.0, 11.0, 8.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 17.875, 6.0));
+    let leftEar = mesh.add_or_replace_child(neck, "leftEar", CubeListBuilder::create().tex_offs(36, 42).add_box_with([-0.5, -4.0, -0.5], [11.0, 14.0, 1.0], CubeDeformation::new(0.0)), PartPose::offset(3.5, -8.125, -4.25));
+    let rightEar = mesh.add_or_replace_child(neck, "rightEar", CubeListBuilder::create().tex_offs(36, 42).set_mirror(true).add_box_with([-10.5, -4.0, -0.5], [11.0, 14.0, 1.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset(-3.5, -8.125, -4.25));
+    let trunk = mesh.add_or_replace_child(neck, "trunk", CubeListBuilder::create().tex_offs(56, 16).add_box_with([-2.0, -1.0, -3.0], [4.0, 13.0, 4.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, -1.125, -7.75));
+    let legs = mesh.add_or_replace_child(root, "legs", CubeListBuilder::create(), PartPose::offset(3.0, -11.0, -4.75));
+    let leftArm = mesh.add_or_replace_child(legs, "leftArm", CubeListBuilder::create().tex_offs(56, 0).add_box_with([-2.5, 0.0, -2.5], [5.0, 11.0, 5.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 0.0, 0.0));
+    let rightArm = mesh.add_or_replace_child(legs, "rightArm", CubeListBuilder::create().tex_offs(56, 0).set_mirror(true).add_box_with([-2.5, 0.0, -2.5], [5.0, 11.0, 5.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset(-6.0, 0.0, 0.0));
+    let rightLeg = mesh.add_or_replace_child(legs, "rightLeg", CubeListBuilder::create().tex_offs(56, 0).set_mirror(true).add_box_with([-2.5, 0.0, -2.5], [5.0, 11.0, 5.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset(-6.0, 0.0, 9.5));
+    let leftLeg = mesh.add_or_replace_child(legs, "leftLeg", CubeListBuilder::create().tex_offs(56, 0).add_box_with([-2.5, 0.0, -2.5], [5.0, 11.0, 5.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 0.0, 9.5));
+    LayerDefinition::create(mesh, 128, 128).bake_root()
+}

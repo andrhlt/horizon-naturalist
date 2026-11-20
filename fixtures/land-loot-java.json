@@ -1,0 +1,32 @@
+{
+  "boar": {
+    "normal": {
+      "raw": true,
+      "cooked": false
+    },
+    "burning": {
+      "raw": false,
+      "cooked": true
+    }
+  },
+  "turkey": {
+    "normal": {
+      "raw": true,
+      "cooked": false
+    },
+    "burning": {
+      "raw": false,
+      "cooked": true
+    }
+  },
+  "capybara": {
+    "normal": {
+      "raw": true,
+      "cooked": false
+    },
+    "burning": {
+      "raw": false,
+      "cooked": true
+    }
+  }
+}

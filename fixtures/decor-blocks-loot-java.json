@@ -1,0 +1,46 @@
+{
+  "registered_placed": {
+    "azure_froglass": true,
+    "azure_froglass_pane": true,
+    "verdant_froglass": true,
+    "verdant_froglass_pane": true,
+    "crimson_froglass": true,
+    "crimson_froglass_pane": true,
+    "shellstone": true,
+    "shellstone_slab": true,
+    "shellstone_stairs": true,
+    "shellstone_wall": true,
+    "shellstone_bricks": true,
+    "shellstone_brick_slab": true,
+    "shellstone_brick_stairs": true,
+    "shellstone_brick_wall": true,
+    "cut_shellstone": true,
+    "cut_shellstone_slab": true,
+    "cut_shellstone_stairs": true,
+    "cut_shellstone_wall": true,
+    "smooth_shellstone": true,
+    "smooth_shellstone_slab": true,
+    "smooth_shellstone_stairs": true,
+    "smooth_shellstone_wall": true
+  },
+  "physical_controls": {
+    "azure_froglass_pane": [
+      true,
+      true,
+      true
+    ],
+    "smooth_shellstone_wall": [
+      true,
+      true,
+      true
+    ],
+    "shellstone_slab": true,
+    "cut_shellstone_stairs": true
+  },
+  "block_loot": {
+    "no_silk": 0,
+    "silk": 1,
+    "pane_silk": 0,
+    "double_slab": 1
+  }
+}

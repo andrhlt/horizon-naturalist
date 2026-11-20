@@ -1,0 +1,28 @@
+{
+  "max_health": 10.0,
+  "movement_speed": 0.20000000298023224,
+  "step_height": 2.0,
+  "Health": "10.0f",
+  "Age": "0",
+  "Variant": "\"naturalist:deer\"",
+  "baby_age": "-24000",
+  "avoidance_position": "[10.97240015952041d, 71.0d, 3.357939466763433d]",
+  "bred_age": "-23973",
+  "forest_dasher": {
+    "naturalist:antler": {
+      "minecraft:potion": "naturalist:forest_dasher",
+      "minecraft:splash_potion": "naturalist:forest_dasher",
+      "minecraft:lingering_potion": "naturalist:forest_dasher"
+    },
+    "minecraft:redstone": {
+      "minecraft:potion": "naturalist:long_forest_dasher",
+      "minecraft:splash_potion": "naturalist:long_forest_dasher",
+      "minecraft:lingering_potion": "naturalist:long_forest_dasher"
+    },
+    "minecraft:glowstone_dust": {
+      "minecraft:potion": "naturalist:strong_forest_dasher",
+      "minecraft:splash_potion": "naturalist:strong_forest_dasher",
+      "minecraft:lingering_potion": "naturalist:strong_forest_dasher"
+    }
+  }
+}

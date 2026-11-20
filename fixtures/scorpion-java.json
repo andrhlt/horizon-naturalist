@@ -1,0 +1,61 @@
+{
+  "desert_scorpion": {
+    "variant": "naturalist:desert_scorpion",
+    "max_health": 12.0,
+    "movement_speed": 0.27,
+    "attack_damage": 2.0,
+    "dimensions": [
+      0.7,
+      0.3,
+      0.25500003
+    ],
+    "no_breeding": true,
+    "attack_landed": true,
+    "poison_duration": 120,
+    "poison_amplifier": 0,
+    "healed": 4.0,
+    "remaining_tail": 1,
+    "sunlit_attacks_player": false,
+    "peaceful_attacks_player": false,
+    "peaceful_survives": true,
+    "shielded_hit_landed": false,
+    "shielded_health_unchanged": true,
+    "shielded_poisoned": false
+  },
+  "desert_behavior": {
+    "restored_variant": "naturalist:desert_scorpion",
+    "restored_no_ai": true,
+    "portal_allowed": false,
+    "from_hand_persistent": true,
+    "restored_health": 5.5,
+    "caught_item": true,
+    "custom_name": "Fixture Scorpion",
+    "from_hand_hunts_player": false,
+    "from_hand_retaliates": true,
+    "from_hand_hunts_zombie": true,
+    "wild_hunts_zombie": false
+  },
+  "jungle_scorpion": {
+    "variant": "naturalist:black",
+    "max_health": 16.0,
+    "movement_speed": 0.27,
+    "attack_damage": 3.0,
+    "dimensions": [
+      1.2,
+      1.0,
+      0.85
+    ],
+    "no_breeding": true,
+    "attack_landed": true,
+    "poison_duration": 120,
+    "poison_amplifier": 0,
+    "healed": 4.0,
+    "remaining_tail": 1,
+    "sunlit_attacks_player": false,
+    "peaceful_attacks_player": false,
+    "peaceful_survives": true,
+    "shielded_hit_landed": false,
+    "shielded_health_unchanged": true,
+    "shielded_poisoned": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "empty_main": [
+    true,
+    true,
+    true
+  ],
+  "bread_main_whistle_off": [
+    false,
+    true,
+    false,
+    false,
+    1
+  ],
+  "whistle_during_cooldown": [
+    true,
+    true,
+    false
+  ]
+}

@@ -1,0 +1,12 @@
+[
+  [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  [
+    "minecraft:block.grass.step",
+    0.15,
+    1.0
+  ]
+]

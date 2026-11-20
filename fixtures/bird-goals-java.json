@@ -1,0 +1,9 @@
+{
+  "adult_selects_self": true,
+  "juvenile_selects_first_adult": true,
+  "chooses_seeds": true,
+  "after_first": 2,
+  "after_cooldown": 2,
+  "after_second": 1,
+  "ownerless_stays_wild": true
+}

@@ -1,0 +1,14 @@
+{
+  "same_tier_follows": true,
+  "mixed_tier_follows": false,
+  "large_follows": false,
+  "cod_follows": false,
+  "school_max": 5,
+  "count_at_capacity": 4,
+  "mixed_candidate_count": 1,
+  "growth_variant": "naturalist:bass_large",
+  "growth_discards_prey": true,
+  "growth_removes_follower": true,
+  "growth_updates_old_leader": true,
+  "nongrowth_variant": "naturalist:bass_medium"
+}

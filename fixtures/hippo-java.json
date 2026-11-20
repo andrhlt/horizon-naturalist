@@ -1,0 +1,57 @@
+{
+  "variant": "naturalist:hippo",
+  "adult_dims": [
+    18000,
+    18000,
+    15300
+  ],
+  "baby_dims": [
+    9000,
+    9000,
+    7650
+  ],
+  "health": 70.0,
+  "follow_range": 20.0,
+  "speed": 0.2,
+  "attack": 9.0,
+  "knockback_resistance": 0.75,
+  "step": 1.0,
+  "knockback": [
+    100,
+    400
+  ],
+  "adult_float_threshold": 100,
+  "baby_float_threshold": 20,
+  "portal": true,
+  "cluster": 4,
+  "food": [
+    true,
+    false,
+    false,
+    false
+  ],
+  "adult_tame": false,
+  "adult_in_love": 600,
+  "adult_carrying_melon": true,
+  "adult_carried_count": 8,
+  "melon_cleared_at_10": false,
+  "melon_cleared_at_11": true,
+  "baby_tamed": true,
+  "baby_ordered_to_sit": true,
+  "taming_did_not_age": true,
+  "following_at_tame": true,
+  "melon_heal": 4,
+  "healthy_baby_age": -21600,
+  "whistle_unseats_and_stops_follow": true,
+  "plain_empty_sits": false,
+  "crouch_empty_sits": true,
+  "can_mate_dry": false,
+  "can_mate_one_wet": false,
+  "both_in_water": true,
+  "can_mate_both_wet": true,
+  "boat_adult_goal": true,
+  "boat_destroyed": true,
+  "chest_boat_adult_goal": false,
+  "raft_adult_goal": false,
+  "boat_baby_goal": false
+}

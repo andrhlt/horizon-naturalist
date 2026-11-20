@@ -1,0 +1,11 @@
+{
+  "no_water": false,
+  "natural_corner_16": true,
+  "generated_cross_chunk": false,
+  "horizontal_17": false,
+  "two_above": false,
+  "two_below": false,
+  "waterlogged_one_below": true,
+  "generated_same_chunk": true,
+  "stone_rejected": false
+}

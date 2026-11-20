@@ -1,0 +1,226 @@
+{
+  "before": {
+    "gold": {
+      "hand": "{count: 2, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "stew": {
+      "hand": "{count: 1, id: \"minecraft:mushroom_stew\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey": {
+      "hand": "{count: 2, id: \"minecraft:honey_bottle\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "paused": {
+      "hand": "{count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "rotten": {
+      "hand": "{count: 2, id: \"minecraft:rotten_flesh\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey_cure": {
+      "hand": "{count: 1, id: \"minecraft:honey_bottle\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "no_consumable": {
+      "hand": "{components: {\"!minecraft:consumable\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "no_food": {
+      "hand": "{components: {\"!minecraft:food\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "stew_effect": {
+      "hand": "{components: {\"minecraft:suspicious_stew_effects\": [{duration: 200, id: \"minecraft:night_vision\"}]}, count: 1, id: \"minecraft:suspicious_stew\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    }
+  },
+  "at_threshold": {
+    "gold": {
+      "hand": "{count: 2, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "stew": {
+      "hand": "{count: 1, id: \"minecraft:mushroom_stew\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey": {
+      "hand": "{count: 2, id: \"minecraft:honey_bottle\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "paused": {
+      "hand": "{count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "rotten": {
+      "hand": "{count: 2, id: \"minecraft:rotten_flesh\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey_cure": {
+      "hand": "{count: 1, id: \"minecraft:honey_bottle\"}",
+      "effects": "[{duration: 100, show_icon: 1b, id: \"minecraft:poison\"}]",
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "no_consumable": {
+      "hand": "{components: {\"!minecraft:consumable\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "no_food": {
+      "hand": "{components: {\"!minecraft:food\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "stew_effect": {
+      "hand": "{components: {\"minecraft:suspicious_stew_effects\": [{duration: 200, id: \"minecraft:night_vision\"}]}, count: 1, id: \"minecraft:suspicious_stew\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    }
+  },
+  "after": {
+    "gold": {
+      "hand": "{count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": "[{duration: 100, show_icon: 1b, amplifier: 1b, id: \"minecraft:regeneration\"}, {duration: 2400, show_icon: 1b, id: \"minecraft:absorption\"}]",
+      "health": "14.0f",
+      "absorption": "4.0f"
+    },
+    "stew": {
+      "hand": "{count: 1, id: \"minecraft:bowl\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey": {
+      "hand": "{count: 1, id: \"minecraft:honey_bottle\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "paused": {
+      "hand": "{count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "rotten": {
+      "hand": "{count: 1, id: \"minecraft:rotten_flesh\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey_cure": {
+      "hand": "{count: 1, id: \"minecraft:glass_bottle\"}",
+      "effects": null,
+      "health": "13.0f",
+      "absorption": "0.0f"
+    },
+    "no_consumable": {
+      "hand": "{components: {\"!minecraft:consumable\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "no_food": {
+      "hand": "{components: {\"!minecraft:food\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "stew_effect": {
+      "hand": "{count: 1, id: \"minecraft:bowl\"}",
+      "effects": "[{duration: 200, show_icon: 1b, id: \"minecraft:night_vision\"}]",
+      "health": "14.0f",
+      "absorption": "0.0f"
+    }
+  },
+  "later": {
+    "gold": {
+      "hand": "{count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": "[{duration: 94, show_icon: 1b, amplifier: 1b, id: \"minecraft:regeneration\"}, {duration: 2394, show_icon: 1b, id: \"minecraft:absorption\"}]",
+      "health": "14.0f",
+      "absorption": "4.0f"
+    },
+    "stew": {
+      "hand": "{count: 1, id: \"minecraft:bowl\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey": {
+      "hand": "{count: 1, id: \"minecraft:honey_bottle\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "paused": {
+      "hand": "{count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "rotten": {
+      "hand": "{count: 1, id: \"minecraft:rotten_flesh\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "honey_cure": {
+      "hand": "{count: 1, id: \"minecraft:glass_bottle\"}",
+      "effects": null,
+      "health": "13.0f",
+      "absorption": "0.0f"
+    },
+    "no_consumable": {
+      "hand": "{components: {\"!minecraft:consumable\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "no_food": {
+      "hand": "{components: {\"!minecraft:food\": {}}, count: 1, id: \"minecraft:golden_apple\"}",
+      "effects": null,
+      "health": "14.0f",
+      "absorption": "0.0f"
+    },
+    "stew_effect": {
+      "hand": "{count: 1, id: \"minecraft:bowl\"}",
+      "effects": "[{duration: 194, show_icon: 1b, id: \"minecraft:night_vision\"}]",
+      "health": "14.0f",
+      "absorption": "0.0f"
+    }
+  }
+}

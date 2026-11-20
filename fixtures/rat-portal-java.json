@@ -1,0 +1,5 @@
+{
+  "minecraft:pig": true,
+  "naturalist:rat": false,
+  "naturalist:snake": true
+}

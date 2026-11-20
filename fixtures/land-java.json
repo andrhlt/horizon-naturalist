@@ -1,0 +1,128 @@
+{
+  "boar": {
+    "max_health": 24.0,
+    "movement_speed": 0.25,
+    "attack_damage": 4.0,
+    "attack_knockback": 1.0,
+    "knockback_resistance": 0.5,
+    "follow_range": 16.0,
+    "step_height": 0.6,
+    "variant": "naturalist:boar",
+    "adult": [
+      0.9,
+      0.9,
+      0.765
+    ],
+    "juvenile": [
+      0.45,
+      0.45,
+      0.3825
+    ],
+    "food": [
+      "beetroot",
+      "carrot",
+      "potato"
+    ],
+    "fed_adult": true,
+    "remaining_feed": 1,
+    "same_species_mate": true,
+    "offspring_variants": [
+      "fixture:from_first_parent",
+      "fixture:from_second_parent"
+    ],
+    "fall_damage": true
+  },
+  "turkey": {
+    "max_health": 6.0,
+    "movement_speed": 0.25,
+    "attack_damage": 2.0,
+    "attack_knockback": 0.0,
+    "knockback_resistance": 0.0,
+    "follow_range": 16.0,
+    "step_height": 0.6,
+    "variant": "naturalist:turkey",
+    "adult": [
+      0.6,
+      0.8,
+      0.68
+    ],
+    "juvenile": [
+      0.3,
+      0.4,
+      0.34
+    ],
+    "food": [
+      "beetroot_seeds",
+      "melon_seeds",
+      "pitcher_pod",
+      "pumpkin_seeds",
+      "torchflower_seeds",
+      "wheat_seeds"
+    ],
+    "fed_adult": true,
+    "remaining_feed": 1,
+    "same_species_mate": true,
+    "offspring_variants": [
+      "fixture:from_first_parent",
+      "fixture:from_second_parent"
+    ],
+    "fall_damage": false
+  },
+  "boar_behavior": {
+    "lightning_name_visible": true,
+    "aggro_above_half": true,
+    "lightning_removed": true,
+    "aggro_at_half": false,
+    "lightning_baby": true,
+    "lightning_no_ai": true,
+    "lightning_name": "Fixture Boar"
+  },
+  "boar_disc": {
+    "landed_hits": 96,
+    "fatal_hits": 95,
+    "nonfatal_hits": 1,
+    "discs": 9,
+    "discs_when_mob_drops_disabled": 0
+  },
+  "universal_anger": {
+    "boar": {
+      "true": {
+        "includes_bystander": true,
+        "retaliated": true
+      },
+      "false": {
+        "includes_bystander": false,
+        "retaliated": true
+      }
+    },
+    "black_bear": {
+      "true": {
+        "includes_bystander": true,
+        "retaliated": true
+      },
+      "false": {
+        "includes_bystander": false,
+        "retaliated": true
+      }
+    },
+    "bear": {
+      "true": {
+        "includes_bystander": true,
+        "retaliated": true
+      },
+      "false": {
+        "includes_bystander": false,
+        "retaliated": true
+      }
+    }
+  },
+  "capybara_owner": {
+    "guest_toggles_sit": false,
+    "guest_toggles_follow": false,
+    "guest_heals": false,
+    "guest_breeds": true,
+    "guest_food_consumed": true,
+    "owner_heals": true,
+    "owner_toggles_sit": true
+  }
+}

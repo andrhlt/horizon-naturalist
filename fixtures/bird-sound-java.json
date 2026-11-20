@@ -1,0 +1,12 @@
+[
+  {
+    "sound": "minecraft:block.stone.step",
+    "volume": 0.15,
+    "pitch": 1.0
+  },
+  {
+    "sound": "naturalist:entity.bird.fly",
+    "volume": 0.15,
+    "pitch": 1.0
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "plain": {
+    "max_health": 20.0,
+    "attack_damage": 4.0
+  },
+  "nbt": {
+    "max_health": 20.0,
+    "attack_damage": 4.0
+  }
+}

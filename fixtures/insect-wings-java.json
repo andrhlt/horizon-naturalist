@@ -1,0 +1,9 @@
+{
+  "dragonfly_initial_hover": 30,
+  "dragonfly_still_after_30": true,
+  "dragonfly_waypoint_pause": 15,
+  "dragonfly_moves_at_46": true,
+  "dragonfly_no_gravity": true,
+  "firefly_glow_40_to_59": true,
+  "firefly_first_luminance": 1
+}

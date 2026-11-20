@@ -1,0 +1,13 @@
+{
+  "attributes": {
+    "max_health": 3.0,
+    "movement_speed": 0.7,
+    "attack_damage": 1.0
+  },
+  "variants": {
+    "bass": "\"naturalist:bass\"",
+    "bass_medium": "\"naturalist:bass_medium\"",
+    "bass_large": "\"naturalist:bass_large\""
+  },
+  "size": {}
+}

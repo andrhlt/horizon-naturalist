@@ -1,0 +1,107 @@
+{
+  "adult_dims": [
+    12000,
+    8750,
+    7438
+  ],
+  "baby_dims": [
+    6000,
+    4375,
+    3719
+  ],
+  "variant": "naturalist:brown",
+  "health": 30.0,
+  "speed": 0.17000000178813934,
+  "attack": 2.0,
+  "knockback_resistance": 0.6,
+  "step": 0.6,
+  "head_yaw": 75,
+  "cluster": 4,
+  "knockback": [
+    160,
+    400
+  ],
+  "food": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+  ],
+  "wild_mates": false,
+  "loaded_wild_stats": [
+    20.0,
+    4.0,
+    30.0
+  ],
+  "tamed_stats": [
+    30.0,
+    4.0,
+    30.0
+  ],
+  "tame_mates": true,
+  "owner_heals": [
+    21.0,
+    1
+  ],
+  "owner_sits": true,
+  "owner_whistle_stops_follow": true,
+  "can_love": true,
+  "egg_stops_love": true,
+  "bred": true,
+  "child_count_after_breed": 0,
+  "egg_substrates": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+  ],
+  "lay_goal_calls": 62,
+  "lay_block": true,
+  "lay_fresh": true,
+  "lay_eggs_in_1_4": true,
+  "lay_variant": 2,
+  "lay_post_love": 600,
+  "lay_post_love_after_ai": 599,
+  "lay_post_flags": [
+    false,
+    false
+  ],
+  "hatch_stages_stone": [
+    1,
+    2,
+    -1
+  ],
+  "hatch_baby_variants": [
+    "naturalist:green",
+    "naturalist:green",
+    "naturalist:green"
+  ],
+  "hatch_baby_tame": [
+    false,
+    false,
+    false
+  ],
+  "hatch_baby_ages": [
+    -24000,
+    -24000,
+    -24000
+  ],
+  "hatch_offsets": [
+    30,
+    50,
+    70
+  ],
+  "stomp_tortoise": false,
+  "stomp_zombie": false,
+  "stomp_bat": false,
+  "stomp_cow": false,
+  "stomp_griefing_off": false
+}

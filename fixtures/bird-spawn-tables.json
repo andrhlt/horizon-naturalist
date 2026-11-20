@@ -1,0 +1,18 @@
+{
+  "patched": {
+    "dappled_forest": 0,
+    "forest": 30,
+    "plains": 20,
+    "savanna": 20,
+    "old_growth_pine_taiga": 10,
+    "desert": 10
+  },
+  "baseline": {
+    "dappled_forest": 30,
+    "forest": 30,
+    "plains": 20,
+    "savanna": 20,
+    "old_growth_pine_taiga": 10,
+    "desert": 10
+  }
+}

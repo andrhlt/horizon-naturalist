@@ -1,0 +1,20 @@
+{
+  "max_health": 4.0,
+  "speed": 0.0,
+  "variant": "naturalist:orange",
+  "pushable": false,
+  "portal": false,
+  "cluster": 4,
+  "supported_water": true,
+  "open_water": false,
+  "sea_surface": false,
+  "bucket_variant": "naturalist:purple",
+  "custom_variant": "naturalist:purple",
+  "released_variant": "naturalist:purple",
+  "legacy_variant": "naturalist:red",
+  "death_color": "naturalist:purple_starfish",
+  "fallback_death_color": "naturalist:orange_starfish",
+  "placed_block": "naturalist:blue_starfish",
+  "waterlogged": true,
+  "attached_down": true
+}

@@ -1,0 +1,80 @@
+{
+  "adult_dims": [
+    18000,
+    8000,
+    6800
+  ],
+  "baby_dims": [
+    9000,
+    4000,
+    3400
+  ],
+  "variant": "naturalist:alligator",
+  "health": 30.0,
+  "speed": 0.2,
+  "attack": 8.0,
+  "knockback_resistance": 0.6,
+  "step": 1.0,
+  "head_yaw": 40,
+  "cluster": 4,
+  "knockback": [
+    160,
+    400
+  ],
+  "food": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+  ],
+  "can_love": true,
+  "egg_stops_love": true,
+  "tick_cooldown": 9,
+  "kill_cooldown": 2400,
+  "bred": true,
+  "child_count_after_breed": 1,
+  "egg_substrates": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+  ],
+  "lay_goal_calls": 61,
+  "lay_block": true,
+  "lay_fresh": true,
+  "lay_eggs_in_1_4": true,
+  "lay_post_love": 600,
+  "lay_post_love_after_ai": 599,
+  "lay_post_flags": [
+    false,
+    false
+  ],
+  "hatch_stages_stone": [
+    1,
+    2,
+    -1
+  ],
+  "hatch_baby_ages": [
+    -24000,
+    -24000,
+    -24000
+  ],
+  "hatch_offsets": [
+    30,
+    50,
+    70
+  ],
+  "stomp_alligator": false,
+  "stomp_zombie": false,
+  "stomp_bat": false,
+  "stomp_cow": true,
+  "stomp_griefing_off": false
+}

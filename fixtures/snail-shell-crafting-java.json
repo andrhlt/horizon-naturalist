@@ -1,0 +1,242 @@
+[
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:black_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 15
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:blue_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 11
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:brown_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 12
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:cyan_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 9
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:gray_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 7
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:green_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 13
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:light_blue_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 3
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:light_gray_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 8
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:lime_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 5
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:magenta_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 2
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:orange_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 1
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:pink_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 6
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:purple_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 10
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:red_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 14
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:white_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 0
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  },
+  {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      "naturalist:snail_shell",
+      "minecraft:yellow_dye"
+    ],
+    "result": {
+      "components": {
+        "minecraft:custom_data": {
+          "Color": 4
+        }
+      },
+      "id": "naturalist:snail_shell"
+    }
+  }
+]

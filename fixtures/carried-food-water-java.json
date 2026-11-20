@@ -1,0 +1,34 @@
+{
+  "empty": {
+    "summon": [
+      "[06:24:50] [Server thread/WARN] [minecraft/ServerLevel]: Tried to add entity naturalist:carried_food but it was marked as removed already",
+      "[06:24:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Air"
+    ],
+    "before": [
+      "[06:24:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No entity was found"
+    ],
+    "tick_1": [
+      "[06:24:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No entity was found"
+    ]
+  },
+  "apple": {
+    "summon": [
+      "[06:24:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Apple"
+    ],
+    "before": [
+      "[06:24:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Apple has the following entity data: {Motion: [0.0d, 0.0d, 0.0d], Health: 5s, Invulnerable: 0b, fall_distance: 0.0d, Air: 300s, OnGround: 0b, PortalCooldown: 0, Rotation: [0.0f, 0.0f], Item: {count: 2, id: \"minecraft:apple\"}, Pos: [8.5d, 100.0d, 8.5d], PickupDelay: 0s, Fire: 0s, UUID: [I; 273491898, 2045853738, -1657796194, 643354902], Lifespan: 6000, Tags: [\"probe\"], Age: 0s}"
+    ],
+    "tick_1": [
+      "[06:24:51] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Apple has the following entity data: {Motion: [0.0d, 0.0d, 0.0d], Health: 5s, Invulnerable: 0b, fall_distance: 0.0d, Air: 300s, OnGround: 0b, PortalCooldown: 0, Rotation: [0.0f, 0.0f], Item: {count: 2, id: \"minecraft:apple\"}, Pos: [8.5d, 100.0d, 8.5d], PickupDelay: 0s, Fire: 0s, UUID: [I; 273491898, 2045853738, -1657796194, 643354902], Lifespan: 6000, Tags: [\"probe\"], Age: 0s}"
+    ],
+    "tick_60": [
+      "[06:24:54] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Test passed. Count: 1"
+    ],
+    "tick_61": [
+      "[06:24:54] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Test failed"
+    ],
+    "released": [
+      "[06:24:54] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Apple has the following entity data: {Motion: [0.01359546184539795d, 0.2d, -0.0204278826713562d], Health: 5s, Invulnerable: 0b, fall_distance: 0.0d, Air: 300s, OnGround: 0b, PortalCooldown: 0, Rotation: [88.896645f, 0.0f], Item: {count: 2, id: \"minecraft:apple\"}, Pos: [8.5d, 100.0d, 8.5d], PickupDelay: 10s, Fire: 0s, UUID: [I; 580947444, 1193623628, -1661286817, -566014513], Lifespan: 6000, Age: 0s}"
+    ]
+  }
+}

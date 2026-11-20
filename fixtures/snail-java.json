@@ -1,0 +1,9 @@
+{
+  "dyes_once": true,
+  "retains_matching_dye": true,
+  "body_capture": true,
+  "caught_color": 10,
+  "caught_age": 0,
+  "restores_color_and_health": true,
+  "carried_egg_omitted": true
+}

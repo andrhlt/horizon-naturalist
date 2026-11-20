@@ -1,0 +1,8 @@
+/.local/
+/dist/
+__pycache__/
+*.log
+*.jar
+*.hnmod
+*.hmod
+*.pyc

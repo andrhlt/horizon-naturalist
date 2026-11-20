@@ -1,0 +1,28 @@
+{
+  "trials": [
+    {
+      "start_z": 9.5,
+      "elapsed": 40,
+      "stole_salmon": false,
+      "left_beef": true
+    },
+    {
+      "start_z": 9.5,
+      "elapsed": 45,
+      "stole_salmon": true,
+      "left_beef": true
+    },
+    {
+      "start_z": 10.25,
+      "elapsed": 40,
+      "stole_salmon": false,
+      "left_beef": true
+    },
+    {
+      "start_z": 10.25,
+      "elapsed": 45,
+      "stole_salmon": true,
+      "left_beef": true
+    }
+  ]
+}

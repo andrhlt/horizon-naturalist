@@ -1,0 +1,8 @@
+{
+  "airborne_health": 0.0,
+  "feather_health": 3.0,
+  "grounded_health": 3.0,
+  "named_health": 3.0,
+  "persistent_health": 3.0,
+  "from_hand_health": 3.0
+}

@@ -1,0 +1,2374 @@
+{
+  "biome": "minecraft:taiga",
+  "random": "region_injected",
+  "groups": [
+    {
+      "seed": 7198391,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.09070722285583616,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06116166034042836,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0049806706763803965,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": 0.06438440828919412,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.006339173562824727,
+          "left_handed": true
+        }
+      ],
+      "next": -1191752967292809057
+    },
+    {
+      "seed": 22684254,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04746333348155022,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03898912542760372,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06458043870329858,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.021044531714916232,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.025388421865552666,
+          "left_handed": false
+        }
+      ],
+      "next": 5841366218879238787
+    },
+    {
+      "seed": 38170117,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.09576180369332433,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04323822806850076,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.00663990390598774,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04109099301844835,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04650028854906559,
+          "left_handed": false
+        }
+      ],
+      "next": 1835450491260866443
+    },
+    {
+      "seed": 53655980,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03379291610717774,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05729111046046019,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.06890164426863193,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.02539966404139996,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0027450761288404465,
+          "left_handed": false
+        }
+      ],
+      "next": 5931091807869579808
+    },
+    {
+      "seed": 69141843,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.052879691097512845,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07227497473657132,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06476435926258564,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0066030857373029,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.014509779975004496,
+          "left_handed": false
+        }
+      ],
+      "next": -6655146672868261621
+    },
+    {
+      "seed": 84627706,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02428601605296135,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04251759757995606,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02559805960804224,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.032681568238139155,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.023778004562854768,
+          "left_handed": false
+        }
+      ],
+      "next": 7011138304890087025
+    },
+    {
+      "seed": 100113569,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.029892136086523535,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.024164400662481787,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.023022980101406576,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.026221635839715603,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.05532467266768217,
+          "left_handed": false
+        }
+      ],
+      "next": -5094722086257444422
+    },
+    {
+      "seed": 115599432,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.005656821921467782,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.025710059720743448,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0604145493850112,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0724879343032837,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02779893501698971,
+          "left_handed": false
+        }
+      ],
+      "next": -4318835240735536068
+    },
+    {
+      "seed": 131085295,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.025545875649154188,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.009187203994393349,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.014224711921811104,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.048993436570465565,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06089076651632786,
+          "left_handed": false
+        }
+      ],
+      "next": 2300165471224671178
+    },
+    {
+      "seed": 146571158,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.09820873647155241,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04300503806173802,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.08145947814434767,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03512334350347519,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03305998579859734,
+          "left_handed": false
+        }
+      ],
+      "next": -5926085864891166054
+    },
+    {
+      "seed": 162057021,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.029263208432501416,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.019805270509421827,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04017841722369194,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.023747634943202138,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04366632581204176,
+          "left_handed": false
+        }
+      ],
+      "next": 5327626243301745411
+    },
+    {
+      "seed": 177542884,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07937853325419128,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.005328568869829178,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07363784254454077,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0452722455598414,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03244318285379559,
+          "left_handed": false
+        }
+      ],
+      "next": -1243629512006153397
+    },
+    {
+      "seed": 193028747,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0052502826631069185,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.05776504458636046,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.015124174982309342,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.035090101301670076,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.10535441999025644,
+          "left_handed": false
+        }
+      ],
+      "next": 3691417026587864610
+    },
+    {
+      "seed": 208514610,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.009729902106523514,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03211907609254122,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06890181883126498,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.02943668591864407,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02406737357405946,
+          "left_handed": false
+        }
+      ],
+      "next": -2879581415196635466
+    },
+    {
+      "seed": 224000473,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.02842175224348903,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.042003356599807744,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.02396359544694424,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.01377077719718218,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0907378468320705,
+          "left_handed": false
+        }
+      ],
+      "next": 3547766241193339698
+    },
+    {
+      "seed": 239486336,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02398613969758153,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.048004053217172625,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.06893858137950301,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06150790190026165,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06103189954943956,
+          "left_handed": false
+        }
+      ],
+      "next": -6473389533968308591
+    },
+    {
+      "seed": 254972199,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.051914762771129615,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.004043575677275658,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.035583814058452845,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04224148741364479,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03757593480646611,
+          "left_handed": false
+        }
+      ],
+      "next": 1911557024479458896
+    },
+    {
+      "seed": 270458062,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04496945982724428,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05786723560541868,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03332037848234177,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.01604743332564831,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03574436205029488,
+          "left_handed": false
+        }
+      ],
+      "next": -4452534802829269475
+    },
+    {
+      "seed": 285943925,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02460258709937334,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.037679953598976135,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.005272530841827393,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0844227102871053,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.002204226326942444,
+          "left_handed": false
+        }
+      ],
+      "next": 7655016192472555120
+    },
+    {
+      "seed": 301429788,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.012493659859895707,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.017146513891220093,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.025771609093248847,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.021833174885809423,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.010476407226920129,
+          "left_handed": false
+        }
+      ],
+      "next": -6989457144342075240
+    },
+    {
+      "seed": 316915651,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.002144765502214432,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.008304362034797669,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0029872116148471836,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06607861052155495,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.08595571355447174,
+          "left_handed": false
+        }
+      ],
+      "next": -2177800160807431035
+    },
+    {
+      "seed": 332401514,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.011132995477318764,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.019855383676290514,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.049696441367268564,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.030908843626081945,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.09129731279751287,
+          "left_handed": false
+        }
+      ],
+      "next": 612337023320844769
+    },
+    {
+      "seed": 347887377,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.016957828798890115,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.03816739236935973,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.013064986243844032,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.08198094079773874,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05904222011119128,
+          "left_handed": false
+        }
+      ],
+      "next": -5282207973013730664
+    },
+    {
+      "seed": 363373240,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.014850323861837388,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04884785539908335,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.023742736065387727,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0561546486761421,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0740728705957532,
+          "left_handed": false
+        }
+      ],
+      "next": 3639797795397919002
+    },
+    {
+      "seed": 378859103,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.058257838322222234,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.029078191602230075,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0012442003011703493,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.06259595250338316,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.047490421494841575,
+          "left_handed": false
+        }
+      ],
+      "next": -6530816407161763552
+    },
+    {
+      "seed": 394344966,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.055239944757521156,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0001501923203468323,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.029201278795301915,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.00293528094291687,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0033879115819931034,
+          "left_handed": false
+        }
+      ],
+      "next": 6747867788030737181
+    },
+    {
+      "seed": 409830829,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03234289619326592,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0033441682398319245,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0757967963948846,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0735606841493398,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.001219863360747695,
+          "left_handed": false
+        }
+      ],
+      "next": -8649808490463744293
+    },
+    {
+      "seed": 425316692,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07201536929607393,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.01296076892912388,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.026965254686772824,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.09367306252792479,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.006294393113255501,
+          "left_handed": false
+        }
+      ],
+      "next": 1859937793289513289
+    },
+    {
+      "seed": 440802555,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0950162184495479,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0589910903736949,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.020421057311445476,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.01827383252978325,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05350215663164854,
+          "left_handed": false
+        }
+      ],
+      "next": -4300298828156165071
+    },
+    {
+      "seed": 456288418,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07734812082350255,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.02499900514781475,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.028337334096431733,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.037660799628496174,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06798248301297427,
+          "left_handed": false
+        }
+      ],
+      "next": 223728580870599783
+    },
+    {
+      "seed": 471774281,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07019711464196444,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05302959427175811,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.012994846293330193,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.018301712171779946,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06172658609449864,
+          "left_handed": false
+        }
+      ],
+      "next": -3808656910951834085
+    },
+    {
+      "seed": 487260144,
+      "stream": "legacy",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.028405256074666978,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07272803664803505,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.032650872597098354,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.06766311896443368,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.020627682992815973,
+          "left_handed": false
+        }
+      ],
+      "next": -7379731963112314498
+    },
+    {
+      "seed": 7198391,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03665578521825373,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.012951582142710687,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.006507898616045714,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.001557310900092125,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.09161785642737523,
+          "left_handed": false
+        }
+      ],
+      "next": 4533854956268187139
+    },
+    {
+      "seed": 22684254,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.011330450630560518,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0869360025368631,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.010872417962551117,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0036075935214757923,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04697510404512287,
+          "left_handed": false
+        }
+      ],
+      "next": 8526018398396163772
+    },
+    {
+      "seed": 38170117,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07159028019085527,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.009484590265154838,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.010438958407938482,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.09468464271798731,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.004904549388587475,
+          "left_handed": false
+        }
+      ],
+      "next": 2650611563360256734
+    },
+    {
+      "seed": 53655980,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.09633730118293315,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07151325528472663,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": 0.025535774976015092,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03980178294032812,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0007767284154891968,
+          "left_handed": false
+        }
+      ],
+      "next": -4775594165066039856
+    },
+    {
+      "seed": 69141843,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.024426617696881297,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0061952073097229,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04789825114756823,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.042299168384075166,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0035382408142089847,
+          "left_handed": false
+        }
+      ],
+      "next": -4818818414909805799
+    },
+    {
+      "seed": 84627706,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.016584076510369777,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.06961675892025233,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0072363433495163925,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03123953199759126,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06421214919835329,
+          "left_handed": false
+        }
+      ],
+      "next": 9102878729961673395
+    },
+    {
+      "seed": 100113569,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04304907918721438,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": 0.04101870012879372,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.06586563041806222,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.004617537614703179,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.015128334723215085,
+          "left_handed": false
+        }
+      ],
+      "next": 228331390582040023
+    },
+    {
+      "seed": 115599432,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06647685762699694,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.034763563071191314,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07727148953899741,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.052572720140218736,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.034342189411818984,
+          "left_handed": false
+        }
+      ],
+      "next": -2453480274503238742
+    },
+    {
+      "seed": 131085295,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07586908928453923,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03111607343107462,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.007982463405281305,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03211209016442299,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.00591567434668541,
+          "left_handed": false
+        }
+      ],
+      "next": 3798969024773109621
+    },
+    {
+      "seed": 146571158,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.037523631049692634,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0005953715309500694,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.028694845214486123,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.08342539738342167,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.08749992198869587,
+          "left_handed": false
+        }
+      ],
+      "next": -8571308371394549969
+    },
+    {
+      "seed": 162057021,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.00285728567391634,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0050694289296865465,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.02729204620420933,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03540882871001959,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07939480779692532,
+          "left_handed": false
+        }
+      ],
+      "next": 2784677761645118984
+    },
+    {
+      "seed": 177542884,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.021336126613616946,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02176412680745125,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.013696890567801894,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.02501421263366938,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.032150288575887684,
+          "left_handed": false
+        }
+      ],
+      "next": -3602756400879259121
+    },
+    {
+      "seed": 193028747,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07982072864174844,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.000605280527472496,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04180317091047764,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.030857028901390735,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.037990838952176274,
+          "left_handed": false
+        }
+      ],
+      "next": -2644134303209123287
+    },
+    {
+      "seed": 208514610,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.020827937138080597,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.020020675236545504,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07327510053738952,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.05992061243504286,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07134070183336735,
+          "left_handed": false
+        }
+      ],
+      "next": -4142005309617909206
+    },
+    {
+      "seed": 224000473,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04593356069251895,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0019643567323684693,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.049177305787801745,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04010135637819767,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07830174450799823,
+          "left_handed": false
+        }
+      ],
+      "next": -6860795108650661233
+    },
+    {
+      "seed": 239486336,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03971033950299025,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.009270631241798402,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.013548545274138452,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07310547186583281,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.02606611679196358,
+          "left_handed": false
+        }
+      ],
+      "next": -5446301352990674906
+    },
+    {
+      "seed": 254972199,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.001630668279528618,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06418400696367026,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.08075793659314513,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.021354075759649278,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0425348690122366,
+          "left_handed": false
+        }
+      ],
+      "next": -6448844311483958768
+    },
+    {
+      "seed": 270458062,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.020361454440653324,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04193598141334951,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.003929936686716974,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.035251741165667774,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.01819720124527812,
+          "left_handed": false
+        }
+      ],
+      "next": 6871719731251764876
+    },
+    {
+      "seed": 285943925,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.08134972787871958,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.018817139899730682,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04523332664966583,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.020826451644301417,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03746050954386592,
+          "left_handed": true
+        }
+      ],
+      "next": -4724079281417055159
+    },
+    {
+      "seed": 301429788,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.06028949665091932,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.05974261288624257,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.01314067112505436,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.08817482220157981,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.027436727821826937,
+          "left_handed": false
+        }
+      ],
+      "next": 3649549369685066364
+    },
+    {
+      "seed": 316915651,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.098623398668319,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.004173217526078224,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.021733780291676524,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.038872755473107104,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.002009140604734421,
+          "left_handed": false
+        }
+      ],
+      "next": 5899712965204397563
+    },
+    {
+      "seed": 332401514,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.023515120083093644,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.043622782275639475,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07109752923995256,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05554949907064438,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.01920441565811634,
+          "left_handed": false
+        }
+      ],
+      "next": 8518047129188119440
+    },
+    {
+      "seed": 347887377,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04585807604491711,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.041632085838913924,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.004212483850121499,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.030819909098744394,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.034582562157511716,
+          "left_handed": false
+        }
+      ],
+      "next": 1230053010937851083
+    },
+    {
+      "seed": 363373240,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06449770799502731,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.06394750625677408,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.07382820224016905,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.03551258736997843,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05536782557740808,
+          "left_handed": false
+        }
+      ],
+      "next": -386683825455052487
+    },
+    {
+      "seed": 378859103,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04621283865720034,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.042865278425812725,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.000797436335682869,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.00951197467125021,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.10009091313807295,
+          "left_handed": false
+        }
+      ],
+      "next": -8469307688808652731
+    },
+    {
+      "seed": 394344966,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03188495337367058,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.001653258737921715,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.01422327434718609,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.01914041620492935,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.052395272089540965,
+          "left_handed": false
+        }
+      ],
+      "next": -2597518812256120979
+    },
+    {
+      "seed": 409830829,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.09949225037414582,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": -0.01869467394426465,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.041996345000714065,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.03992914520651102,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0501467102766037,
+          "left_handed": false
+        }
+      ],
+      "next": 4663367675222967493
+    },
+    {
+      "seed": 425316692,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.010389540068805218,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": 0.04959685851931572,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.032442581725120545,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.054969178004749125,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0022677534341812135,
+          "left_handed": false
+        }
+      ],
+      "next": 3825089874970995032
+    },
+    {
+      "seed": 440802555,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.028523666871711612,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.0034260483831167225,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04590243313731626,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": -24000,
+          "follow_bonus": 0.0626355405703187,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.027223773389309647,
+          "left_handed": false
+        }
+      ],
+      "next": 9002325021297172364
+    },
+    {
+      "seed": 456288418,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.04665634925439954,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.024577446657419205,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.049651667763292794,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.035607073673605924,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.09804111462850125,
+          "left_handed": false
+        }
+      ],
+      "next": 692281799037957343
+    },
+    {
+      "seed": 471774281,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.04769630271792412,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.05941147484481335,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.07534416575580836,
+          "left_handed": true
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06573033159545158,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.06464067650288344,
+          "left_handed": true
+        }
+      ],
+      "next": 4979312642258029792
+    },
+    {
+      "seed": 487260144,
+      "stream": "xoroshiro",
+      "members": [
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.0720797726392746,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.08858124508485199,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": -0.08465332228615881,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.005771595141291619,
+          "left_handed": false
+        },
+        {
+          "variant": "naturalist:blue_jay",
+          "age": 0,
+          "follow_bonus": 0.020513217824697495,
+          "left_handed": false
+        }
+      ],
+      "next": -1252251691450141730
+    }
+  ]
+}

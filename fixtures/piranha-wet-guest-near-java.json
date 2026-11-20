@@ -1,0 +1,14 @@
+{
+  "8.5": {
+    "light": 0.0,
+    "host_wet": false,
+    "guest_wet": true,
+    "picked_wet_guest": true
+  },
+  "23.5": {
+    "light": 0.0,
+    "host_wet": false,
+    "guest_wet": true,
+    "picked_wet_guest": true
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "near": [
+    {
+      "name": "minecraft:cloud",
+      "count": 14,
+      "pos": [
+        8.5,
+        101.45,
+        12.5
+      ],
+      "spread": [
+        0.15,
+        0.35,
+        0.15
+      ],
+      "speed": [
+        0.12,
+        0.12,
+        0.12
+      ],
+      "limiter": false,
+      "always_show": false,
+      "randomization": 0
+    },
+    {
+      "name": "minecraft:bubble_column_up",
+      "count": 8,
+      "pos": [
+        8.5,
+        101.45,
+        12.5
+      ],
+      "spread": [
+        0.15,
+        0.25,
+        0.15
+      ],
+      "speed": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "limiter": false,
+      "always_show": false,
+      "randomization": 0
+    },
+    {
+      "name": "minecraft:splash",
+      "count": 80,
+      "pos": [
+        8.5,
+        100.45,
+        10.5
+      ],
+      "spread": [
+        2.5,
+        0.4,
+        2.5
+      ],
+      "speed": [
+        0.2,
+        0.2,
+        0.2
+      ],
+      "limiter": false,
+      "always_show": false,
+      "randomization": 0
+    }
+  ],
+  "far": []
+}

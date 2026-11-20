@@ -1,0 +1,35 @@
+{
+  "naturalist:hippo": {
+    "love": [
+      510,
+      510
+    ],
+    "age": [
+      0,
+      0
+    ],
+    "new_cow": null
+  },
+  "naturalist:alligator": {
+    "love": [
+      510,
+      510
+    ],
+    "age": [
+      0,
+      0
+    ],
+    "new_cow": null
+  },
+  "naturalist:mole": {
+    "love": [
+      510,
+      510
+    ],
+    "age": [
+      0,
+      0
+    ],
+    "new_cow": null
+  }
+}

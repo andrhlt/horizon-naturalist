@@ -1,0 +1,19 @@
+{
+  "small_targets": [
+    3,
+    4,
+    5,
+    6
+  ],
+  "medium_targets": [
+    2,
+    3
+  ],
+  "large_targets": [
+    1
+  ],
+  "cluster_max": 6,
+  "variants_shared": true,
+  "small_and_medium_follow": true,
+  "large_follow": false
+}

@@ -1,0 +1,77 @@
+{
+  "alligator_pair": {
+    "parent_love": [
+      0,
+      0
+    ],
+    "has_egg": [
+      "0b",
+      "1b"
+    ],
+    "parent_age": [
+      0,
+      0
+    ],
+    "newborn": []
+  },
+  "tortoise_pair": {
+    "parent_love": [
+      0,
+      0
+    ],
+    "has_egg": [
+      "0b",
+      "1b"
+    ],
+    "parent_age": [
+      0,
+      0
+    ],
+    "newborn": []
+  },
+  "snail_pair": {
+    "parent_love": [
+      0,
+      0
+    ],
+    "has_egg": [
+      "0b",
+      "1b"
+    ],
+    "parent_age": [
+      0,
+      0
+    ],
+    "newborn": []
+  },
+  "tortoise_snail": {
+    "parent_love": [
+      510,
+      510
+    ],
+    "has_egg": [
+      "0b",
+      "0b"
+    ],
+    "parent_age": [
+      0,
+      0
+    ],
+    "newborn": []
+  },
+  "snail_tortoise": {
+    "parent_love": [
+      510,
+      510
+    ],
+    "has_egg": [
+      "0b",
+      "0b"
+    ],
+    "parent_age": [
+      0,
+      0
+    ],
+    "newborn": []
+  }
+}

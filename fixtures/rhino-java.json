@@ -1,0 +1,36 @@
+{
+  "variant": "naturalist:rhino",
+  "adult": [
+    2.5,
+    3.0,
+    2.5500002
+  ],
+  "juvenile": [
+    1.25,
+    1.5,
+    1.2750001
+  ],
+  "max_health": 60.0,
+  "movement_speed": 0.2,
+  "attack_damage": 10.0,
+  "attack_knockback": 1.5,
+  "knockback_resistance": 0.75,
+  "step_height": 1.0,
+  "no_food": true,
+  "wont_charge_without_target": true,
+  "reset_charge_cooldown": 42,
+  "prepare_can_start_with_player": true,
+  "preparing_has_target": true,
+  "preparing_pushable": false,
+  "preparing_counted_down": 0,
+  "done_preparing_pushable": true,
+  "shield_stun_ticks": 60,
+  "shield_charge_cooldown": 42,
+  "natural_first_adult": true,
+  "natural_second_calf": true,
+  "natural_third_calf": true,
+  "horn_registered": false,
+  "charge_removed_dandelion": true,
+  "charge_preserved_torch": true,
+  "no_grief_dandelion_survived": true
+}

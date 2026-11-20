@@ -1,0 +1,245 @@
+[
+  {
+    "ticks": 0,
+    "parents": [
+      {
+        "Pos": "[7.48961601217193d, 100.0d, 8.515575981742105d]",
+        "Motion": "[-0.006390146355735238d, 0.0d, 0.009585219533602859d]",
+        "Age": "0",
+        "InLove": "573",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.995862190386188d, 100.0d, 8.482069491673474d]",
+        "Motion": "[-0.0020689048069067718d, 0.0d, -0.011034158970169444d]",
+        "Age": "0",
+        "InLove": "590",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 15,
+    "parents": [
+      {
+        "Pos": "[7.519322719112484d, 100.0d, 8.526441905875021d]",
+        "Motion": "[0.0d, 0.0d, 0.0d]",
+        "Age": "0",
+        "InLove": "557",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.706220345469518d, 100.0d, 8.475119194671498d]",
+        "Motion": "[-0.019989062019084857d, 0.0d, 1.633583434686887E-4d]",
+        "Age": "0",
+        "InLove": "574",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 30,
+    "parents": [
+      {
+        "Pos": "[7.519322719112484d, 100.0d, 8.526441905875021d]",
+        "Motion": "[0.0d, 0.0d, 0.0d]",
+        "Age": "0",
+        "InLove": "541",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.460175899323811d, 100.0d, 8.477034008727427d]",
+        "Motion": "[0.0d, 0.0d, 0.0d]",
+        "Age": "0",
+        "InLove": "558",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 45,
+    "parents": [
+      {
+        "Pos": "[7.519322719112484d, 100.0d, 8.526441905875021d]",
+        "Motion": "[0.0d, 0.0d, 0.0d]",
+        "Age": "0",
+        "InLove": "525",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.460175899323811d, 100.0d, 8.477034008727427d]",
+        "Motion": "[0.0d, 0.0d, 0.0d]",
+        "Age": "0",
+        "InLove": "542",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 60,
+    "parents": [
+      {
+        "Pos": "[7.47696478492929d, 100.0d, 8.455926192507592d]",
+        "Motion": "[-0.008836285292452378d, 0.0d, -0.014710277376147907d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.462485493886746d, 100.0d, 8.483853522969646d]",
+        "Motion": "[0.002309594562934277d, 0.0d, 0.006819514242218197d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "1b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 75,
+    "parents": [
+      {
+        "Pos": "[7.329313632201239d, 100.0d, 8.210122742341397d]",
+        "Motion": "[-0.00926860502374777d, 0.0d, -0.015429985143841765d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.499797619226447d, 100.0d, 8.741044189777723d]",
+        "Motion": "[0.002358549388184881d, 0.0d, 0.01700873146880415d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "1b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 90,
+    "parents": [
+      {
+        "Pos": "[7.181014182819468d, 100.0d, 7.963240035079869d]",
+        "Motion": "[-0.009268726985895488d, 0.0d, -0.015430188181313156d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.538052136395166d, 100.0d, 9.012776591937463d]",
+        "Motion": "[0.002420080203324604d, 0.0d, 0.016957983473226128d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "1b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 105,
+    "parents": [
+      {
+        "Pos": "[7.032714550546086d, 100.0d, 7.716357023348054d]",
+        "Motion": "[-0.009268727020302351d, 0.0d, -0.015430188238592258d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.577326108034022d, 100.0d, 9.283610478621489d]",
+        "Motion": "[0.002485788168730377d, 0.0d, 0.016898991222518697d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "1b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  },
+  {
+    "ticks": 120,
+    "parents": [
+      {
+        "Pos": "[6.884414918221107d, 100.0d, 7.4694740115303455d]",
+        "Motion": "[-0.009268727020312052d, 0.0d, -0.01543018823860842d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "0b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      },
+      {
+        "Pos": "[8.617690087346409d, 100.0d, 9.553449569112718d]",
+        "Motion": "[0.0025561221369037788d, 0.0d, 0.016833876382577526d]",
+        "Age": "0",
+        "InLove": "0",
+        "HasEgg": "1b",
+        "OnGround": "1b",
+        "ClimbNormalX": "0.0f",
+        "ClimbNormalY": "1.0f",
+        "ClimbNormalZ": "0.0f"
+      }
+    ]
+  }
+]

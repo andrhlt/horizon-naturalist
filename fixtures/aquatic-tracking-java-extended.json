@@ -1,0 +1,326 @@
+{
+  "registry": {
+    "minecraft:armor_stand": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "minecraft:cod": {
+      "range": 4,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "minecraft:cow": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:alligator": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:anglerfish": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:ant": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:bass": {
+      "range": 4,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:bear": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:bird": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:black_bear": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:blobfish": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:boar": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:butterfly": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:capybara": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:carried_food": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:caterpillar": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:catfish": {
+      "range": 4,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:clam": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:crab": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:deer": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:desert_scorpion": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:dirt_trail": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:dragonfly": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:duck": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:duck_egg": {
+      "range": 16,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:elephant": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:firefly": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:giant_isopod": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:giraffe": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:great_white_shark": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:hedgehog": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:hippo": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:jellyfish": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:jungle_scorpion": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:komodo_dragon": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:lion": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:lizard": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:lizard_tail": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:mammoth": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:mole": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:ostrich": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:piranha": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:rat": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:ray": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:rhino": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:snail": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:snake": {
+      "range": 8,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:starfish": {
+      "range": 4,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:tiger": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:tortoise": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:turkey": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:vulture": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:whale": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    },
+    "naturalist:zebra": {
+      "range": 10,
+      "interval": 3,
+      "track_deltas": true
+    }
+  },
+  "observed": {
+    "32": [
+      {
+        "bass": true,
+        "great_white_shark": true,
+        "whale": true,
+        "jellyfish": true,
+        "cod": true
+      },
+      {
+        "bass": true,
+        "great_white_shark": true,
+        "whale": true,
+        "jellyfish": true,
+        "cod": true
+      }
+    ],
+    "72": [
+      {
+        "bass": false,
+        "great_white_shark": true,
+        "whale": true,
+        "jellyfish": true,
+        "cod": false
+      }
+    ],
+    "100": [
+      {
+        "bass": false,
+        "great_white_shark": true,
+        "whale": true,
+        "jellyfish": true,
+        "cod": false
+      }
+    ],
+    "136": [
+      {
+        "bass": false,
+        "great_white_shark": true,
+        "whale": true,
+        "jellyfish": false,
+        "cod": false
+      }
+    ]
+  },
+  "ranges": {
+    "bass": 64,
+    "great_white_shark": 160,
+    "whale": 160,
+    "jellyfish": 128,
+    "cod": 64
+  }
+}

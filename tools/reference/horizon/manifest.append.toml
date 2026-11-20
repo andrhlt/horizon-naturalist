@@ -1,0 +1,485 @@
+
+[[module]]
+id = "bass-natural-fixture-api"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_bass_fixture"
+source = "bass_natural_fixture_api.rs"
+[[injection]]
+id = "bass-natural-fixture-command"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "bass_natural_fixture_command.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "duck-egg-particles-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "duck_egg_particles_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "animal-lan-fixture"
+target = "horizon_client::game::control::Game<'_>::control_command"
+kind = "RETURN"
+helper = "animal_lan_fixture.rs"
+bindings = [
+  {name = "result", ty = "Result<Option<Value>>", value = "$value"},
+  {name = "game", ty = "&Game<'_>", value = "&*self"},
+  {name = "line", ty = "&str", value = "line"},
+]
+[[injection]]
+id = "catfish-fixture-strike"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "catfish_attack_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "deer-projectile-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "deer_projectile_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[module]]
+id = "piranha-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_piranha_fixture"
+source = "piranha_spawn_fixture.rs"
+[[injection]]
+id = "piranha-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "piranha_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "bass-school-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "bass_school_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "deer-scale-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "deer_scale_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[module]]
+id = "blobfish-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_blobfish_fixture"
+source = "blobfish_spawn_fixture.rs"
+[[injection]]
+id = "blobfish-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "blobfish_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "jellyfish-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "jellyfish_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "ray-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "ray_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "anglerfish-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "anglerfish_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[module]]
+id = "anglerfish-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "anglerfish_spawn_fixture"
+source = "anglerfish_spawn_fixture.rs"
+[[injection]]
+id = "bucket_tooltip-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "bucket_tooltip_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "forest-spawns-config-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "forest_spawns_config_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[module]]
+id = "butterfly-group-fixture-module"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_butterfly_group_fixture"
+source = "butterfly_group_probe.rs"
+[[injection]]
+id = "butterfly-group-fixture-command"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "butterfly_group_command.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[module]]
+id = "insect-spawn-fixture-module"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_insect_spawn_fixture"
+source = "insect_spawn_probe.rs"
+[[injection]]
+id = "insect-spawn-fixture-command"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "insect_spawn_command.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "firefly-glow-headless-fixture"
+target = "horizon_client::game::control::Game<'_>::control_command_inner"
+kind = "HEAD"
+cancellable = true
+helper = "firefly_glow_status.rs"
+bindings = [
+  {name = "game", ty = "&Game<'_>", value = "&*self"},
+  {name = "line", ty = "&str", value = "line"},
+]
+[[injection]]
+id = "starfish-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "starfish_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[module]]
+id = "starfish-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "starfish_spawn_fixture"
+source = "starfish_spawn_fixture.rs"
+[[injection]]
+id = "giant-isopod-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "giant_isopod_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[module]]
+id = "giant-isopod-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "giant_isopod_spawn_fixture"
+source = "giant_isopod_spawn_fixture.rs"
+[[injection]]
+id = "bird-pose-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "bird_pose_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "mob-profile-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "mob_profile_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "clam-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "clam_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[module]]
+id = "clam-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "clam_spawn_fixture"
+source = "clam_spawn_fixture.rs"
+[[injection]]
+id = "clam-velocity-fixture"
+target = "horizon_client::game::lan_mobs::Game<'_>::send_guest_motion"
+kind = "HEAD"
+helper = "clam_velocity_fixture.rs"
+bindings = [
+  {name = "connection", ty = "u32", value = "conn"},
+  {name = "velocity", ty = "Option<Vec3>", value = "velocity"},
+]
+[[module]]
+id = "clam-motion-fixture"
+file = "crates/horizon-client/src/game/lan_mobs.rs"
+name = "clam_motion_fixture"
+source = "clam_motion_state_fixture.rs"
+[[injection]]
+id = "vulture-pose-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "vulture_pose_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[module]]
+id = "snail-surface-fixture-module"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_snail_surface_fixture"
+source = "snail_surface_fixture.rs"
+[[injection]]
+id = "snail-surface-fixture-command"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "snail_surface_fixture_command.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "vulture-perch-state-fixture"
+target = "horizon_client::game::control::Game<'_>::control_command_inner"
+kind = "HEAD"
+cancellable = true
+helper = "vulture_perch_state_fixture.rs"
+bindings = [
+  {name = "game", ty = "&Game<'_>", value = "&*self"},
+  {name = "line", ty = "&str", value = "line"},
+]
+[[injection]]
+id = "crab-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "crab_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "snail-orientation-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "snail_orientation_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "naturalist-voice-level-fixture"
+target = "horizon_client_render::audio::Audio::play_seeded"
+kind = "HEAD"
+helper = "voice_level_fixture.rs"
+bindings = [
+  {name = "audio", ty = "&mut Audio", value = "&mut *self"},
+  {name = "event", ty = "&str", value = "event"},
+  {name = "volume", ty = "f32", value = "volume"},
+]
+[[injection]]
+id = "variant-pool-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "variant_pool_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "variant-rng-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "variant_rng_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "giraffe-terrain-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "giraffe_terrain_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "alligator-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "alligator_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "snail-shell-lan-fixture"
+target = "horizon_client::game::control::Game<'_>::control_command_inner"
+kind = "HEAD"
+cancellable = true
+helper = "snail_shell_lan_fixture.rs"
+bindings = [
+  {name = "game", ty = "&Game<'_>", value = "&*self"},
+  {name = "line", ty = "&str", value = "line"},
+]
+[[injection]]
+id = "tortoise-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "tortoise_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "hippo-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "hippo_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[module]]
+id = "hippo-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_hippo_spawn_fixture"
+source = "hippo_spawn_fixture.rs"
+[[injection]]
+id = "tiger-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "tiger_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "lion-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "lion_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[module]]
+id = "shark-spawn-fixture"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_shark_spawn_fixture"
+source = "shark_spawn_fixture.rs"
+[[injection]]
+id = "shark-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "shark_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "snake-command-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "snake_fixture.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+[[injection]]
+id = "elephant-combat-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "elephant_combat_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "command", ty = "&str", value = "command"},
+]
+[[injection]]
+id = "elephant-inventory-click-fixture"
+target = "horizon_client::game::station_control::Game<'_>::station_command"
+kind = "HEAD"
+cancellable = true
+helper = "elephant_inventory_click_fixture.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "words", ty = "&[&str]", value = "words"},
+]

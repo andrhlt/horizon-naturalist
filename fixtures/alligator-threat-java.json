@@ -1,0 +1,22 @@
+{
+  "dry_adult": [
+    false,
+    false
+  ],
+  "water_adult": [
+    true,
+    true
+  ],
+  "edge_adult": [
+    true,
+    true
+  ],
+  "edge_baby": [
+    true,
+    false
+  ],
+  "edge_creative": [
+    true,
+    false
+  ]
+}

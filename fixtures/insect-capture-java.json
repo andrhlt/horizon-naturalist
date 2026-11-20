@@ -1,0 +1,13 @@
+{
+  "net_durability": 64,
+  "full_saves_id": true,
+  "full_saves_uuid": true,
+  "full_saves_variant": true,
+  "full_saves_no_ai": true,
+  "full_saves_health": true,
+  "full_preserves_original_from_hand": true,
+  "hand_saves_age": true,
+  "hand_saves_id": false,
+  "scorpion_caught_item_matches": true,
+  "scorpion_original_id_preserved": true
+}

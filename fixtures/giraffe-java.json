@@ -1,0 +1,51 @@
+{
+  "default_variant": "naturalist:giraffe",
+  "speed": 0.25,
+  "health": 32.0,
+  "step_height": 1.0,
+  "head_turn_limit": 45,
+  "adult_size": [
+    1.9,
+    5.4,
+    4.59
+  ],
+  "can_climb": false,
+  "food": [
+    true,
+    true,
+    true,
+    false,
+    false,
+    false
+  ],
+  "baby_size": [
+    0.95,
+    2.7,
+    2.295
+  ],
+  "default_adult_food_remaining": 2,
+  "adult_love": 600,
+  "adult_tames_on_food": false,
+  "baby_taming": true,
+  "baby_food_cost_per_attempt": true,
+  "baby_age_after_tame": -2000,
+  "baby_empty_hand_mount": false,
+  "owned_food_remaining": 2,
+  "owned_heal": 24.0,
+  "visitor_does_not_heal": true,
+  "visitor_food_remaining": 3,
+  "visitor_mounts": false,
+  "owner_mounts": true,
+  "rider_yaw": 70.0,
+  "rider_pitch": 12.0,
+  "rider_offset": 3.240000057220456,
+  "can_push_mounted": false,
+  "daytime_spawns": "creature",
+  "can_push_unmounted": true,
+  "full_owner_adult_love": 600,
+  "full_owner_food_remaining": 1,
+  "injured_visitor_adult_love": 600,
+  "injured_visitor_food_remaining": 1,
+  "full_owner_baby_age": -1800,
+  "full_owner_baby_food_remaining": 1
+}

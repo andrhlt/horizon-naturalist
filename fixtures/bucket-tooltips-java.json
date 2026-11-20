@@ -1,0 +1,20 @@
+{
+  "entity_only_ray": [],
+  "glow_anglerfish": [
+    "tooltip.naturalist.anglerfish_glow 11184810"
+  ],
+  "invalid_ray": [],
+  "legacy_blue_jellyfish": [
+    "color.minecraft.blue 11184810"
+  ],
+  "legacy_large_bass": [
+    "tooltip.naturalist.bass_large 11184810"
+  ],
+  "legacy_mobula_ray": [
+    "tooltip.naturalist.ray_mobula_ray 11184810"
+  ],
+  "plain_catfish": [],
+  "small_bass": [
+    "tooltip.naturalist.bass_small 11184810"
+  ]
+}

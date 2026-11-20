@@ -1,0 +1,70 @@
+{
+  "adult_dimensions": [
+    1.2000000476837158,
+    2.5,
+    2.125
+  ],
+  "baby_dimensions": [
+    0.6000000238418579,
+    1.25,
+    1.0625
+  ],
+  "variant": "naturalist:ostrich",
+  "attributes": [
+    30.0,
+    0.24,
+    4.0,
+    0.75,
+    1.0625,
+    16.0
+  ],
+  "adult_hides": true,
+  "baby_hides": false,
+  "sneak_hides": false,
+  "seeds_hide": false,
+  "adult_seed_outcome": [
+    false,
+    true,
+    9
+  ],
+  "juvenile_seed_outcome": [
+    true,
+    true,
+    8
+  ],
+  "tame_baby_accelerates": 2400,
+  "owner_heals": [
+    22.0,
+    6
+  ],
+  "saddles_and_consumes": true,
+  "owner_rides": true,
+  "rider_seat_offset": [
+    0.0,
+    0.9500000000000028,
+    -0.16999999999999993
+  ],
+  "shears_remove_saddle": true,
+  "breed_sets_egg": true,
+  "egg_blocks_further_love": true,
+  "lay_calls": 62,
+  "owns_laid_egg": true,
+  "laid_egg_fresh": true,
+  "can_attack_player": true,
+  "visible_egg_owners": 1,
+  "owned_egg_consumed": true,
+  "owned_egg_break_targets_player": true,
+  "hatch_stages_on_stone": [
+    1,
+    2,
+    -1
+  ],
+  "hatchling_data": [
+    -24000,
+    false,
+    13.3,
+    93.0,
+    11.3
+  ],
+  "fall_hurts": false
+}

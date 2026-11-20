@@ -1,0 +1,36 @@
+{
+  "hippo": {
+    "6.5": {
+      "host_wet": false,
+      "guest_wet": true,
+      "picked_wet_guest": true,
+      "picked_dry_host": false,
+      "bright_outside": true,
+      "wet_owner_ignored": true
+    },
+    "23.5": {
+      "host_wet": false,
+      "guest_wet": true,
+      "picked_wet_guest": true,
+      "picked_dry_host": false,
+      "bright_outside": true,
+      "wet_owner_ignored": true
+    }
+  },
+  "alligator": {
+    "6.5": {
+      "host_wet": false,
+      "guest_wet": true,
+      "picked_wet_guest": true,
+      "picked_dry_host": false,
+      "bright_outside": true
+    },
+    "23.5": {
+      "host_wet": false,
+      "guest_wet": true,
+      "picked_wet_guest": true,
+      "picked_dry_host": false,
+      "bright_outside": true
+    }
+  }
+}

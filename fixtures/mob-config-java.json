@@ -1,0 +1,16 @@
+{
+  "summoned": {
+    "naturalist:deer": true,
+    "naturalist:capybara": true,
+    "naturalist:butterfly": true,
+    "naturalist:caterpillar": true,
+    "minecraft:cow": true
+  },
+  "survivors": {
+    "naturalist:deer": false,
+    "naturalist:capybara": true,
+    "naturalist:butterfly": false,
+    "naturalist:caterpillar": false,
+    "minecraft:cow": true
+  }
+}

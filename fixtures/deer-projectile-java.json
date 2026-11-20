@@ -1,0 +1,10 @@
+{
+  "ticks_until_two_hits": 2,
+  "timers_agree": true,
+  "relay_to_third": true,
+  "health": [
+    6.0,
+    6.0,
+    10.0
+  ]
+}

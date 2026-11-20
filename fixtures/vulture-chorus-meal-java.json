@@ -1,0 +1,54 @@
+{
+  "before": {
+    "left": {
+      "hand": "{count: 1, id: \"minecraft:chorus_fruit\"}",
+      "position": [
+        5.5,
+        105.0,
+        5.5
+      ]
+    },
+    "center": {
+      "hand": "{count: 1, id: \"minecraft:chorus_fruit\"}",
+      "position": [
+        8.5,
+        105.0,
+        8.5
+      ]
+    },
+    "right": {
+      "hand": "{count: 1, id: \"minecraft:chorus_fruit\"}",
+      "position": [
+        11.5,
+        105.0,
+        11.5
+      ]
+    }
+  },
+  "after": {
+    "left": {
+      "hand": null,
+      "position": [
+        12.992714367294312,
+        100.86297182044983,
+        5.045049667358398
+      ]
+    },
+    "center": {
+      "hand": null,
+      "position": [
+        3.5202648639678955,
+        100.16136646270752,
+        16.204105377197266
+      ]
+    },
+    "right": {
+      "hand": null,
+      "position": [
+        15.91333141332936,
+        100.38283161125183,
+        19.398989105284926
+      ]
+    }
+  }
+}

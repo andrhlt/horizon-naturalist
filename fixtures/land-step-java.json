@@ -1,0 +1,42 @@
+{
+  "capybara": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  "turkey": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  "lizard": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  "lizard_tail": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  "komodo_dragon": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  "desert_scorpion": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  "jungle_scorpion": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ],
+  "rhino": [
+    "minecraft:block.stone.step",
+    0.15,
+    1.0
+  ]
+}

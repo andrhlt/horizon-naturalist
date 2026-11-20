@@ -1,0 +1,99 @@
+{
+  "variant": "naturalist:great_white_shark",
+  "adult_dims": [
+    14000,
+    16000,
+    13600
+  ],
+  "health": 80.0,
+  "speed": 1.0,
+  "range": 16.0,
+  "attack": 8.0,
+  "knockback_resistance": 0.75,
+  "step": 0.6,
+  "pushable": false,
+  "current_push": false,
+  "cluster": 4,
+  "part_width_height": [
+    [
+      120,
+      120
+    ],
+    [
+      100,
+      100
+    ],
+    [
+      80,
+      120
+    ]
+  ],
+  "part_offsets_z": [
+    200,
+    -150,
+    -290
+  ],
+  "breeding_food": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "healing_amounts": [
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      2
+    ]
+  ],
+  "baby_dims": [
+    7000,
+    8000,
+    6800
+  ],
+  "no_offspring": true,
+  "dry_air_19": -19,
+  "dry_health_19": 80.0,
+  "dry_air_20": 0,
+  "dry_health_20": 78.0,
+  "wet_air": 300,
+  "fish_target": true,
+  "sated_no_target": true,
+  "prey_dead": true,
+  "kill_cooldown": 2400,
+  "cooldown_tick": 2399,
+  "spawn_two_water": true,
+  "spawn_one_water": false,
+  "spawn_dry": false
+}

@@ -1,0 +1,85 @@
+{
+  "cluster_limits": {
+    "naturalist:anglerfish": 8,
+    "naturalist:bass": 6,
+    "naturalist:blobfish": 8,
+    "naturalist:catfish": 8,
+    "naturalist:jellyfish": 8,
+    "naturalist:piranha": 24,
+    "naturalist:ray": 8
+  },
+  "biomes": {
+    "deep_frozen_ocean": {},
+    "frozen_ocean": {},
+    "jungle": {
+      "naturalist:piranha": [
+        8,
+        2,
+        4
+      ]
+    },
+    "ocean": {
+      "naturalist:anglerfish": [
+        10,
+        1,
+        1
+      ],
+      "naturalist:blobfish": [
+        6,
+        1,
+        1
+      ],
+      "naturalist:jellyfish": [
+        10,
+        1,
+        3
+      ],
+      "naturalist:ray": [
+        8,
+        1,
+        2
+      ]
+    },
+    "river": {
+      "naturalist:bass": [
+        10,
+        3,
+        6
+      ]
+    },
+    "swamp": {
+      "naturalist:bass": [
+        10,
+        3,
+        6
+      ],
+      "naturalist:catfish": [
+        10,
+        1,
+        2
+      ]
+    },
+    "warm_ocean": {
+      "naturalist:anglerfish": [
+        10,
+        1,
+        1
+      ],
+      "naturalist:blobfish": [
+        6,
+        1,
+        1
+      ],
+      "naturalist:jellyfish": [
+        10,
+        1,
+        3
+      ],
+      "naturalist:ray": [
+        8,
+        1,
+        2
+      ]
+    }
+  }
+}

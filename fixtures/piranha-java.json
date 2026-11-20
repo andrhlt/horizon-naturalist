@@ -1,0 +1,16 @@
+{
+  "max_health": 6.0,
+  "attack_damage": 2.0,
+  "movement_speed": 1.2,
+  "variant": "naturalist:piranha",
+  "attached_at_capacity": 23,
+  "first_recruitment": 23,
+  "hurt_landed": true,
+  "follower_retaliates": true,
+  "leader_retaliates": true,
+  "follower_retargets": true,
+  "follower_clears_target": true,
+  "deep_water": true,
+  "above_sea_level": false,
+  "dry": false
+}

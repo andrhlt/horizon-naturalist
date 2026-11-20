@@ -1,0 +1,14 @@
+{
+  "seed": 49903,
+  "taiga_anchor": [
+    4224,
+    4000
+  ],
+  "variants": [
+    "bird_gen_fixture:taiga_bird",
+    "bird_gen_fixture:taiga_bird",
+    "bird_gen_fixture:taiga_bird",
+    "bird_gen_fixture:taiga_bird",
+    "bird_gen_fixture:taiga_bird"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "color": "purple",
+  "rotation": 2,
+  "refuses_cactus": true,
+  "one_flower": true,
+  "refuses_second": true,
+  "saves_flower": true,
+  "colored_drop": true,
+  "flower_drop": true
+}

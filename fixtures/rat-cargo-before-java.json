@@ -1,0 +1,10 @@
+{
+  "station": 2473901183068,
+  "cargo": {
+    "minecraft:diamond": 2,
+    "minecraft:wheat": 3
+  },
+  "from_hand": true,
+  "following": false,
+  "variant": "naturalist:brown"
+}

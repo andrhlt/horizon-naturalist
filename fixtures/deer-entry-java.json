@@ -1,0 +1,158 @@
+{
+  "7198391": {
+    "summon": {
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.09070722285583616,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": 4909855077348517403
+    },
+    "summon_nbt": {
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": 7214735665817550035
+    },
+    "egg": {
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.01406501962915063,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 140.80016,
+      "next": -1728918145740047617
+    }
+  },
+  "22684254": {
+    "summon": {
+      "variant": "naturalist:deer",
+      "follow_bonus": -0.04746333348155022,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -774800342825261212
+    },
+    "summon_nbt": {
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -2801645669762995986
+    },
+    "egg": {
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.0870063016474247,
+      "left_handed": false,
+      "age": 0,
+      "yaw": -54.675903,
+      "next": 8794588222239757609
+    }
+  },
+  "8430129": {
+    "summon": {
+      "variant": "naturalist:deer",
+      "follow_bonus": -0.012774739927053452,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": 2884125548342948944
+    },
+    "summon_nbt": {
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -8270924132913030207
+    },
+    "egg": {
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.08356706009432674,
+      "left_handed": false,
+      "age": 0,
+      "yaw": -161.41238,
+      "next": -3703027275136287847
+    }
+  },
+  "15485863": {
+    "summon": {
+      "variant": "naturalist:deer",
+      "follow_bonus": -0.06518381102159619,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -1560414434533842221
+    },
+    "summon_nbt": {
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -1424399011870679809
+    },
+    "egg": {
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.0027248679369688035,
+      "left_handed": false,
+      "age": 0,
+      "yaw": -27.798065,
+      "next": -2938630834228756163
+    }
+  },
+  "708329": {
+    "summon": {
+      "variant": "naturalist:deer",
+      "follow_bonus": -0.05573209329620004,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -5779407297327740284
+    },
+    "summon_nbt": {
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": 2785056446896275369
+    },
+    "egg": {
+      "variant": "naturalist:deer",
+      "follow_bonus": -0.03540426612198353,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 54.352154,
+      "next": 466908179103218901
+    }
+  },
+  "123456789": {
+    "summon": {
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.05839511985331774,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -1967508324443428465
+    },
+    "summon_nbt": {
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 0.0,
+      "next": -6197403153606331135
+    },
+    "egg": {
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.007631245099008084,
+      "left_handed": false,
+      "age": 0,
+      "yaw": -120.946304,
+      "next": 7848905049914246339
+    }
+  }
+}

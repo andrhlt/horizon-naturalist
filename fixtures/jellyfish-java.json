@@ -1,0 +1,15 @@
+{
+  "max_health": 3.0,
+  "movement_speed": 0.5,
+  "default_variant": "naturalist:white",
+  "first_pulse": true,
+  "no_early_pulse": true,
+  "second_pulse": true,
+  "touching_cod": 1.0,
+  "outside_cod": 3.0,
+  "nearby_jellyfish": 3.0,
+  "bucket_variant": "naturalist:green",
+  "custom_variant": "naturalist:green",
+  "released_variant": "naturalist:green",
+  "legacy_variant": "naturalist:blue"
+}

@@ -1,0 +1,50 @@
+{
+  "elephant_first": {
+    "calm_target_absent": true,
+    "applied": true,
+    "fresh_end": -1,
+    "adult_uninjured": true,
+    "store_has_anger": true,
+    "health_decreased": true,
+    "calm_end": -1,
+    "attacker_match": true,
+    "stored_end": 775,
+    "left": 772
+  },
+  "elephant_second": {
+    "calm_target_absent": true,
+    "applied": true,
+    "fresh_end": -1,
+    "adult_uninjured": true,
+    "store_has_anger": true,
+    "health_decreased": true,
+    "calm_end": -1,
+    "attacker_match": true,
+    "stored_end": 494,
+    "left": 491
+  },
+  "mammoth_first": {
+    "calm_target_absent": true,
+    "applied": true,
+    "fresh_end": -1,
+    "adult_uninjured": true,
+    "store_has_anger": true,
+    "health_decreased": true,
+    "calm_end": -1,
+    "attacker_match": true,
+    "stored_end": 665,
+    "left": 662
+  },
+  "mammoth_second": {
+    "calm_target_absent": true,
+    "applied": true,
+    "fresh_end": -1,
+    "adult_uninjured": true,
+    "store_has_anger": true,
+    "health_decreased": true,
+    "calm_end": -1,
+    "attacker_match": true,
+    "stored_end": 695,
+    "left": 692
+  }
+}

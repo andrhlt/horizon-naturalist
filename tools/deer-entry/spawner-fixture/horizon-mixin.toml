@@ -1,0 +1,35 @@
+[mod]
+id = "naturalist_deer_entry_fixture"
+version = "0.1.4"
+
+[compatibility]
+horizon_revision = "9f42064c11efe7ef3e5ed2baad7ddc2a3b36eea0"
+
+[[injection]]
+id = "naturalist-deer-entry-probe"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "deer_entry_probe.rs"
+bindings = [
+  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+  { name = "command", ty = "&str", value = "command" },
+]
+
+[[injection]]
+id = "deer-spawner-after-spawner"
+target = "horizon_client::game::spawner::Game<'_>::add_planned"
+kind = "HEAD"
+helper = "deer_spawner_rng_after_tick.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+]
+
+[[injection]]
+id = "deer-spawner-after-add"
+target = "horizon_client::game::spawner::Game<'_>::apply_spawner_events"
+kind = "HEAD"
+helper = "deer_spawner_rng_after_add.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+]

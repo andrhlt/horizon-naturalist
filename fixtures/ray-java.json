@@ -1,0 +1,15 @@
+{
+  "max_health": 14.0,
+  "movement_speed": 1.0,
+  "attack_damage": 2.0,
+  "default_variant": "naturalist:eagle_ray",
+  "retaliated": true,
+  "target_health": 1.0,
+  "poison_duration": 100,
+  "poison_amplifier": 0,
+  "protected_unchanged": true,
+  "bucket_variant": "naturalist:mobula_ray",
+  "custom_variant": "naturalist:mobula_ray",
+  "released_variant": "naturalist:mobula_ray",
+  "legacy_variant": "naturalist:stingray"
+}

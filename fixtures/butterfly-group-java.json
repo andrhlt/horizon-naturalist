@@ -1,0 +1,15 @@
+{
+  "all_adult": true,
+  "shares_pool": true,
+  "two_draws_including_duplicates": true,
+  "in_pool": true,
+  "observed_variants": [
+    "naturalist:blue_morpho",
+    "naturalist:clouded_yellow",
+    "naturalist:jade_green_swallowtail",
+    "naturalist:monarch",
+    "naturalist:purple_emperor",
+    "naturalist:red_admiral",
+    "naturalist:swallowtail"
+  ]
+}

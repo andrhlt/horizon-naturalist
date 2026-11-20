@@ -1,0 +1,8 @@
+{
+  "naturalist:bird": [],
+  "minecraft:pig": [],
+  "minecraft:sheep": [
+    "[4224.5d, 128.0d, 4000.5d]"
+  ],
+  "minecraft:cow": []
+}

@@ -1,0 +1,32 @@
+{
+  "attributes": {
+    "max_health": 4.0,
+    "movement_speed": 0.25,
+    "step_height": 0.6
+  },
+  "before": {
+    "adult": {
+      "Age": "0",
+      "Health": "4.0f",
+      "EggLayTime": "2",
+      "Variant": "\"naturalist:duck\""
+    },
+    "baby": {
+      "Age": "-24000",
+      "Health": "4.0f",
+      "EggLayTime": "2",
+      "Variant": "\"naturalist:duck\""
+    }
+  },
+  "after": {
+    "adult": {
+      "Age": "0",
+      "EggLayTime": "7987"
+    },
+    "baby": {
+      "Age": "-23998",
+      "EggLayTime": "2"
+    }
+  },
+  "adult_laid_duck_egg": true
+}

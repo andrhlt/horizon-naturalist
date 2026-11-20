@@ -1,0 +1,272 @@
+{
+  "elephant": {
+    "variant": "naturalist:elephant",
+    "dimensions": [
+      2.5,
+      3.5,
+      2.9750001
+    ],
+    "attributes": [
+      100.0,
+      0.2,
+      12.0,
+      1.5,
+      0.75,
+      15.0,
+      1.0
+    ],
+    "head_turn": 35,
+    "melon_is_food": true,
+    "cake_is_food": false,
+    "juvenile_dimensions": [
+      1.25,
+      1.75,
+      1.4875001
+    ],
+    "baby_taming": [
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "cake_remaining": 0,
+    "age_after_cake": -24000,
+    "taming_count_saved": 5,
+    "healed_to": 56.0,
+    "melon_remaining": 1,
+    "chested": true,
+    "saddled": true,
+    "owner_mounted": true,
+    "seat": [
+      0.0,
+      3.219999999999999,
+      -0.09999999999999964
+    ],
+    "pushable_mounted": false,
+    "custom_inventory": {
+      "opened": true,
+      "entity": true,
+      "slot_count": 63,
+      "chest_slot_active": true,
+      "chest_first_xy": [
+        80,
+        18
+      ],
+      "chest_last_xy": [
+        152,
+        90
+      ],
+      "saddle_xy": [
+        8,
+        90
+      ],
+      "banner_xy": [
+        26,
+        90
+      ],
+      "saddle_accepts_dirt": false,
+      "banner_accepts_dirt": false,
+      "saddle_limit": 1,
+      "banner_limit": 1,
+      "moved_stone": 19,
+      "stone_in_first": 19,
+      "moved_banner": 2,
+      "banner_in_slot": 1,
+      "banner_left_in_player": 1,
+      "shift_banner_in_equipment": 1,
+      "shift_banner_in_chest": 1,
+      "shift_banner_left_in_player": 0,
+      "owner_can_use": true,
+      "owner_exactly_eight_can_use": false
+    },
+    "shear_chest_first": true,
+    "shear_saddle_second": true,
+    "shear_damage": 2,
+    "real_attack_hits": true,
+    "target_health": 8.191999,
+    "target_motion": [
+      3.0460498971317738,
+      0.9,
+      0.948683298050514
+    ],
+    "can_attack_owner": false,
+    "adult_and_baby_knockback": [
+      -0.25,
+      -1.0
+    ],
+    "seeded_natural_group": [
+      {
+        "baby": false,
+        "follow_range": 14.3313194055981
+      },
+      {
+        "baby": false,
+        "follow_range": 14.196997903763316
+      },
+      {
+        "baby": true,
+        "follow_range": 15.184547975040973
+      },
+      {
+        "baby": true,
+        "follow_range": 14.10963370208256
+      },
+      {
+        "baby": true,
+        "follow_range": 15.076607530295849
+      }
+    ],
+    "spawn_substrate": {
+      "grass_block": true,
+      "sand": false,
+      "stone": false,
+      "snow_block": false,
+      "ice": false,
+      "packed_ice": false
+    },
+    "live_revenge": {
+      "mob_hit": true,
+      "initial_health": 99.0,
+      "first_target_tick": -1,
+      "first_attack_tick": -1,
+      "target_health": 20.0,
+      "distance_at_end": 5.2466173
+    }
+  },
+  "mammoth": {
+    "variant": "naturalist:mammoth",
+    "dimensions": [
+      2.5,
+      4.0,
+      3.4
+    ],
+    "attributes": [
+      120.0,
+      0.2,
+      14.0,
+      1.5,
+      0.85,
+      15.0,
+      1.0
+    ],
+    "head_turn": 35,
+    "melon_is_food": true,
+    "cake_is_food": false,
+    "juvenile_dimensions": [
+      1.25,
+      2.0,
+      1.7
+    ],
+    "baby_taming": [
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "cake_remaining": 0,
+    "age_after_cake": -24000,
+    "taming_count_saved": 5,
+    "healed_to": 56.0,
+    "melon_remaining": 1,
+    "chested": true,
+    "saddled": true,
+    "owner_mounted": true,
+    "seat": [
+      0.0,
+      4.200000000000003,
+      -0.09999999999999964
+    ],
+    "pushable_mounted": false,
+    "custom_inventory": {
+      "opened": true,
+      "entity": true,
+      "slot_count": 63,
+      "chest_slot_active": true,
+      "chest_first_xy": [
+        80,
+        18
+      ],
+      "chest_last_xy": [
+        152,
+        90
+      ],
+      "saddle_xy": [
+        8,
+        90
+      ],
+      "banner_xy": [
+        26,
+        90
+      ],
+      "saddle_accepts_dirt": false,
+      "banner_accepts_dirt": false,
+      "saddle_limit": 1,
+      "banner_limit": 1,
+      "moved_stone": 19,
+      "stone_in_first": 19,
+      "moved_banner": 2,
+      "banner_in_slot": 1,
+      "banner_left_in_player": 1,
+      "shift_banner_in_equipment": 1,
+      "shift_banner_in_chest": 1,
+      "shift_banner_left_in_player": 0,
+      "owner_can_use": true,
+      "owner_exactly_eight_can_use": false
+    },
+    "shear_chest_first": true,
+    "shear_saddle_second": true,
+    "shear_damage": 2,
+    "real_attack_hits": true,
+    "target_health": 6.224,
+    "target_motion": [
+      3.0460498971317738,
+      0.9,
+      0.948683298050514
+    ],
+    "can_attack_owner": false,
+    "adult_and_baby_knockback": [
+      -0.15000000000000002,
+      -0.9999999761581423
+    ],
+    "seeded_natural_group": [
+      {
+        "baby": false,
+        "follow_range": 14.3313194055981
+      },
+      {
+        "baby": false,
+        "follow_range": 14.196997903763316
+      },
+      {
+        "baby": true,
+        "follow_range": 15.184547975040973
+      },
+      {
+        "baby": true,
+        "follow_range": 14.10963370208256
+      },
+      {
+        "baby": true,
+        "follow_range": 15.076607530295849
+      }
+    ],
+    "spawn_substrate": {
+      "grass_block": true,
+      "sand": false,
+      "stone": false,
+      "snow_block": true,
+      "ice": true,
+      "packed_ice": true
+    },
+    "live_revenge": {
+      "mob_hit": true,
+      "initial_health": 119.0,
+      "first_target_tick": -1,
+      "first_attack_tick": -1,
+      "target_health": 20.0,
+      "distance_at_end": 4.1839137
+    }
+  }
+}

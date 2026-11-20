@@ -1,0 +1,866 @@
+{
+  "naturalist:alligator": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.9,
+        0.4,
+        0.34
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.8,
+        0.8,
+        0.68
+      ]
+    }
+  },
+  "naturalist:anglerfish": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.8,
+        0.68
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.8,
+        0.68
+      ]
+    }
+  },
+  "naturalist:ant": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.3,
+        0.25,
+        0.2125
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        0.5,
+        0.425
+      ]
+    }
+  },
+  "naturalist:bass": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.3,
+        0.4,
+        0.34
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.3,
+        0.4,
+        0.34
+      ]
+    }
+  },
+  "naturalist:bear": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.7,
+        0.85,
+        0.7225
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.4,
+        1.7,
+        1.445
+      ]
+    }
+  },
+  "naturalist:bird": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.5,
+        0.6,
+        0.51000005
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.5,
+        0.6,
+        0.51000005
+      ]
+    }
+  },
+  "naturalist:black_bear": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.65,
+        0.65,
+        0.5525
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.3,
+        1.3,
+        1.105
+      ]
+    }
+  },
+  "naturalist:blobfish": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.8,
+        0.4,
+        0.34
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.8,
+        0.4,
+        0.34
+      ]
+    }
+  },
+  "naturalist:boar": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.45,
+        0.45,
+        0.3825
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.9,
+        0.765
+      ]
+    }
+  },
+  "naturalist:butterfly": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.6,
+        0.51000005
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.6,
+        0.51000005
+      ]
+    }
+  },
+  "naturalist:capybara": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.45,
+        0.45,
+        0.3825
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.9,
+        0.765
+      ]
+    }
+  },
+  "naturalist:caterpillar": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.4,
+        0.4,
+        0.34
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.4,
+        0.4,
+        0.34
+      ]
+    }
+  },
+  "naturalist:catfish": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.4,
+        0.34
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.4,
+        0.34
+      ]
+    }
+  },
+  "naturalist:clam": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        1.0,
+        0.6,
+        0.51000005
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.0,
+        0.6,
+        0.51000005
+      ]
+    }
+  },
+  "naturalist:crab": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.25,
+        0.3,
+        0.25500003
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.5,
+        0.6,
+        0.51000005
+      ]
+    }
+  },
+  "naturalist:deer": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.65,
+        0.8,
+        0.68
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.3,
+        1.6,
+        1.36
+      ]
+    }
+  },
+  "naturalist:desert_scorpion": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.35,
+        0.15,
+        0.12750001
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.3,
+        0.25500003
+      ]
+    }
+  },
+  "naturalist:dragonfly": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.7,
+        0.595
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.7,
+        0.595
+      ]
+    }
+  },
+  "naturalist:duck": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.3,
+        0.5,
+        0.425
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        1.0,
+        0.85
+      ]
+    }
+  },
+  "naturalist:elephant": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        1.25,
+        1.75,
+        1.4875001
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        2.5,
+        3.5,
+        2.9750001
+      ]
+    }
+  },
+  "naturalist:firefly": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.35,
+        0.3,
+        0.25500003
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.6,
+        0.51000005
+      ]
+    }
+  },
+  "naturalist:giant_isopod": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.3,
+        0.2,
+        0.17
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        0.4,
+        0.34
+      ]
+    }
+  },
+  "naturalist:giraffe": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.95,
+        2.7,
+        2.295
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.9,
+        5.4,
+        4.59
+      ]
+    }
+  },
+  "naturalist:great_white_shark": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.7,
+        0.8,
+        0.68
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.4,
+        1.6,
+        1.36
+      ]
+    }
+  },
+  "naturalist:hedgehog": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.3,
+        0.25,
+        0.2125
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        0.5,
+        0.425
+      ]
+    }
+  },
+  "naturalist:hippo": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.9,
+        0.9,
+        0.765
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.8,
+        1.8,
+        1.53
+      ]
+    }
+  },
+  "naturalist:jellyfish": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        1.0,
+        1.0,
+        0.85
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.0,
+        1.0,
+        0.85
+      ]
+    }
+  },
+  "naturalist:jungle_scorpion": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.6,
+        0.5,
+        0.425
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.2,
+        1.0,
+        0.85
+      ]
+    }
+  },
+  "naturalist:komodo_dragon": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.65,
+        0.35,
+        0.2975
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.3,
+        0.7,
+        0.595
+      ]
+    }
+  },
+  "naturalist:lion": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.75,
+        0.9,
+        0.765
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.5,
+        1.8,
+        1.53
+      ]
+    }
+  },
+  "naturalist:lizard": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.4,
+        0.25,
+        0.2125
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.8,
+        0.5,
+        0.425
+      ]
+    }
+  },
+  "naturalist:lizard_tail": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.5,
+        0.425
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.5,
+        0.425
+      ]
+    }
+  },
+  "naturalist:mammoth": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        1.25,
+        2.0,
+        1.7
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        2.5,
+        4.0,
+        3.4
+      ]
+    }
+  },
+  "naturalist:mole": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.35,
+        0.325,
+        0.27625
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.65,
+        0.5525
+      ]
+    }
+  },
+  "naturalist:ostrich": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.6,
+        1.25,
+        1.0625
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.2,
+        2.5,
+        2.125
+      ]
+    }
+  },
+  "naturalist:piranha": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.5,
+        0.6,
+        0.51000005
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.5,
+        0.6,
+        0.51000005
+      ]
+    }
+  },
+  "naturalist:rat": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.45,
+        0.3,
+        0.25500003
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.6,
+        0.51000005
+      ]
+    }
+  },
+  "naturalist:ray": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        1.0,
+        0.4,
+        0.34
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.0,
+        0.4,
+        0.34
+      ]
+    }
+  },
+  "naturalist:rhino": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        1.25,
+        1.5,
+        1.2750001
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        2.5,
+        3.0,
+        2.5500002
+      ]
+    }
+  },
+  "naturalist:snail": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.35,
+        0.35,
+        0.2975
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.7,
+        0.7,
+        0.595
+      ]
+    }
+  },
+  "naturalist:snake": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.3,
+        0.35,
+        0.2975
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        0.7,
+        0.595
+      ]
+    }
+  },
+  "naturalist:starfish": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        0.3,
+        0.25500003
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        0.3,
+        0.25500003
+      ]
+    }
+  },
+  "naturalist:tiger": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.75,
+        0.9,
+        0.765
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.5,
+        1.8,
+        1.53
+      ]
+    }
+  },
+  "naturalist:tortoise": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.6,
+        0.4375,
+        0.37187502
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.2,
+        0.875,
+        0.74375004
+      ]
+    }
+  },
+  "naturalist:turkey": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.3,
+        0.4,
+        0.34
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.6,
+        0.8,
+        0.68
+      ]
+    }
+  },
+  "naturalist:vulture": {
+    "juvenile": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.5,
+        0.425
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        0.9,
+        0.5,
+        0.425
+      ]
+    }
+  },
+  "naturalist:whale": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        1.5,
+        1.25,
+        1.0625
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        3.0,
+        2.5,
+        2.125
+      ]
+    }
+  },
+  "naturalist:zebra": {
+    "juvenile": {
+      "baby": true,
+      "dimensions": [
+        0.6982422,
+        0.75,
+        0.63750005
+      ]
+    },
+    "adult": {
+      "baby": false,
+      "dimensions": [
+        1.3964844,
+        1.5,
+        1.2750001
+      ]
+    }
+  }
+}

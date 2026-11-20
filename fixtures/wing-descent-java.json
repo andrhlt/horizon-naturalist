@@ -1,0 +1,22 @@
+{
+  "butterfly": {
+    "rise": -0.2,
+    "velocity": -0.196000004
+  },
+  "dragonfly": {
+    "rise": -0.2,
+    "velocity": -0.117600002
+  },
+  "firefly": {
+    "rise": -0.2,
+    "velocity": -0.196000004
+  },
+  "vulture": {
+    "rise": -0.2,
+    "velocity": -0.196000004
+  },
+  "bird": {
+    "rise": -0.2,
+    "velocity": -0.164640003
+  }
+}

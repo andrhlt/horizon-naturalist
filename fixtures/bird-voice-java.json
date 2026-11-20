@@ -1,0 +1,22 @@
+{
+  "day": {
+    "blue_jay": "naturalist:entity.bird.ambient_bluejay",
+    "stellers_jay": "naturalist:entity.bird.ambient_bluejay",
+    "northern_cardinal": "naturalist:entity.bird.ambient_cardinal",
+    "carolina_chickadee": "naturalist:entity.bird.ambient_finch",
+    "tufted_titmouse": "naturalist:entity.bird.ambient_finch",
+    "red_winged_blackbird": "naturalist:entity.bird.ambient_canary",
+    "white_throated_sparrow": "naturalist:entity.bird.ambient_sparrow",
+    "unknown_fallback": "naturalist:entity.bird.ambient_robin"
+  },
+  "night": {
+    "blue_jay": null,
+    "stellers_jay": null,
+    "northern_cardinal": null,
+    "carolina_chickadee": null,
+    "tufted_titmouse": null,
+    "red_winged_blackbird": null,
+    "white_throated_sparrow": null,
+    "unknown_fallback": null
+  }
+}

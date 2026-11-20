@@ -1,0 +1,62 @@
+{
+  "initial": {
+    "bird_plain": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "bird_explicit": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "parrot": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "deer": {
+      "Age": "-24000"
+    }
+  },
+  "after_merge": {
+    "bird_plain": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "bird_explicit": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "parrot": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "deer": {
+      "Age": "-12345"
+    }
+  },
+  "reopened": {
+    "bird_plain": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "bird_explicit": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "parrot": {
+      "Age": null,
+      "ForcedAge": null,
+      "AgeLocked": null
+    },
+    "deer": {
+      "Age": "-12345"
+    }
+  }
+}

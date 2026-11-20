@@ -1,0 +1,13 @@
+{
+  "color": 7329458,
+  "instant": true,
+  "drink_removes_poison": true,
+  "drink_leaves_regeneration": true,
+  "splash_removes_poison": true,
+  "splash_leaves_regeneration": true,
+  "lingering_waits_before_removing_poison": true,
+  "lingering_removes_poison": true,
+  "lingering_leaves_regeneration": true,
+  "arrow_removes_poison": false,
+  "direct_effect_removes_poison": false
+}

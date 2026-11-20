@@ -1,0 +1,16 @@
+{
+  "rejects_untamed": true,
+  "rejects_sitting": true,
+  "rejects_flying": true,
+  "rejects_out_of_contact": true,
+  "contact_allowed": true,
+  "player_serializable": false,
+  "ordinary_mount_blocked": true,
+  "forced_mount_blocked": true,
+  "stops_existing_navigation": true,
+  "second_still_eligible": true,
+  "mount_goal_single_use": true,
+  "standing_anchor_y": 1.8,
+  "attachment_y": -0.05,
+  "rejects_crouch": true
+}

@@ -1,0 +1,12 @@
+{
+  "attributes": {
+    "max_health": 6.0,
+    "movement_speed": 0.2,
+    "flying_speed": 0.800000011920929
+  },
+  "variants": {
+    "american_robin": "\"naturalist:american_robin\"",
+    "blue_jay": "\"naturalist:blue_jay\"",
+    "northern_cardinal": "\"naturalist:northern_cardinal\""
+  }
+}

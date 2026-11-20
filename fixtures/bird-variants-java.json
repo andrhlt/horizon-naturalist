@@ -1,0 +1,23 @@
+{
+  "taiga": {
+    "naturalist:blue_jay": 180
+  },
+  "desert": {
+    "naturalist:northern_cardinal": 92,
+    "naturalist:red_winged_blackbird": 88
+  },
+  "plains": {
+    "naturalist:american_robin": 147,
+    "naturalist:white_throated_sparrow": 33
+  },
+  "forest": {
+    "naturalist:american_robin": 51,
+    "naturalist:carolina_chickadee": 10,
+    "naturalist:northern_cardinal": 52,
+    "naturalist:red_winged_blackbird": 55,
+    "naturalist:tufted_titmouse": 12
+  },
+  "mushroom_fields": {
+    "naturalist:american_robin": 180
+  }
+}

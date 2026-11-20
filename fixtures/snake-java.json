@@ -1,0 +1,180 @@
+{
+  "default_variant": "naturalist:snake",
+  "adult_dims": [
+    6000,
+    7000,
+    5950
+  ],
+  "baby_dims": [
+    3000,
+    3500,
+    2975
+  ],
+  "attributes": [
+    12.0,
+    0.18,
+    3.0,
+    20.0,
+    0.6
+  ],
+  "cluster": 4,
+  "voice_volume": 0.15,
+  "climbing_speed_multiplier": 0.5,
+  "food_ids": [
+    "minecraft:chicken",
+    "minecraft:egg",
+    "minecraft:rabbit",
+    "minecraft:rabbit_foot"
+  ],
+  "tame_ids": [
+    "minecraft:cooked_rabbit",
+    "minecraft:rabbit",
+    "minecraft:spider_eye"
+  ],
+  "has_offspring": false,
+  "clock_readbacks": [
+    12000,
+    12001,
+    18000,
+    18001,
+    22999,
+    23000,
+    27999,
+    28000,
+    36000
+  ],
+  "sleep_clock": [
+    false,
+    true,
+    true,
+    false,
+    false,
+    true,
+    true,
+    false,
+    false
+  ],
+  "sleep_in_water": false,
+  "sleep_while_angry": false,
+  "poison_duration": [
+    0,
+    40,
+    40
+  ],
+  "post_bite_health": [
+    7.0,
+    7.0,
+    7.0
+  ],
+  "rattlesnake": [
+    false,
+    false,
+    true
+  ],
+  "speed_without_food": 0.8,
+  "speed_holding_food": 0.4,
+  "eat_counter": [
+    2,
+    6000,
+    6001,
+    0
+  ],
+  "eat_main_hand": [
+    true,
+    true,
+    true,
+    false
+  ],
+  "tame_rows": [
+    [
+      1,
+      true,
+      1,
+      false,
+      false
+    ],
+    [
+      42,
+      true,
+      1,
+      false,
+      false
+    ],
+    [
+      100,
+      true,
+      1,
+      false,
+      false
+    ],
+    [
+      4000,
+      true,
+      1,
+      false,
+      false
+    ],
+    [
+      5000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      9000,
+      true,
+      1,
+      false,
+      false
+    ],
+    [
+      14000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      18000,
+      true,
+      1,
+      true,
+      true
+    ],
+    [
+      22000,
+      true,
+      1,
+      false,
+      false
+    ],
+    [
+      36000,
+      true,
+      1,
+      false,
+      false
+    ]
+  ],
+  "ordinary_egg_feeds_without_taming": [
+    1,
+    false,
+    true
+  ],
+  "owner_heal_consumed": true,
+  "owner_heal": [
+    9.0,
+    1
+  ],
+  "owner_sits": true,
+  "owner_whistle_stops_follow": true,
+  "spawn_gear": {
+    "empty": 402,
+    "minecraft:chicken": 70,
+    "minecraft:feather": 4,
+    "minecraft:rabbit": 14,
+    "minecraft:rabbit_foot": 4,
+    "minecraft:slime_ball": 6
+  }
+}

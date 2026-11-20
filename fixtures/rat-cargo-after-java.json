@@ -1,0 +1,16 @@
+{
+  "loaded": {
+    "station": 2473901183068,
+    "cargo": {
+      "minecraft:diamond": 2,
+      "minecraft:wheat": 3
+    },
+    "from_hand": true,
+    "following": false,
+    "variant": "naturalist:brown"
+  },
+  "spilled_with_mob_drops_disabled": {
+    "minecraft:diamond": 2,
+    "minecraft:wheat": 3
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "bee": {
+    "removed": true,
+    "net_damage": 1,
+    "water_slots": [],
+    "dropped": [],
+    "caught": "naturalist:bee",
+    "original_uuid": true
+  },
+  "bee_mounted": {
+    "removed": true,
+    "net_damage": 0,
+    "water_slots": [],
+    "dropped": [
+      "minecraft:dirt"
+    ],
+    "caught": "",
+    "original_uuid": false
+  },
+  "silverfish": {
+    "removed": true,
+    "net_damage": 1,
+    "water_slots": [],
+    "dropped": [],
+    "caught": "naturalist:silverfish",
+    "original_uuid": true
+  },
+  "endermite": {
+    "removed": true,
+    "net_damage": 1,
+    "water_slots": [],
+    "dropped": [],
+    "caught": "naturalist:endermite",
+    "original_uuid": true
+  },
+  "cod_dry": {
+    "removed": false,
+    "net_damage": 0,
+    "water_slots": [],
+    "dropped": [],
+    "caught": "",
+    "original_uuid": false
+  },
+  "cod_first_bucket": {
+    "removed": true,
+    "net_damage": 0,
+    "water_slots": [
+      10
+    ],
+    "dropped": [
+      "minecraft:cod_bucket"
+    ],
+    "caught": "",
+    "original_uuid": false
+  },
+  "cod_creative_without_bucket": {
+    "removed": false,
+    "net_damage": 0,
+    "water_slots": [],
+    "dropped": [],
+    "caught": "",
+    "original_uuid": false
+  },
+  "cod_creative_with_bucket": {
+    "removed": true,
+    "net_damage": 0,
+    "water_slots": [
+      10
+    ],
+    "dropped": [
+      "minecraft:cod_bucket"
+    ],
+    "caught": "",
+    "original_uuid": false
+  },
+  "cod_offhand": {
+    "removed": true,
+    "net_damage": 0,
+    "water_slots": [],
+    "dropped": [
+      "minecraft:cod_bucket"
+    ],
+    "caught": "",
+    "original_uuid": false
+  },
+  "cod_bucket_offhand": {
+    "removed": true,
+    "net_damage": 0,
+    "water_slots": [],
+    "dropped": [
+      "minecraft:cod_bucket"
+    ],
+    "caught": "",
+    "original_uuid": false
+  },
+  "salmon": {
+    "removed": false,
+    "net_damage": 0,
+    "water_slots": [
+      10
+    ],
+    "dropped": [],
+    "caught": "",
+    "original_uuid": false
+  }
+}

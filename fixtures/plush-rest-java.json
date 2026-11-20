@@ -1,0 +1,12 @@
+{
+  "empty_nearby": false,
+  "main_nearby": true,
+  "offhand_nearby": true,
+  "ordinary_item_nearby": false,
+  "inventory_nearby": false,
+  "day_plush": false,
+  "empty_no_monsters": true,
+  "angry_piglin_plush": false,
+  "calm_piglin_plush": true,
+  "blocked_plush": false
+}

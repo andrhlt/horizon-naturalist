@@ -1,0 +1,22 @@
+[
+  {
+    "sound": "naturalist:entity.ant.step",
+    "volume": 0.375,
+    "pitch": 1.0
+  },
+  {
+    "sound": "naturalist:entity.ant.ambient",
+    "volume": 1.0,
+    "pitch": 0.9933
+  },
+  {
+    "sound": "naturalist:entity.ant.hurt",
+    "volume": 1.0,
+    "pitch": 0.9974
+  },
+  {
+    "sound": "naturalist:entity.ant.death",
+    "volume": 1.0,
+    "pitch": 1.0419
+  }
+]

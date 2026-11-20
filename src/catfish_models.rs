@@ -1,0 +1,20 @@
+// Based on Naturalist 2.0.7 Java model source (MIT).
+use horizon_client::mobs::model_layers::{CubeDeformation, CubeListBuilder, LayerDefinition, MeshDefinition, ModelPart, PartPose};
+pub(super) fn adult() -> ModelPart {
+    let mut mesh = MeshDefinition::new();
+    let partdefinition = mesh.root();
+    let root = mesh.add_or_replace_child(partdefinition, "root", CubeListBuilder::create(), PartPose::offset(0.0, 20.5, 0.0));
+    let body = mesh.add_or_replace_child(root, "body", CubeListBuilder::create().tex_offs(0, 0).add_box_with([-3.0, -4.1667, -2.3889], [6.0, 7.0, 12.0], CubeDeformation::new(0.0)).tex_offs(0, 30).add_box_with([0.0, -6.1667, -2.3889], [0.0, 2.0, 12.0], CubeDeformation::new(0.0)).tex_offs(36, 7).add_box_with([0.0, 2.8333, -2.3889], [0.0, 2.0, 12.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 0.6667, -3.6111));
+    let tail = mesh.add_or_replace_child(body, "tail", CubeListBuilder::create().tex_offs(36, 0).add_box_with([-1.0, -2.5, 0.0], [2.0, 5.0, 5.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, -0.6667, 9.6111));
+    let tail2 = mesh.add_or_replace_child(tail, "tail2", CubeListBuilder::create().tex_offs(32, 16).add_box_with([0.0, -5.5, -3.0], [0.0, 11.0, 6.0], CubeDeformation::new(0.0)), PartPose::offset(0.0, 0.0, 5.0));
+    let rightFrontFin = mesh.add_or_replace_child(body, "rightFrontFin", CubeListBuilder::create().tex_offs(0, 3).set_mirror(true).add_box_with([-4.0, 0.0, 0.0], [4.0, 3.0, 0.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset_and_rotation(-3.0, -0.1667, 1.6111, 0.3655, 0.7119, 0.5299));
+    let leftFrontFin = mesh.add_or_replace_child(body, "leftFrontFin", CubeListBuilder::create().tex_offs(0, 3).add_box_with([0.0, 0.0, 0.0], [4.0, 3.0, 0.0], CubeDeformation::new(0.0)), PartPose::offset_and_rotation(3.0, -0.1667, 1.6111, 0.3655, -0.7119, -0.5299));
+    let leftBackFin = mesh.add_or_replace_child(body, "leftBackFin", CubeListBuilder::create().tex_offs(0, 9).add_box_with([0.0, 0.0, 0.0], [3.0, 2.0, 0.0], CubeDeformation::new(0.0)), PartPose::offset_and_rotation(3.0, 1.8333, 6.6111, 0.3053, -1.1579, -0.3313));
+    let rightBackFin = mesh.add_or_replace_child(body, "rightBackFin", CubeListBuilder::create().tex_offs(0, 9).set_mirror(true).add_box_with([-3.0, 0.0, 0.0], [3.0, 2.0, 0.0], CubeDeformation::new(0.0)).set_mirror(false), PartPose::offset_and_rotation(-3.0, 1.8333, 6.6111, 0.3053, 1.1579, 0.3313));
+    let head = mesh.add_or_replace_child(body, "head", CubeListBuilder::create(), PartPose::offset(0.0, -0.6667, -0.8889));
+    let normal = mesh.add_or_replace_child(head, "normal", CubeListBuilder::create().tex_offs(0, 19).add_box_with([-4.0, -4.0, -3.0], [8.0, 4.0, 7.0], CubeDeformation::new(0.0)).tex_offs(0, 30).add_box_with([-4.0, -4.0, -3.0], [8.0, 4.0, 7.0], CubeDeformation::new(0.5)).tex_offs(37, 7).set_mirror(true).add_box_with([-4.3, -1.5, -3.0], [0.0, 5.0, 7.0], CubeDeformation::new(0.01)).set_mirror(false).tex_offs(37, 7).add_box_with([4.3, -1.5, -3.0], [0.0, 5.0, 7.0], CubeDeformation::new(0.01)), PartPose::offset(0.0, 2.0, -2.5));
+    let open = mesh.add_or_replace_child(head, "open", CubeListBuilder::create().tex_offs(25, 34).add_box_with([-6.0, -8.5, -3.5], [12.0, 8.0, 7.0], CubeDeformation::new(0.5)).tex_offs(25, 49).add_box_with([-6.0, -8.5, -3.5], [12.0, 8.0, 7.0], CubeDeformation::new(0.0)).tex_offs(37, 7).set_mirror(true).add_box_with([-6.3, -6.0, -3.5], [0.0, 5.0, 7.0], CubeDeformation::new(0.01)).set_mirror(false).tex_offs(37, 7).add_box_with([6.3, -6.0, -3.5], [0.0, 5.0, 7.0], CubeDeformation::new(0.01)), PartPose::offset(0.0, 4.5, -2.0));
+    let hat = mesh.add_or_replace_child(head, "hat", CubeListBuilder::create(), PartPose::offset(0.0, -4.7, -3.0));
+    let hat_r1 = mesh.add_or_replace_child(hat, "hat_r1", CubeListBuilder::create().tex_offs(-7, 49).add_box_with([-4.0, 1.25, -3.5], [8.0, 0.0, 7.0], CubeDeformation::new(0.0)).tex_offs(0, 57).add_box_with([-2.0, -1.75, -1.5], [4.0, 3.0, 3.0], CubeDeformation::new(0.0)), PartPose::offset_and_rotation(0.0, 0.0, 0.0, 0.1309, 0.0, 0.0));
+    LayerDefinition::create(mesh, 64, 64).bake_root()
+}

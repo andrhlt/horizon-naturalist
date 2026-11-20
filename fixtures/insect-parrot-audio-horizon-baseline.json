@@ -1,0 +1,15 @@
+{
+  "butterfly": {
+    "air": {"minecraft:entity.parrot.fly": 5},
+    "ground": {"minecraft:entity.parrot.fly": 2, "minecraft:entity.parrot.step": 1}
+  },
+  "dragonfly": {
+    "air": {"minecraft:entity.parrot.fly": 5},
+    "ground": {"minecraft:entity.parrot.step": 1}
+  },
+  "firefly": {
+    "air": {"minecraft:entity.parrot.fly": 4},
+    "ground": {"minecraft:entity.parrot.fly": 3}
+  },
+  "vulture": {"air": {}, "ground": {}}
+}

@@ -1,0 +1,143 @@
+{
+  "blocked": true,
+  "consumed": true,
+  "blocks": 10,
+  "open_in_range": true,
+  "queens": 1,
+  "owner_links": 10,
+  "owner_check": true,
+  "sugar_heals": true,
+  "food_rules": true,
+  "carried_one": true,
+  "stored": true,
+  "owner_safe": true,
+  "entered": true,
+  "released_tamed": true,
+  "released_owner": true,
+  "released_owned_by_actor": true,
+  "wild_angry_ticks": 500,
+  "portals": false,
+  "variant": "naturalist:ant",
+  "width": 0.6,
+  "height": 0.5,
+  "max_health": 6.0,
+  "movement_speed": 0.2,
+  "attack_damage": 2.0,
+  "follow_range": 20.0,
+  "seed_42_layout": [
+    [
+      0,
+      0,
+      -1,
+      true,
+      2,
+      false
+    ],
+    [
+      1,
+      0,
+      -1,
+      false,
+      0,
+      false
+    ],
+    [
+      0,
+      1,
+      -1,
+      true,
+      0,
+      false
+    ],
+    [
+      -1,
+      0,
+      0,
+      false,
+      0,
+      false
+    ],
+    [
+      0,
+      0,
+      0,
+      true,
+      0,
+      false
+    ],
+    [
+      1,
+      0,
+      0,
+      false,
+      0,
+      false
+    ],
+    [
+      0,
+      1,
+      0,
+      false,
+      0,
+      false
+    ],
+    [
+      1,
+      1,
+      0,
+      false,
+      0,
+      false
+    ],
+    [
+      0,
+      2,
+      0,
+      true,
+      0,
+      true
+    ],
+    [
+      0,
+      0,
+      1,
+      false,
+      0,
+      false
+    ]
+  ],
+  "live_gather": [
+    [
+      1,
+      false
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      1,
+      false
+    ],
+    [
+      0,
+      true
+    ]
+  ],
+  "hill_breaks": [
+    {
+      "same_owner": true,
+      "released": 2,
+      "tamed": 2,
+      "angry": 0,
+      "apples": 2
+    },
+    {
+      "same_owner": false,
+      "released": 2,
+      "tamed": 2,
+      "angry": 2,
+      "apples": 2
+    }
+  ]
+}

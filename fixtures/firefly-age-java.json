@@ -1,0 +1,18 @@
+{
+  "juvenile": {
+    "baby": true,
+    "dimensions": [
+      0.35,
+      0.3,
+      0.25500003
+    ]
+  },
+  "adult": {
+    "baby": false,
+    "dimensions": [
+      0.7,
+      0.6,
+      0.51000005
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "woodland": "deer_fixture:woodland",
+  "fallback": "deer_fixture:fallback",
+  "explicit": "deer_fixture:woodland",
+  "unknown": "deer_fixture:retired",
+  "legacy": "naturalist:deer",
+  "inherited": "deer_fixture:woodland"
+}

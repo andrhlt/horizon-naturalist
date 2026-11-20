@@ -1,0 +1,63 @@
+{
+  "food": [
+    5,
+    6.0,
+    false
+  ],
+  "recipes": {
+    "cake/naturalist:duck_egg": [
+      "naturalist:cake",
+      "minecraft:cake",
+      1
+    ],
+    "pumpkin_pie/naturalist:duck_egg": [
+      "naturalist:pumpkin_pie",
+      "minecraft:pumpkin_pie",
+      1
+    ],
+    "cake/minecraft:egg": [
+      "minecraft:cake",
+      "minecraft:cake",
+      1
+    ],
+    "pumpkin_pie/minecraft:egg": [
+      "minecraft:pumpkin_pie",
+      "minecraft:pumpkin_pie",
+      1
+    ],
+    "cake/minecraft:snowball": [],
+    "pumpkin_pie/minecraft:snowball": []
+  },
+  "egg_tag": [
+    "minecraft:blue_egg",
+    "minecraft:brown_egg",
+    "minecraft:egg",
+    "naturalist:alligator_egg",
+    "naturalist:duck_egg",
+    "naturalist:ostrich_egg",
+    "naturalist:tortoise_egg"
+  ],
+  "cooking": {
+    "furnace/minecraft:blue_egg": "naturalist:cooked_egg",
+    "furnace/minecraft:brown_egg": "naturalist:cooked_egg",
+    "furnace/minecraft:egg": "naturalist:cooked_egg",
+    "furnace/naturalist:alligator_egg": "naturalist:cooked_egg",
+    "furnace/naturalist:duck_egg": "naturalist:cooked_egg",
+    "furnace/naturalist:ostrich_egg": "naturalist:cooked_egg",
+    "furnace/naturalist:tortoise_egg": "naturalist:cooked_egg",
+    "furnace/minecraft:snowball": null,
+    "smoker/minecraft:blue_egg": "naturalist:cooked_egg",
+    "smoker/minecraft:brown_egg": "naturalist:cooked_egg",
+    "smoker/minecraft:egg": "naturalist:cooked_egg",
+    "smoker/naturalist:alligator_egg": "naturalist:cooked_egg",
+    "smoker/naturalist:duck_egg": "naturalist:cooked_egg",
+    "smoker/naturalist:ostrich_egg": "naturalist:cooked_egg",
+    "smoker/naturalist:tortoise_egg": "naturalist:cooked_egg",
+    "smoker/minecraft:snowball": null
+  },
+  "campfire": true,
+  "hide": {
+    "furnace": "minecraft:leather",
+    "smoker": null
+  }
+}

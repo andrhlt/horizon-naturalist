@@ -1,0 +1,218 @@
+{
+  "naturalist:alligator": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:ant": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:bear": [
+    0,
+    128,
+    128,
+    128
+  ],
+  "naturalist:bird": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "naturalist:black_bear": [
+    0,
+    128,
+    128,
+    128
+  ],
+  "naturalist:boar": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:butterfly": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "naturalist:capybara": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:caterpillar": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:crab": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:deer": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:desert_scorpion": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:duck": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:elephant": [
+    0,
+    0,
+    128,
+    128
+  ],
+  "naturalist:firefly": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:giant_isopod": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:giraffe": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:great_white_shark": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:hedgehog": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:hippo": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:jungle_scorpion": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:komodo_dragon": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:lion": [
+    0,
+    5,
+    93,
+    94
+  ],
+  "naturalist:lizard": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:mammoth": [
+    0,
+    0,
+    128,
+    128
+  ],
+  "naturalist:mole": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:ostrich": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:rat": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:rhino": [
+    0,
+    128,
+    128,
+    128
+  ],
+  "naturalist:snail": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:snake": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:tiger": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:tortoise": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:turkey": [
+    0,
+    11,
+    3,
+    5
+  ],
+  "naturalist:whale": [
+    0,
+    128,
+    128,
+    128
+  ],
+  "naturalist:zebra": [
+    0,
+    25,
+    36,
+    17
+  ]
+}

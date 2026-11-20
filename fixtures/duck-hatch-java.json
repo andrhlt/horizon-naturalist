@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "seed": 0,
+      "hatchlings": 0,
+      "baby_age": true,
+      "at_impact": true,
+      "persistent": false,
+      "yaw_at_impact": true,
+      "discarded": true
+    },
+    {
+      "seed": 4096,
+      "hatchlings": 1,
+      "baby_age": true,
+      "at_impact": true,
+      "persistent": false,
+      "yaw_at_impact": true,
+      "discarded": true
+    },
+    {
+      "seed": 4104,
+      "hatchlings": 4,
+      "baby_age": true,
+      "at_impact": true,
+      "persistent": false,
+      "yaw_at_impact": true,
+      "discarded": true
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "max_health": 14.0,
+  "movement_speed": 0.2,
+  "adult": [
+    0.9,
+    0.9,
+    0.765
+  ],
+  "juvenile": [
+    0.45,
+    0.45,
+    0.3825
+  ],
+  "variant": "naturalist:capybara",
+  "eats_melon": true,
+  "untamed_wont_mate": true,
+  "tame_failed": true,
+  "failure_consumed": true,
+  "tame_succeeded": true,
+  "default_dye": "red",
+  "ordered_sit": true,
+  "whistle_flipped_following": true,
+  "whistle_stood_pet_up": true,
+  "healed_health": 6.0,
+  "heal_consumed": true,
+  "tamed_can_mate": true,
+  "offspring_tamed": true,
+  "offspring_owner": true,
+  "offspring_dye": "red",
+  "fall_damage": false,
+  "can_sleep_at_fixture_time": true,
+  "sleep_started": true,
+  "sleep_stopped": true
+}

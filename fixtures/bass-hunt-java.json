@@ -1,0 +1,6 @@
+{
+  "can_hunt": true,
+  "discards_prey": true,
+  "can_hunt_after": false,
+  "variant": "naturalist:bass_large"
+}

@@ -1,0 +1,8 @@
+{
+  "finds_cactus": true,
+  "snaps_to_top": true,
+  "reserves_against_second": true,
+  "holds_300_goal_ticks": true,
+  "releases_reservation": true,
+  "startle_cooldown_200": true
+}

@@ -1,0 +1,12 @@
+{
+  "minecraft:pig": true,
+  "naturalist:boar": true,
+  "naturalist:turkey": true,
+  "naturalist:capybara": true,
+  "naturalist:desert_scorpion": false,
+  "naturalist:jungle_scorpion": true,
+  "naturalist:duck": false,
+  "naturalist:butterfly": false,
+  "naturalist:caterpillar": false,
+  "naturalist:bass": false
+}

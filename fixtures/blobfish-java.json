@@ -1,0 +1,16 @@
+{
+  "max_health": 3.0,
+  "attack_damage": 1.0,
+  "movement_speed": 1.0,
+  "pink_after_99": true,
+  "gray_after_100": true,
+  "ascent_converts": true,
+  "canceled": true,
+  "gray_after_99": true,
+  "pink_after_100": true,
+  "bucket_variant": "naturalist:blobfish",
+  "bucket_has_gray": false,
+  "released_is_pink": true,
+  "at_threshold": true,
+  "above_threshold": false
+}

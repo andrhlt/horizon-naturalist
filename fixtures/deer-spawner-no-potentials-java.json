@@ -1,0 +1,122 @@
+{
+  "7198391": {
+    "bare": null,
+    "explicit": null
+  },
+  "22684254": {
+    "bare": {
+      "pos": [
+        8.074328899383545,
+        101.0,
+        8.704438328742981
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": -0.08594024935886264,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 343.36865,
+      "next": 3797644524335768070
+    },
+    "explicit": {
+      "pos": [
+        8.074328899383545,
+        101.0,
+        8.704438328742981
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 343.36865,
+      "next": 2127741951362854511
+    }
+  },
+  "8430129": {
+    "bare": {
+      "pos": [
+        6.918682813644409,
+        99.0,
+        8.646879196166992
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.043855864892154935,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 20.480211,
+      "next": -463754523557546323
+    },
+    "explicit": {
+      "pos": [
+        6.918682813644409,
+        99.0,
+        8.646879196166992
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 20.480211,
+      "next": 6826421173091969094
+    }
+  },
+  "15485863": {
+    "bare": {
+      "pos": [
+        11.424791634082794,
+        101.0,
+        8.310478925704956
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.08552984918579459,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 261.60526,
+      "next": 8152620192999954426
+    },
+    "explicit": {
+      "pos": [
+        11.424791634082794,
+        101.0,
+        8.310478925704956
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 261.60526,
+      "next": 1368813661905340776
+    }
+  },
+  "708329": {
+    "bare": {
+      "pos": [
+        6.904805421829224,
+        99.0,
+        10.628326959908009
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": 0.02934029055014253,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 77.00577,
+      "next": 2851895599047687
+    },
+    "explicit": {
+      "pos": [
+        6.904805421829224,
+        99.0,
+        10.628326959908009
+      ],
+      "variant": "naturalist:deer",
+      "follow_bonus": null,
+      "left_handed": false,
+      "age": 0,
+      "yaw": 77.00577,
+      "next": 4104702938984739259
+    }
+  },
+  "123456789": {
+    "bare": null,
+    "explicit": null
+  }
+}
