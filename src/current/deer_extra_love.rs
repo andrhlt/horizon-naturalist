@@ -31,7 +31,6 @@ fn deer_extra_love(
         }
         _ => None,
     };
-<<<<<<< HEAD
     let health_tag = tag.clone();
     let result = original(game, target, tag);
     if result.is_ok() && let crate::game::commands::Target::Mob(id) = target {
@@ -47,10 +46,6 @@ fn deer_extra_love(
         }
     }
     if result.is_ok() && let crate::game::commands::Target::Mob(id) = target {
-=======
-    let result = original(game, target, tag);
-    if result.is_ok() && let crate::game::commands::Target::Mob(id) = target {
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         let tags = game.world_tables.as_ref().and_then(|t| t.pack_tags.get("entity_type")).unwrap_or(&game.res.mob_data().entity_tags);
         let predators = tags.get("naturalist:deer_predators").cloned().unwrap_or_default();
         if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id) {

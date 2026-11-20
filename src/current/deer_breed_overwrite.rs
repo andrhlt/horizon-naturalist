@@ -24,9 +24,7 @@ fn deer_breed_overwrite(
                 ),
                 (Species::Horse, Some(Species::Donkey)) | (Species::Donkey, Some(Species::Horse))
             );
-            let kind = if p.kind.id == "naturalist:butterfly" {
-                "naturalist:caterpillar".to_owned()
-            } else if mule {
+            let kind = if mule {
                 "minecraft:mule".to_owned()
             } else {
                 super::native_hooks::mob_kind(&p)
@@ -123,7 +121,6 @@ fn deer_breed_overwrite(
         };
         // A horse and a donkey have a mule.
         let kind = match (p.species(), q.as_ref().map(|q| q.species())) {
-            _ if p.kind.id == "naturalist:butterfly" => "naturalist:caterpillar".to_owned(),
             (Species::Horse, Some(Species::Donkey)) | (Species::Donkey, Some(Species::Horse)) => {
                 "minecraft:mule".to_owned()
             }
@@ -132,9 +129,9 @@ fn deer_breed_overwrite(
         let mut child = game.create_mob_reason(
             &kind,
             [p.position.x, p.position.y, p.position.z],
-            p.kind.id != "naturalist:butterfly",
+            true,
             SpawnSite::Raw,
-            if p.kind.id == "naturalist:butterfly" { Some(0.0) } else { None },
+            None,
         )?;
         'offspring: {
             let child = &mut child;
@@ -286,15 +283,9 @@ fn deer_breed_overwrite(
         // The goal already drew this coin on the parent stream. Keep it local to
         // this call and write a child's variant only after admission succeeds.
         let inherited = if p.kind.id == "naturalist:deer" {
-            let source = if coin { partner } else { parent };
+            let source = if coin { parent } else { partner };
             Some(game.persist.raw.get(&source).and_then(|tag| tag.get("Variant")).cloned()
                 .unwrap_or_else(|| horizon_core::nbt::Tag::String("naturalist:deer".into())))
-        } else if p.kind.id == "naturalist:duck" {
-            let source = if coin { partner } else { parent };
-            Some(game.persist.raw.get(&source).and_then(|tag|tag.get("Variant")).cloned()
-                .unwrap_or_else(||horizon_core::nbt::Tag::String("naturalist:duck".into())))
-        } else if p.kind.id == "naturalist:butterfly" {
-            Some(horizon_core::nbt::Tag::String("naturalist:caterpillar".into()))
         } else { None };
         let commit_variant = |game: &mut Game<'_>, joined: Option<u32>| {
             if let (Some(id), Some(variant)) = (joined, inherited) {

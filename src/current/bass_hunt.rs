@@ -18,7 +18,6 @@ static CANDIDATES: AttachmentType<Candidates> = AttachmentType {
     sync: false,
 };
 
-<<<<<<< HEAD
 /// Java NumericTag.intValue: integer casts wrap; floats floor then saturate.
 pub fn legacy_numeric_index(value: &Tag) -> Option<i32> {
     Some(match value {
@@ -53,16 +52,6 @@ pub fn tier(data: &Compound) -> u8 {
     match variant(data.get(&"Variant".into())).as_deref() {
         Some("naturalist:bass_medium") => 1,
         Some("naturalist:bass_large") => 2,
-=======
-pub fn tier(data: &Compound) -> u8 {
-    match data.get(&"Variant".into()) {
-        Some(Tag::String(value)) => match value.to_string_lossy().as_str() {
-            "naturalist:bass_medium" => 1,
-            "naturalist:bass_large" => 2,
-            _ => 0,
-        },
-        Some(Tag::Int(value)) => value.clamp(&0, &2).to_owned() as u8,
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         _ => 0,
     }
 }
@@ -239,7 +228,6 @@ impl Goal for BassHunt {
         cx.set_target(None);
     }
 }
-<<<<<<< HEAD
 
 #[cfg(test)]
 mod variant_tests {
@@ -264,5 +252,3 @@ mod variant_tests {
         }
     }
 }
-=======
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)

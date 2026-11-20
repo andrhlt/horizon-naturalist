@@ -12,11 +12,7 @@ fn deer_load_love(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
     if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
         crate::game::naturalist_deer_goals::install(mob, predators);
     }
-<<<<<<< HEAD
     if let Some(variant) = crate::game::naturalist_deer_goals::take_pending_variant(game, entity) {
-=======
-    if let Some(variant) = crate::game::naturalist_deer_goals::take_pending_variant(entity) {
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         let raw = game
             .persist
             .raw
