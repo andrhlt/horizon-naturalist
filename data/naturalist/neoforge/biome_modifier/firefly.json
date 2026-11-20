@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_firefly",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_firefly"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:firefly",
+    "weight": 10,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}

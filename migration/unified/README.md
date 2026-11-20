@@ -1,5 +1,0 @@
-# Naturalist current-nightly development project
-
-This native project combines generated metadata and biome spawn routing with partial Bass hunting, movement and schooling, partial Deer rendering, breeding, goals and appearance sync, capture-net support for selected species, and an ant-hill block-entity factory. It requires the matching generated content and external Naturalist jar; use `tools/package_current.py --native-project migration/unified` from the repository root. It is not a release or a full gameplay port.
-
-The fixture records eight attributes for each of 48 mobs; those fields, categories and dimensions matched a headless diagnostic run. Other attributes and species behavior remain unverified. Deer currently supports synchronized default and custom variant textures; weighted spawn selection remains to be ported; same-variant inheritance was verified in the Deer prototype. Ant-hill block entities initialize empty Storage and preserve saved Owner data; ant behavior and storage interactions remain unported. The original ant hill features are skipped by Horizon worldgen and need an implementation. The source contains no diagnostic-only logging.

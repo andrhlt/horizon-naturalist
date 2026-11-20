@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_dragonfly",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_dragonfly"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:dragonfly",
+    "weight": 10,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}

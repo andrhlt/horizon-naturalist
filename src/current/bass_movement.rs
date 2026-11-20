@@ -4,6 +4,7 @@ fn bass_movement(game: &mut Game<'_>, entity: u32, kind: &str) {
     if kind != "naturalist:bass" {
         return;
     }
+<<<<<<< HEAD
     // Normalize legacy NBT before the entity's gameplay and render snapshots.
     if let Some(horizon_core::nbt::Tag::Compound(fields)) = game.persist.raw.get_mut(&entity) {
         if let Some(value) = fields.get(&"Variant".into()) {
@@ -17,6 +18,8 @@ fn bass_movement(game: &mut Game<'_>, entity: u32, kind: &str) {
             }
         }
     }
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     let tier = game
         .entity(entity)
         .and_then(|entity| entity.nbt(game))

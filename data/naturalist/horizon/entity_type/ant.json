@@ -4,11 +4,14 @@
     "minecraft:max_health": 6.0,
     "minecraft:movement_speed": 0.2,
     "minecraft:follow_range": 20.0
+<<<<<<< HEAD
   },
   "sounds": {
     "ambient": "naturalist:entity.ant.ambient",
     "hurt": "naturalist:entity.ant.hurt",
     "death": "naturalist:entity.ant.death",
     "step": "naturalist:entity.ant.step"
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
   }
 }

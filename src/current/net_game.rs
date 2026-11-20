@@ -47,9 +47,12 @@ fn full_item(kind: &str) -> Option<&'static str> {
 
 fn hand_item(kind: &str) -> Option<&'static str> {
     match kind {
+<<<<<<< HEAD
         "naturalist:ant" => Some("naturalist:ant"),
         "naturalist:crab" => Some("naturalist:crab"),
         "naturalist:rat" => Some("naturalist:rat"),
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         "naturalist:butterfly" => Some("naturalist:butterfly"),
         "naturalist:caterpillar" => Some("naturalist:caterpillar"),
         "naturalist:desert_scorpion" => Some("naturalist:scorpion"),
@@ -63,6 +66,7 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
     let mob = &game.mobs[index];
     let mounted = mob.extra.mount.is_some() || mob.extra.rider.is_some() || mob.rider.is_some();
     let kind = mob.kind.id.clone();
+<<<<<<< HEAD
     if kind == "naturalist:rat" && !mob.extra.tame { return false; }
     let tamed_with_owner = mob.extra.tame && mob.extra.owner.is_some();
     let crab_held = (kind == "naturalist:crab").then(|| horizon_client::mobs::finalize::item_stack(mob, 0)).flatten();
@@ -70,6 +74,8 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
     let crab_following = game.persist.raw.get(&mob.id).and_then(|raw| raw.get("FollowingOwner")).cloned().unwrap_or(Tag::Byte(1));
     let rat_sitting = mob.extra.sitting;
     let rat_following = game.persist.raw.get(&mob.id).and_then(|raw| raw.get("FollowingOwner")).cloned().unwrap_or(Tag::Byte(1));
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     let full = full_item(&kind).filter(|_| !mounted);
     if let Some(item) = full.or_else(|| hand_item(&kind)) {
         let mut saved = game.mob_tree_nbt(index);
@@ -79,13 +85,18 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
             caught.data_mut().set_other("minecraft:custom_name", name);
             fields.retain(|key, value| match key.to_string_lossy().as_str() {
                 "Health" | "Variant" => true,
+<<<<<<< HEAD
                 "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat") && tamed_with_owner,
                 "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab" | "naturalist:rat"),
                 "FollowingOwner" | "Sitting" => kind == "naturalist:rat" && tamed_with_owner,
+=======
+                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar"),
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
                 "Color" => kind == "naturalist:snail",
                 "NoAI" | "Silent" | "NoGravity" | "Glowing" | "Invulnerable" => !matches!(value, Tag::Byte(0)),
                 _ => false,
             });
+<<<<<<< HEAD
             if matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat") && tamed_with_owner {
                 fields.insert("Tame".into(), Tag::Byte(1));
             }
@@ -100,6 +111,8 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
                     fields.insert("Sitting".into(), Tag::Byte(i8::from(crab_sitting)));
                 }
             }
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
             if kind == "naturalist:snail" && let Some(Tag::Byte(color)) = fields.get(&"Color".into()) {
                 fields.insert("Color".into(), Tag::Int(i32::from(*color)));
             }
@@ -115,7 +128,10 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
                 game.spawn_item(leftover, [x, y - f64::from(0.3_f32), z], motion, 40);
             }
         }
+<<<<<<< HEAD
         if kind == "naturalist:ant" { crate::game::naturalist_ant_worker::release(game, id as u32); }
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         game.break_leash(id as u32, false, false);
         game.mobs[index].removed = true;
         return true;
@@ -165,9 +181,12 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
         "naturalist:endermite" => "minecraft:endermite",
         "naturalist:dragonfly" => "naturalist:dragonfly",
         "naturalist:firefly" => "naturalist:firefly",
+<<<<<<< HEAD
         "naturalist:ant" => "naturalist:ant",
         "naturalist:crab" => "naturalist:crab",
         "naturalist:rat" => "naturalist:rat",
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         "naturalist:butterfly" => "naturalist:butterfly",
         "naturalist:caterpillar" => "naturalist:caterpillar",
         "naturalist:scorpion" => "naturalist:desert_scorpion",
@@ -195,6 +214,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                 configured.data_mut().set_other("minecraft:bucket_entity_data", Some(Tag::Compound(fields.clone())));
                 horizon_client::entity_nbt::apply_item_components(mob, &configured);
                 mob.persistent = true;
+<<<<<<< HEAD
                 if matches!(kind, "naturalist:ant" | "naturalist:crab" | "naturalist:rat") {
                     let saved = Tag::Compound(fields.clone());
                     let tame = saved.get("Tame").and_then(horizon_world::datafix::dynamic::as_number)
@@ -213,12 +233,15 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                     horizon_client::mobs::finalize::set_item_stack(mob, 0, held);
                     horizon_client::mobs::finalize::set_drop_chance(mob, 0, 2.0);
                 }
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
             }
             let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
             if let Tag::Compound(raw) = raw {
                 // The engine preserves mod-owned fields through saves without reusing vanilla slots.
                 for (key, value) in fields { raw.insert(key, value); }
                 if hand_item(kind).is_some() { raw.insert("FromHand".into(), Tag::Byte(1)); }
+<<<<<<< HEAD
                 // CaughtEntityItem.tryAssignWorkstation runs at the clicked block position
                 // immediately after spawning a Rat. It only assigns tamed workers to containers.
                 if kind == "naturalist:rat"
@@ -235,6 +258,8 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                     raw.insert("FollowingOwner".into(), Tag::Byte(0));
                     raw.insert("Sitting".into(), Tag::Byte(0));
                 }
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
             }
         }
         [f64::from(pos[0]) + 0.5, f64::from(pos[1]), f64::from(pos[2]) + 0.5]

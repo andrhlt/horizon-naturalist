@@ -194,6 +194,7 @@ bindings = [
 ]
 
 [[native.mixin]]
+<<<<<<< HEAD
 id = "deer_breed_overwrite"
 target = "horizon_client::game::creatures::Game<'_>::breed"
 kind = "OVERWRITE"
@@ -208,6 +209,20 @@ bindings = [
  {name = "experience", ty = "horizon_client::mobs::BreedExperience", value = "experience"},
 ]
 
+=======
+id = "deer_breed_variant"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_breed"
+kind = "HEAD"
+helper = "src/current/deer_breed_variant.rs"
+bindings = [
+  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
+  { name = "parent", ty = "u32", value = "parent" },
+  { name = "partner", ty = "u32", value = "partner" },
+  { name = "child", ty = "Option<u32>", value = "child" },
+]
+
+
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
 [[native.mixin]]
 id = "deer_load_variants"
 target = "horizon_client::game::server_reload::functions_store"
@@ -298,6 +313,7 @@ bindings = [
   {name = "target", ty = "Pos", value = "target"},
   {name = "stack", ty = "&ItemStack", value = "stack"},
 ]
+<<<<<<< HEAD
 
 [[native.mixin]]
 id = "bass-sync"
@@ -802,3 +818,5 @@ id = "duck-variant-reload"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_data_pack_files"
 kind = "HEAD"
 helper = "src/current/duck_variant_reload.rs"
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)

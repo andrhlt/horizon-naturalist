@@ -1,44 +1,11 @@
-# Current-nightly migration investigation
+# Current-nightly development notes
 
-The `main` branch is the historical 0.7.4-preview.45 port, not a current
-`.hmod`. This branch is an unfinished migration to Horizon commit
-`0a875da91dbb0fdcb7ba8c42c11341aa229af51a`. The development native build has been tested, but complete gameplay parity and release readiness are not claimed.
+The root project targets Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` and Minecraft 26.3. It has been built and opened headlessly, including alongside Wildlife Tuning. This remains an incomplete migration, not a release or a gameplay parity claim. The legacy 0.7.4-preview.45 implementation and its launcher helpers are preserved on `main`.
 
-Run `python3 migration/state_inventory.py` to locate every direct accessor of
-the old injected state. The legacy manifest declares 54 fields on Navigation,
-one on AvoidEntity and one on SoundEngine. The report counts direct accesses,
-not indirect callers of wrappers; those callers also need review.
+`python3 tools/package_current.py <original-jar> <output.hmod>` packages the root project deterministically. `python3 tools/refresh_current_data.py <original-jar>` checks generated content against the tracked root data; `--write` regenerates it. The original jar is identified by its exact SHA-512 and remains external. The tracked data files are generated Horizon definitions, spawn modifiers, and conventional biome tags. Content definitions omit attributes unsupported by their placeholder templates; `README-omitted-attributes.txt` records them, and native declarations restore their values. Regenerate native metadata and attribute tables from `migration/entity-metadata.json` with `python3 migration/generate_metadata.py` and format the resulting Rust files.
 
-The current game owns mob attachment registrations through
-`Mob::attachment_lifetime`; that field is lifecycle metadata, not mod storage.
-Entity attachments or entity Part state can own per-mob values where a valid
-entity and host are available. Values previously serialized separately, such as
-the bass feeding cooldown, must continue to round-trip through the same save
-semantics. Unsaved navigation state must retain its prior reset behavior.
+The current build registers 51 entity IDs and 146 items. Those item defaults matched the supplied Java fixture for stack size, durability, rarity, and food. A headless diagnostic run matched all 48 supplied mob profiles for category, dimensions, and the eight attributes those fixtures record; other attributes remain unverified. Generated biome spawns matched all 515 rows recorded by the supplied Java fixture, including 396 Naturalist rows, their category, weight and group size. Ground placement is registered for Deer and 18 species sharing its Java animal rule; other species' spawn predicates still need their own ports.
 
-A mechanical replacement is unsafe: old helpers often take only
-`&Navigation`, and `Navigation` is cloned and used for rider redirection.
-`EntityPartState` returns `HolderBusy` while an entity is out of its list for
-its own tick, so that API cannot simply replace state reads in the existing AI
-loop. Trace each wrapper to its mob owner and call context; move suitable
-behavior into a per-mob Goal (whose instance owns its state) or another API
-that actually provides its holder, and test save, unload, entity replacement,
-riding and client synchronization where the behavior requires them. Never key
-state by the address of a movable entity or reuse an unscoped numeric entity ID.
-The sound map and AvoidEntity goal state need their own lifecycle analysis.
+Partial Bass hunting, schooling and bucket handling, Deer rendering, goals, variants and breeding, and capture-net interactions for selected species have been implemented and tested in development fixtures. Those tests do not establish full species parity. Ant-hill block entities initialize `Storage` and retain saved `Owner` and storage data. Their worker, queen, storage interactions and generation remain incomplete: Horizon currently skips both custom ant-hill worldgen feature types. The original `naturalist:add_animals` modifier is also unsupported; generated standard modifiers cover the recorded spawn-table fixture. Variant assignment on natural Deer spawn and untested network/reload cases remain open.
 
-The current game re-exports mob code from `horizon-client-lib`; its lower-crate functions still need replacement markers. Resolve legacy targets against the pinned function catalog and verify each injection by building it. Content
-conversion must use an external `[[jar]]` reference rather than redistribute
-upstream's reserved resources.
-
-## Development content stage
-
-`python3 tools/package_current.py /path/to/naturalist-2.0.7-neoforge-26.3.jar /tmp/naturalist-content-dev.hmod` builds an API 0.2 content-only development package. The deterministic package has version `0.8.0-dev.1` and `side = "both"`. It uses the historical content generators but includes generated `data/naturalist/horizon/` registry definitions, biome spawn modifiers and conventional biome tags. It does not contain the original jar's files; copy the exact original jar to the game's `jars/<sha512>.jar` cache. The jar's SHA-512 is declared in the manifest. This is a development dependency, not a release: the content-only form contains no native gameplay or rendering.
-
-On Horizon `0a875da`, an isolated headless world accepted all 51 generated entity IDs and loaded 1,804 items versus 1,658 in the unmodded base, a difference of 146. Entity templates are placeholders: deer uses wandering trader, and 31 attributes are omitted from content definitions because the current loader rejects them on the creature template; the package lists every omitted value in `README-omitted-attributes.txt`. The unified native project restores those values through its attribute declarations; correct entity behavior still needs the gameplay port. The current loader skips Naturalist's custom `add_animals` modifier; generated standard modifiers cover the recorded spawn-table fixture, and conventional tags supply the swamp tag. The content-only stage cannot provide the custom net recipe serializer.
-
-For the native metadata experiment, run `python3 migration/generate_metadata.py`, then pass `--native-project migration/unified` to `package_current.py`. This creates one combined native/content development package; it still needs the original jar in the local hash cache. On the pinned client build, a diagnostic run matched all 48 supplied Java mob profiles for category, dimensions, and the eight attributes those fixtures record. The metadata source also includes dirt trail, which has no matching fixture; carried food and duck egg are not handled as mobs. For bird, butterfly, dragonfly, firefly, and hedgehog the attribute registrar uses a wandering-trader row so it can preserve the fixture’s missing attack attribute; known selected-template defaults are added explicitly. For every species, values absent from the fixtures remain unverified against Java. Food, behavior, variants, and rendering need separate ports.
-
-## Combined development integration
-
-`migration/unified` combines the metadata and spawn routing prototype with partial Bass and Deer implementations and capture-net support for selected species. Build with `--native-project migration/unified`. It is not a complete Naturalist gameplay port. In a headless diagnostic world, 396 Naturalist rows in the supplied biome fixture matched category, weight and group sizes after routing. A clean unified build also initialized alongside Wildlife Tuning; the ant hill features remain unsupported.
+The current SDK cannot replace the generic natural-spawn finalizer where Deer needs the spawn pass random stream; custom Deer variant selection for that path remains open. Deer sprint state likewise needs a seam between navigation and movement control in an unindexed lower-crate AI function. The old ant-hill placement hook is also in an unindexed lower crate, and the public API has no custom worldgen feature registrar; the project keeps the original features visible as skipped rather than replacing them with no-ops.

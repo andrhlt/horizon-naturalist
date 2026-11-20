@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_zebra",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_zebra"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:zebra",
+    "weight": 1,
+    "minCount": 2,
+    "maxCount": 6
+  }
+}

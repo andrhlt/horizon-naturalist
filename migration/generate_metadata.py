@@ -4,7 +4,7 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parent
 metadata = json.loads((root / 'entity-metadata.json').read_text())
-project = root / 'unified/src'
+project = root.parent / 'src/current'
 
 def rust(s):
     return json.dumps(s)

@@ -48,6 +48,15 @@ impl Goal for SameKindBreed {
         self.love_time += 1;
         if self.love_time >= goals::reduced(60) && m.distance_sqr(p.position) < 9.0 {
             let parent_variant = Some(m.random.next_boolean());
+<<<<<<< HEAD
+=======
+            if m.kind.id == "naturalist:deer" {
+                BREED_COINS
+                    .lock()
+                    .unwrap_or_else(|e| e.into_inner())
+                    .insert(m.id, parent_variant.unwrap());
+            }
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
             let experience = if !cx.w.asks_baby_spawn {
                 BreedExperience::Drawn(breeding_experience(m, cx.w.mob_drops))
             } else {
@@ -378,6 +387,17 @@ pub fn variant_textures(game: &crate::game::Game<'_>, variant: &str) -> Option<(
     value
 }
 
+<<<<<<< HEAD
+=======
+static BREED_COINS: std::sync::LazyLock<std::sync::Mutex<std::collections::HashMap<u32, bool>>> =
+    std::sync::LazyLock::new(|| std::sync::Mutex::new(std::collections::HashMap::new()));
+pub fn take_breed_coin(parent: u32) -> Option<bool> {
+    BREED_COINS
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .remove(&parent)
+}
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
 
 #[derive(Clone, Debug)]
 struct SpawnVariant {
@@ -388,11 +408,22 @@ struct SpawnVariant {
 }
 static SPAWN_VARIANTS: std::sync::LazyLock<std::sync::Mutex<Vec<SpawnVariant>>> =
     std::sync::LazyLock::new(|| std::sync::Mutex::new(Vec::new()));
+<<<<<<< HEAD
 static PENDING_VARIANTS: mod_api::AttachmentType<std::collections::HashMap<u32, String>> = mod_api::AttachmentType {
     namespace: "naturalist", name: "pending_deer_variants", default: std::collections::HashMap::new,
     codec: None, copy_on_death: false, sync: false,
 };
 pub fn load_spawn_variants(stack: &crate::game::functions::PackStack) {
+=======
+static PENDING_VARIANTS: std::sync::LazyLock<
+    std::sync::Mutex<std::collections::HashMap<u32, String>>,
+> = std::sync::LazyLock::new(|| std::sync::Mutex::new(std::collections::HashMap::new()));
+pub fn load_spawn_variants(stack: &crate::game::functions::PackStack) {
+    PENDING_VARIANTS
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .clear();
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     let packs = stack
         .builtin
         .iter()
@@ -464,6 +495,7 @@ pub fn choose_spawn_variant(game: &mut crate::game::Game<'_>, mob: &Mob, staged:
         let Some(tag) = selector.strip_prefix('#') else {
             return selector == biome;
         };
+<<<<<<< HEAD
         let canonical = if tag.contains(':') { tag.to_owned() } else { format!("minecraft:{tag}") };
         if let Some(members) = game.world_tables.as_ref()
             .and_then(|tables| tables.pack_tags.get("worldgen/biome"))
@@ -473,6 +505,11 @@ pub fn choose_spawn_variant(game: &mut crate::game::Game<'_>, mob: &Mob, staged:
         let entries = game.tag_entries("worldgen/biome", &canonical);
         entries.iter().any(|id| id == &biome)
             || (entries.is_empty() && game.res.mob_data().biome_has(&canonical, &biome))
+=======
+        let entries = game.tag_entries("worldgen/biome", tag);
+        entries.iter().any(|id| id == &biome)
+            || (entries.is_empty() && game.res.mob_data().biome_has(tag, &biome))
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     };
     let mut pool: Vec<_> = variants
         .iter()
@@ -509,11 +546,18 @@ pub fn choose_spawn_variant(game: &mut crate::game::Game<'_>, mob: &Mob, staged:
     for v in pool {
         if roll < v.weight {
             if staged {
+<<<<<<< HEAD
                 let holder = mod_api::Holder::Level;
                 if let Ok(mut pending) = PENDING_VARIANTS.get(&mut game.world.attachments, holder) {
                     pending.insert(mob.id, v.id.clone());
                     let _ = PENDING_VARIANTS.set(&mut game.world.attachments, holder, pending);
                 }
+=======
+                PENDING_VARIANTS
+                    .lock()
+                    .unwrap_or_else(|e| e.into_inner())
+                    .insert(mob.id, v.id.clone());
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
             }
             let raw = game
                 .persist
@@ -559,6 +603,7 @@ pub fn normalize_variant(game: &mut crate::game::Game<'_>, id: u32) {
     }
 }
 
+<<<<<<< HEAD
 pub fn take_pending_variant(game: &mut crate::game::Game<'_>, id: u32) -> Option<String> {
     let holder = mod_api::Holder::Level;
     let pending = &mut game.world.attachments;
@@ -570,4 +615,11 @@ pub fn take_pending_variant(game: &mut crate::game::Game<'_>, id: u32) -> Option
         let _ = PENDING_VARIANTS.set(pending, holder, variants);
     }
     variant
+=======
+pub fn take_pending_variant(id: u32) -> Option<String> {
+    PENDING_VARIANTS
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .remove(&id)
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
 }

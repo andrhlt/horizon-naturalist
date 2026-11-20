@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_rhino",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_rhino"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:rhino",
+    "weight": 1,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

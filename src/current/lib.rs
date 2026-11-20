@@ -1,5 +1,6 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
+<<<<<<< HEAD
 pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
@@ -10,6 +11,12 @@ mod bass_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
+=======
+mod appearance;
+pub mod bass_fx;
+pub mod bass_hunt;
+mod bass_bucket_item;
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -99,15 +106,21 @@ pub fn tick(
 
 struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
+<<<<<<< HEAD
     bass: Arc<bass_renderer::BassRenderer>,
     duck: Arc<duck_renderer::DuckRenderer>,
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
 }
 impl Default for Naturalist {
     fn default() -> Self {
         Self {
             deer: Arc::new(renderer::DeerRenderer::new()),
+<<<<<<< HEAD
             bass: Arc::new(bass_renderer::BassRenderer::new()),
             duck: Arc::new(duck_renderer::DuckRenderer::new()),
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         }
     }
 }
@@ -117,7 +130,10 @@ impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
         ant_hill::register(registrar);
+<<<<<<< HEAD
         ant_queen::register(registrar);
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         land_placements::register(registrar);
         registrar
             .declare_spawn_placement(
@@ -225,12 +241,16 @@ impl mod_api::Hooks for Naturalist {
             }
         }
     }
+<<<<<<< HEAD
     fn item_picked_up_post(&self, _: &mut dyn mod_api::ServerHost, _: &mut mod_api::ItemPickedUpPostEvent<'_>) {}
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     fn register_entity_renderers(
         &self,
         _: &mod_api::RegistrationContext,
         event: &mut mod_api::RegisterEntityRenderersEvent<'_>,
     ) {
+<<<<<<< HEAD
         event.renderers.register("naturalist:duck".into(), self.duck.clone());
         event
             .renderers
@@ -238,6 +258,11 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:bass".into(), self.bass.clone());
+=======
+        event
+            .renderers
+            .register("naturalist:deer".into(), self.deer.clone());
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     }
 
     fn render_living_pre(
@@ -265,6 +290,7 @@ impl mod_api::Hooks for Naturalist {
                 );
             }
         }
+<<<<<<< HEAD
         if event.entity.kind == "naturalist:duck" {
             if let Some(id)=host.entity(event.entity.id) {
                 let velocity=id.velocity(host).unwrap_or([0.0;3]);
@@ -292,6 +318,8 @@ impl mod_api::Hooks for Naturalist {
                 );
             }
         }
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         mod_api::Flow::Continue
     }
 
@@ -301,8 +329,11 @@ impl mod_api::Hooks for Naturalist {
         _: &mut mod_api::ClientTickPostEvent,
     ) {
         self.deer.retain_live(host);
+<<<<<<< HEAD
         self.bass.retain_live(host);
         self.duck.retain_live(host);
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     }
 
     fn client_level_unload(
@@ -311,8 +342,11 @@ impl mod_api::Hooks for Naturalist {
         _: &mut mod_api::ClientLevelUnloadEvent<'_>,
     ) {
         self.deer.clear();
+<<<<<<< HEAD
         self.bass.clear();
         self.duck.clear();
+=======
+>>>>>>> bc32ad3 (Make Naturalist development project installable from root)
     }
 }
 

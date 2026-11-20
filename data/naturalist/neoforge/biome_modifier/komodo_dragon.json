@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_komodo_dragon",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_komodo_dragon"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:komodo_dragon",
+    "weight": 20,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}
