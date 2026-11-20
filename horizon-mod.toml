@@ -194,17 +194,19 @@ bindings = [
 ]
 
 [[native.mixin]]
-id = "deer_breed_variant"
-target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_breed"
-kind = "HEAD"
-helper = "src/current/deer_breed_variant.rs"
+id = "deer_breed_overwrite"
+target = "horizon_client::game::creatures::Game<'_>::breed"
+kind = "OVERWRITE"
+helper = "src/current/deer_breed_overwrite.rs"
 bindings = [
-  { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
-  { name = "parent", ty = "u32", value = "parent" },
-  { name = "partner", ty = "u32", value = "partner" },
-  { name = "child", ty = "Option<u32>", value = "child" },
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "parent", ty = "u32", value = "parent"},
+ {name = "partner", ty = "u32", value = "partner"},
+ {name = "equine", ty = "Option<Box<horizon_client::mobs::equine::Offspring>>", value = "equine"},
+ {name = "parent_variant", ty = "Option<bool>", value = "parent_variant"},
+ {name = "wolf_voice", ty = "Option<u8>", value = "wolf_voice"},
+ {name = "experience", ty = "horizon_client::mobs::BreedExperience", value = "experience"},
 ]
-
 
 [[native.mixin]]
 id = "deer_load_variants"
@@ -349,4 +351,70 @@ bindings = [
  {name = "mob", ty = "u32", value = "mob"},
  {name = "table", ty = "&'static str", value = "table"},
  {name = "at", ty = "[f64; 3]", value = "at"},
+]
+
+[[native.mixin]]
+id = "ant-sugar"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/ant_sugar.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "ant-client-interact"
+target = "horizon_client::game::remote_mob_use::Game<'_>::remote_mob_takes"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/ant_client_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "index", ty = "usize", value = "i"},
+ {name = "hand", ty = "Hand", value = "hand"},
+]
+
+[[native.mixin]]
+id = "wolf-template-health"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
+kind = "HEAD"
+helper = "src/current/wolf_health_join.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.module]]
+id = "wolf-template-health-module"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_wolf_health"
+source = "src/current/wolf_template_health.rs"
+
+[[native.mixin]]
+id = "wolf-health-spawn-egg"
+target = "horizon_client::game::creatures::Game<'_>::apply_spawn_egg_entity_data"
+kind = "WRAP_OPERATION"
+selector = "self.apply_entity_nbt"
+ordinal = 0
+require = 1
+helper = "src/current/wolf_health_egg.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
+ { name = "target", ty = "crate::game::commands::Target", value = "$arg0" },
+ { name = "tag", ty = "crate::game::naturalist_wolf_health::Nbt", value = "$arg1" },
+ { name = "original", ty = "impl FnOnce(&mut Game<'_>, crate::game::commands::Target, crate::game::naturalist_wolf_health::Nbt) -> crate::game::commands::R<()>", value = "$operation" },
+]
+
+[[native.mixin]]
+id = "duck_egg_hatch"
+target = "horizon_client::game::creatures::Game<'_>::projectile_hit_landed"
+kind = "HEAD"
+helper = "src/current/duck_egg_hatch.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "projectile", ty = "&Projectile", value = "p"},
+ {name = "hit", ty = "Hit", value = "hit"},
 ]

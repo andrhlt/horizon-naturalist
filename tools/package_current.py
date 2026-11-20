@@ -30,6 +30,9 @@ def build(jar: Path, output: Path):
         'Cargo.toml': (ROOT / 'Cargo.toml').read_bytes(),
         'README.txt': b'Development-only stage. Naturalist gameplay and rendering are incomplete.\nSee README-omitted-attributes.txt for content placeholder overrides.\n',
         'README-omitted-attributes.txt': (ROOT / 'README-omitted-attributes.txt').read_bytes(),
+        'LICENSE-Naturalist': (ROOT / 'LICENSE-Naturalist').read_bytes(),
+        'LICENSE-Horizon': (ROOT / 'LICENSE-Horizon').read_bytes(),
+        'NOTICE-Horizon.md': (ROOT / 'NOTICE-Horizon.md').read_bytes(),
     }
     for path in paths:
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()

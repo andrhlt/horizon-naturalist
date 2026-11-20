@@ -47,6 +47,7 @@ fn full_item(kind: &str) -> Option<&'static str> {
 
 fn hand_item(kind: &str) -> Option<&'static str> {
     match kind {
+        "naturalist:ant" => Some("naturalist:ant"),
         "naturalist:butterfly" => Some("naturalist:butterfly"),
         "naturalist:caterpillar" => Some("naturalist:caterpillar"),
         "naturalist:desert_scorpion" => Some("naturalist:scorpion"),
@@ -60,6 +61,7 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
     let mob = &game.mobs[index];
     let mounted = mob.extra.mount.is_some() || mob.extra.rider.is_some() || mob.rider.is_some();
     let kind = mob.kind.id.clone();
+    let tamed_with_owner = mob.extra.tame && mob.extra.owner.is_some();
     let full = full_item(&kind).filter(|_| !mounted);
     if let Some(item) = full.or_else(|| hand_item(&kind)) {
         let mut saved = game.mob_tree_nbt(index);
@@ -69,11 +71,15 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
             caught.data_mut().set_other("minecraft:custom_name", name);
             fields.retain(|key, value| match key.to_string_lossy().as_str() {
                 "Health" | "Variant" => true,
+                "Owner" => kind == "naturalist:ant" && tamed_with_owner,
                 "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar"),
                 "Color" => kind == "naturalist:snail",
                 "NoAI" | "Silent" | "NoGravity" | "Glowing" | "Invulnerable" => !matches!(value, Tag::Byte(0)),
                 _ => false,
             });
+            if kind == "naturalist:ant" && tamed_with_owner {
+                fields.insert("Tame".into(), Tag::Byte(1));
+            }
             if kind == "naturalist:snail" && let Some(Tag::Byte(color)) = fields.get(&"Color".into()) {
                 fields.insert("Color".into(), Tag::Int(i32::from(*color)));
             }
@@ -138,6 +144,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
         "naturalist:endermite" => "minecraft:endermite",
         "naturalist:dragonfly" => "naturalist:dragonfly",
         "naturalist:firefly" => "naturalist:firefly",
+        "naturalist:ant" => "naturalist:ant",
         "naturalist:butterfly" => "naturalist:butterfly",
         "naturalist:caterpillar" => "naturalist:caterpillar",
         "naturalist:scorpion" => "naturalist:desert_scorpion",
@@ -165,6 +172,16 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                 configured.data_mut().set_other("minecraft:bucket_entity_data", Some(Tag::Compound(fields.clone())));
                 horizon_client::entity_nbt::apply_item_components(mob, &configured);
                 mob.persistent = true;
+                if kind == "naturalist:ant" {
+                    let saved = Tag::Compound(fields.clone());
+                    let tame = saved.get("Tame").and_then(horizon_world::datafix::dynamic::as_number)
+                        .is_some_and(|n| n.int_value() != 0);
+                    if tame && let Some(owner) = horizon_client::entity_nbt::owner_uuid(&saved) {
+                        // Ant uses TamableClimbingAnimal, without Wolf's health side effects.
+                        mob.extra.owner = Some(owner);
+                        mob.extra.tame = true;
+                    }
+                }
             }
             let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
             if let Tag::Compound(raw) = raw {

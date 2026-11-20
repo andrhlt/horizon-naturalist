@@ -4,6 +4,19 @@ fn bass_movement(game: &mut Game<'_>, entity: u32, kind: &str) {
     if kind != "naturalist:bass" {
         return;
     }
+    // Normalize legacy NBT before the entity's gameplay and render snapshots.
+    if let Some(horizon_core::nbt::Tag::Compound(fields)) = game.persist.raw.get_mut(&entity) {
+        if let Some(value) = fields.get(&"Variant".into()) {
+            if naturalist::bass_hunt::legacy_numeric_index(value).is_some() {
+                if let Some(name) = naturalist::bass_hunt::variant(Some(value)) {
+                    fields.insert(
+                        "Variant".into(),
+                        horizon_core::nbt::Tag::String(name.as_str().into()),
+                    );
+                }
+            }
+        }
+    }
     let tier = game
         .entity(entity)
         .and_then(|entity| entity.nbt(game))

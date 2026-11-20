@@ -31,7 +31,20 @@ fn deer_extra_love(
         }
         _ => None,
     };
+    let health_tag = tag.clone();
     let result = original(game, target, tag);
+    if result.is_ok() && let crate::game::commands::Target::Mob(id) = target {
+        let kind = game.mobs.iter().find(|mob| mob.id == id).map(|mob| mob.kind.id.to_string());
+        if let Some(kind) = kind {
+            crate::game::naturalist_wolf_health::restore(game, id, &kind, Some(&health_tag));
+        }
+    }
+    if result.is_ok() && let crate::game::commands::Target::Mob(id) = target {
+        let kind = game.mobs.iter().find(|mob| mob.id == id).map(|mob| mob.kind.id.to_string());
+        if let Some(kind) = kind {
+            crate::game::naturalist_wolf_health::restore(game, id, &kind, Some(&health_tag));
+        }
+    }
     if result.is_ok() && let crate::game::commands::Target::Mob(id) = target {
         let tags = game.world_tables.as_ref().and_then(|t| t.pack_tags.get("entity_type")).unwrap_or(&game.res.mob_data().entity_tags);
         let predators = tags.get("naturalist:deer_predators").cloned().unwrap_or_default();

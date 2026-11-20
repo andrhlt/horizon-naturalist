@@ -18,14 +18,40 @@ static CANDIDATES: AttachmentType<Candidates> = AttachmentType {
     sync: false,
 };
 
+/// Java NumericTag.intValue: integer casts wrap; floats floor then saturate.
+pub fn legacy_numeric_index(value: &Tag) -> Option<i32> {
+    Some(match value {
+        Tag::Byte(n) => i32::from(*n),
+        Tag::Short(n) => i32::from(*n),
+        Tag::Int(n) => *n,
+        Tag::Long(n) => *n as i32,
+        Tag::Float(bits) => f32::from_bits(*bits).floor() as i32,
+        Tag::Double(bits) => f64::from_bits(*bits).floor() as i32,
+        _ => return None,
+    })
+}
+
+/// Interpret legacy numeric tags the same way for gameplay, rendering and buckets.
+pub fn variant(value: Option<&Tag>) -> Option<String> {
+    let value = value?;
+    if let Tag::String(s) = value {
+        return Some(s.to_string_lossy());
+    }
+    let index = legacy_numeric_index(value)?.rem_euclid(3) as usize;
+    Some(
+        [
+            "naturalist:bass",
+            "naturalist:bass_medium",
+            "naturalist:bass_large",
+        ][index]
+            .to_owned(),
+    )
+}
+
 pub fn tier(data: &Compound) -> u8 {
-    match data.get(&"Variant".into()) {
-        Some(Tag::String(value)) => match value.to_string_lossy().as_str() {
-            "naturalist:bass_medium" => 1,
-            "naturalist:bass_large" => 2,
-            _ => 0,
-        },
-        Some(Tag::Int(value)) => value.clamp(&0, &2).to_owned() as u8,
+    match variant(data.get(&"Variant".into())).as_deref() {
+        Some("naturalist:bass_medium") => 1,
+        Some("naturalist:bass_large") => 2,
         _ => 0,
     }
 }
@@ -200,5 +226,29 @@ impl Goal for BassHunt {
     fn stop(&mut self, cx: &mut GoalContext<'_>) {
         self.target = None;
         cx.set_target(None);
+    }
+}
+
+#[cfg(test)]
+mod variant_tests {
+    use super::*;
+    #[test]
+    fn numeric_nbt_uses_java_int_value_and_floor_mod() {
+        let cases = [
+            (Tag::Byte(-2), 1),
+            (Tag::Short(-2), 1),
+            (Tag::Int(-2), 1),
+            (Tag::Long(-2), 1),
+            (Tag::Float((-1.2_f32).to_bits()), 1),
+            (Tag::Double((-1.2_f64).to_bits()), 1),
+            (Tag::Long(4_294_967_294), 1),
+            (Tag::Int(4), 1),
+            (Tag::Int(-1), 2),
+        ];
+        for (value, expected) in cases {
+            let mut data = Compound::default();
+            data.insert("Variant".into(), value);
+            assert_eq!(tier(&data), expected, "{data:?}");
+        }
     }
 }

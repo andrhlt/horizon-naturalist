@@ -48,12 +48,6 @@ impl Goal for SameKindBreed {
         self.love_time += 1;
         if self.love_time >= goals::reduced(60) && m.distance_sqr(p.position) < 9.0 {
             let parent_variant = Some(m.random.next_boolean());
-            if m.kind.id == "naturalist:deer" {
-                BREED_COINS
-                    .lock()
-                    .unwrap_or_else(|e| e.into_inner())
-                    .insert(m.id, parent_variant.unwrap());
-            }
             let experience = if !cx.w.asks_baby_spawn {
                 BreedExperience::Drawn(breeding_experience(m, cx.w.mob_drops))
             } else {
@@ -384,14 +378,6 @@ pub fn variant_textures(game: &crate::game::Game<'_>, variant: &str) -> Option<(
     value
 }
 
-static BREED_COINS: std::sync::LazyLock<std::sync::Mutex<std::collections::HashMap<u32, bool>>> =
-    std::sync::LazyLock::new(|| std::sync::Mutex::new(std::collections::HashMap::new()));
-pub fn take_breed_coin(parent: u32) -> Option<bool> {
-    BREED_COINS
-        .lock()
-        .unwrap_or_else(|e| e.into_inner())
-        .remove(&parent)
-}
 
 #[derive(Clone, Debug)]
 struct SpawnVariant {
@@ -402,14 +388,11 @@ struct SpawnVariant {
 }
 static SPAWN_VARIANTS: std::sync::LazyLock<std::sync::Mutex<Vec<SpawnVariant>>> =
     std::sync::LazyLock::new(|| std::sync::Mutex::new(Vec::new()));
-static PENDING_VARIANTS: std::sync::LazyLock<
-    std::sync::Mutex<std::collections::HashMap<u32, String>>,
-> = std::sync::LazyLock::new(|| std::sync::Mutex::new(std::collections::HashMap::new()));
+static PENDING_VARIANTS: mod_api::AttachmentType<std::collections::HashMap<u32, String>> = mod_api::AttachmentType {
+    namespace: "naturalist", name: "pending_deer_variants", default: std::collections::HashMap::new,
+    codec: None, copy_on_death: false, sync: false,
+};
 pub fn load_spawn_variants(stack: &crate::game::functions::PackStack) {
-    PENDING_VARIANTS
-        .lock()
-        .unwrap_or_else(|e| e.into_inner())
-        .clear();
     let packs = stack
         .builtin
         .iter()
@@ -481,9 +464,15 @@ pub fn choose_spawn_variant(game: &mut crate::game::Game<'_>, mob: &Mob, staged:
         let Some(tag) = selector.strip_prefix('#') else {
             return selector == biome;
         };
-        let entries = game.tag_entries("worldgen/biome", tag);
+        let canonical = if tag.contains(':') { tag.to_owned() } else { format!("minecraft:{tag}") };
+        if let Some(members) = game.world_tables.as_ref()
+            .and_then(|tables| tables.pack_tags.get("worldgen/biome"))
+            .and_then(|tags| tags.get(&canonical)) {
+            return members.contains(&biome);
+        }
+        let entries = game.tag_entries("worldgen/biome", &canonical);
         entries.iter().any(|id| id == &biome)
-            || (entries.is_empty() && game.res.mob_data().biome_has(tag, &biome))
+            || (entries.is_empty() && game.res.mob_data().biome_has(&canonical, &biome))
     };
     let mut pool: Vec<_> = variants
         .iter()
@@ -520,10 +509,11 @@ pub fn choose_spawn_variant(game: &mut crate::game::Game<'_>, mob: &Mob, staged:
     for v in pool {
         if roll < v.weight {
             if staged {
-                PENDING_VARIANTS
-                    .lock()
-                    .unwrap_or_else(|e| e.into_inner())
-                    .insert(mob.id, v.id.clone());
+                let holder = mod_api::Holder::Level;
+                if let Ok(mut pending) = PENDING_VARIANTS.get(&mut game.world.attachments, holder) {
+                    pending.insert(mob.id, v.id.clone());
+                    let _ = PENDING_VARIANTS.set(&mut game.world.attachments, holder, pending);
+                }
             }
             let raw = game
                 .persist
@@ -569,9 +559,15 @@ pub fn normalize_variant(game: &mut crate::game::Game<'_>, id: u32) {
     }
 }
 
-pub fn take_pending_variant(id: u32) -> Option<String> {
-    PENDING_VARIANTS
-        .lock()
-        .unwrap_or_else(|e| e.into_inner())
-        .remove(&id)
+pub fn take_pending_variant(game: &mut crate::game::Game<'_>, id: u32) -> Option<String> {
+    let holder = mod_api::Holder::Level;
+    let pending = &mut game.world.attachments;
+    let mut variants = PENDING_VARIANTS.get_existing(pending, holder).ok().flatten()?;
+    let variant = variants.remove(&id);
+    if variants.is_empty() {
+        let _ = PENDING_VARIANTS.remove(pending, holder);
+    } else {
+        let _ = PENDING_VARIANTS.set(pending, holder, variants);
+    }
+    variant
 }
