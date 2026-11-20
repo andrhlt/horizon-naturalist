@@ -1,15 +1,36 @@
-# Current-nightly development notes
+# Current-nightly migration investigation
 
-The root project targets Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` and Minecraft 26.3. It has been built and opened headlessly, including alongside Wildlife Tuning. This remains an incomplete migration, not a release or a gameplay parity claim. The legacy 0.7.4-preview.45 implementation and its launcher helpers are preserved on `main`.
+The `main` branch is the historical 0.7.4-preview.45 port, not a current
+`.hmod`. This branch is an unfinished migration to Horizon commit
+`0a875da91dbb0fdcb7ba8c42c11341aa229af51a`. No gameplay parity or current
+native build is claimed.
 
-`python3 tools/package_current.py <original-jar> <output.hmod>` packages the root project deterministically. `python3 tools/refresh_current_data.py <original-jar>` checks generated content against the tracked root data; `--write` regenerates it. The original jar is identified by its exact SHA-512 and remains external. The tracked data files are generated Horizon definitions, spawn modifiers, and conventional biome tags. Content definitions omit attributes unsupported by their placeholder templates; `README-omitted-attributes.txt` records them, and native declarations restore their values. Regenerate native metadata and attribute tables from `migration/entity-metadata.json` with `python3 migration/generate_metadata.py` and format the resulting Rust files.
+Run `python3 migration/state_inventory.py` to locate every direct accessor of
+the old injected state. The legacy manifest declares 54 fields on Navigation,
+one on AvoidEntity and one on SoundEngine. The report counts direct accesses,
+not indirect callers of wrappers; those callers also need review.
 
-The current build registers 51 entity IDs and 146 items. Those item defaults matched the supplied Java fixture for stack size, durability, rarity, and food. A headless diagnostic run matched all 48 supplied mob profiles for category, dimensions, and the eight attributes those fixtures record; other attributes remain unverified. Generated biome spawns matched all 515 rows recorded by the supplied Java fixture, including 396 Naturalist rows, their category, weight and group size. Ground placement is registered for Deer and 18 species sharing its Java animal rule; other species' spawn predicates still need their own ports.
+The current game owns mob attachment registrations through
+`Mob::attachment_lifetime`; that field is lifecycle metadata, not mod storage.
+Entity attachments or entity Part state can own per-mob values where a valid
+entity and host are available. Values previously serialized separately, such as
+the bass feeding cooldown, must continue to round-trip through the same save
+semantics. Unsaved navigation state must retain its prior reset behavior.
 
-Partial Bass rendering, hunting, schooling and bucket handling, Deer rendering, goals, variants and breeding, and capture-net interactions for selected species, including owned and wild Ants, have been implemented and tested in development fixtures. Those tests do not establish full species parity. Queen ant placement passed headless blocked, survival, creative, and offhand checks; a LAN guest created a hill linked to the guest UUID. Blocked-placement particle requests are issued by the server; their delivery and appearance have not been verified. Adult Ducks laid duck eggs and reset their timers, while ducklings laid nothing; separate controlled projectile fixtures reproduced Java hatch counts for three seeds. Ant-hill block entities initialize `Storage`, retain saved `Owner` and storage data, and drop stored stacks when removed with side effects. Their worker and storage interactions and generation remain incomplete: Horizon currently skips both custom ant-hill worldgen feature types. The original `naturalist:add_animals` modifier is also unsupported; generated standard modifiers cover the recorded spawn-table fixture. Variant assignment on natural Deer spawn and untested network/reload cases remain open.
+A mechanical replacement is unsafe: old helpers often take only
+`&Navigation`, and `Navigation` is cloned and used for rider redirection.
+`EntityPartState` returns `HolderBusy` while an entity is out of its list for
+its own tick, so that API cannot simply replace state reads in the existing AI
+loop. Trace each wrapper to its mob owner and call context; move suitable
+behavior into a per-mob Goal (whose instance owns its state) or another API
+that actually provides its holder, and test save, unload, entity replacement,
+riding and client synchronization where the behavior requires them. Never key
+state by the address of a movable entity or reuse an unscoped numeric entity ID.
+The sound map and AvoidEntity goal state need their own lifecycle analysis.
 
-The current SDK cannot replace the generic natural-spawn finalizer where Deer needs the spawn pass random stream; custom Deer variant selection for that path remains open. Deer sprint state likewise needs a seam between navigation and movement control in an unindexed lower-crate AI function. The old ant-hill placement hook is also in an unindexed lower crate, and the public API has no custom worldgen feature registrar; the project keeps the original features visible as skipped rather than replacing them with no-ops.
-
-Owned Ants accept sugar in either hand without inheriting the Wolf's sit interaction. The headless fixture checks injured, full-health and creative use. Wolf-backed Ant, Crab and Hedgehog health defaults are restored on entity join, item configuration, spawn-egg entity data, API entity-data and command-data loading; explicit saved base values are preserved. Other entity-data reload paths remain unverified, and values saved by an earlier build are retained even if they equal the incorrect Wolf default.
-
-Ant worker development implements gathering, carrying, hill delivery and entry. The carried food has a separate item entity with its own UUID and Ant UUID; save/reload, transfer, player pickup, destructive removal and full-storage overflow have headless regression fixtures. The four-Ant gathering fixture compares the entity-ID parity behavior observed in Java. The engine currently exposes this carried object as `minecraft:item` while live and writes `naturalist:carried_food` to disk. Ant target selection and some other Wolf-template behavior remain incomplete. These worker checks are not a full Ant parity claim.
+Current Horizon moved the mob implementation into the `horizon-client` game
+crate. Resolve old `horizon_client_lib` paths against the current game and its
+function index rather than assuming every old path is still in a lower crate.
+Other lower-crate targets must meet the current replacement rules. Content
+conversion must use an external `[[jar]]` reference rather than redistribute
+upstream's reserved resources.
