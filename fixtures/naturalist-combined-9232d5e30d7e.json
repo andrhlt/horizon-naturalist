@@ -16,5 +16,5 @@
     "duck_foreign_offhand_water_fallback_next_use": true,
     "duck_mainhand_bucket_capture_release": true
   },
-  "status": "All checks listed were headless on this build or its exact-source isolated candidate. Linux connection evidence remains on prior b12673; repeat on final release candidate."
+  "status": "All checks listed were headless on this build or its exact-source isolated candidate. Linux connection to the independent server built from commit 6c9be00 passed; evidence is in fixtures/cross-platform-6c9be00.json."
 }
