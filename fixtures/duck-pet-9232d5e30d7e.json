@@ -1,0 +1,22 @@
+{
+  "horizon_build": "native-0a875da-9232d5e30d7e",
+  "behavior": "click-scoped owned Duck whistle/sit; no timer suppression",
+  "checks": {
+    "owner_whistle_toggles_follow_and_clears_sitting": true,
+    "nonowner_and_sneak_fallthrough": true,
+    "later_deliberate_empty_hand_clicks": true,
+    "wild_duck_offhand_bucket_capture_release": true,
+    "foreign_duck_offhand_bucket_water_fallback_and_next_use": true,
+    "sitting_and_follow_state_save_reopen": true,
+    "existing_mainhand_bucket_capture_release": true
+  },
+  "logs": [
+    "/private/tmp/duck-pet-clean-owner.log",
+    "/private/tmp/duck-pet-clean-wild.log",
+    "/private/tmp/duck-pet-clean-foreign.log",
+    "/private/tmp/duck-pet-clean-save.log",
+    "/private/tmp/duck-pet-clean-main-capture.log",
+    "/private/tmp/duck-pet-clean-main-fallback.log"
+  ],
+  "scope": "Taming, healing, dye, follow movement, synced appearance, sounds and animation remain unimplemented."
+}
