@@ -4,6 +4,7 @@ fn net_saved(game: &Game<'_>, mob: &Mob, tag: &mut Tag) {
         if let Tag::Compound(fields) = &mut *tag {
             if let Some(owner) = mob.extra.owner.filter(|_| mob.extra.tame) { fields.insert("Owner".into(), Tag::IntArray(owner.to_vec())); } else { fields.remove(&"Owner".into()); }
             fields.insert("FromBucket".into(), Tag::Byte(i8::from(mob.extra.from_bucket)));
+            fields.insert("Sitting".into(), Tag::Byte(i8::from(mob.extra.sitting)));
         }
         return;
     }

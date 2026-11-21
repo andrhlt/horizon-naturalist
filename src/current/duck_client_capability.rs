@@ -3,6 +3,6 @@ fn duck_client_capability(game: &mut crate::game::Game<'_>) {
     use horizon_protocol::packets::{play::Serverbound, configuration::CustomPayload};
     game.send(Serverbound::CustomPayload(CustomPayload {
         channel: "minecraft:register".into(),
-        data: b"naturalist:duck_bucket_atomic_v1".to_vec(),
+        data: b"naturalist:duck_bucket_atomic_v1\0naturalist:duck_pet_atomic_v1".to_vec(),
     }));
 }
