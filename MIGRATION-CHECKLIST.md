@@ -6,6 +6,8 @@ This tracks implementation and verification evidence. A row is complete only whe
 
 ## Verified current candidate (`codex/naturalist-current-integration`)
 
+Latest combined staged build: `native-0a875da-b12673b0d1f4` (Horizon 0a875da, optimized). Regenerated package: `/private/tmp/naturalist-ant-crab-duck-follow.hmod`, SHA-512 `eb90ab21ef83b1a6d4cb3973a9a2e963b5b89c7d60aee7d093bf450629b19723c154b78b8e5fd465dfbfbf68acbaaf65ae3f2129b272ef300a48e3b94cea7499`. On that exact build, combined headless checks passed: Ant gather parity and LAN food ownership; Duck first-visible capture/release plus foreign-owner water fallback and next deliberate use; Crab owner whistle toggles and immediate sneak interaction. Five prior uninstrumented Crab LAN repetitions also passed. `.hmod` includes the Duck client capability hooks and Crab follow module.
+
 - [x] Entity and item metadata profiles, supported attributes, biome spawn rows, and recorded ground placements (fixture-limited; see `migration/README.md`).
 - [x] Deer selected variant, goals, appearance, breeding and love-persistence paths have Java fixture coverage. Natural-spawn variant assignment is not integrated; age/group RNG was compared in an isolated prototype only.
 - [x] Bass behavior, appearance, schooling, bucket interactions; selected runtime and LAN checks.
@@ -17,9 +19,11 @@ This tracks implementation and verification evidence. A row is complete only whe
 
 ## Open parity work
 
-- [ ] Duck: bucket LAN reliability and offhand/creative/dispenser/save-reload/ownership transitions; pet taming, whistle, follow, sit, dye, healing, sounds, goals, rendering.
-- [ ] Ant worker: gather/store/hill delivery, carried-food entity UUID and pickup behavior, death release, save/load and transferred-entity path; Java fixtures.
-- [ ] Other Catchable species: Rat and Hedgehog capture/release selected fields and pet ownership; Java fixtures. Crab follow, whistle and other pet behavior remain open.
+- [x] Duck bucket capture/release: matching-client LAN wild/owned/adult/foreign behavior, water fallback, intentional next use, offhand/creative, dispenser, save/reload, and dimension reload; version contract documented. Capability announcement relies on the matching client and exact shared artifact.
+- [ ] Duck pet/AI: taming, whistle, follow, sit, dye, healing, sounds, goals, rendering; Chicken-derived goal gaps and broader Java parity remain.
+- [x] Ant worker: gather parity, store/full-hill overflow, hill entry, carried-food UUID, pickup/anger, death/net release, save/reload, transfer, and target-alert fixes; headless combined Ant/Crab tests passed. Carried-food item rendering still lacks Java’s interpolated Ant-relative offset and shadow suppression; sound differences remain separate.
+- [x] Crab capture and FollowingOwner/whistle selected behavior: owner-aware movement, stop/resume, LAN owner selection, disconnect, cross-dimension and save/reload; immediate-sneak Java behavior repeated five uninstrumented times.
+- [ ] Other Catchable species: Rat and Hedgehog capture/release selected fields and pet ownership; Java fixtures. Crab broader goals/rendering remain open.
 - [ ] Remaining species-specific behavior by Java class: Bird, Butterfly lifecycle, alligator, hippo, shark, whale, crab, giraffe, isopod, piranha, anglerfish, clam, vulture, snails and other registered species. Track each Java interaction, AI, loot, breeding, growth and persistence behavior before marking a species complete.
 - [ ] Spawn semantics: specialized aquatic/substrate predicates, natural spawn initialization for all species, and controlled Java RNG comparisons beyond current Deer/Bass samples.
 - [ ] Ant hill world generation: both Java custom features remain absent; resolve an engine-supported implementation or clearly report the exact remaining engine limitation.
