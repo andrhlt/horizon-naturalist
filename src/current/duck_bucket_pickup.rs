@@ -19,28 +19,7 @@ fn duck_bucket_pickup(
     };
     let actor = game.acting_player_uuid();
     let mob = &game.mobs[index];
-    if mob.kind.id != "naturalist:duck" || !mob.alive() {
-        return ControlFlow::Continue(());
-    }
-    if !mob.is_baby() {
-        // A matching remote client claims Duck bucket clicks before local age
-        // metadata can arrive. Let the authoritative server decide whether
-        // this is a baby capture or Java's ordinary item-use fallback.
-        let capable = game
-            .lan_acting_uuid
-            .and_then(|uuid| game.player(uuid))
-            .and_then(|player| game.player_announced_channels(player))
-            .is_some_and(|channels| channels.iter().any(|channel| channel == "naturalist:duck_bucket_atomic_v1"));
-        if capable && let Some(crate::game::GuestUse::Entity(hand, _)) = game.guest_use {
-            let previous = game.guest_use;
-            game.guest_use = Some(crate::game::GuestUse::Item(hand));
-            let result = game.use_item();
-            game.guest_use = previous;
-            return match result {
-                Ok(value) => ControlFlow::Break(Ok(value.is_some())),
-                Err(error) => ControlFlow::Break(Err(error)),
-            };
-        }
+    if mob.kind.id != "naturalist:duck" || !mob.alive() || !mob.is_baby() {
         return ControlFlow::Continue(());
     }
     if mob.extra.tame && mob.extra.owner != Some(actor) {

@@ -13,11 +13,8 @@ Select **Build**, then **Play**. The launcher may ask to download the exact orig
 The root `horizon-mod.toml`, `Cargo.toml`, `src/current/`, and `data/` are the development project. A source checkout can be built with `horizon-launcher native-build .`. For development packaging, `python3 tools/package_current.py /path/to/naturalist-2.0.7-neoforge-26.3.jar /tmp/naturalist-dev.hmod` writes a deterministic package; `python3 tools/refresh_current_data.py <jar>` checks the generated data, and adding `--write` regenerates it. Neither Python command is required to install the project in the launcher. See [migration notes](migration/README.md) for tested behavior and known gaps.
 
 The historical 0.7.4-preview.45 port, its launcher helpers, and its original documentation remain in the repository's `main` branch and Git history. They are not the current `.hmod` implementation.
-<<<<<<< HEAD
 
 
 ## Client and server versions
 
-Naturalist is a `side = "both"` native mod. For supported multiplayer, install the same Naturalist package artifact built for Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` on every client and the server. Horizon checks mod IDs and version strings, but it does not compare native package hashes; matching version labels alone do not prove that native code is identical. Duck bucket and owned-pet interactions advertise client capabilities during level load. Matching clients use a click-scoped predictor, and the server applies an offhand fallback when Java behavior passes the main-hand action. These paths depend on the same Naturalist artifact running on client and server.
-=======
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)
+Naturalist is a `side = "both"` native mod. For supported multiplayer, install the same Naturalist package artifact built for Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` on every client and the server. Horizon checks mod IDs and version strings, but it does not compare native package hashes; matching version labels alone do not prove that native code is identical. The Duck bucket interaction advertises a client capability during level load and uses an atomic server fallback for foreign-owned Ducks. It depends on the matching Naturalist client sending that capability before player interactions.
