@@ -1,8 +1,10 @@
 {
-  "status": "blocked",
+  "status": "partial",
   "java_species_count": 36,
-  "horizon_observed_groups": null,
-  "horizon_group_input": null,
-  "reason": "Pinned Horizon finalize_spawn documentation states every live site supplies None for group; natural chunk generation keeps group data inside the generator and does not expose it to the hook.",
-  "source": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a crates/horizon-mod-vocab/src/hooks/finalize_spawn.rs"
+  "mapped_probability_groups": {"never_baby": 2, "five_percent": 26, "always_baby": 4},
+  "special_group_species": ["naturalist:elephant", "naturalist:lion", "naturalist:mammoth", "naturalist:zebra"],
+  "horizon_observed_groups": "Group::Ageable is supplied through the existing finalize_with local binding for 32 species; the four special group distributions remain unresolved.",
+  "horizon_group_input": "$local_mut:group:0",
+  "reason": "The existing native BEFORE_CALL mixin proves the mutable group local is available before finalize_grouped. This ports only fixture-backed constant Ageable probabilities; it does not claim parity for class-specific group distributions or an executable same-stream capture.",
+  "source": "horizon-mod.toml deer_finalize_variant; fixtures/natural-group-age-java.json"
 }

@@ -102,24 +102,47 @@ fn choose_bass_variant(game: &mut crate::game::Game<'_>, mob: &horizon_client::m
     }
 }
 
+// Naturalist's common AgeableMobGroupData probabilities are observable in the
+// pinned 128-trial Java fixture. The remaining five species use class-specific
+// group logic and are intentionally left to their native finalizer until an
+// equivalent Horizon group type exists.
+fn natural_age_group(kind: &str) -> Option<Ageable> {
+    const NEVER_BABY: &[&str] = &["naturalist:bird", "naturalist:butterfly"];
+    const ALWAYS_BABY: &[&str] = &[
+        "naturalist:bear",
+        "naturalist:black_bear",
+        "naturalist:rhino",
+        "naturalist:whale",
+    ];
+    const FIVE_PERCENT: &[&str] = &[
+        "naturalist:alligator", "naturalist:ant", "naturalist:boar",
+        "naturalist:capybara", "naturalist:caterpillar", "naturalist:crab",
+        "naturalist:deer", "naturalist:desert_scorpion", "naturalist:duck",
+        "naturalist:firefly", "naturalist:giant_isopod", "naturalist:giraffe",
+        "naturalist:great_white_shark", "naturalist:hedgehog", "naturalist:hippo",
+        "naturalist:jungle_scorpion", "naturalist:komodo_dragon", "naturalist:lizard",
+        "naturalist:mole", "naturalist:ostrich", "naturalist:rat", "naturalist:snail",
+        "naturalist:snake", "naturalist:tiger", "naturalist:tortoise", "naturalist:turkey",
+    ];
+    if NEVER_BABY.contains(&kind) { Some(Ageable::chance(0.0)) }
+    else if ALWAYS_BABY.contains(&kind) { Some(Ageable::chance(1.0)) }
+    else if FIVE_PERCENT.contains(&kind) { Some(Ageable::chance(0.05)) }
+    else { None }
+}
+
 pub fn before_grouped(
     game: &mut crate::game::Game<'_>,
     mob: &horizon_client::mobs::Mob,
     group: &mut Option<Group>,
 ) {
     choose_bass_variant(game, mob);
-    if mob.kind.id != "naturalist:bird" {
-        return;
-    }
-    choose_bird_variant(game, mob);
-    // Java BirdEntity is explicitly non-ageable. Supplying an existing group
-    // keeps Horizon's generic Parrot finalizer from drawing its 5% baby roll.
-    *group = Some(Group::Ageable(Ageable::chance(0.0)));
+    if mob.kind.id == "naturalist:bird" { choose_bird_variant(game, mob); }
+    if let Some(age) = natural_age_group(&mob.kind.id) { *group = Some(Group::Ageable(age)); }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::bass_variant;
+    use super::{bass_variant, natural_age_group};
 
     #[test]
     fn bass_natural_variant_uses_java_three_way_order() {
@@ -127,5 +150,16 @@ mod tests {
         assert_eq!(bass_variant(1), "naturalist:bass_medium");
         assert_eq!(bass_variant(2), "naturalist:bass_large");
         assert_eq!(bass_variant(3), "naturalist:bass");
+    }
+
+    #[test]
+    fn java_age_fixture_categories_are_mapped_without_guessing_special_groups() {
+        assert!(natural_age_group("naturalist:bird").is_some());
+        assert!(natural_age_group("naturalist:bear").is_some());
+        assert!(natural_age_group("naturalist:deer").is_some());
+        assert!(natural_age_group("naturalist:elephant").is_none());
+        assert!(natural_age_group("naturalist:lion").is_none());
+        assert!(natural_age_group("naturalist:mammoth").is_none());
+        assert!(natural_age_group("naturalist:zebra").is_none());
     }
 }
