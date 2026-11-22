@@ -1,0 +1,46 @@
+{
+  "issue": "APP-2130",
+  "source_commit": "501307008b233532a8eb12653e8a6679cc0cd894",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "source_stage_sha256": "8c66323f6cc85514b526e082bbb7cc024d60d310480d0fdce57c2e09d10b1786",
+  "source_package_sha256": "547dc0795ac2ecf7e52a012449d681df1815b7ddec28da73170ed678c02684a6",
+  "client_candidate": "native-0a875da-cca28c636552",
+  "client_libnaturalist_sha256": "07a1ec5bb5aa126aad4bfabec2002fbaf80cd74496dbd1c4cfc69d43c89eaf95",
+  "server_libnaturalist_sha256": "7e2d19bb942d0fa9d94ca2b33e4d6496e4ea5422f8d578c9dec4b3f527b671c4",
+  "server_export": "root@152.53.38.147:/root/dev/app2130-server-export-501/horizon-engine",
+  "result": "Matching Mac client connected through SSH tunnel and reached playing in minecraft:overworld.",
+  "checks": {
+    "identical_source_package": true,
+    "connected": true,
+    "entered_playing": true,
+    "loaded_overworld": true,
+    "cargo_test": "23 passed, 0 failed",
+    "generated_data_refresh": "282/282 files match",
+    "java_ocean_variant_mapping_unit_checks": "passed",
+    "java_ocean_cluster_limit_unit_check": "passed"
+  },
+  "commands": {
+    "client_build": "HORIZON_LAUNCHER_HOME=/private/tmp/app2130-launcher-data HORIZON_HOME=/private/tmp/app2130-home /Applications/Horizon.app/Contents/MacOS/horizon-launcher native-build /private/tmp/app2130-client-stage --instance app-2130-test --version nightly-2026-11-20-0a875da --profile optimized --trust-native-code",
+    "server_build": "HORIZON_LAUNCHER_HOME=/root/dev/naturalist-cross-964/launcher-home /root/dev/naturalist-cross-964/launcher/horizon-launcher native-build /root/dev/app2130-stage-501 --server-output /root/dev/app2130-server-export-501 --version nightly-2026-11-20-0a875da --profile optimized --trust-native-code",
+    "cross_platform": "python3 tools/launcher_cross_platform.py --version /private/tmp/app2130-launcher-data/versions/native-0a875da-cca28c636552 --resources '/Users/andrewholt/Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3' --jar /private/tmp/app2130-home/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar --server 127.0.0.1:25582 --name App2130Parity",
+    "unit_tests": "cargo test --manifest-path /private/tmp/app2130-client-stage/Cargo.toml --target-dir /private/tmp/app2130-test-target"
+  },
+  "first_attempt": "Failed because generated data was omitted and the ant_hill block entity was missing.",
+  "corrected_attempt": "Passed after building the full generated-data stage; client and server native-mod manifests reported the same source package SHA-256.",
+  "render_capture": {
+    "screenshot": "/private/tmp/app2130-current-5013070.png",
+    "world": "APP2130Runtime copied to an isolated game directory",
+    "result": "Current candidate loaded the underwater world and a frame was captured. Clearer species-presence evidence remains /private/tmp/app2130-final.png.",
+    "unchecked": ["Java pixel comparison", "all variant texture comparisons", "animation timing and interpolation", "hurt/death overlays", "bucket and attachment poses", "multipart Shark/Whale rendering"]
+  },
+  "persistence_check": {
+    "species": "naturalist:ray",
+    "spawn_command": "summon naturalist:ray 60 50 -40 {NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Variant:\"naturalist:mobula_ray\",Tags:[app2130_variant]}",
+    "before_save": "Entity 139 present; data get entity reported Variant=naturalist:mobula_ray.",
+    "after_reopen": "Entity 37 present; data get entity again reported Variant=naturalist:mobula_ray.",
+    "sequence": "summon, save, quit, reopen the same copied APP2130Runtime world, query Variant",
+    "result": "passed for Ray's mobula variant only"
+  },
+  "scope": "Unit tests cover attachment codec and pure variant/cluster mapping; the live save/reload check covers one Ray variant. This does not establish eight-species gameplay, natural spawn placement parity, bucket/lifecycle behavior, or persistence of all species state."
+}
