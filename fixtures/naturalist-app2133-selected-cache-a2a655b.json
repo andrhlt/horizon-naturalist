@@ -31,5 +31,16 @@
     "horizon_count": 0,
     "java_count": 0
   },
+  "ab_finalizer": {
+    "hook_enabled_candidate": "native-0a875da-c5c44c2e3b4a",
+    "hook_enabled_mod_sha256": "832edafb3e5e1490ebdfceb7d93ea0f1b4aa6799ecb5bef8ae91e25a14e66b66",
+    "hook_disabled_candidate": "native-0a875da-0cc8f8c5da87",
+    "hook_disabled_mod_sha256": "55b8f753201ad5df9e4635676df298ad3447a57dcb2a4a2c634d5545ad525677",
+    "seed": 49903,
+    "protocol": "same selected cache, 64 forced chunks, frozen gametime, 20 seconds, Sheep control",
+    "hook_enabled_birds": ["[4232.0d, 81.0d, 3967.0d]", "[4235.0d, 80.0d, 3962.0d]", "[4231.0d, 81.0d, 3966.0d]"],
+    "hook_disabled_birds": ["[4232.0d, 81.0d, 3967.0d]", "[4235.0d, 80.0d, 3962.0d]", "[4231.0d, 81.0d, 3966.0d]"],
+    "result": "identical count and positions; Bird finalizer hook is ruled out as the source of this delta"
+  },
   "notes": "Selected-instance cache loaded Naturalist through launcher mod-content injection; datapack list reports vanilla only. This is an executable count/position capture, not a full fixed-seed parity claim."
 }
