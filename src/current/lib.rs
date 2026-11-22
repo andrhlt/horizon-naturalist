@@ -7,6 +7,7 @@ mod duck_appearance;
 mod duck_renderer;
 mod ant_queen;
 pub mod bass_appearance;
+mod aquatic_placements;
 mod bass_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
@@ -165,6 +166,7 @@ impl mod_api::Hooks for Naturalist {
         ant_hill::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
+        aquatic_placements::register(registrar);
         registrar
             .declare_spawn_placement(
                 "deer",
