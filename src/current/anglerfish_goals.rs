@@ -1,5 +1,9 @@
 use super::Game;
-use horizon_client::mobs::{Species, goals};
+use horizon_client::mobs::{Mob, MobWorld, Species, animal_brain, goals};
+
+fn hunt_ready(mob: &Mob, _: &MobWorld<'_>) -> bool {
+    animal_brain::hunting_cooldown(mob).is_none()
+}
 
 /// Install the Java Anglerfish retaliation and cod-hunting goals once per mob.
 ///
@@ -10,6 +14,9 @@ pub(super) fn install(game: &mut Game<'_>, id: u32) {
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id) else {
         return;
     };
+    if mob.extra.animal_brain.is_none() {
+        animal_brain::init(mob, i64::from(id));
+    }
     if !mob.ai.targets.has("hurt_by_target") {
         mob.ai.targets.add(1, goals::HurtByTarget::new());
     }
@@ -18,7 +25,8 @@ pub(super) fn install(game: &mut Game<'_>, id: u32) {
             2,
             goals::NearestTarget::species(&[Species::Cod], false)
                 .interval(10)
-                .unseen_memory(300),
+                .unseen_memory(300)
+                .when(hunt_ready),
         );
     }
     if !mob.ai.goals.has("melee_attack") {

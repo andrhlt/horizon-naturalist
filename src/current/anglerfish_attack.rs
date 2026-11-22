@@ -10,12 +10,16 @@ fn anglerfish_attack(
     let Some(Who::Mob(attacker)) = source.attacker else {
         return std::ops::ControlFlow::Continue(());
     };
-    let Some(fish) = game.mobs.iter().find(|mob| mob.id == attacker) else {
+    let Some(index) = game.mobs.iter().position(|mob| mob.id == attacker) else {
         return std::ops::ControlFlow::Continue(());
     };
-    if fish.kind.id != "naturalist:anglerfish" || !fish.alive() {
+    if game.mobs[index].kind.id != "naturalist:anglerfish" || !game.mobs[index].alive() {
         return std::ops::ControlFlow::Continue(());
     }
+    horizon_client::mobs::animal_brain::set_hunting_cooldown(
+        &mut game.mobs[index],
+        i64::from(naturalist::anglerfish_behavior::HUNTING_COOLDOWN),
+    );
     let raw = game
         .persist
         .raw
