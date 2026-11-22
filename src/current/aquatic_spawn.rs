@@ -24,8 +24,8 @@ impl mod_api::EntityPart for PackLimit {
 mod tests {
     #[test]
     fn java_aquatic_cluster_limits_are_positive() {
-        let limits = [8, 6, 8, 8, 8, 24, 8];
-        assert_eq!(limits, [8, 6, 8, 8, 8, 24, 8]);
+        let limits = [8, 8, 4, 4, 8, 8, 4, 4];
+        assert_eq!(limits, [8, 8, 4, 4, 8, 8, 4, 4]);
         assert!(limits.iter().all(|limit| *limit > 0));
     }
 }

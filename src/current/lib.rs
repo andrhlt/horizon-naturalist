@@ -194,8 +194,12 @@ impl mod_api::Hooks for Naturalist {
         for (kind, limit) in [
             ("naturalist:anglerfish", 8),
             ("naturalist:blobfish", 8),
+            ("naturalist:giant_isopod", 4),
+            ("naturalist:great_white_shark", 4),
             ("naturalist:jellyfish", 8),
             ("naturalist:ray", 8),
+            ("naturalist:starfish", 4),
+            ("naturalist:whale", 4),
         ] {
             registrar.entity_part(kind, aquatic_spawn::PackLimit(limit));
         }
