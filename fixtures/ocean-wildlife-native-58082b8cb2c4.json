@@ -58,11 +58,20 @@
   "runtime_artifact_exact_match": true,
   "final_artifact_runtime_check": "passed startup, content load, world load and rendered-frame capture",
   "parity_status": "open",
-  "remaining": [
+    "placement_owner": {
+      "result": "shared InWater/OceanFloor placement registered for all eight entities",
+      "species_predicates": "not implemented: depth, substrate, group, light and variant initialization remain open"
+    },
+    "rendered_frame_evidence": {
+      "screenshot": "/private/tmp/app2130-final.png",
+      "visible_species": ["naturalist:jellyfish", "naturalist:giant_isopod", "naturalist:great_white_shark", "naturalist:ray", "naturalist:whale"],
+      "unchecked_states": ["controlled Java pixel comparison", "all variant textures", "baby meshes except Whale", "hurt/death overlays", "bucket/attachment poses", "multipart Shark and Whale", "animation timing/interpolation"]
+    },
+    "remaining": [
     "Java behavior scenarios and save/reload",
     "matching client/server and LAN checks",
     "Java frame and texture-variant comparisons",
-    "aquatic lifecycle and placement contract with shared spawning owner",
+    "aquatic lifecycle and species-specific placement predicates with shared spawning owner",
     "Anglerfish, Blobfish, Giant Isopod, Shark, Jellyfish, Ray, Starfish, and Whale behavior ports",
     "multipart Shark and Whale render behavior"
   ]
