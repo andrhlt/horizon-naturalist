@@ -17,10 +17,10 @@ pub(super) fn install(game: &mut Game<'_>, id: u32) {
     if mob.extra.animal_brain.is_none() {
         animal_brain::init(mob, i64::from(id));
     }
-    if !mob.ai.targets.has("hurt_by_target") {
+    if !mob.ai.targets.has("HurtByTarget") {
         mob.ai.targets.add(1, goals::HurtByTarget::new());
     }
-    if !mob.ai.targets.has("nearest_target") {
+    if !mob.ai.targets.has("NearestTarget") {
         mob.ai.targets.add(
             2,
             goals::NearestTarget::species(&[Species::Cod], false)
@@ -29,7 +29,7 @@ pub(super) fn install(game: &mut Game<'_>, id: u32) {
                 .when(hunt_ready),
         );
     }
-    if !mob.ai.goals.has("melee_attack") {
+    if !mob.ai.goals.has("MeleeAttack") {
         mob.ai.goals.add(3, goals::MeleeAttack::new(1.2, true));
     }
 }
