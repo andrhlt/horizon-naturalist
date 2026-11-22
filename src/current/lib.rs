@@ -2,6 +2,7 @@
 mod ant_hill;
 pub mod ant_worker;
 mod appearance;
+mod aquatic_spawn;
 mod duck_appearance;
 mod duck_renderer;
 mod ant_queen;
@@ -178,6 +179,16 @@ impl mod_api::Hooks for Naturalist {
             .expect("register deer spawn placement");
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
+        for (kind, limit) in [
+            ("naturalist:anglerfish", 8),
+            ("naturalist:blobfish", 8),
+            ("naturalist:catfish", 8),
+            ("naturalist:jellyfish", 8),
+            ("naturalist:piranha", 24),
+            ("naturalist:ray", 8),
+        ] {
+            registrar.entity_part(kind, aquatic_spawn::PackLimit(limit));
+        }
         for &(id, template, attributes) in profiles::PROFILES {
             let values = attributes
                 .iter()
