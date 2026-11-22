@@ -1,0 +1,9 @@
+{
+  "source_commit": "6c9be00a7d5faf47008b0cc276f18d00fee857a6",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "naturalist_candidate": "native-0a875da-9232d5e30d7e",
+  "linux_server_stage_sha256": "c2cd81e9517a20601447ffe4eff1fce0204129fae0c19e35631fd700d2317912",
+  "result": "The Mac headless client connected to the independently built Linux server through an SSH tunnel and reached minecraft:overworld with screen=playing.",
+  "scope": "Connection and world loading only; not species interaction parity or final release verification.",
+  "evidence_directory": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/naturalist-cross-platform-6c9be00"
+}

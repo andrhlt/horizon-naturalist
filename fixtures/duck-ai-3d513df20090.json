@@ -1,0 +1,27 @@
+{
+  "horizon_build": "native-0a875da-3d513df20090",
+  "horizon_source_archive_sha512": "6053aec1ae5ae71a4b5ae2aed93eab14b0d556008b078f4012331b49e8f7fe2d8e48b4fb440dcc0d844bf4d257c275e02eb69bee9576843455659a1abe46e991",
+  "java_reference": "Naturalist 2.0.7 on NeoForge 26.3.0.95",
+  "checks": {
+    "owner_attack_reaches_java_sit_goal_condition": {
+      "passed": true,
+      "evidence": "Real zombie damage was applied to the owner; diagnostic exact-source build logged attacked=true and DuckSit.can_use=false at about 11 blocks. Unhurt control remained stationary."
+    },
+    "water_trench_following_enabled": "Duck crossed the four-block water trench in one trial.",
+    "short_wall_with_openings": "Duck reached the far side in one trial.",
+    "long_wall_with_openings": {
+      "horizon_trials_crossed": 1,
+      "horizon_trials_total": 3,
+      "java_trials_crossed": 1,
+      "java_trials_total": 2,
+      "conclusion": "Variable on both engines; insufficient evidence of a parity mismatch."
+    }
+  },
+  "result": "selected checks pass; long-wall navigation unresolved",
+  "limits": [
+    "No direct Java runtime attack comparison or rendered Duck pose comparison.",
+    "No Java water control or controlled chunk/random state for longer obstacle trials.",
+    "Following-off water control wandered off the test platform, so it does not establish a navigation mismatch."
+  ],
+  "evidence_directory": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/naturalist-duck-ai-3d-evidence"
+}

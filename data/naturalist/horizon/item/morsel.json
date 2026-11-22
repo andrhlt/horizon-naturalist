@@ -1,0 +1,9 @@
+{
+  "template": "minecraft:cooked_chicken",
+  "components": {
+    "minecraft:food": {
+      "nutrition": 2,
+      "saturation": 1.2000000476837158
+    }
+  }
+}

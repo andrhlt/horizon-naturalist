@@ -1,0 +1,12 @@
+{
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "naturalist_candidate": "native-0a875da-e10e994e84a1",
+  "package_sha256": "1cfee416646b2ac988a2b5a6bc063b86a24b825edfc5620633ff2e501ec63d8a",
+  "package_sha512": "4e03289bdeb7545a5da3725258bf306760b0f0a3323b736fbf5bcbd030a2a771b37042e918cea495a9569c2b0a67ff7c408ac7a54e9e20fdcdf26fedd345f2cb",
+  "mac_build_inputs_matched": 360,
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_libnaturalist_sha256": "5e219ecbaa12620bec8d123311a3b55f0b14e6f772b4482fc4ac41b5da98052e",
+  "result": "Matching Mac client connected to the Linux server built from this package and reached minecraft:overworld with screen=playing.",
+  "scope": "Connection and world loading only; not species interaction parity or release verification.",
+  "evidence_directory": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/naturalist-cross-platform-e10e994"
+}

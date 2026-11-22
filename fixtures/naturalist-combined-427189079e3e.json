@@ -1,0 +1,41 @@
+{
+  "horizon_build": "native-0a875da-427189079e3e",
+  "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "package": "/private/tmp/naturalist-0.8.0-dev.1-427189079e3e.hmod",
+  "package_sha256": "511c15a92c33338ee3d6781004b967697b5f79aead42912f0111640ab8b4f201",
+  "package_sha512": "38ef21aec8840be05ffc1eb127803451c30d9ec413fb5a57cc16800f689cfa33b076d8d8ffd3dd1bc0ffc21323aeed790579f8c4d887a6fea3848d8286dd51fc",
+  "checks": {
+    "crab_immediate_sneak_lan": true,
+    "duck_owner_nonowner_sneak_and_repeat_clicks": true,
+    "duck_foreign_offhand_water_fallback_and_next_use": true,
+    "duck_pet_save_reopen": true,
+    "duck_first_visible_bucket_capture_release": true,
+    "duck_foreign_first_visible_water_fallback": true,
+    "duck_adult_bucket_fallback_and_next_block_use": true,
+    "duck_delayed_baby_age_packet_matching_lan": true,
+    "ant_gather_java_parity": true,
+    "ant_food_owner_lan": true,
+    "ant_full_hill_overflow_delivery": true,
+    "ant_java_ambient_hurt_death_step_sounds": true,
+    "ant_carried_food_save_reopen_uuid_stack_and_offset": true,
+    "crab_immediate_sneak_repeated_uninstrumented": true
+  },
+  "duck_delayed_age_sync": {
+    "metadata_packet_delay_ms": 1500,
+    "server_age_before_click": -12000,
+    "client_saw_baby_before_click": false,
+    "captured_age": -11993,
+    "captured_once_before_metadata_sync": true,
+    "evidence_log_directory": "/private/tmp/nat-duck-age-delay-cig51ozb-logs"
+  },
+  "ant_sounds": {
+    "naturalist:entity.ant.ambient": 4,
+    "naturalist:entity.ant.death": 1,
+    "naturalist:entity.ant.hurt": 1,
+    "naturalist:entity.ant.step": 1,
+    "inherited_wolf_events": false
+  },
+  "client_server_contract": "Both sides use this Naturalist package and the pinned Horizon 0a875da nightly. Mixed-artifact operation is not included.",
+  "linux_connection": "Passed; see fixtures/cross-platform-427189079e3e.json."
+}

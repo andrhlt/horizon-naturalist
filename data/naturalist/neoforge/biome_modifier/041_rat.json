@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_rat",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_rat"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:rat",
+    "weight": 10,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

@@ -1,7 +1,0 @@
-[package]
-name = "naturalist_content"
-version = "0.3.0"
-edition = "2024"
-
-[dependencies]
-zip = { version = "9.1.3", default-features = false, features = ["deflate"] }

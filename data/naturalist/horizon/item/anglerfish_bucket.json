@@ -1,0 +1,6 @@
+{
+  "template": "minecraft:cod_bucket",
+  "components": {
+    "!minecraft:food": {}
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "template": "minecraft:wandering_trader",
+  "attributes": {
+    "minecraft:max_health": 6.0,
+    "minecraft:movement_speed": 0.2,
+    "minecraft:follow_range": 20.0
+  },
+  "sounds": {
+    "ambient": "naturalist:entity.ant.ambient",
+    "hurt": "naturalist:entity.ant.hurt",
+    "death": "naturalist:entity.ant.death",
+    "step": "naturalist:entity.ant.step"
+  }
+}

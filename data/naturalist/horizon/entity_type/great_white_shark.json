@@ -1,0 +1,10 @@
+{
+  "template": "minecraft:wandering_trader",
+  "attributes": {
+    "minecraft:max_health": 80,
+    "minecraft:follow_range": 16,
+    "minecraft:movement_speed": 1,
+    "minecraft:knockback_resistance": 0.75,
+    "minecraft:step_height": 0.6
+  }
+}

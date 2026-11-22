@@ -1,0 +1,22 @@
+{
+  "horizon_build": "native-0a875da-a1d27763e73b",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "source_stage_sha256": "d1c719d922819ca537141bd256a8d1db3883f880d630c60fbc47f697a3b1d144",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "814a8296b4b838042f68b0830c950e1937e2675ffdfea5bd0b6f6c103773515e",
+  "result": "pass",
+  "checks": {
+    "mac_client_connected_to_linux_server": true,
+    "entered_playing_state": true,
+    "loaded_minecraft_overworld": true
+  },
+  "resources": "/private/tmp/duck-prepared-26.3",
+  "server": "root@152.53.38.147:/root/dev/naturalist-cross-a1/server-config",
+  "fresh_world": "NaturalistA1",
+  "port": 25580,
+  "matching_client_server_artifacts": true,
+  "mixed_artifact_compatibility": "not tested; outside the requested matching-artifact check",
+  "server_and_tunnel_stopped": true
+}

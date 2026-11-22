@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_ray",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_ray"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:ray",
+    "weight": 8,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}

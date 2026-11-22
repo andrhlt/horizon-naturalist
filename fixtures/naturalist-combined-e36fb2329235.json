@@ -1,0 +1,25 @@
+{
+  "horizon_build": "native-0a875da-e36fb2329235",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "package_sha256": "71f28327a697f1fb6591994dd262df2fe1fc5a28d93e00a78eee7d04c8969e40",
+  "package_sha512": "fcb196dfbe847e7ef2ab77dcbf6186389813474484a5fd2f6034c7eee2dc69992a726e8d1f5e333adac135f491568a93b438548234e6bc97ede63fdc1cefc6ef",
+  "checks": {
+    "duck_owner_cod_heals_without_sit_toggle": true,
+    "duck_nonowner_cod_no_heal_or_consumption": true,
+    "duck_creative_cod_heals_without_consumption": true,
+    "duck_healing_owner_sitting_health_save_reopen": true,
+    "duck_next_intentional_empty_hand_sit": true,
+    "duck_foreign_water_bucket_fallback": true,
+    "duck_foreign_food_then_offhand_water_fallback": true,
+    "duck_delayed_baby_age_metadata_1500ms_matching_lan": true,
+    "duck_adult_entity_click_then_next_block_bucket_use": true,
+    "crab_immediate_sneak_whistle_lan": true,
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "ant_ambient_hurt_death_step_sounds_no_wolf_events": true,
+    "ant_java_gather_parity": true
+  },
+  "matching_client_server_artifacts": true,
+  "result": "pass",
+  "scope": "Selected combined regressions only; not full Naturalist parity or release verification."
+}

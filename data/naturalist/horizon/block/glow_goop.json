@@ -1,0 +1,42 @@
+{
+  "template": "minecraft:heavy_core",
+  "components": {
+    "minecraft:rarity": "common"
+  },
+  "properties": {
+    "hardness": 0.5,
+    "explosion_resistance": 0.5,
+    "requires_tool": false,
+    "sounds": "minecraft:honey_block",
+    "render_shape": "INVISIBLE",
+    "occludes": false
+  },
+  "shapes": {
+    "default": []
+  },
+  "collision_shapes": {
+    "default": []
+  },
+  "state_properties": {
+    "goop": {
+      "type": "enum",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  },
+  "default_state": {
+    "goop": "1",
+    "waterlogged": "false"
+  },
+  "state_light": {
+    "property": "goop",
+    "values": {
+      "1": 5,
+      "2": 10,
+      "3": 15
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "horizon_build": "native-0a875da-f68cd22f5f53",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "naturalist_mod_sha256": "e6dd0ac7ff29570c318445da99121b722b8f9ba5471ff1c4442c91cda89acc91",
+  "mac_libnaturalist_sha256": "8630e7508bde5b3a7e4fc4ce3b9dacfaf5580872006a187d8d8fd4c37de83d95",
+  "mac_libhorizon_patch_sha256": "380fdbc13f9b8d6dc33e7d450d73a9c7680299be2c8aa46a247a03c715ffd074",
+  "build_profile": "optimized",
+  "matching_client_server_artifacts": true,
+  "checks": {
+    "duck_dye_inventory_and_same_color_reuse_lan": true,
+    "duck_shears_clear_color_mainhand_offhand_damage": true,
+    "duck_tame_whistle_heal_dye_save_reopen": true,
+    "duck_delayed_age_sync_1500ms_matching_lan_capture_once": true,
+    "crab_immediate_whistle_sneak_owner_matrix_matching_lan": true,
+    "crab_follow_enabled_and_disabled_movement": true,
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "ant_hill_break_owner_stranger_worker_release_storage_anger": true
+  },
+  "fresh_test_logs": {
+    "duck_dye": "/private/tmp/naturalist-f68-duck-dye.log",
+    "duck_pet_save": "/private/tmp/naturalist-f68-duck-save.log",
+    "duck_delay": "/private/tmp/naturalist-f68-duck-delay.log",
+    "crab_sneak": "/private/tmp/naturalist-f68-crab-lan-sneak.log",
+    "crab_follow": "/private/tmp/naturalist-f68-crab-follow.log",
+    "ant_carried_save": "/private/tmp/naturalist-f68-ant-carried-save.log",
+    "ant_hill_break": "/private/tmp/naturalist-f68-ant-hill-break.log"
+  },
+  "scope": "Eight exact-candidate headless checks for the integrated Duck appearance/dye, Crab and Ant changes. Selected checks only; this is not full Naturalist parity or a release candidate. Actual GPU frame, animation, invisibility and remaining species behavior are open.",
+  "source_stage_sha256": "7cf28e306ac79bcd48eeb79ac0fea096dda1978fce94004ebe3669eacbfd0967",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "6e138905a443a0f8740f4ebf95812580d05a5327276a92c1ac0eb847372e4bd0",
+  "cross_platform": {
+    "result": "pass",
+    "checks": {
+      "mac_client_connected_to_linux_server": true,
+      "entered_playing_state": true,
+      "loaded_minecraft_overworld": true
+    },
+    "server": "root@152.53.38.147:/root/dev/naturalist-cross-f68-20261121/server-config",
+    "fresh_world": "NaturalistF68",
+    "port": 25582,
+    "player": "NatCrossF68",
+    "server_and_tunnel_stopped": true,
+    "mixed_artifact_compatibility": "not tested"
+  }
+}

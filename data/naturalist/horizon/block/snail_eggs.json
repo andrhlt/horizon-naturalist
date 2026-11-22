@@ -1,0 +1,24 @@
+{
+  "template": "minecraft:dirt",
+  "properties": {
+    "hardness": 0,
+    "explosion_resistance": 0,
+    "sounds": "minecraft:frogspawn",
+    "occludes": false
+  },
+  "collision_shapes": {
+    "default": []
+  },
+  "shapes": {
+    "default": [
+      [
+        0,
+        0,
+        0,
+        1,
+        0.09375,
+        1
+      ]
+    ]
+  }
+}

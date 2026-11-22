@@ -1,12 +1,17 @@
 """Replay survival Ant Hill mining, worker release and dropped storage in Horizon."""
 import argparse
+import hashlib
+import shutil
+from prepare import JAR_SHA
 import json
 from pathlib import Path
 import subprocess
 import tempfile
 
 
-def capture(version):
+def capture(version, jar):
+    if hashlib.sha512(jar.read_bytes()).hexdigest() != JAR_SHA:
+        raise ValueError("expected the pinned Naturalist 2.0.7 NeoForge 26.3 jar")
     with tempfile.TemporaryDirectory(prefix="nat-ant-hill-", ignore_cleanup_errors=True) as temporary:
         root = Path(temporary)
         socket = root / "control.sock"
@@ -25,6 +30,8 @@ def capture(version):
                     if "following entity data: " in row]
 
         try:
+            (root / "jars").mkdir()
+            shutil.copy2(jar, root / "jars" / f"{JAR_SHA}.jar")
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
                 version / ".local/horizon-client/26.3", "--home", root, "--game-dir", root,
                 "--world", "Ant Hill Mining", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
@@ -76,8 +83,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
     parser.add_argument("fixture", type=Path)
+    parser.add_argument("jar", type=Path)
     args = parser.parse_args()
     expected = json.loads(args.fixture.read_text())["hill_breaks"]
-    observed = capture(args.version)
+    observed = capture(args.version, args.jar)
     print(json.dumps(observed, indent=2))
     assert observed == expected, (observed, expected)

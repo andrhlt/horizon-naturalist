@@ -1,15 +1,24 @@
 """Verify that the Capture Net round-trips both Java capture branches through survival interaction."""
 import argparse
+import hashlib
+import shutil
 import json
 from pathlib import Path
 import subprocess
 import tempfile
 
 
-def capture(version, fixture):
+def capture(version, fixture, jar=None):
     with tempfile.TemporaryDirectory(prefix="nat-capture-", ignore_cleanup_errors=True) as work:
         directory = Path(work)
         socket = directory / "capture.sock"
+        if jar is not None:
+            from prepare import JAR_SHA
+            if hashlib.sha512(jar.read_bytes()).hexdigest() != JAR_SHA:
+                raise ValueError("expected the pinned Naturalist 2.0.7 NeoForge 26.3 jar")
+            (directory / "jars").mkdir()
+            shutil.copyfile(jar, directory / "jars" / f"{JAR_SHA}.jar")
+            (directory / "horizon-mods.txt").write_text("mod.naturalist:true\n")
 
         def ctl(*args):
             reply = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
@@ -40,22 +49,26 @@ def capture(version, fixture):
                 cmd("clear @s")
                 tag = f"capture_{species}"
                 mob = f"@e[tag={tag},limit=1]"
-                new_mob = f"@e[type=naturalist:{species},limit=1]"
+                new_mob = f"@e[type=naturalist:{species},x=7.5,y=100,z=8.5,distance=..1,limit=1]"
                 cmd(f'summon naturalist:{species} 7.5 100 8.5 {{Tags:[{tag}],NoAI:1b,Health:1.5f,'
                     f'CustomName:"Beacon",Variant:"naturalist:{variant}"}}')
                 before_uuid = data(mob, "UUID")
                 assert before_uuid, species
                 cmd("item replace entity @s weapon.mainhand with naturalist:capture_net")
                 ctl("wait", 4)
-                ctl("look", 0, 32)
+                target_id = ctl("entities", 12, f"naturalist:{species}")["entities"][-1]["id"]
+                ctl("look-at", "entity", target_id)
                 ctl("mouse", "right", "click")
                 ctl("wait", 4)
                 saved = data("@s", "Inventory") or ""
                 assert f"naturalist:{item}" in saved and '"minecraft:custom_data"' in saved, saved
                 assert '"minecraft:damage": 1' in saved and data(mob, "UUID") is None, saved
+                saved_path = f'Inventory[{{id:"naturalist:{item}"}}].components."minecraft:custom_data"'
                 result = {
-                    f"{species}_saves_id": 'id: "naturalist:' + species + '"' in saved.split('"minecraft:custom_data"', 1)[1],
+                    f"{species}_saves_id": data("@s", saved_path + ".id") is not None,
                 }
+                if species == "caterpillar":
+                    result["caterpillar_saves_age"] = data("@s", saved_path + ".Age") is not None
                 if species == "butterfly":
                     result.update({
                         "butterfly_saves_uuid": before_uuid in saved,
@@ -83,6 +96,12 @@ def capture(version, fixture):
             observations = {}
             observations.update(round_trip("butterfly", "butterfly", "red_admiral", False))
             observations.update(round_trip("dragonfly", "dragonfly", "green", True))
+            observations.update(round_trip("caterpillar", "caterpillar", "caterpillar", False))
+            observations.update(round_trip("desert_scorpion", "scorpion", "desert_scorpion", False))
+            observations["scorpion_saves_id"] = observations.pop("desert_scorpion_saves_id")
+            observations.update(round_trip("firefly", "firefly", "firefly", True))
+            observations["all_removed"] = True
+            observations["damage_each"] = True
             print(json.dumps(observations, indent=2), flush=True)
             assert all(value == fixture[key] for key, value in observations.items()), observations
         finally:
@@ -94,5 +113,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
     parser.add_argument("fixture", type=Path)
+    parser.add_argument("--jar", type=Path, help="original jar required by the current external-jar package")
     args = parser.parse_args()
-    capture(args.version, json.loads(args.fixture.read_text()))
+    capture(args.version, json.loads(args.fixture.read_text()), args.jar)

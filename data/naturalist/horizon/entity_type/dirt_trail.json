@@ -1,0 +1,7 @@
+{
+  "template": "minecraft:zombie",
+  "attributes": {
+    "minecraft:max_health": 1,
+    "minecraft:movement_speed": 0
+  }
+}

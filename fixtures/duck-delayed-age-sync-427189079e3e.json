@@ -1,0 +1,18 @@
+{
+  "horizon_build": "native-0a875da-427189079e3e",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "client_server": "Matching Horizon 0a875da and Naturalist artifact",
+  "method": "A loopback TCP proxy delayed the target Duck's SetEntityData packet from server to client for 1500 ms. The AddEntity packet passed immediately.",
+  "before_click": {
+    "server_age": -12000,
+    "client_baby_flag": false,
+    "held_metadata_packet": true
+  },
+  "after_click_before_sync": {
+    "captured": true,
+    "captured_age": -11993,
+    "metadata_forwarded": false
+  },
+  "result": "pass",
+  "evidence_log_directory": "/private/tmp/nat-duck-age-delay-cig51ozb-logs"
+}

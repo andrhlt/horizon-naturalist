@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_tiger",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_tiger"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:tiger",
+    "weight": 8,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_lion",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_lion"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:lion",
+    "weight": 5,
+    "minCount": 3,
+    "maxCount": 5
+  }
+}

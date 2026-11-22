@@ -1,5 +1,8 @@
 """Reopen a real Horizon world with an Ant carrying a live apple."""
 import argparse
+import hashlib
+import shutil
+from prepare import JAR_SHA
 import json
 from pathlib import Path
 import re
@@ -9,7 +12,9 @@ import time
 from uuid import UUID
 
 
-def capture(version):
+def capture(version, jar):
+    if hashlib.sha512(jar.read_bytes()).hexdigest() != JAR_SHA:
+        raise ValueError("expected the pinned Naturalist 2.0.7 NeoForge 26.3 jar")
     with tempfile.TemporaryDirectory(prefix="nat-ant-save-", ignore_cleanup_errors=True) as temporary:
         root = Path(temporary)
         socket = root / "ant.sock"
@@ -29,6 +34,8 @@ def capture(version):
                          if marker in row), None)
 
         def launch():
+            (root / "jars").mkdir(exist_ok=True)
+            shutil.copy2(jar, root / "jars" / f"{JAR_SHA}.jar")
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
                 version / ".local/horizon-client/26.3", "--home", root, "--game-dir", root,
                 "--world", "Carried Food Persistence", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
@@ -101,4 +108,6 @@ def capture(version):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
-    capture(parser.parse_args().version)
+    parser.add_argument("jar", type=Path)
+    args = parser.parse_args()
+    capture(args.version, args.jar)

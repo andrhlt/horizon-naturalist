@@ -1,0 +1,63 @@
+{
+  "horizon_build": "native-0a875da-964e6c9e015d",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "naturalist_source_sha256": "8c197983a92de2cf98ec49496013cb6b63df59433f9942869f2154abce3bce44",
+  "mac_libnaturalist_sha256": "f353e59be73ddbba2effe680db4fb9a4d990f121ea5217cb63fd96973f5adf59",
+  "mac_libhorizon_patch_sha256": "2b4fa64338b4e2e5cc37a8cf33987220a58f185cca423a000b5b1fe9607df10a",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_libnaturalist_sha256": "814a8296b4b838042f68b0830c950e1937e2675ffdfea5bd0b6f6c103773515e",
+  "linux_libhorizon_patch_sha256": "ad086a0796a5c55d6ab7a8072ae5b6d71e65ea7ad72fab676185c34096619411",
+  "matching_client_server_artifacts": true,
+  "checks": {
+    "duck_delayed_age_metadata_1500ms_matching_lan_capture_once": true,
+    "duck_adult_entity_click_water_fallback_next_action": true,
+    "crab_immediate_sneak_uninstrumented_follow_sit_nonowner_matrix": true,
+    "crab_lan_capture_release_owner_variant_damaged_equipment_whistle": true,
+    "ant_hill_break_owner_and_stranger_release_drops_ownership_anger": true,
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "rat_nonowner_capture_owner_state_and_sneak_chest_workstation_release_reopen": true,
+    "mac_client_to_linux_server_connection_and_overworld_load": true,
+    "duck_same_species_breeding_raw_fish_variant_inheritance_matching_artifact": true,
+    "duck_wheat_seed_rejected_without_consumption": true,
+    "butterfly_same_species_breeding_creates_baby_caterpillar_cross_species_rejected": true,
+    "butterfly_love_and_breeder_uuid_save_reopen": true,
+    "rat_barrel_assigns_workstation": true,
+    "rat_composter_rejected_as_non_container": true
+  },
+  "known_server_log_gap": "Naturalist ant_hill_small and ant_hill_big worldgen features are skipped by Horizon because the feature type basic is unsupported.",
+  "result": "pass",
+  "scope": "Selected exact-candidate headless regressions and cross-platform connection only; not full Naturalist parity or release verification.",
+  "evidence_logs": {
+    "duck_delay": "/private/tmp/naturalist-recheck-964-duck-delay.log",
+    "duck_fallback": "/private/tmp/naturalist-recheck-964-duck-fallback.log",
+    "crab_sneak": "/private/tmp/naturalist-recheck-964-crab-sneak.log",
+    "crab_lan": "/private/tmp/naturalist-recheck-964-crab-lan.log",
+    "ant_hill": "/private/tmp/naturalist-recheck-964-ant-hill.log",
+    "ant_save": "/private/tmp/naturalist-recheck-964-ant-save.log",
+    "rat_workstation": "/private/tmp/naturalist-recheck-964-rat-workstation.log",
+    "cross_platform": "/private/tmp/naturalist-final-cross-platform.log",
+    "duck_breeding": "/private/tmp/naturalist-final-duck-breeding.log",
+    "duck_cross_species_rejection": "/private/tmp/naturalist-final-duck-crossbreed.log",
+    "duck_food_tag": "/private/tmp/naturalist-final-duck-food.log",
+    "butterfly_breeding": "/private/tmp/naturalist-final-butterfly-breeding.log",
+    "butterfly_save_reopen": "/private/tmp/naturalist-final-butterfly-save.log",
+    "rat_barrel": "/private/tmp/naturalist-recheck-964-rat-barrel.log",
+    "rat_composter_negative": "/private/tmp/naturalist-recheck-964-rat-composter-negative.log"
+  },
+  "linux_test_directory": "/root/dev/naturalist-cross-964/export",
+  "fresh_recheck": {
+    "candidate": "native-0a875da-964e6c9e015d",
+    "checks": [
+      "crab_immediate_sneak_uninstrumented_follow_sit_nonowner_matrix",
+      "crab_lan_capture_release_owner_variant_damaged_equipment_whistle",
+      "ant_hill_break_owner_and_stranger_release_drops_ownership_anger",
+      "ant_carried_food_uuid_stack_offset_save_reopen",
+      "duck_delayed_age_metadata_1500ms_matching_lan_capture_once",
+      "duck_adult_entity_click_water_fallback_next_action",
+      "rat_nonowner_capture_owner_state_and_sneak_chest_workstation_release_reopen"
+    ],
+    "result": "pass"
+  },
+  "rat_container_fixture": "fixtures/rat-workstation-containers-964e6c9e015d.json"
+}

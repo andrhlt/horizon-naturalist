@@ -1,0 +1,11 @@
+{
+  "horizon_build": "native-0a875da-427189079e3e",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "client_server": "Matching Horizon 0a875da and Naturalist artifact",
+  "checks": {
+    "adult_duck_entity_click_did_not_pick_up_water": true,
+    "adult_duck_remained": true,
+    "next_intentional_block_bucket_use_worked": true
+  },
+  "result": "pass"
+}

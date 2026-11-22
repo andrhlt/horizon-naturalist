@@ -1,0 +1,23 @@
+{
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "baseline_candidate": "native-0a875da-964e6c9e015d",
+  "scratch_candidate": "native-0a875da-f5e516e5675c",
+  "checks": {
+    "single_player_azalea_break_count_per_hill": 1,
+    "lan_host_and_guest_azalea_break_count_per_hill": 1,
+    "empty_hill_poof_count": 0,
+    "queen_hill_poof_count": 8,
+    "worker_hill_poof_count": 8,
+    "matching_lan_receivers": true
+  },
+  "java_sound_source": "blocks",
+  "java_sound_volume": 0.9,
+  "java_sound_pitch": 1.0,
+  "observation": "Sound event counts and particle counts are observed; audible mixer volume and pitch are not independently measured.",
+  "evidence_directory": "/Users/andrewholt/dev/horizon-naturalist/.local/evidence/ant-hill-break-effects-f5e516e5675c",
+  "files": {
+    "baseline-effects.log": "19723ca29c22272eb758b2085a796818ededa41d55c7806de34d8382c0ab4d24",
+    "fixed-effects.log": "bddda1e955c78d3dbf36aeee1c6ee4a69876979e75267f16eb2051b91a6df595",
+    "fixed-lan.log": "a45dcc00eca0ca06b416187d4bbc60b87ce59d25fdb329ab506917602b34070b"
+  }
+}

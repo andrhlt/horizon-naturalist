@@ -1,0 +1,41 @@
+{
+  "horizon_build": "native-0a875da-34ef46d94416",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "mod_source_sha256": "083a2fc81d812f16f6d3ffc8d6d4eb89fbcb1a83ab5aaba59c20b52b8d288e51",
+  "naturalist_library_sha256": "f353e59be73ddbba2effe680db4fb9a4d990f121ea5217cb63fd96973f5adf59",
+  "horizon_patch_library_sha256": "0188517097eaf31e8ab1514ef4fad2b3363499608dc825dd838b824cebc4d453",
+  "linux_source_archive_sha256": "e857347aa041285a83e65db844274a19f010fc1e7d934e93c596bc04c8ef3982",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "5e219ecbaa12620bec8d123311a3b55f0b14e6f772b4482fc4ac41b5da98052e",
+  "build_profile": "optimized",
+  "matching_client_server_artifact": true,
+  "checks": {
+    "ant_hill_break_owner_and_stranger_release": true,
+    "ant_hill_break_matching_lan_owner_and_stranger": true,
+    "ant_carried_food_save_reopen": true,
+    "ant_wrong_owner_hill_rejected": true,
+    "crab_matching_lan_capture_release": true,
+    "crab_whistle_immediate_sneak": {
+      "isolated_retry_passed": true,
+      "parallel_first_run_failed_once": true,
+      "evidence": "/private/tmp/ant-3d-check/integrated-crab-whistle.log"
+    },
+    "duck_pet_persistence": true,
+    "duck_delayed_age_sync": true,
+    "mac_client_linux_server_overworld_load": true
+  },
+  "result": "selected checks pass; open parity gaps remain",
+  "scope": "Clean integrated candidate with Ant hill-break behavior. The parallel Crab whistle miss passed when repeated in isolation; retain it as an intermittent test signal until the click path is fully characterized.",
+  "evidence_directory": "/private/tmp/ant-3d-check/",
+  "cross_platform_fixture": "fixtures/cross-platform-34ef46d94416.json",
+  "remaining_limits": [
+    "Ant Java break sound, poof particles, release yaw and stranger-facing look remain open.",
+    "Creative-mode break, event cancellation, reload timing, and other break-related Java paths have not been exhaustively audited.",
+    "Ant carried-food per-frame rendering and shadow behavior remain open.",
+    "Crab broader goals and rendering remain open.",
+    "Duck dye appearance/sync, breeding and other remaining behavior are not covered by this candidate's exact check set.",
+    "Many Naturalist species and full content sanity checks remain open."
+  ]
+}

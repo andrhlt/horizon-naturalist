@@ -1,0 +1,22 @@
+{
+  "horizon_build": "native-0a875da-e10e994e84a1",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "package_sha256": "1cfee416646b2ac988a2b5a6bc063b86a24b825edfc5620633ff2e501ec63d8a",
+  "package_sha512": "4e03289bdeb7545a5da3725258bf306760b0f0a3323b736fbf5bcbd030a2a771b37042e918cea495a9569c2b0a67ff7c408ac7a54e9e20fdcdf26fedd345f2cb",
+  "matching_client_server_artifacts": true,
+  "checks": {
+    "crab_taming_8_health_healing_capture_release_whistle": true,
+    "crab_immediate_sneak_lan": true,
+    "duck_owner_cod_healing_sitting_save_reopen": true,
+    "duck_nonowner_and_creative_controls": true,
+    "duck_delayed_age_metadata_1500ms_matching_lan": true,
+    "duck_adult_bucket_fallback_next_block_use": true,
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "ant_java_gather_parity": true,
+    "ant_ambient_hurt_death_step_sounds": true,
+    "mac_client_linux_server_connection_and_world_load": true
+  },
+  "result": "pass",
+  "scope": "Selected headless fixtures and cross-platform connection only; not full Naturalist parity or release verification."
+}

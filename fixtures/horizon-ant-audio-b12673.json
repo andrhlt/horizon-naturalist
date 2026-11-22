@@ -1,0 +1,18 @@
+{
+  "horizon_build": "native-0a875da-b12673b0d1f4",
+  "java_reference": "fixtures/ant-java-sound.json",
+  "expected_naturalist_sounds": [
+    "naturalist:entity.ant.ambient",
+    "naturalist:entity.ant.hurt",
+    "naturalist:entity.ant.death",
+    "naturalist:entity.ant.step"
+  ],
+  "observed_horizon_sounds": {
+    "minecraft:entity.wolf.ambient": 1,
+    "minecraft:entity.wolf.death": 1,
+    "minecraft:entity.wolf.hurt": 1,
+    "minecraft:entity.wolf.step": 1,
+    "minecraft:entity.wolf_big.pant": 1
+  },
+  "result": "Naturalist Ant sound events are not routed; the inherited wolf template sounds play instead."
+}

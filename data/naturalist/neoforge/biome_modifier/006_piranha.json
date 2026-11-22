@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_piranha",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_piranha"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:piranha",
+    "weight": 8,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "tame": false,
+    "data": "{Health:1.5f,NoAI:1b,Variant:\"naturalist:ant\"}",
+    "name": "Beacon",
+    "removed": true,
+    "damage": 1
+  },
+  {
+    "tame": true,
+    "data": "{Health:1.5f,NoAI:1b,Owner:[I;1103637639,2063286308,-1168698414,-912478601],Tame:1b,Variant:\"naturalist:ant\"}",
+    "name": "Beacon",
+    "removed": true,
+    "damage": 1
+  }
+]
