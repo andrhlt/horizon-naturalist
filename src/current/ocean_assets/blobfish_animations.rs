@@ -1,0 +1,87 @@
+// Keyframes translated from Naturalist 2.0.7 Java source (MIT).
+use super::{Clip, Channel, Interpolation, Target};
+pub(super) const ADULT_GRAY_SWIM: Clip = Clip {
+    duration: 2.0, loops: true, channels: &[
+        Channel { bone: "body", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (0.0, [0.0, 8.0, 0.0]),
+            (0.2083, [0.0, 6.35, 0.0]),
+            (0.7917, [0.0, -6.35, 0.0]),
+            (0.9583, [0.0, -7.93, 0.0]),
+            (1.125, [0.0, -7.39, 0.0]),
+            (1.3333, [0.0, -4.0, 0.0]),
+            (1.75, [0.0, 5.66, 0.0]),
+            (1.9167, [0.0, 7.73, 0.0]),
+            (2.0, [0.0, 8.0, 0.0]),
+        ] },
+        Channel { bone: "leftFin", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (0.0, [0.0, 8.82, 0.0]),
+            (0.2083, [0.0, 14.38, 0.0]),
+            (0.375, [0.0, 14.59, 0.0]),
+            (0.5, [0.0, 12.14, 0.0]),
+            (0.7083, [0.0, 4.26, 0.0]),
+            (1.0, [0.0, -8.82, 0.0]),
+            (1.2083, [0.0, -14.38, 0.0]),
+            (1.375, [0.0, -14.59, 0.0]),
+            (1.5, [0.0, -12.14, 0.0]),
+            (1.6667, [0.0, -6.1, 0.0]),
+            (2.0, [0.0, 8.82, 0.0]),
+        ] },
+        Channel { bone: "rightFin", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (0.0, [0.0, -12.14, 0.0]),
+            (0.1667, [0.0, -14.92, 0.0]),
+            (0.3333, [0.0, -13.7, 0.0]),
+            (0.5, [0.0, -8.82, 0.0]),
+            (0.875, [0.0, 7.84, 0.0]),
+            (1.0833, [0.0, 14.0, 0.0]),
+            (1.25, [0.0, 14.82, 0.0]),
+            (1.4167, [0.0, 11.66, 0.0]),
+            (1.625, [0.0, 3.5, 0.0]),
+            (1.9167, [0.0, -9.44, 0.0]),
+            (2.0, [0.0, -12.14, 0.0]),
+        ] },
+        Channel { bone: "tail", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (0.0, [0.0, 0.0, 0.0]),
+            (0.25, [0.0, 15.91, 0.0]),
+            (0.375, [0.0, 20.79, 0.0]),
+            (0.5, [0.0, 22.5, 0.0]),
+            (0.625, [0.0, 20.79, 0.0]),
+            (0.7917, [0.0, 13.7, 0.0]),
+            (1.25, [0.0, -15.91, 0.0]),
+            (1.375, [0.0, -20.79, 0.0]),
+            (1.5, [0.0, -22.5, 0.0]),
+            (1.625, [0.0, -20.79, 0.0]),
+            (1.7917, [0.0, -13.7, 0.0]),
+            (2.0, [0.0, 0.0, 0.0]),
+        ] },
+        Channel { bone: "sf_head", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (0.0, [0.0, -8.0, 0.0]),
+            (0.2083, [0.0, -6.35, 0.0]),
+            (0.7917, [0.0, 6.35, 0.0]),
+            (0.9583, [0.0, 7.93, 0.0]),
+            (1.125, [0.0, 7.39, 0.0]),
+            (1.3333, [0.0, 4.0, 0.0]),
+            (1.75, [0.0, -5.66, 0.0]),
+            (1.9167, [0.0, -7.73, 0.0]),
+            (2.0, [0.0, -8.0, 0.0]),
+        ] },
+    ],
+};
+pub(super) const ADULT_PINK_IDLE: Clip = Clip {
+    duration: 2.0, loops: true, channels: &[
+        Channel { bone: "leftFin", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (1.5833, [-90.0, 0.0, -2.5]),
+            (1.7917, [-90.0, 0.0, -12.5]),
+            (2.0, [-90.0, 0.0, -2.5]),
+        ] },
+        Channel { bone: "rightFin", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (0.0, [-90.0, 0.0, 2.5]),
+            (0.2083, [-90.0, 0.0, 15.0]),
+            (0.4167, [-90.0, 0.0, 2.5]),
+        ] },
+        Channel { bone: "tail", target: Target::Rotation, interpolation: Interpolation::Linear, keys: &[
+            (0.5417, [0.0, -10.0, -47.5]),
+            (0.7083, [0.0, 7.5, -47.5]),
+            (0.875, [0.0, -10.0, -47.5]),
+        ] },
+    ],
+};

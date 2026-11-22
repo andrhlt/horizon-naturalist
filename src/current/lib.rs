@@ -10,6 +10,7 @@ mod bass_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
+mod ocean_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -101,6 +102,7 @@ struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
     bass: Arc<bass_renderer::BassRenderer>,
     duck: Arc<duck_renderer::DuckRenderer>,
+    ocean: [Arc<ocean_renderer::OceanRenderer>; 8],
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -108,6 +110,16 @@ impl Default for Naturalist {
             deer: Arc::new(renderer::DeerRenderer::new()),
             bass: Arc::new(bass_renderer::BassRenderer::new()),
             duck: Arc::new(duck_renderer::DuckRenderer::new()),
+            ocean: [
+                Arc::new(ocean_renderer::OceanRenderer::anglerfish()),
+                Arc::new(ocean_renderer::OceanRenderer::blobfish()),
+                Arc::new(ocean_renderer::OceanRenderer::isopod()),
+                Arc::new(ocean_renderer::OceanRenderer::shark()),
+                Arc::new(ocean_renderer::OceanRenderer::jellyfish()),
+                Arc::new(ocean_renderer::OceanRenderer::ray()),
+                Arc::new(ocean_renderer::OceanRenderer::starfish()),
+                Arc::new(ocean_renderer::OceanRenderer::whale()),
+            ],
         }
     }
 }
@@ -149,6 +161,9 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityJoinLevelEvent<'_>,
     ) -> mod_api::Flow {
+        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:starfish" | "naturalist:whale") {
+            if let Some(entity) = host.entity(event.entity) { ocean_renderer::record_variant(host, entity); }
+        }
         if event.kind == "naturalist:bass" {
             if let Some(mob) = host
                 .entity(event.entity)
@@ -238,6 +253,13 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:bass".into(), self.bass.clone());
+        for (kind, renderer) in [
+            "naturalist:anglerfish", "naturalist:blobfish", "naturalist:giant_isopod",
+            "naturalist:great_white_shark", "naturalist:jellyfish", "naturalist:ray",
+            "naturalist:starfish", "naturalist:whale",
+        ].into_iter().zip(self.ocean.iter()) {
+            event.renderers.register(kind.into(), renderer.clone());
+        }
     }
 
     fn render_living_pre(
@@ -245,6 +267,16 @@ impl mod_api::Hooks for Naturalist {
         host: &dyn mod_api::ClientHost,
         event: &mut mod_api::RenderLivingPreEvent<'_>,
     ) -> mod_api::Flow {
+        if let Some(index) = match event.entity.kind {
+            "naturalist:anglerfish" => Some(0), "naturalist:blobfish" => Some(1),
+            "naturalist:giant_isopod" => Some(2), "naturalist:great_white_shark" => Some(3),
+            "naturalist:jellyfish" => Some(4), "naturalist:ray" => Some(5),
+            "naturalist:starfish" => Some(6), "naturalist:whale" => Some(7), _ => None,
+        } {
+            if let Some(entity) = host.entity(event.entity.id) {
+                self.ocean[index].observe_variant(entity.id(), ocean_renderer::synced_variant(host, entity));
+            }
+        }
         if event.entity.kind == "naturalist:deer" {
             if let Some(id) = host.entity(event.entity.id) {
                 let velocity = id.velocity(host).unwrap_or([0.0; 3]);
@@ -303,6 +335,7 @@ impl mod_api::Hooks for Naturalist {
         self.deer.retain_live(host);
         self.bass.retain_live(host);
         self.duck.retain_live(host);
+        for renderer in &self.ocean { renderer.retain_live(host); }
     }
 
     fn client_level_unload(
@@ -313,6 +346,7 @@ impl mod_api::Hooks for Naturalist {
         self.deer.clear();
         self.bass.clear();
         self.duck.clear();
+        for renderer in &self.ocean { renderer.clear(); }
     }
 }
 
