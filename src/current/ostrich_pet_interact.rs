@@ -22,6 +22,21 @@ fn ostrich_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> 
             | "minecraft:pitcher_pod"
     );
     if !seeds {
+        if kind == "naturalist:ostrich" && item == "minecraft:saddle" && tame && owner {
+            use mod_api::{Host, HostTransaction, ItemPlace, ItemResource, EquipmentSlot};
+            let saddle = ItemPlace::Equipment { entity: id, slot: EquipmentSlot::Saddle };
+            if saddle.stack(game).is_none() {
+                if let Some(stack) = game.held().cloned() {
+                    let moved = game.transaction(|host, tx| {
+                        Ok::<u32, ()>(saddle.insert(host, tx, &ItemResource::of(&stack), 1))
+                    }).unwrap_or(0);
+                    if moved == 1 {
+                        game.consume_held();
+                        return ControlFlow::Break(Ok(true));
+                    }
+                }
+            }
+        }
         return ControlFlow::Continue(());
     }
 
@@ -57,6 +72,17 @@ fn ostrich_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> 
         game.consume_held();
         game.mobs[index].heal(&game.loop_context, 2.0);
         return ControlFlow::Break(Ok(true));
+    }
+
+    // ServerHost exposes the same mount path used by /ride.  Keep the
+    // interaction owner-gated, matching Ostrich.mobInteract.
+    if kind == "naturalist:ostrich" && owner && game.held().is_none() {
+        use mod_api::ServerHost;
+        if let Some(rider) = game.entity(game.native_acting_entity()) {
+            if game.entity_start_riding(rider, game.entity(id).expect("target entity"), false) {
+                return ControlFlow::Break(Ok(true));
+            }
+        }
     }
 
     // The LandProbe seed set is broader than the native donor-food list;
