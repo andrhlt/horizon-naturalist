@@ -1,6 +1,10 @@
-//! Fixture-backed natural spawn group limits for aquatic species.
+//! Java-derived natural aquatic cluster limits.
+//!
+//! Horizon's placement rule covers the common in-water predicate; this part
+//! preserves the Java `MobSpawnSettings` cluster cap independently of the
+//! species-specific depth/light predicates that still need an engine seam.
 
-pub struct PackLimit(pub u32);
+pub(crate) struct PackLimit(pub(crate) u32);
 
 #[mod_api::horizon_part]
 impl mod_api::EntityPart for PackLimit {
@@ -19,7 +23,7 @@ impl mod_api::EntityPart for PackLimit {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn pinned_aquatic_limits_are_positive() {
+    fn java_aquatic_cluster_limits_are_positive() {
         let limits = [8, 6, 8, 8, 8, 24, 8];
         assert_eq!(limits, [8, 6, 8, 8, 8, 24, 8]);
         assert!(limits.iter().all(|limit| *limit > 0));
