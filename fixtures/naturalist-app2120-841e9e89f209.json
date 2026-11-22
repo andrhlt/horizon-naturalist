@@ -1,6 +1,6 @@
 {
   "candidate": "native-0a875da-841e9e89f209",
-  "source_commit": "ffa938ef802f75cbd0b9c41ba9b9053fdb08567b",
+  "source_commit": "ffa938ea4dac6935070f1dbdff6570e0205bcd31",
   "source_base_commit": "cc051eb6a95c33f853e6a5cf48b84ee0510e38e4",
   "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
   "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
