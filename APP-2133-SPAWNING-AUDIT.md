@@ -4,6 +4,15 @@ Pinned references: Naturalist 2.0.7 NeoForge 26.3.0.95 (`1471124ae26bcbf90a2106a
 
 ## Verified baseline
 
+- Added `tools/verify_spawn_registry.py` as a source-only acceptance gate for
+  environments without the pinned Horizon SDK checkout. It validates that the
+  48 Java profile owners and 48 Java variant-pool owners have Horizon entity
+  definitions, allows the intentional Bird/Snake per-pool modifier repeats,
+  and checks that fixture-covered natural-spawn species have a modifier. The
+  current tree passes with 48 metadata species, 48 variant species, 50 mob
+  entity definitions, and 52 ordered modifiers (45 fixture species included).
+  Reproduce with `python3 -B tools/verify_spawn_registry.py`.
+
 - The standard biome modifier rows are emitted in Java `forEachSpawn` order by `tools/pack_spawn_tables.py`. Exact integrated-candidate diagnostics in `fixtures/naturalist-combined-3d513df20090.json` report zero row or category mismatches for 67 biomes.
 - Added `tools/compare_spawn_bundles.py` to rerun this comparison against a full Horizon biome bundle. Using `fixtures/bird-spawn-tables-java.json`, candidate `c7c460f00d11` has 0 mismatched biomes and 0 mismatched categories across all 67 Java biome fixtures (515 total Java rows). The preceding `fa3fed977e48` bundle has 30 mismatched biomes / 33 categories. This confirms that row ordering was a real and corrected cause of the earlier fixed-seed Bird delta. The comparator checks exact order for Java-listed species in each biome; it does not claim to detect every possible extra vanilla row.
 - Reproduction command: `python3 -B tools/compare_spawn_bundles.py fixtures/bird-spawn-tables-java.json <candidate-worldgen/biomes.json> --candidate <candidate-id>`. The saved c7 bundle is `bird-biomes-native-0a875da-c7c460f00d11.json` in the historical bird-density audit directory; the exact-candidate JSON summary is `fixtures/naturalist-combined-3d513df20090.json`.

@@ -32,6 +32,8 @@ Latest integrated candidate: `native-0a875da-34ef46d94416`, built optimized from
 
 Bird data-order correction: the packer and generated project data now assign the 54 standard biome modifier resource IDs in Naturalist's `forEachSpawn` order. The exact candidate's loaded biome bundle matches recorded Java spawn-row ordering in all 67 reference biomes/categories. At seed 49903 the normal-probability sample produced 3 Horizon Birds versus 2 in Java (seed 49904 produced zero in both); with the controlled 0.5 probability, it produced 29 versus 32, improving exact-position overlap from 10 to 21. This corrects the measured row-order mismatch but does not establish full spawn parity or third-party datapack compatibility.
 
+The source-only registry gate also passes on the current tree: `python3 -B tools/verify_spawn_registry.py` reports 48 Java profile owners, 48 variant-pool owners, 50 mob entity definitions, and 52 ordered modifiers. It intentionally excludes metadata-only `dirt_trail`, allows the two variant-expanded modifier families (Bird and Snake), and does not claim native runtime predicate or RNG parity.
+
 - [x] Entity and item metadata profiles, supported attributes, biome spawn rows, and recorded ground placements (fixture-limited; see `migration/README.md`).
 - [x] Deer selected variant, goals, appearance, breeding and love-persistence paths have Java fixture coverage. Natural-spawn variant assignment is not integrated; age/group RNG was compared in an isolated prototype only.
 - [x] Bass behavior, appearance, schooling, bucket interactions; selected runtime and LAN checks.
