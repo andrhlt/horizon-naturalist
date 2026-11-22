@@ -210,6 +210,35 @@ impl mod_api::Hooks for Naturalist {
                 }
             }
         }
+        // The four APP-2126 terrestrial predators are backed by passive
+        // vanilla animals in the current runtime. Reinstall the two pieces
+        // of Naturalist's retaliatory melee behavior at join time so loaded
+        // mobs and freshly spawned mobs receive the same target/attack path.
+        if matches!(
+            event.kind,
+            "naturalist:bear"
+                | "naturalist:black_bear"
+                | "naturalist:boar"
+                | "naturalist:snake"
+        ) {
+            if let Some(entity) = host.entity(event.entity) {
+                if let Some(mob) = host.mob(entity) {
+                    let _ = mob.add_target_goal(
+                        &mut *host,
+                        1,
+                        &mod_api::GoalSpec::HurtByTarget { alert: true },
+                    );
+                    let _ = mob.add_goal(
+                        &mut *host,
+                        2,
+                        &mod_api::GoalSpec::MeleeAttack {
+                            speed: 1.2,
+                            follow_unseen: true,
+                        },
+                    );
+                }
+            }
+        }
         mod_api::Flow::Continue
     }
 

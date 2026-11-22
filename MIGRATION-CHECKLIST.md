@@ -24,12 +24,18 @@ Crab PvP targets are currently excluded because the available target view cannot
 
 The current-runtime source now registers Java-derived Bear, Black Bear, Boar,
 and Snake meshes through the Horizon renderer API, selecting adult/baby models
-and the hurt overlay on the shared living render state. The source models were
+and the hurt overlay on the shared living render state. Their shared renderer
+also applies a deterministic walk-cycle pose to the source limb/tail bones,
+and entity join installs the Java retaliatory hurt-target/melee path for the
+four predator profiles. The source models were
 adapted from the pinned Naturalist 2.0.7 reference to the pinned Horizon 0.2
-surface. `cargo test --lib` passes 21 tests, including construction coverage
-for all four adapters. This is source and unit evidence only; no artifact hash
-or headless/offscreen/LAN result is claimed until the pinned launcher produces
-the final candidate.
+surface. Deer natural grouped finalization now supplies the Java five-percent
+baby roll; its natural variant draw still cannot be made exact because the
+current finalizer seam does not expose the Java spawn-pass RNG. `cargo test
+--lib` passes 22 tests, including construction and locomotion coverage for all
+four adapters. This is source and unit evidence only; no artifact hash or
+headless/offscreen/LAN result is claimed until the pinned launcher produces the
+final candidate.
 
 The continuation adds Naturalist's three-way Bass natural-spawn variant draw
 (`bass`, `bass_medium`, `bass_large`) at the shared natural finalizer seam. The
@@ -39,14 +45,21 @@ stream and is not claimed here. Forest Fox/Rabbit modifiers remain data-driven
 vanilla spawns with the Java blacklist predicates preserved in the tracked
 definitions; no new runtime override is introduced for those entities.
 
-The exact pinned launcher (`native-0a875da-4abd7da8802f`) built this source
+The exact pinned launcher (`native-0a875da-80cc9d11713b`) built this source
 against Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`; its
 `libnaturalist.dylib` SHA-256 is
-`e18e35e0da934a5e6ce01d5e38305f3ed4f522943d4a605ce8aa548dde5beeae`.
-Headless execution could not be completed because the launcher requires a
-signed-in Microsoft account; the exact failure was `Sign in with a Microsoft
-account that owns Minecraft: Java Edition to play`. No gameplay, LAN,
-persistence, or offscreen result is claimed from this candidate.
+`531e5b6c31785be3c632e4ddcdd43af61079f87ec4a90d3ad64b859b3e8dd63c` and
+the patch library SHA-256 is
+`cbc83a9a8de1cdb1fbf6c5021b7dc689ad137fc1f64ddba31636256afa66cd8f`.
+`cargo test --lib` passes 22 tests and the optimized native build succeeds.
+The documented offline dedicated-server route also starts this candidate and
+loads its Naturalist content; a Bear summon reports the Java 30.0 max health.
+The client Play route remains blocked because the launcher requires a signed-
+in Microsoft account; the exact failure is `Sign in with a Microsoft account
+that owns Minecraft: Java Edition to play. Sign in with horizon-launcher
+account sign-in`. No gameplay, LAN, persistence, or offscreen render parity is
+claimed from this candidate. Full command output and scope are recorded in
+[`fixtures/naturalist-app2126-wildlife-80cc9d11713b.json`](fixtures/naturalist-app2126-wildlife-80cc9d11713b.json).
 
 ## Previously verified interaction baseline (`codex/naturalist-current-integration`)
 
