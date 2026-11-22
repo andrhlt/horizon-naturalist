@@ -18,6 +18,10 @@ use mod_api::AttachmentQueries;
 use mod_api::HostBlockStates;
 use mod_api::BlockMetadata;
 use std::sync::Arc;
+
+fn hippo_water_ok(water_at: bool, water_below: bool, waterlogged_below: bool) -> bool {
+    water_at || water_below || waterlogged_below
+}
 mod net;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
@@ -144,10 +148,12 @@ impl mod_api::Hooks for Naturalist {
         let waterlogged_below = event
             .level
             .block_property(host, [pos[0], pos[1] - 1, pos[2]], "waterlogged")
-            .is_some_and(|value| value == "true")
-            || water_at(pos)
-            || water_at([pos[0], pos[1] - 1, pos[2]]);
-        *event.result = if waterlogged_below {
+            .is_some_and(|value| value == "true");
+        *event.result = if hippo_water_ok(
+            water_at(pos),
+            water_at([pos[0], pos[1] - 1, pos[2]]),
+            waterlogged_below,
+        ) {
             mod_api::SpawnCheck::Succeed
         } else {
             mod_api::SpawnCheck::Fail
@@ -389,6 +395,29 @@ impl mod_api::Hooks for Naturalist {
         self.deer.clear();
         self.bass.clear();
         self.duck.clear();
+    }
+}
+
+#[cfg(test)]
+mod hippo_spawn_tests {
+    use super::hippo_water_ok;
+
+    #[test]
+    fn matches_pinned_spawn_fixture_predicates() {
+        let cases = [
+            ("no_water", false, false, false, false),
+            ("natural_corner_16", true, false, false, true),
+            ("generated_cross_chunk", false, false, false, false),
+            ("horizontal_17", false, false, false, false),
+            ("two_above", false, false, false, false),
+            ("two_below", false, false, false, false),
+            ("waterlogged_one_below", false, false, true, true),
+            ("generated_same_chunk", true, false, false, true),
+            ("stone_rejected", false, false, false, false),
+        ];
+        for (name, at, below, waterlogged, expected) in cases {
+            assert_eq!(hippo_water_ok(at, below, waterlogged), expected, "{name}");
+        }
     }
 }
 
