@@ -1,0 +1,110 @@
+{
+  "candidate": "native-0a875da-841e9e89f209",
+  "source_commit": "ffa938ea4dac6935070f1dbdff6570e0205bcd31",
+  "source_base_commit": "cc051eb6a95c33f853e6a5cf48b84ee0510e38e4",
+  "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "java_source_commit": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+  "profile": "optimized",
+  "source_package_sha256": "c70b6f4cd502b901cd64040a85a1c741c6c98829b31a3aea5b67f856c5e62d8b",
+  "development_hmod_sha256": "47d80e57dda672933e4eb6ca5b7f79c20ab67c33ee8edc39161cf6693e96999a",
+  "development_hmod_sha512": "b6e1ce3e24b7fc4bcf5696aefd65901491575b25ef6ad544b76b5356806dfae8f11104a6ab07238dd479edc81c00ad26174b24593e4cfabc0013aa9ce27c4ac6",
+  "client": {
+    "native_mods_json_sha256": "bd840e8fd92eabfcfe33d6baecfe254f80aa1db202d97efde4b68dc44e3eefc8",
+    "libnaturalist_sha256": "dd17cb5621f15ed44311c91acc1e3e8132914332a00eaa0975333994d02a1477",
+    "libhorizon_patch_sha256": "24c7220ce5ec9cea9ddca3aabca9588841de5eb3a2de78eedf49ea78bf345593"
+  },
+  "server": {
+    "native_mods_json_sha256": "a87308cc673f1a583b82828bc648ce11f04369290e26f8c4a0f9aded2fb71eeb",
+    "export": "Linux optimized server export from the same source package",
+    "horizon_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+    "libnaturalist_sha256": "3beee2d6a861762738e3ac4c11e7cd098427c15f2701e0e97819c820f4e7b3cd",
+    "libhorizon_patch_sha256": "595b4204c265635ad3a32f30b53df443b27d35c457c0cb6c023843b668047f15"
+  },
+  "checks": {
+    "crab_unarmed_passive_prey": {
+      "result": "pass",
+      "sheep_health_after_100_ticks": 8.0
+    },
+    "crab_unarmed_hurt_by_physical": {
+      "result": "pass",
+      "crab_health_after_real_player_hit": 7.0,
+      "player_health_after_40_ticks": 20.0
+    },
+    "crab_armed_hurt_by_physical": {
+      "result": "pass",
+      "crab_health_after_real_player_hit": 7.0,
+      "player_health_after_40_ticks": 15.0
+    },
+    "crab_unarmed_owner_hurt_by": {
+      "result": "pass",
+      "attacker_health_after_600_ticks": 20.0
+    },
+    "crab_armed_owner_hurt_by": {
+      "result": "pass",
+      "attacker_health_before": 20.0,
+      "attacker_health_after_20_ticks": 13.1119995
+    },
+    "crab_owner_hurt_target_filter": {
+      "result": "pass",
+      "zombie_health_before": 19.06,
+      "zombie_health_after": 12.171999,
+      "creeper_health_before_after": [
+        19.0,
+        19.0
+      ],
+      "tamed_wolf_health_before_after": [
+        7.0,
+        7.0
+      ]
+    },
+    "duck_pet_java_reference": {
+      "result": "pass",
+      "taming_attempts": 7,
+      "sit": true,
+      "dye": 14,
+      "dye_cleared": true,
+      "follow_toggle": false,
+      "stand": true,
+      "healed": 3.0,
+      "bucket_capture_variant": "naturalist:duck",
+      "released": true
+    },
+    "ant_carried_food_save_reopen": {
+      "result": "pass",
+      "same_food_uuid": true,
+      "carrier_and_item_preserved": true,
+      "stack_count": 1,
+      "offset": 0.55
+    },
+    "ant_hill_break_owner_stranger": {
+      "result": "pass",
+      "owner_hill": {
+        "released": 2,
+        "tamed": 2,
+        "angry": 0,
+        "apples": 2
+      },
+      "stranger_hill": {
+        "released": 2,
+        "tamed": 2,
+        "angry": 2,
+        "apples": 2
+      }
+    },
+    "manifest_duplicate_ids": {
+      "result": "pass",
+      "native_ids": 82,
+      "duplicates": 0
+    },
+    "git_diff_check": "pass"
+  },
+  "remaining_gaps": [
+    "Crab PvP targets are excluded because the current target view cannot distinguish eligible players from the selected owner.",
+    "Crab multiplayer owner identity and additional Java target categories need verification.",
+    "Matching Mac-client to Linux-server connection has not been rerun on this candidate; prior f68 evidence remains available.",
+    "This candidate is an integration checkpoint, not full Naturalist parity; see MIGRATION-CHECKLIST.md."
+  ],
+  "evidence_directory": ".local/evidence/APP-2120-841e9e89f209",
+  "checkpoint_branch": "andrmholt/app-2120-naturalist-stabilize-and-publish-the"
+}
