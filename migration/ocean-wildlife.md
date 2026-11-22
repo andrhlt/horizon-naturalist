@@ -19,7 +19,7 @@ The checkpoint contains Java behavior fixtures and Java-derived model/animation 
 | Starfish | `starfish-java.json` | Water placement, attachment, immobility, variant, death drops, bucket round trip | Renderer registered; four texture variants mapped; attachment, drops, and bucket behavior open |
 | Whale | `whale-java.json`, `whale-mate-java.json`, `whale-particle-java.json` | Multipart body, baby growth, aquatic breathing, mating, food/healing, surface/breach/dive movement and effects | Adult/baby mesh selection and renderer registered; multipart body and all listed behavior open |
 
-The shared spawning owner now supplies the common `InWater`/`OceanFloor` placement rule for all eight entities. It does not yet implement Java's species-specific depth, substrate, group composition, light, or variant initialization predicates; those remain required before any parity row can close.
+The shared spawning owner now supplies the common `InWater`/`OceanFloor` placement rule for all eight entities. Java-derived natural cluster limits are also registered for the fixture-covered ocean species (Anglerfish 8, Blobfish 8, Jellyfish 8, Ray 8); Bass's existing limit remains unchanged. It does not yet implement Java's species-specific depth, substrate, group composition, light, or variant initialization predicates; those remain required before any parity row can close.
 
 ## Pinned build and runtime check
 
