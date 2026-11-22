@@ -57,6 +57,12 @@
   },
   "runtime_artifact_exact_match": true,
   "final_artifact_runtime_check": "passed startup, content load, world load and rendered-frame capture",
+  "current_source_verification": {
+    "source_commit": "8994e6fd5900ddd24a788eaee142ba0eb23caa7f",
+    "optimized_client_build": "passed with installed Horizon launcher",
+    "libnaturalist_dylib_sha256": "17553162bf0e4e1f22d2ed6cba1812a667f4253c613abea2fdff9375066051c9",
+    "dedicated_server_build": "blocked on Mac host: Horizon has no game package for its system yet"
+  },
   "parity_status": "open",
     "placement_owner": {
       "result": "shared InWater/OceanFloor placement registered for all eight entities",
