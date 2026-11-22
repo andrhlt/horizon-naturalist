@@ -54,6 +54,46 @@ bindings = [
   {name = "source", ty = "Damage", value = "source"},
 ]
 
+[[native.module]]
+id = "anglerfish-goals"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_anglerfish_goals"
+source = "src/current/anglerfish_goals.rs"
+
+[[native.mixin]]
+id = "anglerfish-goals-join"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
+kind = "HEAD"
+helper = "src/current/anglerfish_goals_join.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "entity", ty = "u32", value = "entity" },
+ { name = "kind", ty = "&str", value = "kind" },
+]
+
+[[native.mixin]]
+id = "anglerfish-attack"
+target = "horizon_client::game::combat::Game<'_>::mob_attacks_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/anglerfish_attack.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "target", ty = "u32", value = "target" },
+ { name = "source", ty = "Damage", value = "source" },
+]
+
+[[native.mixin]]
+id = "anglerfish-cooldown"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/anglerfish_tick.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "entity", ty = "u32", value = "entity" },
+ { name = "kind", ty = "&str", value = "kind" },
+]
+
 [[native.mixin]]
 id = "bass-movement"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"

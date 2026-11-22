@@ -6,6 +6,7 @@ mod duck_appearance;
 mod duck_renderer;
 mod ant_queen;
 mod aquatic_spawn;
+pub mod anglerfish_behavior;
 pub mod bass_appearance;
 mod bass_bucket_item;
 pub mod bass_fx;
