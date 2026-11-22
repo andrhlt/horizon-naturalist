@@ -74,11 +74,40 @@ fn choose_bird_variant(game: &mut crate::game::Game<'_>, mob: &horizon_client::m
     }
 }
 
+fn bass_variant(index: i32) -> &'static str {
+    [
+        "naturalist:bass",
+        "naturalist:bass_medium",
+        "naturalist:bass_large",
+    ][index.rem_euclid(3) as usize]
+}
+
+fn choose_bass_variant(game: &mut crate::game::Game<'_>, mob: &horizon_client::mobs::Mob) {
+    if mob.kind.id != "naturalist:bass" {
+        return;
+    }
+    let Ok(index) = game.world.random.next_int_bound(3) else {
+        return;
+    };
+    let raw = game
+        .persist
+        .raw
+        .entry(mob.id)
+        .or_insert_with(|| horizon_core::nbt::Tag::Compound(Default::default()));
+    if let horizon_core::nbt::Tag::Compound(fields) = raw {
+        fields.insert(
+            "Variant".into(),
+            horizon_core::nbt::Tag::String(bass_variant(index).into()),
+        );
+    }
+}
+
 pub fn before_grouped(
     game: &mut crate::game::Game<'_>,
     mob: &horizon_client::mobs::Mob,
     group: &mut Option<Group>,
 ) {
+    choose_bass_variant(game, mob);
     if mob.kind.id != "naturalist:bird" {
         return;
     }
@@ -86,4 +115,17 @@ pub fn before_grouped(
     // Java BirdEntity is explicitly non-ageable. Supplying an existing group
     // keeps Horizon's generic Parrot finalizer from drawing its 5% baby roll.
     *group = Some(Group::Ageable(Ageable::chance(0.0)));
+}
+
+#[cfg(test)]
+mod tests {
+    use super::bass_variant;
+
+    #[test]
+    fn bass_natural_variant_uses_java_three_way_order() {
+        assert_eq!(bass_variant(0), "naturalist:bass");
+        assert_eq!(bass_variant(1), "naturalist:bass_medium");
+        assert_eq!(bass_variant(2), "naturalist:bass_large");
+        assert_eq!(bass_variant(3), "naturalist:bass");
+    }
 }
