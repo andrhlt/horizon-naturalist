@@ -130,6 +130,50 @@ fn natural_age_group(kind: &str) -> Option<Ageable> {
     else { None }
 }
 
+fn apply_natural_age_group(kind: &str, group: &mut Option<Group>) {
+    let Some(age) = natural_age_group(kind) else {
+        let existing = match group.as_mut() {
+            Some(Group::Ageable(age)) => Some(age),
+            _ => None,
+        };
+        let Some(existing) = existing else {
+            if kind == "naturalist:elephant" || kind == "naturalist:mammoth" {
+                *group = Some(Group::Ageable(Ageable::chance(1.0)));
+            } else if kind == "naturalist:lion" {
+                *group = Some(Group::Ageable(Ageable::chance(0.05)));
+            } else if kind == "naturalist:zebra" {
+                *group = Some(Group::Ageable(Ageable::chance(0.20)));
+            }
+            return;
+        };
+        match kind {
+            "naturalist:elephant" | "naturalist:mammoth" => {
+                // Java's first two members are adults, then every member is a
+                // baby. Resetting size once preserves that group transition.
+                if existing.size == 1 { existing.size = 0; }
+                existing.should_spawn_baby = true;
+                existing.baby_chance = 1.0;
+            }
+            "naturalist:lion" => {
+                existing.should_spawn_baby = true;
+                existing.baby_chance = if existing.size == 0 { 0.05 } else { 0.75 };
+            }
+            "naturalist:zebra" => {
+                existing.should_spawn_baby = true;
+                existing.baby_chance = match existing.size { 0 => 0.20, 1 => 0.30, _ => 0.15 };
+            }
+            _ => {}
+        }
+        return;
+    };
+    if let Some(Group::Ageable(existing)) = group.as_mut() {
+        existing.should_spawn_baby = age.should_spawn_baby;
+        existing.baby_chance = age.baby_chance;
+    } else {
+        *group = Some(Group::Ageable(age));
+    }
+}
+
 pub fn before_grouped(
     game: &mut crate::game::Game<'_>,
     mob: &horizon_client::mobs::Mob,
@@ -137,7 +181,7 @@ pub fn before_grouped(
 ) {
     choose_bass_variant(game, mob);
     if mob.kind.id == "naturalist:bird" { choose_bird_variant(game, mob); }
-    if let Some(age) = natural_age_group(&mob.kind.id) { *group = Some(Group::Ageable(age)); }
+    apply_natural_age_group(&mob.kind.id, group);
 }
 
 #[cfg(test)]
