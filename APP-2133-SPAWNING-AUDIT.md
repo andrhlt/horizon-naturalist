@@ -49,6 +49,13 @@ The modifier ordering correction is proven to remove the spawn-row-order mismatc
 
 These density observations do not isolate which residual draw differs. `fixtures/bird-region-java.json` provides a seed-injected five-member Java finalization sample, including each member's variant, age, follow-range bonus, handedness, and final RNG state. A matching Horizon finalization capture on the same source artifact and injected stream is needed before changing spawn RNG or group initialization. Do not treat the observed count delta alone as evidence for a particular RNG fix.
 
+## Bird resource-load diagnosis (current follow-up)
+
+- The zero-Bird result reproduces on the pre-finalizer PR #3 candidate (`native-0a875da-868508c80d34`), so PR #4's `Group::Ageable(Ageable::chance(0.0))` hook is not the cause of the regression.
+- The direct candidate harness was inspected with `horizon-ctl command "datapack list enabled"`: it reports only `[vanilla (built-in)]`. The temporary fixture datapack path is therefore not loaded unless the fixture-pack harness completes its explicit save/reload path; the direct normal-density harness does not load a Naturalist datapack. The candidate log still reports 67 biomes and vanilla entities, so an empty Bird list from this path cannot diagnose Java's spawn RNG.
+- The native data bundle contained Bird biome modifiers whose `#naturalist:has_*` tags did not exist. This follow-up replaces those unresolved selectors with six deterministic biome tags derived from `fixtures/bird-spawn-tables-java.json`. The six tags reproduce the Java Bird-row multiplicity exactly: 67 biomes and 72 Bird rows. `tools/test_bird_spawn_coverage.py` verifies the count and the non-empty variant-pool coverage.
+- A rebuilt candidate `native-0a875da-c5c44c2e3b4a` contains the six new tags. Its direct harness still reported zero Birds because the direct path exposes only the vanilla datapack, confirming that launcher/resource loading remains the blocker to a trustworthy fixed-seed rerun. No parity claim is made from that observation.
+
 ## Remaining work
 
 - Add a controlled same-stream Horizon counterpart to the Java natural group age and Bird region probes, keyed to the exact integrated source and engine revisions.

@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:birch_forest", "minecraft:cherry_grove", "minecraft:dark_forest", "minecraft:flower_forest", "minecraft:forest", "minecraft:frozen_peaks", "minecraft:grove", "minecraft:jagged_peaks", "minecraft:meadow", "minecraft:old_growth_birch_forest", "minecraft:pale_garden", "minecraft:snowy_slopes", "minecraft:stony_peaks"
+  ]
+}

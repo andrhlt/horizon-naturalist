@@ -1,15 +1,6 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": {
-    "type": "neoforge:and",
-    "values": [
-      "#naturalist:has_sparrow",
-      {
-        "type": "neoforge:not",
-        "value": "#naturalist:blacklist/blacklist_sparrow"
-      }
-    ]
-  },
+  "biomes": "#naturalist:bird_spawn_6",
   "spawners": {
     "type": "naturalist:bird",
     "weight": 10,
