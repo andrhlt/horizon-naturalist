@@ -15,6 +15,8 @@ mod profiles;
 mod renderer;
 mod wildlife_renderer;
 use mod_api::AttachmentQueries;
+use mod_api::HostBlockStates;
+use mod_api::BlockMetadata;
 use std::sync::Arc;
 mod net;
 use mod_api::{
@@ -123,6 +125,34 @@ impl Default for Naturalist {
 
 #[mod_api::horizon_mod]
 impl mod_api::Hooks for Naturalist {
+    fn mob_spawn_placement_check(
+        &self,
+        host: &dyn mod_api::Host,
+        event: &mut mod_api::MobSpawnPlacementCheckEvent<'_>,
+    ) {
+        if event.kind != "naturalist:hippo" || event.reason != mod_api::SpawnReason::Natural {
+            return;
+        }
+        let pos = [event.pos.x, event.pos.y, event.pos.z];
+        let water_at = |at| {
+            event
+                .level
+                .block(host, at)
+                .and_then(|block| host.block_states().name(block).ok().map(str::to_owned))
+                .is_some_and(|name| name == "minecraft:water")
+        };
+        let waterlogged_below = event
+            .level
+            .block_property(host, [pos[0], pos[1] - 1, pos[2]], "waterlogged")
+            .is_some_and(|value| value == "true")
+            || water_at(pos)
+            || water_at([pos[0], pos[1] - 1, pos[2]]);
+        *event.result = if waterlogged_below {
+            mod_api::SpawnCheck::Succeed
+        } else {
+            mod_api::SpawnCheck::Fail
+        };
+    }
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
         ant_hill::register(registrar);
