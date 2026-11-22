@@ -39,6 +39,15 @@ stream and is not claimed here. Forest Fox/Rabbit modifiers remain data-driven
 vanilla spawns with the Java blacklist predicates preserved in the tracked
 definitions; no new runtime override is introduced for those entities.
 
+The exact pinned launcher (`native-0a875da-4abd7da8802f`) built this source
+against Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`; its
+`libnaturalist.dylib` SHA-256 is
+`e18e35e0da934a5e6ce01d5e38305f3ed4f522943d4a605ce8aa548dde5beeae`.
+Headless execution could not be completed because the launcher requires a
+signed-in Microsoft account; the exact failure was `Sign in with a Microsoft
+account that owns Minecraft: Java Edition to play`. No gameplay, LAN,
+persistence, or offscreen result is claimed from this candidate.
+
 ## Previously verified interaction baseline (`codex/naturalist-current-integration`)
 
 Latest combined build: `native-0a875da-e10e994e84a1` (Horizon 0a875da, optimized). Candidate package: `/private/tmp/naturalist-crab-tame.hmod`, SHA-256 `1cfee416646b2ac988a2b5a6bc063b86a24b825edfc5620633ff2e501ec63d8a`, SHA-512 `4e03289bdeb7545a5da3725258bf306760b0f0a3323b736fbf5bcbd030a2a771b37042e918cea495a9569c2b0a67ff7c408ac7a54e9e20fdcdf26fedd345f2cb`. Exact matching-artifact headless checks passed for Crab taming/healing at Java max health/capture/release/whistle and immediate sneak; Duck healing, owner/nonowner/creative, save/reopen, intentional sit, delayed baby-age metadata and adult water fallback; Ant carried-food persistence, sounds and Java gather parity. The exact Mac candidate also connected to a Linux server built from this package; see `fixtures/naturalist-combined-e10e994e84a1.json`, `fixtures/crab-tame-heal-lan-e10e994e84a1.json`, and `fixtures/cross-platform-e10e994e84a1.json`. These are selected feature checks, not full species parity. Package discovery excludes `.local/content` and evidence.
