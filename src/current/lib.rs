@@ -1,6 +1,7 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
 pub mod ant_worker;
+mod bird;
 mod appearance;
 mod duck_appearance;
 mod duck_renderer;
@@ -116,6 +117,7 @@ impl Default for Naturalist {
 impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
+        bird::register(registrar);
         ant_hill::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
@@ -187,6 +189,13 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPreEvent<'_>,
     ) -> mod_api::Flow {
+        if event.kind == "naturalist:bird" {
+            if let Some(bird) = host.entity(event.entity) {
+                if let Err(error) = bird::eat_nearby_seeds(host, bird) {
+                    eprintln!("Naturalist: bird seed feeding failed: {error:?}");
+                }
+            }
+        }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
             let result = (|| {
