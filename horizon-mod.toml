@@ -578,6 +578,29 @@ bindings = [
 ]
 
 [[native.mixin]]
+id = "crab-tame-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/crab_tame_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "crab-client-tame"
+target = "horizon_client::game::remote_mob_use::Game<'_>::remote_mob_takes"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/crab_client_tame.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "index", ty = "usize", value = "i"},
+ {name = "hand", ty = "Hand", value = "hand"},
+]
+
+[[native.mixin]]
 id = "duck-pet-interact"
 target = "horizon_client::game::creatures::Game<'_>::interact_mob"
 kind = "HEAD"
@@ -595,3 +618,187 @@ kind = "HEAD"
 cancellable = true
 helper = "src/current/duck_client_pet.rs"
 bindings = [ {name="game", ty="&mut Game<'_>", value="&mut *self"}, {name="index",ty="usize",value="i"}, {name="hand",ty="Hand",value="hand"} ]
+
+[[native.mixin]]
+id = "duck-tame-particles"
+target = "horizon_client::game::villagers::Game<'_>::entity_event_particles"
+kind = "HEAD"
+helper = "src/current/duck_tame_particles.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "id", ty = "u32", value = "id"},
+ {name = "event", ty = "i8", value = "event"},
+]
+
+[[native.module]]
+id = "butterfly-breed-goal"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_butterfly_breed"
+source = "src/current/butterfly_breed_goal.rs"
+
+[[native.mixin]]
+id = "butterfly-breed-join"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
+kind = "HEAD"
+helper = "src/current/butterfly_breed_join.rs"
+bindings = [ {name="game",ty="&mut crate::game::Game<'_>",value="&mut *self"}, {name="entity",ty="u32",value="entity"}, {name="kind",ty="&str",value="kind"} ]
+
+[[native.mixin]]
+id = "butterfly-flower-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/butterfly_flower_interact.rs"
+bindings = [ {name="game",ty="&mut Game<'_>",value="&mut *self"}, {name="target",ty="Option<InteractTarget>",value="target"} ]
+
+[[native.mixin]]
+id = "butterfly-client-flower"
+target = "horizon_client::game::remote_mob_use::Game<'_>::remote_mob_takes"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/butterfly_client_flower.rs"
+bindings = [ {name="game",ty="&mut Game<'_>",value="&mut *self"}, {name="index",ty="usize",value="i"}, {name="hand",ty="Hand",value="hand"} ]
+
+[[native.module]]
+id = "duck-follow"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_duck_follow"
+source = "src/current/duck_follow.rs"
+
+[[native.mixin]]
+id = "duck-follow-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/duck_follow_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "ant-hill-player-break"
+target = "horizon_client::game::Game<'_>::break_block_as_player"
+kind = "WRAP_OPERATION"
+selector = "self.native_break_block"
+ordinal = 0
+require = 1
+helper = "src/current/ant_hill_break.rs"
+bindings = [
+ {name="game", ty="&mut Game<'_>", value="$receiver"},
+ {name="pos", ty="[i32; 3]", value="$arg0"},
+ {name="state", ty="BlockStateId", value="$arg1"},
+ {name="canceled", ty="&mut bool", value="$arg2"},
+ {name="exp", ty="&mut Option<u32>", value="$arg3"},
+ {name="original", ty="impl FnOnce(&mut Game<'_>, [i32; 3], BlockStateId, &mut bool, &mut Option<u32>) -> ()", value="$operation"},
+]
+
+[[native.mixin]]
+id = "rat-net-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/rat_net_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "rat-owner-join"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
+kind = "HEAD"
+helper = "src/current/rat_owner_join.rs"
+bindings = [
+ {name="game", ty="&mut crate::game::Game<'_>", value="&mut *self"},
+ {name="entity", ty="u32", value="entity"},
+ {name="kind", ty="&str", value="kind"},
+]
+
+[[native.mixin]]
+id = "rat-pet-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/rat_pet_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "rat-client-pet"
+target = "horizon_client::game::remote_mob_use::Game<'_>::remote_mob_takes"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/rat_client_pet.rs"
+bindings = [ {name="game",ty="&mut Game<'_>",value="&mut *self"}, {name="index",ty="usize",value="i"}, {name="hand",ty="Hand",value="hand"} ]
+
+[[native.module]]
+id = "duck-breed-goal"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_duck_breed"
+source = "src/current/duck_breed_goal.rs"
+
+[[native.mixin]]
+id = "duck-breed-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/duck_breed_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.module]]
+id = "rat-follow"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_rat_follow"
+source = "src/current/rat_follow.rs"
+
+[[native.mixin]]
+id = "rat-follow-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/rat_follow_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.module]]
+id = "duck-appearance"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_duck_appearance"
+source = "src/current/duck_appearance.rs"
+
+[[native.mixin]]
+id = "duck-appearance-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/duck_appearance_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.module]]
+id = "crab-targets"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_crab_targets"
+source = "src/current/crab_target_goals.rs"
+
+[[native.module]]
+id = "duck-variants"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_duck_variants"
+source = "src/current/duck_variants.rs"
+
+[[native.mixin]]
+id = "duck-variant-reload"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_data_pack_files"
+kind = "HEAD"
+helper = "src/current/duck_variant_reload.rs"

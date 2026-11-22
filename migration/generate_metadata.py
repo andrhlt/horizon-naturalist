@@ -39,7 +39,12 @@ fn metadata(
     ] {
         if !types.contains_key(name) { continue; }
         let Some(base) = types.get(template) else { continue; };
+        // Preserve content sound selections when replacing the mod type with its template.
+        let sound_overrides = types.get(name).map(|registered| registered.sound_overrides.clone());
         let mut kind = base.clone();
+        if let Some(sound_overrides) = sound_overrides {
+            kind.sound_overrides = sound_overrides;
+        }
         kind.id = name.to_owned();
         kind.category = category.to_owned();
         kind.width = width;

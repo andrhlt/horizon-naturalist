@@ -5,6 +5,11 @@ fn crab_follow_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
     if kind != "naturalist:crab" { return; }
     let Some(crab_entity)=game.entity(entity) else { return; };
     let Some(handle)=game.mob(crab_entity) else { return; };
+    if game.mobs.iter().find(|m|m.id==entity).is_some_and(|m|!m.ai.targets.has("NaturalistCrabRetaliate")) {
+        handle.remove_goal(game, "TamePanic");
+        handle.remove_goal(game, "melee_attack");
+        if let Some(m)=game.mobs.iter_mut().find(|m|m.id==entity) { crate::game::naturalist_crab_targets::install(m); }
+    }
     let following=game.persist.raw.get(&entity).and_then(|raw|raw.get("FollowingOwner"))
         .and_then(horizon_world::datafix::dynamic::as_number).map_or(true,|n|n.int_value()!=0);
     let owner_uuid=game.mobs.iter().find(|m|m.id==entity && m.extra.tame).and_then(|m|m.extra.owner);

@@ -403,7 +403,6 @@ fn metadata(
         let Some(base) = types.get(template) else {
             continue;
         };
-<<<<<<< HEAD
         // The entity-type content row may override template sounds. Preserve
         // those selections when replacing the mod type with its template.
         let sound_overrides = types.get(name).map(|registered| registered.sound_overrides.clone());
@@ -411,9 +410,6 @@ fn metadata(
         if let Some(sound_overrides) = sound_overrides {
             kind.sound_overrides = sound_overrides;
         }
-=======
-        let mut kind = base.clone();
->>>>>>> bc32ad3 (Make Naturalist development project installable from root)
         kind.id = name.to_owned();
         kind.category = category.to_owned();
         kind.width = width;
