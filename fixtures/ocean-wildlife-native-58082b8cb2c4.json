@@ -1,0 +1,69 @@
+{
+  "issue": "APP-2130",
+  "scope": [
+    "naturalist:anglerfish",
+    "naturalist:blobfish",
+    "naturalist:giant_isopod",
+    "naturalist:great_white_shark",
+    "naturalist:jellyfish",
+    "naturalist:ray",
+    "naturalist:starfish",
+    "naturalist:whale"
+  ],
+  "java_reference": {
+    "version": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+    "source_commit": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+    "jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd"
+  },
+  "horizon": {
+    "version": "26.3",
+    "source_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "candidate": "native-0a875da-58082b8cb2c4",
+    "mod_library_sha256": "58be55bfd10c27b87dbcb98e2dcbb82acd1a04ded74c1f03d0d45b3ebedc0c33",
+    "native_mods_sha256": "8a0e2ffecc924c43c28d2b078dd06e3b893a5797530e2d043c7399e1f473a46b",
+    "platform": "macOS aarch64 client, Apple M4 Max Metal",
+    "server_package_available_on_host": false
+  },
+  "runtime": {
+    "world": "APP2130Runtime",
+    "seed": 2130,
+    "result": "final candidate launched; content and registries loaded, world reached playing, and target ocean species were present in the saved underwater test world",
+    "natural_spawns_observed": [
+      "naturalist:anglerfish",
+      "naturalist:blobfish",
+      "naturalist:great_white_shark",
+      "naturalist:jellyfish",
+      "naturalist:ray",
+      "naturalist:starfish",
+      "naturalist:whale"
+    ],
+    "explicit_underwater_spawns": [
+      "naturalist:anglerfish",
+      "naturalist:blobfish",
+      "naturalist:giant_isopod",
+      "naturalist:great_white_shark",
+      "naturalist:jellyfish",
+      "naturalist:ray",
+      "naturalist:starfish",
+      "naturalist:whale"
+    ],
+    "render_capture": {
+      "species": "naturalist:jellyfish",
+      "result": "model and tentacles visible in the final candidate's first captured underwater frame",
+      "screenshot": "/private/tmp/app2130-final.png"
+    },
+    "java_behavior_comparison": "not run",
+    "matching_server_or_lan": "not run; this Mac SDK has no server game package"
+  },
+  "runtime_artifact_exact_match": true,
+  "final_artifact_runtime_check": "passed startup, content load, world load and rendered-frame capture",
+  "parity_status": "open",
+  "remaining": [
+    "Java behavior scenarios and save/reload",
+    "matching client/server and LAN checks",
+    "Java frame and texture-variant comparisons",
+    "aquatic lifecycle and placement contract with shared spawning owner",
+    "Anglerfish, Blobfish, Giant Isopod, Shark, Jellyfish, Ray, Starfish, and Whale behavior ports",
+    "multipart Shark and Whale render behavior"
+  ]
+}
