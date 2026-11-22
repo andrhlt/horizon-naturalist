@@ -49,6 +49,7 @@ fn hand_item(kind: &str) -> Option<&'static str> {
     match kind {
         "naturalist:ant" => Some("naturalist:ant"),
         "naturalist:crab" => Some("naturalist:crab"),
+        "naturalist:rat" => Some("naturalist:rat"),
         "naturalist:butterfly" => Some("naturalist:butterfly"),
         "naturalist:caterpillar" => Some("naturalist:caterpillar"),
         "naturalist:desert_scorpion" => Some("naturalist:scorpion"),
@@ -62,10 +63,13 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
     let mob = &game.mobs[index];
     let mounted = mob.extra.mount.is_some() || mob.extra.rider.is_some() || mob.rider.is_some();
     let kind = mob.kind.id.clone();
+    if kind == "naturalist:rat" && !mob.extra.tame { return false; }
     let tamed_with_owner = mob.extra.tame && mob.extra.owner.is_some();
     let crab_held = (kind == "naturalist:crab").then(|| horizon_client::mobs::finalize::item_stack(mob, 0)).flatten();
     let crab_sitting = mob.extra.sitting;
     let crab_following = game.persist.raw.get(&mob.id).and_then(|raw| raw.get("FollowingOwner")).cloned().unwrap_or(Tag::Byte(1));
+    let rat_sitting = mob.extra.sitting;
+    let rat_following = game.persist.raw.get(&mob.id).and_then(|raw| raw.get("FollowingOwner")).cloned().unwrap_or(Tag::Byte(1));
     let full = full_item(&kind).filter(|_| !mounted);
     if let Some(item) = full.or_else(|| hand_item(&kind)) {
         let mut saved = game.mob_tree_nbt(index);
@@ -75,14 +79,19 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
             caught.data_mut().set_other("minecraft:custom_name", name);
             fields.retain(|key, value| match key.to_string_lossy().as_str() {
                 "Health" | "Variant" => true,
-                "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab") && tamed_with_owner,
-                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab"),
+                "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat") && tamed_with_owner,
+                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab" | "naturalist:rat"),
+                "FollowingOwner" | "Sitting" => kind == "naturalist:rat" && tamed_with_owner,
                 "Color" => kind == "naturalist:snail",
                 "NoAI" | "Silent" | "NoGravity" | "Glowing" | "Invulnerable" => !matches!(value, Tag::Byte(0)),
                 _ => false,
             });
-            if matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab") && tamed_with_owner {
+            if matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat") && tamed_with_owner {
                 fields.insert("Tame".into(), Tag::Byte(1));
+            }
+            if kind == "naturalist:rat" && tamed_with_owner {
+                fields.insert("FollowingOwner".into(), rat_following);
+                fields.insert("Sitting".into(), Tag::Byte(i8::from(rat_sitting)));
             }
             if kind == "naturalist:crab" {
                 if let Some(stack) = crab_held { fields.insert("HeldItem".into(), horizon_client::save::item_to_nbt(&stack)); }
@@ -158,6 +167,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
         "naturalist:firefly" => "naturalist:firefly",
         "naturalist:ant" => "naturalist:ant",
         "naturalist:crab" => "naturalist:crab",
+        "naturalist:rat" => "naturalist:rat",
         "naturalist:butterfly" => "naturalist:butterfly",
         "naturalist:caterpillar" => "naturalist:caterpillar",
         "naturalist:scorpion" => "naturalist:desert_scorpion",
@@ -185,7 +195,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                 configured.data_mut().set_other("minecraft:bucket_entity_data", Some(Tag::Compound(fields.clone())));
                 horizon_client::entity_nbt::apply_item_components(mob, &configured);
                 mob.persistent = true;
-                if matches!(kind, "naturalist:ant" | "naturalist:crab") {
+                if matches!(kind, "naturalist:ant" | "naturalist:crab" | "naturalist:rat") {
                     let saved = Tag::Compound(fields.clone());
                     let tame = saved.get("Tame").and_then(horizon_world::datafix::dynamic::as_number)
                         .is_some_and(|n| n.int_value() != 0);
@@ -193,7 +203,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                         // Naturalist pets do not inherit the Wolf template's taming health side effects.
                         mob.extra.owner = Some(owner);
                         mob.extra.tame = true;
-                        if kind == "naturalist:crab" {
+                        if matches!(kind, "naturalist:crab" | "naturalist:rat") {
                             let sitting = saved.get("Sitting").and_then(horizon_world::datafix::dynamic::as_number).is_some_and(|n| n.int_value() != 0);
                             horizon_client::mobs::tame::restore_sitting(mob, sitting);
                         }
@@ -209,6 +219,22 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                 // The engine preserves mod-owned fields through saves without reusing vanilla slots.
                 for (key, value) in fields { raw.insert(key, value); }
                 if hand_item(kind).is_some() { raw.insert("FromHand".into(), Tag::Byte(1)); }
+                // CaughtEntityItem.tryAssignWorkstation runs at the clicked block position
+                // immediately after spawning a Rat. It only assigns tamed workers to containers.
+                if kind == "naturalist:rat"
+                    && raw.get(&"Tame".into()).and_then(horizon_world::datafix::dynamic::as_number)
+                        .is_some_and(|n| n.int_value() != 0)
+                    && game.world.block_entities.contains_key(&(pos[0], pos[1], pos[2]))
+                    && horizon_client::containers::BlockEntity::has_builtin_item_container(
+                        &game.res.facts().get(game.world.block(pos[0], pos[1], pos[2])).name)
+                {
+                    let workstation = ((pos[0] as i64 & 0x3ffffff) << 38)
+                        | ((pos[2] as i64 & 0x3ffffff) << 12)
+                        | (pos[1] as i64 & 0xfff);
+                    raw.insert("Workstation".into(), Tag::Long(workstation));
+                    raw.insert("FollowingOwner".into(), Tag::Byte(0));
+                    raw.insert("Sitting".into(), Tag::Byte(0));
+                }
             }
         }
         [f64::from(pos[0]) + 0.5, f64::from(pos[1]), f64::from(pos[2]) + 0.5]

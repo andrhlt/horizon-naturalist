@@ -1,12 +1,19 @@
 """Replay Crab ownership, capture, and release from a connected guest."""
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import time
+import hashlib
+import shutil
+from prepare import JAR_SHA
 
 version = Path(sys.argv[1])
+jar = Path(sys.argv[2])
+if hashlib.sha512(jar.read_bytes()).hexdigest() != JAR_SHA:
+    raise ValueError("expected the pinned Naturalist 2.0.7 NeoForge 26.3 jar")
 ctl = version / "horizon-ctl"
 game = version / "horizon-client"
 resources = version / ".local/horizon-client/26.3"
@@ -14,12 +21,20 @@ resources = version / ".local/horizon-client/26.3"
 
 def command(socket, *args):
     call = subprocess.run([ctl, "--socket", socket, *map(str, args)], capture_output=True,
-                          check=True, text=True, timeout=60)
+                          check=True, text=True, timeout=60,
+                          env={**os.environ, "HORIZON_HOME": str(Path(socket).parent / Path(socket).stem),
+                               "HORIZON_NO_AUDIO": "1"})
     return json.loads(call.stdout.splitlines()[-1])
 
 
 with tempfile.TemporaryDirectory(prefix="nat-lan-crab-", ignore_cleanup_errors=True) as world:
     root = Path(world)
+
+    def prepare_home(home):
+        (home / "jars").mkdir(parents=True)
+        shutil.copy2(jar, home / "jars" / f"{JAR_SHA}.jar")
+        (home / "horizon-mods.txt").write_text("mod.naturalist:true\n")
+
     h = root / "host.sock"
     g = root / "guest.sock"
     host = lambda *args: command(h, *args)
@@ -27,6 +42,7 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-crab-", ignore_cleanup_errors=T
     try:
         home = root / "host"
         home.mkdir()
+        prepare_home(home)
         host("launch", "--headless", "--game", game, "--resources", resources, "--home", home,
              "--game-dir", home, "--name", "NatHost", "--world", "Naturalist Crab LAN", "--creative",
              "--test-terrain", "--render-distance", 4, "--wait")
@@ -42,6 +58,7 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-crab-", ignore_cleanup_errors=T
         address = f"127.0.0.1:{lan['port']}"
         guest_home = root / "guest"
         guest_home.mkdir()
+        prepare_home(guest_home)
         guest("launch", "--headless", "--game", game, "--resources", resources, "--home", guest_home,
               "--game-dir", guest_home, "--name", "NatGuest", "--server", address, "--render-distance", 4)
         for _ in range(60):
@@ -50,6 +67,7 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-crab-", ignore_cleanup_errors=T
             time.sleep(0.5)
         else:
             raise RuntimeError("Guest did not join")
+        guest("wait-for", "loaded", "--timeout", 55)
         print("Players", host("lan", "status"), flush=True)
         run("tick freeze")
         run("fill 4 91 3 16 91 16 minecraft:stone")
@@ -59,7 +77,7 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-crab-", ignore_cleanup_errors=T
         run("tp NatGuest 8.5 92 7.4")
         run('summon naturalist:crab 8.5 92 8.5 {NoAI:1b,NoGravity:1b,Variant:"naturalist:yellow",Tags:[guest_pet]}')
         original = "@e[type=naturalist:crab,tag=guest_pet,limit=1]"
-        run("tick step 3")
+        run("tick unfreeze")
         guest("wait", 6)
 
         def field(entity, key):
@@ -81,6 +99,14 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-crab-", ignore_cleanup_errors=T
             if owner:
                 break
         assert owner and owner == field("NatGuest", "UUID"), owner
+        assert field(original, "Health") == "8.0f", field(original, "Health")
+        run(f"data merge entity {original} {{Health:4f}}")
+        run("item replace entity NatGuest weapon.mainhand with minecraft:tropical_fish 1")
+        guest("wait", 3)
+        click()
+        assert field(original, "Health") == "6.0f", field(original, "Health")
+        fed_inventory = "\n".join(run("data get entity NatGuest Inventory"))
+        assert "minecraft:tropical_fish" not in fed_inventory, fed_inventory
         run(f"item replace entity {original} weapon.mainhand with minecraft:iron_axe[minecraft:damage=7]")
         run("item replace entity NatGuest weapon.mainhand with naturalist:capture_net")
         guest("wait", 3)

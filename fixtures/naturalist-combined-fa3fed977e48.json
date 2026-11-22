@@ -1,0 +1,46 @@
+{
+  "horizon_build": "native-0a875da-fa3fed977e48",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "java_jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd",
+  "mod_source_sha256": "1fc570930e3a483c78b0b9a35334bd39475e2b084cf5634b423012407dbfbc98",
+  "naturalist_library_sha256": "f353e59be73ddbba2effe680db4fb9a4d990f121ea5217cb63fd96973f5adf59",
+  "linux_source_archive_sha256": "7144ecece78dba988ec21557117a1d9c6c954c2dcc18311577ecbbcf281f0527",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "5e219ecbaa12620bec8d123311a3b55f0b14e6f772b4482fc4ac41b5da98052e",
+  "build_profile": "optimized",
+  "matching_client_server_artifact": true,
+  "checks": {
+    "crab_tame_health_capture_release_whistle_lan": true,
+    "crab_uninstrumented_sneak_click_lan": true,
+    "mac_client_linux_server_connection_and_world_load": true,
+    "duck_delayed_age_metadata_1500ms_lan": {
+      "passed": true,
+      "client_saw_baby_before_click": false,
+      "captured_once_before_sync": true,
+      "captured_age": -11993
+    },
+    "duck_tame_survival_owner_controls": true,
+    "duck_tame_owner_sit_health_save_reopen": true,
+    "duck_adult_bucket_fallback_then_block_use": true,
+    "butterfly_flower_feeding_breed_caterpillar": {
+      "passed": true,
+      "survival_flower_count_after_feed": 3,
+      "repeat_click_did_not_consume": true,
+      "baby_caterpillar_default_variant": true,
+      "cooldown_feed_not_consumed": true
+    },
+    "butterfly_no_cross_species_breeding_and_pair_breeding": true,
+    "butterfly_love_and_player_cause_save_reopen": true,
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "ant_java_gather_entity_id_parity": true
+  },
+  "result": "pass",
+  "scope": "Exact integrated Mac candidate with an independently built Linux server from the same staged source. The client reached the overworld and selected matching-client/LAN fixtures passed. This is selected-behavior evidence, not full Naturalist parity or release approval.",
+  "remaining_limits": [
+    "Duck taming particles were verified at event level in the isolated handoff, but rendered appearance is unverified.",
+    "Butterfly packet-time child rotation, baby-spawn cancellation, and breeder credit remain unverified.",
+    "The remaining species, AI, rendering, loot/recipe, spawn, and persistence checklist is still open."
+  ]
+}

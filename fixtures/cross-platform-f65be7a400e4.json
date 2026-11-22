@@ -1,0 +1,10 @@
+{
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "naturalist_candidate": "native-0a875da-f65be7a400e4",
+  "package_sha256": "54e944db3dc77935c158a45342ac46b7c1caa19096c170b8a63fb0a031b2c727",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_libnaturalist_sha256": "5e219ecbaa12620bec8d123311a3b55f0b14e6f772b4482fc4ac41b5da98052e",
+  "result": "The matching Mac candidate connected to the independently built Linux server and reached minecraft:overworld with screen=playing.",
+  "scope": "Connection and world loading only; not species interaction parity or final release verification.",
+  "evidence_directory": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/naturalist-cross-platform-f65be7a"
+}

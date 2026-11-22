@@ -2,6 +2,8 @@
 mod ant_hill;
 pub mod ant_worker;
 mod appearance;
+mod duck_appearance;
+mod duck_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
@@ -98,12 +100,14 @@ pub fn tick(
 struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
     bass: Arc<bass_renderer::BassRenderer>,
+    duck: Arc<duck_renderer::DuckRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
         Self {
             deer: Arc::new(renderer::DeerRenderer::new()),
             bass: Arc::new(bass_renderer::BassRenderer::new()),
+            duck: Arc::new(duck_renderer::DuckRenderer::new()),
         }
     }
 }
@@ -227,6 +231,7 @@ impl mod_api::Hooks for Naturalist {
         _: &mod_api::RegistrationContext,
         event: &mut mod_api::RegisterEntityRenderersEvent<'_>,
     ) {
+        event.renderers.register("naturalist:duck".into(), self.duck.clone());
         event
             .renderers
             .register("naturalist:deer".into(), self.deer.clone());
@@ -260,6 +265,16 @@ impl mod_api::Hooks for Naturalist {
                 );
             }
         }
+        if event.entity.kind == "naturalist:duck" {
+            if let Some(id)=host.entity(event.entity.id) {
+                let velocity=id.velocity(host).unwrap_or([0.0;3]);
+                let moving=velocity[0]*velocity[0]+velocity[2]*velocity[2]>1.0e-6;
+                let height=id.bounding_box(host).map(|b|(b[1][1]-b[0][1]) as f32);
+                let invisible=id.is_invisible(host).unwrap_or(false);
+                let appearance=host.query(&duck_appearance::DUCK_APPEARANCE).ok().and_then(|q|q.get(mod_api::AttachmentHolder::Entity(id)).ok().flatten());
+                self.duck.observe(id,event.entity.age.floor() as i32,moving,height,invisible,appearance);
+            }
+        }
         if event.entity.kind == "naturalist:bass" {
             if let Some(id) = host.entity(event.entity.id) {
                 let appearance = match host.query(&bass_appearance::BASS_APPEARANCE) {
@@ -287,6 +302,7 @@ impl mod_api::Hooks for Naturalist {
     ) {
         self.deer.retain_live(host);
         self.bass.retain_live(host);
+        self.duck.retain_live(host);
     }
 
     fn client_level_unload(
@@ -296,6 +312,7 @@ impl mod_api::Hooks for Naturalist {
     ) {
         self.deer.clear();
         self.bass.clear();
+        self.duck.clear();
     }
 }
 

@@ -1,0 +1,33 @@
+{
+  "horizon_build": "native-0a875da-b3630e18f6a2",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "horizon_patch_sha256": "84bea9568875d0dca988243a022311a3aa3dfcf5f98b72acea4fcb875be12ac0",
+  "controls": {
+    "following_enabled": {
+      "java_x_before": 2.5,
+      "java_x_after": 10.320579093190219,
+      "horizon_x_before": 2.5,
+      "horizon_x_after": 11.15061002291192,
+      "approached_owner": true
+    },
+    "following_disabled": {
+      "java_x_after": 2.5,
+      "horizon_x_after": 2.5
+    },
+    "sitting": {
+      "java_x_after": 2.5,
+      "horizon_x_after": 2.5
+    },
+    "owner_whistle_matching_lan": {
+      "earlier_candidate": "native-0a875da-b3630e18f6a2",
+      "combined_candidate": "native-0a875da-a1d27763e73b",
+      "following_disabled": true,
+      "owner_preserved": true,
+      "movement_afterwards": "Wandering permitted; no stationarity assertion."
+    }
+  },
+  "scope": "Selected directional movement, initial follow/sit controls and owner whistle state only. Java and Horizon trajectory magnitudes differ. The owner must approach to whistle, so this does not establish stopping while the follow goal is still active. Command-based data merge reconstructs Rat and loses in-memory tame state in Horizon; that separate behavior needs investigation. Navigation, teleport, owner disconnect/dimension, work AI and other Rat behaviors remain open.",
+  "evidence": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/rat-follow-audit/"
+}

@@ -1,0 +1,23 @@
+{
+  "horizon_build": "native-0a875da-e10e994e84a1",
+  "package_sha256": "1cfee416646b2ac988a2b5a6bc063b86a24b825edfc5620633ff2e501ec63d8a",
+  "checks_rerun": {
+    "matching_client_duck_delayed_age_sync_1500ms": {
+      "passed": true,
+      "client_saw_baby_before_click": false,
+      "captured_once_before_sync": true,
+      "captured_age": -11994
+    },
+    "crab_uninstrumented_lan_tame_heal_capture_release_whistle": true,
+    "crab_uninstrumented_immediate_sneak_click": {
+      "passed": true,
+      "following_toggle": true,
+      "owner_sneak_click_sitting": true,
+      "nonowner_state_unchanged": true
+    },
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "ant_java_gather_entity_id_parity": true
+  },
+  "result": "pass",
+  "scope": "Regression checks rerun against the exact matching e10 Mac client and its already verified Linux server artifact. This is not the newer fa3 integrated candidate."
+}

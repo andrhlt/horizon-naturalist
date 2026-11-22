@@ -1,0 +1,27 @@
+{
+  "horizon_build": "native-0a875da-f65be7a400e4",
+  "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "package": "/private/tmp/naturalist-final-6c9be00-ant-sound-pet.hmod",
+  "package_sha512": "691abc9991f2248910e33b4662d7a8e0e5737d9e0b901c8c9ada802f3df9b0732a485d4ca57f828016047660a5fbc95aeb10850040e125b3a18c8c109ad043f7",
+  "checks": {
+    "crab_immediate_sneak_lan": true,
+    "duck_owner_nonowner_sneak_and_repeat_clicks": true,
+    "duck_foreign_offhand_water_fallback_and_next_use": true,
+    "duck_pet_save_reopen": true,
+    "ant_gather_java_parity": true,
+    "ant_food_owner_lan": true,
+    "ant_full_hill_overflow_delivery": true,
+    "ant_java_ambient_hurt_death_step_sounds": true
+  },
+  "ant_sounds": {
+    "naturalist:entity.ant.ambient": 1,
+    "naturalist:entity.ant.death": 1,
+    "naturalist:entity.ant.hurt": 1,
+    "naturalist:entity.ant.step": 1,
+    "inherited_wolf_events": false
+  },
+  "client_server_contract": "Both sides use this Naturalist package and the pinned Horizon 0a875da nightly. Mixed-artifact operation is not included.",
+  "linux_connection": "Passed on the exact package; see fixtures/cross-platform-f65be7a400e4.json.",
+  "duck_delayed_age_sync": "Pending focused verification; prior delayed run tested missing capability registration, not stale owner/age metadata."
+}

@@ -1,0 +1,81 @@
+{
+  "horizon_build": "native-0a875da-3d513df20090",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "java_jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd",
+  "mod_source_sha256": "dfa378ff47d36e38db922821b36dfee4086b8446c52d95269bd8cd6d2ff277da",
+  "naturalist_library_sha256": "f353e59be73ddbba2effe680db4fb9a4d990f121ea5217cb63fd96973f5adf59",
+  "horizon_patch_library_sha256": "3b81b5cc708231cb85fd67edbf71c1656e4241e88c583eac31c944db35e936d6",
+  "linux_source_archive_sha256": "6559d148960e487d2b0094435d33160b7f3ab4cc2c413ef6da5197b22ba62118",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "5e219ecbaa12620bec8d123311a3b55f0b14e6f772b4482fc4ac41b5da98052e",
+  "build_profile": "optimized",
+  "matching_client_server_artifact": true,
+  "checks": {
+    "crab_matching_lan_immediate_sneak_whistle": true,
+    "crab_matching_lan_taming_capture_release_whistle": true,
+    "crab_following_owner_gate_stop_resume_and_disconnect": true,
+    "duck_delayed_age_metadata_1500ms": {
+      "passed": true,
+      "client_saw_baby_before_click": false,
+      "captured_once_before_sync": true,
+      "captured_age": -11992
+    },
+    "duck_adult_water_bucket_fallback_then_intentional_use": true,
+    "duck_owner_follow_enabled": true,
+    "duck_follow_stops_after_owner_disconnect": true,
+    "duck_follow_stops_after_owner_dimension_change": true,
+    "duck_taming_healing_sitting_save_reopen": true,
+    "duck_attack_sit_and_water_short_wall_controls": "Selected checks match Java; see fixtures/duck-ai-3d513df20090.json.",
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "ant_java_gather_entity_id_parity": true,
+    "ant_owned_and_wild_hill_delivery_and_owner_controls": true,
+    "ant_does_not_deliver_to_another_owners_hill": true,
+    "ant_hill_break_worker_release": {
+      "passed": false,
+      "horizon_workers_released_owner_or_stranger": 0,
+      "java_workers_released_owner_or_stranger": 2,
+      "horizon_stored_apples_dropped": true,
+      "java_anger_only_toward_stranger": true
+    },
+    "butterfly_breeding_creates_baby_caterpillar": true,
+    "bird_normal_probability_seed_49903": {
+      "horizon_birds": 3,
+      "java_birds": 2,
+      "positive_sheep_control": true
+    },
+    "bird_normal_probability_seed_49904": {
+      "horizon_birds": 0,
+      "java_birds": 0
+    },
+    "bird_high_probability_seed_49903": {
+      "horizon_birds": 29,
+      "java_birds": 32,
+      "baseline_horizon_birds": 20,
+      "baseline_exact_java_positions": 10,
+      "ordered_candidate_exact_java_positions": 21
+    },
+    "spawn_rows_match_java_order_across_recorded_biomes": {
+      "biomes": 67,
+      "mismatched_biomes": 0,
+      "mismatched_categories": 0
+    },
+    "mac_client_linux_server_connection_and_overworld_load": true
+  },
+  "result": "pass with open parity gaps",
+  "scope": "Exact integrated Mac candidate. The controlled Bird samples improve spawn-row alignment but do not prove full spawn or species parity. No mixed-artifact operation is claimed.",
+  "evidence": {
+    "combined_regressions": "/private/tmp/naturalist-birdorder-regressions.log",
+    "cross_platform_fixture": "fixtures/cross-platform-3d513df20090.json",
+    "bird_density_audit": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/bird-density-audit",
+    "bird_density_current_output": "/private/tmp/bird-biomes-native-0a875da-3d513df20090.json",
+    "cross_platform": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/naturalist-cross-platform-3d513df"
+  },
+  "remaining_limits": [
+    "Bird counts and positions remain different from Java despite the all-biome modifier-order match.",
+    "Duck follow trajectories have not been compared against a Java runtime; water, obstacles, teleporting, sounds, appearance, dye, and breeding remain open.",
+    "Butterfly packet-time child rotation, spawn cancellation, and breeding credit remain unverified.",
+    "The remaining species, AI, rendering, loot/recipe, spawn, and persistence checklist is still open."
+  ]
+}

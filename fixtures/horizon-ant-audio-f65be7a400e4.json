@@ -1,0 +1,13 @@
+{
+  "horizon_build": "native-0a875da-f65be7a400e4",
+  "package_sha512": "691abc9991f2248910e33b4662d7a8e0e5737d9e0b901c8c9ada802f3df9b0732a485d4ca57f828016047660a5fbc95aeb10850040e125b3a18c8c109ad043f7",
+  "java_fixture": "fixtures/ant-java-sound.json",
+  "played_counts": {
+    "naturalist:entity.ant.ambient": 1,
+    "naturalist:entity.ant.death": 1,
+    "naturalist:entity.ant.hurt": 1,
+    "naturalist:entity.ant.step": 1
+  },
+  "inherited_wolf_events": false,
+  "result": "pass"
+}

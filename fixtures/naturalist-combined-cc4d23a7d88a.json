@@ -1,0 +1,24 @@
+{
+  "horizon_build": "native-0a875da-cc4d23a7d88a",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "package_sha256": "a08bc10bad4e8acae6770c93412de9e8466fba8a12a1a27361cba83913b84234",
+  "package_sha512": "231a5f15f7e402d4b6b83624f71dbad65f7029f3c6963351cf0be0495912d609c8ad7221ce542b5dee9223ec11d7b297c3afeff60fa6f072ef5201f8acac93c8",
+  "matching_client_server_artifacts": true,
+  "cross_platform_connection": "pass; see fixtures/cross-platform-cc4d23a7d88a.json",
+  "checks": {
+    "crab_tropical_fish_tame_owner_follow_heal": true,
+    "crab_capture_release_variant_weapon_and_whistle": true,
+    "crab_immediate_sneak_whistle_lan": true,
+    "duck_owner_cod_heal_preserves_sitting_and_save_reopen": true,
+    "duck_nonowner_cod_control": true,
+    "duck_creative_cod_heal_consumption_control": true,
+    "duck_delayed_baby_age_metadata_1500ms": true,
+    "duck_adult_bucket_fallback_then_next_block_use": true,
+    "ant_carried_food_uuid_stack_offset_save_reopen": true,
+    "ant_java_gather_parity": true,
+    "ant_ambient_hurt_death_step_sounds_without_wolf_events": true
+  },
+  "result": "pass",
+  "scope": "Headless selected fixtures only; this is not full Naturalist parity, cross-platform verification, or release testing."
+}

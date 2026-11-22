@@ -1,0 +1,17 @@
+{
+  "horizon_build": "native-0a875da-3d513df20090",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "source_archive_sha256": "6559d148960e487d2b0094435d33160b7f3ab4cc2c413ef6da5197b22ba62118",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "5e219ecbaa12620bec8d123311a3b55f0b14e6f772b4482fc4ac41b5da98052e",
+  "result": "pass",
+  "checks": {
+    "mac_client_connected_to_linux_server": true,
+    "entered_playing_state": true,
+    "loaded_minecraft_overworld": true
+  },
+  "evidence_directory": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/naturalist-cross-platform-3d513df",
+  "server_and_tunnel_stopped": true
+}

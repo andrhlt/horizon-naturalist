@@ -1,0 +1,21 @@
+{
+  "horizon_build": "native-0a875da-964e6c9e015d",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95; ContainerBoundWorker.getContainer delegates to HopperBlockEntity.getContainerAt",
+  "java_behavior": {
+    "chest": "assign workstation and clear owner-follow/sitting on release",
+    "barrel": "assign workstation and clear owner-follow/sitting on release",
+    "composter": "no Container; leave Workstation unset and preserve captured follow/sit state"
+  },
+  "checks": {
+    "chest_assigns_workstation_and_survives_save_reopen": true,
+    "barrel_assigns_workstation": true,
+    "composter_does_not_assign_workstation": true
+  },
+  "evidence_logs": {
+    "chest": "/private/tmp/naturalist-recheck-964-rat-workstation.log",
+    "barrel": "/private/tmp/naturalist-recheck-964-rat-barrel.log",
+    "composter": "/private/tmp/naturalist-recheck-964-rat-composter-negative.log"
+  },
+  "result": "pass",
+  "scope": "Representative vanilla block cases; other container types and Rat AI remain open."
+}

@@ -5,11 +5,16 @@ fn net_saved(game: &Game<'_>, mob: &Mob, tag: &mut Tag) {
             if let Some(owner) = mob.extra.owner.filter(|_| mob.extra.tame) { fields.insert("Owner".into(), Tag::IntArray(owner.to_vec())); } else { fields.remove(&"Owner".into()); }
             fields.insert("FromBucket".into(), Tag::Byte(i8::from(mob.extra.from_bucket)));
             fields.insert("Sitting".into(), Tag::Byte(i8::from(mob.extra.sitting)));
+            fields.insert("DyeColor".into(), Tag::Int(if mob.extra.color < 16 { i32::from(mob.extra.color) } else { -1 }));
         }
         return;
     }
     if !matches!(kind, "naturalist:ant" | "naturalist:crab" | "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:desert_scorpion" | "naturalist:snail" | "naturalist:dragonfly" | "naturalist:firefly") { return }
     let Tag::Compound(fields) = tag else { return };
+    if kind == "naturalist:butterfly" {
+        fields.insert("InLove".into(), Tag::Int(mob.extra.in_love));
+        if let Some(cause) = mob.extra.love_cause { fields.insert("LoveCause".into(), Tag::IntArray(cause.to_vec())); } else { fields.remove(&"LoveCause".into()); }
+    }
     // Vanilla Parrot writes a numeric Variant; Naturalist owns a namespaced string instead.
     let variant = game.persist.raw.get(&mob.id).and_then(|raw| raw.get("Variant"));
     if kind == "naturalist:crab" {
@@ -25,7 +30,7 @@ fn net_saved(game: &Game<'_>, mob: &Mob, tag: &mut Tag) {
     } else if let Some(horizon_core::nbt::Tag::String(variant)) = variant {
         fields.insert("Variant".into(), horizon_core::nbt::Tag::String(variant.clone()));
     }
-    if matches!(kind, "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab") {
+    if matches!(kind, "naturalist:caterpillar" | "naturalist:crab") {
         fields.insert("Age".into(), horizon_core::nbt::Tag::Int(mob.extra.age));
     }
 }

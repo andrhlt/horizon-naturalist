@@ -1,0 +1,19 @@
+{
+  "horizon_build": "native-0a875da-cc4d23a7d88a",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_fixture": "fixtures/crab-java.json",
+  "java_reference_source": "tools/reference/CrabProbe.java and Naturalist Crab.mobInteract bytecode",
+  "package_sha256": "a08bc10bad4e8acae6770c93412de9e8466fba8a12a1a27361cba83913b84234",
+  "package_sha512": "231a5f15f7e402d4b6b83624f71dbad65f7029f3c6963351cf0be0495912d609c8ad7221ce542b5dee9223ec11d7b297c3afeff60fa6f072ef5201f8acac93c8",
+  "matching_lan_checks": {
+    "tropical_fish_tames_untamed_crab": true,
+    "owner_and_following_state_set": true,
+    "owner_tropical_fish_heals_4_to_6": true,
+    "healing_fish_consumed": true,
+    "capture_and_release_preserve_variant_and_damaged_weapon": true,
+    "whistle_follow_toggle": true,
+    "immediate_sneak_click_behavior": true
+  },
+  "result": "pass",
+  "scope": "Selected LAN parity only; exact RNG sequence and full Crab goals/rendering remain open."
+}

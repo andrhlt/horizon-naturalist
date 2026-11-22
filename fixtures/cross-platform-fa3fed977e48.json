@@ -1,0 +1,15 @@
+{
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "naturalist_candidate": "native-0a875da-fa3fed977e48",
+  "source_archive_sha256": "7144ecece78dba988ec21557117a1d9c6c954c2dcc18311577ecbbcf281f0527",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "5e219ecbaa12620bec8d123311a3b55f0b14e6f772b4482fc4ac41b5da98052e",
+  "method": "Build the Linux server from the same source archive as the Mac candidate, start it in an isolated temporary world, and connect the exact Mac client candidate.",
+  "result": "pass",
+  "client_screen": "playing",
+  "dimension": "minecraft:overworld",
+  "server_login_recorded": true,
+  "temporary_server_and_tunnel_stopped": true,
+  "existing_services_or_worlds_changed": false,
+  "evidence_directory": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/naturalist-cross-platform-fa3fed"
+}
