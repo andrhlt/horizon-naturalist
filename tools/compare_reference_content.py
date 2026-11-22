@@ -1,4 +1,4 @@
-"""Compare the Java recipes, loot tables and item models with the installed Horizon package."""
+"""Compare shared Java content resources with the installed Horizon package."""
 import argparse
 import hashlib
 from io import BytesIO
