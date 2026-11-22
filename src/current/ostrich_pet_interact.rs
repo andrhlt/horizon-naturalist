@@ -21,6 +21,12 @@ fn ostrich_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> 
             | "minecraft:torchflower_seeds"
             | "minecraft:pitcher_pod"
     );
+    let actor = game.acting_player_uuid();
+    let id = game.mobs[index].id;
+    let baby = game.mobs[index].is_baby();
+    let tame = game.mobs[index].extra.tame;
+    let owner = tame && game.mobs[index].extra.owner == Some(actor);
+
     if !seeds {
         if kind == "naturalist:ostrich" && item == "minecraft:saddle" && tame && owner {
             use mod_api::{Host, HostTransaction, ItemPlace, ItemResource, EquipmentSlot};
@@ -39,12 +45,6 @@ fn ostrich_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> 
         }
         return ControlFlow::Continue(());
     }
-
-    let actor = game.acting_player_uuid();
-    let id = game.mobs[index].id;
-    let baby = game.mobs[index].is_baby();
-    let tame = game.mobs[index].extra.tame;
-    let owner = tame && game.mobs[index].extra.owner == Some(actor);
 
     // OstrichProbe: an untamed juvenile accepts its first seed as a tame,
     // ordered companion.  The Java implementation is deterministic here.
