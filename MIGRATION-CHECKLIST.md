@@ -31,6 +31,14 @@ for all four adapters. This is source and unit evidence only; no artifact hash
 or headless/offscreen/LAN result is claimed until the pinned launcher produces
 the final candidate.
 
+The continuation adds Naturalist's three-way Bass natural-spawn variant draw
+(`bass`, `bass_medium`, `bass_large`) at the shared natural finalizer seam. The
+mapping is covered by a unit fixture and uses the pinned Horizon world RNG;
+runtime seed/count parity remains subject to the finalizer's shared random
+stream and is not claimed here. Forest Fox/Rabbit modifiers remain data-driven
+vanilla spawns with the Java blacklist predicates preserved in the tracked
+definitions; no new runtime override is introduced for those entities.
+
 ## Previously verified interaction baseline (`codex/naturalist-current-integration`)
 
 Latest combined build: `native-0a875da-e10e994e84a1` (Horizon 0a875da, optimized). Candidate package: `/private/tmp/naturalist-crab-tame.hmod`, SHA-256 `1cfee416646b2ac988a2b5a6bc063b86a24b825edfc5620633ff2e501ec63d8a`, SHA-512 `4e03289bdeb7545a5da3725258bf306760b0f0a3323b736fbf5bcbd030a2a771b37042e918cea495a9569c2b0a67ff7c408ac7a54e9e20fdcdf26fedd345f2cb`. Exact matching-artifact headless checks passed for Crab taming/healing at Java max health/capture/release/whistle and immediate sneak; Duck healing, owner/nonowner/creative, save/reopen, intentional sit, delayed baby-age metadata and adult water fallback; Ant carried-food persistence, sounds and Java gather parity. The exact Mac candidate also connected to a Linux server built from this package; see `fixtures/naturalist-combined-e10e994e84a1.json`, `fixtures/crab-tame-heal-lan-e10e994e84a1.json`, and `fixtures/cross-platform-e10e994e84a1.json`. These are selected feature checks, not full species parity. Package discovery excludes `.local/content` and evidence.
