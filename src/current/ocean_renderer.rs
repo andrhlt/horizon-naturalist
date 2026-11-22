@@ -124,7 +124,12 @@ impl OceanRenderer {
     fn texture(&self, id: u32) -> String {
         let variants = self.variants.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
         let name = variants.get(&id).map(|v| v.rsplit(':').next().unwrap_or(v.as_str()));
-        let file = match (self.species, name) {
+        texture_path(self.species, name, self.texture)
+    }
+}
+
+fn texture_path(species: &str, name: Option<&str>, fallback: &str) -> String {
+    let file = match (species, name) {
             ("anglerfish", Some("glow")) => "anglerfish/glow",
             ("anglerfish", _) => "anglerfish/red",
             ("blobfish", Some("pink")) => "blobfish/pink",
@@ -140,10 +145,9 @@ impl OceanRenderer {
             ("ray", _) => "ray/eagle_ray",
             ("starfish", _) => "starfish/orange",
             ("whale", _) => "whale/whale",
-            _ => return self.texture.to_owned(),
+            _ => return fallback.to_owned(),
         };
         format!("naturalist:entity/{file}")
-    }
 }
 impl EntityRenderer for OceanRenderer {
     fn submit(&self, entity: &EntityRenderState, draw: &mut dyn BlockEntityDrawContext) -> Result<(), String> {
@@ -157,5 +161,46 @@ impl EntityRenderer for OceanRenderer {
         let texture = self.texture(entity.id);
         if !draw.model_part(&model, &texture, if living.has_red_overlay { 0xFF7070 } else { 0xFFFFFF }) { return Err(format!("missing ocean wildlife texture {texture}")); }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn variant_attachment_round_trips_namespaced_values() {
+        let expected = "naturalist:mobula_ray".to_owned();
+        let encoded = encode_variant(&expected).expect("encode variant");
+        assert_eq!(decode_variant(&encoded).expect("decode variant"), expected);
+    }
+
+    #[test]
+    fn all_java_ocean_variant_textures_are_explicit() {
+        let cases = [
+            ("anglerfish", "naturalist:red", "naturalist:entity/anglerfish/red"),
+            ("anglerfish", "naturalist:glow", "naturalist:entity/anglerfish/glow"),
+            ("blobfish", "naturalist:gray", "naturalist:entity/blobfish/gray"),
+            ("blobfish", "naturalist:pink", "naturalist:entity/blobfish/pink"),
+            ("giant_isopod", "naturalist:brown", "naturalist:entity/giant_isopod/brown"),
+            ("giant_isopod", "naturalist:blue", "naturalist:entity/giant_isopod/blue"),
+            ("jellyfish", "naturalist:white", "naturalist:entity/jellyfish/white"),
+            ("jellyfish", "naturalist:green", "naturalist:entity/jellyfish/green"),
+            ("jellyfish", "naturalist:blue", "naturalist:entity/jellyfish/blue"),
+            ("jellyfish", "naturalist:orange", "naturalist:entity/jellyfish/orange"),
+            ("jellyfish", "naturalist:pink", "naturalist:entity/jellyfish/pink"),
+            ("ray", "naturalist:eagle_ray", "naturalist:entity/ray/eagle_ray"),
+            ("ray", "naturalist:mobula_ray", "naturalist:entity/ray/mobula_ray"),
+            ("ray", "naturalist:stingray", "naturalist:entity/ray/stingray"),
+            ("starfish", "naturalist:orange", "naturalist:entity/starfish/orange"),
+            ("starfish", "naturalist:blue", "naturalist:entity/starfish/blue"),
+            ("starfish", "naturalist:purple", "naturalist:entity/starfish/purple"),
+            ("starfish", "naturalist:red", "naturalist:entity/starfish/red"),
+            ("whale", "naturalist:whale", "naturalist:entity/whale/whale"),
+            ("whale", "naturalist:whale_baby", "naturalist:entity/whale/whale_baby"),
+        ];
+        for (species, variant, expected) in cases {
+            assert_eq!(texture_path(species, Some(variant.rsplit(':').next().unwrap()), "unused"), expected);
+        }
     }
 }
