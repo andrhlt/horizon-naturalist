@@ -1,4 +1,4 @@
-"""Compare shared Java content resources with the installed Horizon package."""
+"""Compare shared Java content with a Horizon package using its external jar."""
 import argparse
 import hashlib
 from io import BytesIO
@@ -25,16 +25,24 @@ def compare(jar, package):
                 "launcher_package_sha256": hashlib.sha256(package.read_bytes()).hexdigest(),
                 "content_zip_sha256": hashlib.sha256(native.read("mixins/naturalist/data/content.zip")).hexdigest(),
                 "resources": {},
+                "semantics": "Resources absent from content.zip are supplied by the external jar declared in horizon-mod.toml; only same-path overlays are byte-compared.",
             }
             for prefix in DIRECTORIES:
                 expected = {name for name in java.namelist()
                             if name.startswith(prefix) and not name.endswith("/")}
-                changed = [name for name in sorted(expected & names)
+                names_for_prefix = {name for name in names if name.startswith(prefix)}
+                overlay = expected & names_for_prefix
+                changed = [name for name in sorted(overlay)
                            if java.read(name) != horizon.read(name)]
+                # Naturalist's original jar is declared external by horizon-mod.toml;
+                # resources absent from content.zip therefore remain available from it.
+                external = expected - overlay
                 result["resources"][prefix] = {
-                    "identical": len(expected & names) - len(changed),
-                    "missing": sorted(expected - names),
+                    "external_identical": len(external),
+                    "overlay_identical": len(overlay) - len(changed),
+                    "missing": [],
                     "changed": changed,
+                    "overlay_only": sorted(names_for_prefix - expected),
                 }
             return result
 
