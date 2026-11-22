@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Verify the pinned Horizon internal seams used by the APP-2133 boundary note."""
+import argparse
 from pathlib import Path
 
-ROOT = Path('/Users/andrewholt/Library/Application Support/horizon-launcher/native/source/0a875da91dbb0fdcb7ba8c42c11341aa229af51a')
+parser = argparse.ArgumentParser()
+parser.add_argument('source', type=Path, help='Pinned Horizon source checkout (0a875da...)')
+ROOT = parser.parse_args().source
 rules = (ROOT / 'crates/horizon-client/src/mobs/spawn_rules.rs').read_text()
 parallel = (ROOT / 'crates/horizon-client/src/mobs/spawn_selection/parallel.rs').read_text()
 assert 'pub fn check_spawn_rules<L: SpawnLevel>' in rules
