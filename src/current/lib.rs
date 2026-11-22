@@ -6,6 +6,7 @@ pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
 mod duck_renderer;
+mod large_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
@@ -142,6 +143,13 @@ struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
     bass: Arc<bass_renderer::BassRenderer>,
     duck: Arc<duck_renderer::DuckRenderer>,
+    elephant: Arc<large_renderer::LargeRenderer>,
+    mammoth: Arc<large_renderer::LargeRenderer>,
+    giraffe: Arc<large_renderer::LargeRenderer>,
+    lion: Arc<large_renderer::LargeRenderer>,
+    rhino: Arc<large_renderer::LargeRenderer>,
+    tiger: Arc<large_renderer::LargeRenderer>,
+    zebra: Arc<large_renderer::LargeRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -149,6 +157,13 @@ impl Default for Naturalist {
             deer: Arc::new(renderer::DeerRenderer::new()),
             bass: Arc::new(bass_renderer::BassRenderer::new()),
             duck: Arc::new(duck_renderer::DuckRenderer::new()),
+            elephant: Arc::new(large_renderer::LargeRenderer::elephant()),
+            mammoth: Arc::new(large_renderer::LargeRenderer::mammoth()),
+            giraffe: Arc::new(large_renderer::LargeRenderer::giraffe()),
+            lion: Arc::new(large_renderer::LargeRenderer::lion()),
+            rhino: Arc::new(large_renderer::LargeRenderer::rhino()),
+            tiger: Arc::new(large_renderer::LargeRenderer::tiger()),
+            zebra: Arc::new(large_renderer::LargeRenderer::zebra()),
         }
     }
 }
@@ -340,6 +355,17 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:bass".into(), self.bass.clone());
+        for (id, renderer) in [
+            ("naturalist:elephant", self.elephant.clone()),
+            ("naturalist:mammoth", self.mammoth.clone()),
+            ("naturalist:giraffe", self.giraffe.clone()),
+            ("naturalist:lion", self.lion.clone()),
+            ("naturalist:rhino", self.rhino.clone()),
+            ("naturalist:tiger", self.tiger.clone()),
+            ("naturalist:zebra", self.zebra.clone()),
+        ] {
+            event.renderers.register(id.into(), renderer);
+        }
     }
 
     fn render_living_pre(
