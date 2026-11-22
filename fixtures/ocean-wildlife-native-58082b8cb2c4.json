@@ -61,7 +61,16 @@
     "source_commit": "8994e6fd5900ddd24a788eaee142ba0eb23caa7f",
     "optimized_client_build": "passed with installed Horizon launcher",
     "libnaturalist_dylib_sha256": "17553162bf0e4e1f22d2ed6cba1812a667f4253c613abea2fdff9375066051c9",
-    "dedicated_server_build": "blocked on Mac host: Horizon has no game package for its system yet"
+    "dedicated_server_build": "blocked on Mac host: Horizon has no game package for its system yet",
+    "linux_matching_artifact": {
+      "client_candidate": "native-0a875da-284a88c025ea",
+      "client_libnaturalist_sha256": "7a1bd12a7e4195caf58c518cc6a4c408c7c171ec7858646cbc534f51e2a8a5ea",
+      "server_libnaturalist_sha256": "7b07d793219c12e29b55cb4e258f6b7e80219341cc9a273779642867f9e9a71f",
+      "source_commit": "e3860f99f27b722cccc91a092287d95b676d4f71",
+      "server_export": "/root/dev/app2130-server-export-current/horizon-engine",
+      "result": "matching client connected through SSH tunnel and reached playing in minecraft:overworld",
+      "first_attempt": "failed because generated data was omitted and ant_hill block entity was missing; corrected full stage passed"
+    }
   },
   "parity_status": "open",
     "placement_owner": {
