@@ -75,6 +75,7 @@
   "parity_status": "open",
     "placement_owner": {
       "result": "shared InWater/OceanFloor placement registered for all eight entities",
+      "cluster_limits": {"anglerfish": 8, "blobfish": 8, "giant_isopod": 4, "great_white_shark": 4, "jellyfish": 8, "ray": 8, "starfish": 4, "whale": 4},
       "species_predicates": "not implemented: depth, substrate, group, light and variant initialization remain open"
     },
     "rendered_frame_evidence": {
