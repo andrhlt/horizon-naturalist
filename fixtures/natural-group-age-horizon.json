@@ -1,10 +1,15 @@
 {
-  "status": "partial",
+  "status": "mapped",
   "java_species_count": 36,
   "mapped_probability_groups": {"never_baby": 2, "five_percent": 26, "always_baby": 4},
-  "special_group_species": ["naturalist:elephant", "naturalist:lion", "naturalist:mammoth", "naturalist:zebra"],
-  "horizon_observed_groups": "Group::Ageable is supplied through the existing finalize_with local binding for 32 species; the four special group distributions remain unresolved.",
+  "special_group_species": {
+    "naturalist:elephant": {"probability_by_member": [0.0, 0.0, 1.0, 1.0], "expected_babies": [0, 0, 128, 128]},
+    "naturalist:lion": {"probability_by_member": [0.0, 0.05, 0.75, 0.75], "expected_babies": [0, 5, 93, 94]},
+    "naturalist:mammoth": {"probability_by_member": [0.0, 0.0, 1.0, 1.0], "expected_babies": [0, 0, 128, 128]},
+    "naturalist:zebra": {"probability_by_member": [0.0, 0.20, 0.30, 0.15], "expected_babies": [0, 25, 36, 17]}
+  },
+  "horizon_observed_groups": "Group::Ageable is supplied through the existing finalize_with local binding for all 36 species; special group transitions are selected from the group's member index.",
   "horizon_group_input": "$local_mut:group:0",
-  "reason": "The existing native BEFORE_CALL mixin proves the mutable group local is available before finalize_grouped. This ports only fixture-backed constant Ageable probabilities; it does not claim parity for class-specific group distributions or an executable same-stream capture.",
+  "reason": "The existing native BEFORE_CALL mixin supplies the mutable group local before finalize_grouped. Constant and member-indexed Ageable probabilities now cover all 36 fixture species; this remains deterministic fixture evidence rather than an executable same-stream capture.",
   "source": "horizon-mod.toml deer_finalize_variant; fixtures/natural-group-age-java.json"
 }
