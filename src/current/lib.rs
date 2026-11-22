@@ -2,6 +2,7 @@
 mod ant_hill;
 pub mod ant_worker;
 mod bird;
+mod vulture;
 mod appearance;
 mod aquatic_spawn;
 mod duck_appearance;
@@ -281,6 +282,11 @@ impl mod_api::Hooks for Naturalist {
                 if let Err(error) = bird::eat_nearby_seeds(host, bird) {
                     eprintln!("Naturalist: bird seed feeding failed: {error:?}");
                 }
+            }
+        }
+        if event.kind == "naturalist:vulture" {
+            if let Some(vulture) = host.entity(event.entity) {
+                vulture::tick(host, vulture);
             }
         }
         if event.kind == "naturalist:bass" {
