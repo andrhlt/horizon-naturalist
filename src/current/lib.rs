@@ -13,6 +13,7 @@ mod bass_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
+mod wildlife_renderer;
 use mod_api::AttachmentQueries;
 use std::sync::Arc;
 mod net;
@@ -101,6 +102,10 @@ struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
     bass: Arc<bass_renderer::BassRenderer>,
     duck: Arc<duck_renderer::DuckRenderer>,
+    bear: Arc<wildlife_renderer::WildlifeRenderer>,
+    black_bear: Arc<wildlife_renderer::WildlifeRenderer>,
+    boar: Arc<wildlife_renderer::WildlifeRenderer>,
+    snake: Arc<wildlife_renderer::WildlifeRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -108,6 +113,10 @@ impl Default for Naturalist {
             deer: Arc::new(renderer::DeerRenderer::new()),
             bass: Arc::new(bass_renderer::BassRenderer::new()),
             duck: Arc::new(duck_renderer::DuckRenderer::new()),
+            bear: Arc::new(wildlife_renderer::WildlifeRenderer::bear()),
+            black_bear: Arc::new(wildlife_renderer::WildlifeRenderer::black_bear()),
+            boar: Arc::new(wildlife_renderer::WildlifeRenderer::boar()),
+            snake: Arc::new(wildlife_renderer::WildlifeRenderer::snake()),
         }
     }
 }
@@ -238,6 +247,14 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:bass".into(), self.bass.clone());
+        for (id, renderer) in [
+            ("naturalist:bear", self.bear.clone()),
+            ("naturalist:black_bear", self.black_bear.clone()),
+            ("naturalist:boar", self.boar.clone()),
+            ("naturalist:snake", self.snake.clone()),
+        ] {
+            event.renderers.register(id.into(), renderer);
+        }
     }
 
     fn render_living_pre(
