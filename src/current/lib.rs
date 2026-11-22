@@ -136,10 +136,52 @@ impl mod_api::Hooks for Naturalist {
         host: &dyn mod_api::Host,
         event: &mut mod_api::MobSpawnPlacementCheckEvent<'_>,
     ) {
-        if event.kind != "naturalist:hippo" || event.reason != mod_api::SpawnReason::Natural {
+        if event.reason != mod_api::SpawnReason::Natural {
             return;
         }
         let pos = [event.pos.x, event.pos.y, event.pos.z];
+        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:piranha") {
+            let sea_level = event.level.sea_level(host);
+            let fluid_water = host.fluid_key("minecraft:water");
+            let water_fluid_at = |at| event.level.fluid_state(host, at)
+                .is_some_and(|state| !state.is_empty() && Some(state.fluid) == fluid_water);
+            let water_block_at = |at| event.level.block(host, at)
+                .and_then(|block| host.block_states().name(block).ok().map(str::to_owned))
+                .is_some_and(|name| name == "minecraft:water");
+            let decision = match event.kind {
+                "naturalist:anglerfish" => {
+                    let surface_rule = aquatic_placements::anglerfish_surface_spawn_ok(
+                        event.default_result,
+                        pos[1],
+                        sea_level,
+                        water_fluid_at([pos[0], pos[1] - 1, pos[2]]),
+                        water_block_at([pos[0], pos[1] + 1, pos[2]]),
+                    );
+                    let block_light = event.level.brightness(host, mod_api::LightLayer::Block, pos);
+                    let sky_light = event.level.brightness(host, mod_api::LightLayer::Sky, pos);
+                    aquatic_placements::anglerfish_spawn_ok(
+                        surface_rule,
+                        pos[1],
+                        sea_level,
+                        water_block_at(pos),
+                        block_light,
+                        sky_light,
+                    )
+                }
+                "naturalist:blobfish" => aquatic_placements::deep_water_spawn_ok(
+                    event.default_result, pos[1], sea_level, 33,
+                ),
+                "naturalist:piranha" => aquatic_placements::deep_water_spawn_ok(
+                    event.default_result, pos[1], sea_level, 0,
+                ),
+                _ => unreachable!(),
+            };
+            *event.result = if decision { mod_api::SpawnCheck::Succeed } else { mod_api::SpawnCheck::Fail };
+            return;
+        }
+        if event.kind != "naturalist:hippo" {
+            return;
+        }
         let water_at = |at| {
             event
                 .level
