@@ -24,6 +24,43 @@ file = "crates/horizon-client/src/game.rs"
 name = "naturalist_spawn_routes"
 source = "src/current/biome_routes.rs"
 
+[[native.module]]
+id = "caterpillar-cocoon-goal"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_caterpillar_cocoon"
+source = "src/current/caterpillar_cocoon_goal.rs"
+
+[[native.module]]
+id = "butterfly-pollinate-goal"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_butterfly_pollinate"
+source = "src/current/butterfly_pollinate_goal.rs"
+
+[[native.mixin]]
+id = "caterpillar-cocoon-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/caterpillar_cocoon_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "scorpion-tail-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/scorpion_tail_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+
+
+
 [[native.mixin]]
 id = "route-level"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_level_load"

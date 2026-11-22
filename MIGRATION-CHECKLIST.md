@@ -73,3 +73,9 @@ Do not describe this migration as full parity or release-ready while any applica
 - [x] Run the exact a1 candidate on a Linux server built from its clean staged source; matching Mac client joined and reached the overworld. See `fixtures/cross-platform-a1d27763e73b.json`. Mixed-artifact compatibility was not part of this check.
 
 - [x] Build and verify integrated Duck appearance/dye changes on exact f68; run the combined Duck, Crab, and Ant regressions headlessly and connect the matching Mac client to the Linux server. See `fixtures/naturalist-combined-f68cd22f5f53.json` and `fixtures/cross-platform-f68cd22f5f53.json`.
+
+## APP-2128 exact-artifact progress
+
+Candidate `native-0a875da-e538b2c26987` was built optimized through the Horizon launcher for the isolated `app-2128` test instance, using the pinned Horizon commit above. The build used the user's explicit `--trust-native-code` authorization. `fixtures/naturalist-app2128-e538b2c26987.json` records the mod source hash, exact client libraries, Java jar hash, commands and outcomes.
+
+On that exact candidate, the Butterfly/Caterpillar lifecycle check passed baby cocoon refusal, adult cocoon placement and facing, Caterpillar removal, crop growth and Caterpillar offspring creation. Chrysalis hatching failed. The exact capture-click fixture passed for Butterfly, Caterpillar, Dragonfly, Scorpion and Firefly. Packet-time Butterfly rotation, baby-spawn cancellation and breeding-credit behavior, rendered output, matching client/server artifacts, and Dragonfly, Firefly, Scorpion and Snail behavior checks remain open. This evidence does not close APP-2128 or establish full parity.
