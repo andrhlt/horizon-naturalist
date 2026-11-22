@@ -18,7 +18,7 @@ struct BirdPart;
 impl EntityPart for BirdPart {
     fn register_goals(&self, goals: &mut GoalRegistrar<'_>) {
         if goals.mob().id() == "naturalist:bird" {
-            goals.add_goal(1, Flock::default());
+            goals.add_goal(5, Flock::default());
             goals.add_goal(6, SeedForaging::default());
         }
     }
