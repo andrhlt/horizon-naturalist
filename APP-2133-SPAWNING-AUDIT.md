@@ -71,6 +71,8 @@ These density observations do not isolate which residual draw differs. `fixtures
 
 ## Remaining work
 
+- Internal seam audit (`python3 -B tools/audit_internal_spawn_seams.py`) confirms the remaining boundary. Pinned `check_spawn_rules<L: SpawnLevel>` is generic over a private trait; `fluid`, `raw_brightness`, `block_light`, `sky_light`, and `sea_level` are private helpers/trait methods. A Naturalist mixin can target the public placement callback or a concrete `Game` method, but cannot safely bind this generic private level and call those helpers. Weighted selection is likewise inside `spawn_category_for_chunk` and `spawn_selection::parallel::Lane::chunk`, with no mod-facing attempt/RNG callback. Exact Anglerfish/Blobfish/Piranha light/depth and Bird fixed-seed draw parity therefore require a Horizon engine/API seam; no Horizon repository was modified.
+
 - Add a controlled same-stream Horizon counterpart to the Java natural group age and Bird region probes, keyed to the exact integrated source and engine revisions.
 - Use those comparisons to implement and verify shared natural age, variant, group-data, and random-draw behavior. Preserve command, bucket, breeding, and load spawn reasons.
 - Compare all applicable Java biome, substrate, fluid, light, depth, surface, and cluster predicates against the Horizon candidate; current fixture coverage is selective.
