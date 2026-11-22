@@ -24,6 +24,12 @@ Pinned references: Naturalist 2.0.7 NeoForge 26.3.0.95 (`1471124ae26bcbf90a2106a
 - Registry roster audit against `migration/entity-metadata.json`: all 48 Java profile species and all 48 Java variant-pool species are represented. `naturalist:dirt_trail` is the sole metadata-only entry and is a non-mob; no missing species or variant-pool owner was identified in these fixtures.
 - Deer spawn variant selection is hooked for grouped and plain finalizers (`src/current/deer_finalize_variant.rs`, `src/current/deer_finalize_plain_variant.rs`). No shared natural-spawn initialization hook currently covers Bird and the remaining variant-bearing species.
 
+## Follow-up runtime implementation
+
+- The follow-up adds a real native mixin at the pinned Horizon `finalize_with` call site. For natural `naturalist:bird` spawns it selects the Java fixture-backed biome pool using the shared world RNG, writes the Java `Variant` identifier, and supplies an ageable group with zero baby chance. This removes the generic Parrot variant/5% baby behavior from the Bird natural-spawn stream; non-natural reasons are excluded.
+- The hook uses the Horizon SDK's documented `$local_mut:group:0` binding. The pinned optimized build succeeded on Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` with build id `native-0a875da-babc6e7c3a5e` (22 seconds). This is compile and mixin-application evidence; the local GUI test process reached the control socket but exited before a reproducible entity probe, so no fixed-seed count claim is made here.
+- The implementation is intentionally limited to Bird until per-species natural finalization fixtures are wired into an executable probe. Aquatic/fluid/depth predicates remain blocked by the pinned `SpawnPlacementRule` surface, which exposes placement, heightmap, substrate, light, and biome tags but no species predicate callback. The existing aquatic and insect Java fixtures remain coverage requirements, not silently accepted parity.
+
 ## Bird RNG finding
 
 The modifier ordering correction is proven to remove the spawn-row-order mismatch. It does not close fixed-seed world generation: on seed `49903`, the normal-probability sample produced 3 Horizon Birds and 2 Java Birds; with controlled 0.5 probability, it produced 29 Horizon Birds and 32 Java Birds. Exact Java position overlap rose from 10 to 21 after ordering. Seed `49904` produced zero Birds on both. See `fixtures/naturalist-combined-3d513df20090.json` and the archived run logs under the bird-density audit referenced there.
