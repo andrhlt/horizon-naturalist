@@ -18,44 +18,7 @@ struct BirdPart;
 impl EntityPart for BirdPart {
     fn register_goals(&self, goals: &mut GoalRegistrar<'_>) {
         if goals.mob().id() == "naturalist:bird" {
-            goals.add_goal(5, Flock::default());
             goals.add_goal(6, SeedForaging::default());
-        }
-    }
-}
-
-#[derive(Default)]
-struct Flock {
-    leader: Option<EntityRef>,
-}
-
-impl Goal for Flock {
-    fn flags(&self) -> GoalFlags { GoalFlags::MOVE }
-
-    fn can_use(&mut self, cx: &mut GoalContext<'_>) -> bool {
-        self.leader = nearest_mob(cx);
-        self.leader.is_some()
-    }
-
-    fn can_continue(&mut self, cx: &mut GoalContext<'_>) -> bool {
-        let Some(leader) = self.leader else { return false };
-        let Some(at) = cx.mob().entity().position(cx.host()) else { return false };
-        let Some(leader_at) = leader.position(cx.host()) else { return false };
-        distance_squared(at, leader_at) > 4.0 && distance_squared(at, leader_at) < 256.0
-    }
-
-    fn start(&mut self, cx: &mut GoalContext<'_>) { self.follow(cx); }
-    fn tick(&mut self, cx: &mut GoalContext<'_>) { self.follow(cx); }
-    fn stop(&mut self, cx: &mut GoalContext<'_>) {
-        self.leader = None;
-        cx.stop_navigation();
-    }
-}
-
-impl Flock {
-    fn follow(&self, cx: &mut GoalContext<'_>) {
-        if let Some(leader) = self.leader && let Some(at) = leader.position(cx.host()) {
-            cx.move_to(at, 1.0);
         }
     }
 }
@@ -133,24 +96,6 @@ fn nearest_seed(cx: &GoalContext<'_>) -> Option<EntityRef> {
             let left_pos = left.position(host).unwrap_or(bird_pos);
             let right_pos = right.position(host).unwrap_or(bird_pos);
             distance_squared(bird_pos, left_pos).total_cmp(&distance_squared(bird_pos, right_pos))
-        })
-}
-
-fn nearest_mob(cx: &GoalContext<'_>) -> Option<EntityRef> {
-    let host = cx.host();
-    let bird = cx.mob().entity();
-    let pos = bird.position(host)?;
-    let level = bird.level(host)?;
-    level.entities_in(
-        host,
-        [pos[0] - 16.0, pos[1] - 8.0, pos[2] - 16.0],
-        [pos[0] + 16.0, pos[1] + 8.0, pos[2] + 16.0],
-    )?.into_iter()
-        .filter(|entity| entity.id() != bird.id() && host.mob(*entity).is_some())
-        .min_by(|left, right| {
-            let left_pos = left.position(host).unwrap_or(pos);
-            let right_pos = right.position(host).unwrap_or(pos);
-            distance_squared(pos, left_pos).total_cmp(&distance_squared(pos, right_pos))
         })
 }
 
