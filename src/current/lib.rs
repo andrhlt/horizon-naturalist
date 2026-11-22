@@ -11,6 +11,7 @@ pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
 mod ocean_renderer;
+mod ocean_placements;
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -131,6 +132,7 @@ impl mod_api::Hooks for Naturalist {
         ant_hill::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
+        ocean_placements::register(registrar);
         registrar
             .declare_spawn_placement(
                 "deer",
