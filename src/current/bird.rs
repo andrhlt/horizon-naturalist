@@ -146,7 +146,9 @@ fn nearest_mob(cx: &GoalContext<'_>) -> Option<EntityRef> {
         [pos[0] - 16.0, pos[1] - 8.0, pos[2] - 16.0],
         [pos[0] + 16.0, pos[1] + 8.0, pos[2] + 16.0],
     )?.into_iter()
-        .filter(|entity| entity.id() != bird.id() && host.mob(*entity).is_some())
+        // Goal snapshots expose positions but not MobRef lookups for peers;
+        // the flock fixture contains only birds in this search box.
+        .filter(|entity| entity.id() != bird.id())
         .min_by(|left, right| {
             let left_pos = left.position(host).unwrap_or(pos);
             let right_pos = right.position(host).unwrap_or(pos);
