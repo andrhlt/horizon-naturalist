@@ -1,15 +1,6 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": {
-    "type": "neoforge:and",
-    "values": [
-      "#naturalist:has_robin",
-      {
-        "type": "neoforge:not",
-        "value": "#naturalist:blacklist/blacklist_robin"
-      }
-    ]
-  },
+  "biomes": "#naturalist:bird_spawn_5",
   "spawners": {
     "type": "naturalist:bird",
     "weight": 10,

@@ -1,0 +1,46 @@
+{
+  "candidate": "native-0a875da-c5c44c2e3b4a",
+  "source_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_commit": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+  "cache_id": "a17b9dde331be0ff",
+  "effective_biome_bundle_sha256": "275345c8bb413ff8f677f0e4ca84abb42913e113d2f5442d03688fce47584a1d",
+  "protocol": {
+    "render_distance": 6,
+    "forced_chunks": 64,
+    "gametime_frozen": true,
+    "wait_seconds": 20,
+    "sheep_control": "[4224.5d, 128.0d, 4000.5d]"
+  },
+  "seed_49903": {
+    "biome_at_anchor": "minecraft:taiga",
+    "horizon_birds": [
+      "[4232.0d, 81.0d, 3967.0d]",
+      "[4235.0d, 80.0d, 3962.0d]",
+      "[4231.0d, 81.0d, 3966.0d]"
+    ],
+    "java_birds": [
+      "[4232.0d, 81.0d, 3967.0d]",
+      "[4238.0d, 80.0d, 3967.0d]"
+    ],
+    "horizon_count": 3,
+    "java_count": 2
+  },
+  "seed_49904": {
+    "horizon_birds": [],
+    "java_birds": [],
+    "horizon_count": 0,
+    "java_count": 0
+  },
+  "ab_finalizer": {
+    "hook_enabled_candidate": "native-0a875da-c5c44c2e3b4a",
+    "hook_enabled_mod_sha256": "832edafb3e5e1490ebdfceb7d93ea0f1b4aa6799ecb5bef8ae91e25a14e66b66",
+    "hook_disabled_candidate": "native-0a875da-0cc8f8c5da87",
+    "hook_disabled_mod_sha256": "55b8f753201ad5df9e4635676df298ad3447a57dcb2a4a2c634d5545ad525677",
+    "seed": 49903,
+    "protocol": "same selected cache, 64 forced chunks, frozen gametime, 20 seconds, Sheep control",
+    "hook_enabled_birds": ["[4232.0d, 81.0d, 3967.0d]", "[4235.0d, 80.0d, 3962.0d]", "[4231.0d, 81.0d, 3966.0d]"],
+    "hook_disabled_birds": ["[4232.0d, 81.0d, 3967.0d]", "[4235.0d, 80.0d, 3962.0d]", "[4231.0d, 81.0d, 3966.0d]"],
+    "result": "identical count and positions; Bird finalizer hook is ruled out as the source of this delta"
+  },
+  "notes": "Selected-instance cache loaded Naturalist through launcher mod-content injection; datapack list reports vanilla only. This is an executable count/position capture, not a full fixed-seed parity claim."
+}
