@@ -1,4 +1,5 @@
-//! Variant-preserving Starfish death drops.
+//! Starfish block attachment is inherited from the vanilla resin-clump
+//! template. This module covers its separate variant-preserving entity drops.
 
 use mod_api::{Identifier, ItemDrop, ItemStack, ServerHost, Tag};
 
@@ -74,5 +75,18 @@ mod tests {
             "naturalist:orange_starfish"
         );
         assert_eq!(death_item(None), "naturalist:orange_starfish");
+    }
+
+    #[test]
+    fn colored_starfish_blocks_keep_multiface_template_behavior() {
+        let blocks = [
+            include_str!("../../data/naturalist/horizon/block/orange_starfish.json"),
+            include_str!("../../data/naturalist/horizon/block/blue_starfish.json"),
+            include_str!("../../data/naturalist/horizon/block/purple_starfish.json"),
+            include_str!("../../data/naturalist/horizon/block/red_starfish.json"),
+        ];
+        for block in blocks {
+            assert!(block.contains("\"template\": \"minecraft:resin_clump\""));
+        }
     }
 }
