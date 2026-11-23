@@ -193,6 +193,12 @@ name = "naturalist_piranha_school"
 source = "src/current/piranha_school.rs"
 
 [[native.module]]
+id = "alligator-breeding-and-egg-laying"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_alligator_goals"
+source = "src/current/alligator_goals.rs"
+
+[[native.module]]
 id = "hippo-water-breeding"
 file = "crates/horizon-client/src/game.rs"
 name = "naturalist_hippo_breed"
@@ -209,6 +215,17 @@ id = "piranha-school-tick"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
 kind = "HEAD"
 helper = "src/current/piranha_movement.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "entity", ty = "u32", value = "entity"},
+  {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "alligator-ai-goal-install"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/alligator_ai_tick.rs"
 bindings = [
   {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
   {name = "entity", ty = "u32", value = "entity"},
