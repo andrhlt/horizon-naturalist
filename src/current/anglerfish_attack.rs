@@ -16,12 +16,17 @@ fn anglerfish_attack(
             && mob.alive()
             && matches!(
                 mob.kind.id.as_str(),
-                "naturalist:anglerfish" | "naturalist:ray"
+                "naturalist:anglerfish" | "naturalist:great_white_shark" | "naturalist:ray"
             )
     }) else {
         return original(game, target, amount, source);
     };
     let kind = game.mobs[index].kind.id.clone();
+    let target_kind = game
+        .mobs
+        .iter()
+        .find(|mob| mob.id == target)
+        .map(|mob| mob.kind.id.clone());
     let hit = original(game, target, amount, source);
     if !hit {
         return false;
@@ -48,6 +53,28 @@ fn anglerfish_attack(
                 .find(|mob| mob.id == target && mob.alive())
             {
                 mob.add_effect("minecraft:poison", 100, 0);
+            }
+        }
+        "naturalist:great_white_shark"
+            if matches!(
+                target_kind.as_deref(),
+                Some("minecraft:cod" | "minecraft:salmon" | "minecraft:turtle")
+            ) && game
+                .mobs
+                .iter()
+                .find(|mob| mob.id == target)
+                .is_none_or(|mob| !mob.alive()) =>
+        {
+            let raw = game
+                .persist
+                .raw
+                .entry(attacker)
+                .or_insert_with(|| Tag::Compound(Default::default()));
+            if let Tag::Compound(fields) = raw {
+                fields.insert(
+                    "HuntingCooldown".into(),
+                    Tag::Int(naturalist::shark_behavior::HUNTING_COOLDOWN),
+                );
             }
         }
         _ => {}
