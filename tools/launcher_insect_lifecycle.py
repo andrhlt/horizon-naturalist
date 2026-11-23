@@ -41,8 +41,11 @@ def capture(version, reference, jar=None):
             assert any("Summoned" in row for row in output), output
 
         try:
+            manifest = json.loads((version / "native-mods.json").read_text())
+            base = manifest["base"]
+            resources = Path.home() / "Library/Application Support/horizon-launcher/versions" / base / ".local/horizon-client/26.3"
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
+                resources, "--home", home, "--game-dir", home,
                 "--world", "Insect Lifecycle Fixture", "--creative", "--test-terrain",
                 "--render-distance", 4, "--wait")
             cmd("gamerule minecraft:spawn_mobs false")

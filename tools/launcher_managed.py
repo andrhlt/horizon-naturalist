@@ -24,11 +24,8 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
         raise RuntimeError(f"Candidate lacks native-mods.json: {version}")
     manifest = json.loads(manifest_path.read_text())
     base = manifest.get("base")
-    if not base or not base.startswith("developer-"):
-        raise RuntimeError(
-            f"{version.name} is based on {base!r}; the supported developer-offline "+
-            "session requires a candidate built on the installed developer base"
-        )
+    if not base:
+        raise RuntimeError(f"{version.name} does not declare a launcher base")
     base_dir = LAUNCHER_HOME / "versions" / base
     if not (base_dir / ".installed").is_file():
         raise RuntimeError(f"Candidate developer base is not installed: {base_dir}")
