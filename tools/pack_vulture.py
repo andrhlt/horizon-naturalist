@@ -41,7 +41,6 @@ def pack_vulture(jar, pack, dump):
             "minecraft:max_health": 14.0,
             "minecraft:movement_speed": 0.30000001192092896,
             "minecraft:flying_speed": 0.6000000238418579,
-            "minecraft:attack_damage": 4.0,
         },
     })
     dump(pack, "data/naturalist/horizon/item/vulture_spawn_egg.json", {

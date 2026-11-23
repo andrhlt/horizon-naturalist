@@ -636,10 +636,8 @@ target = "horizon_client::game::native_hooks::entity_invulnerability_check::HitL
 kind = "HEAD"
 helper = "src/current/vulture_invulnerability.rs"
 bindings = [
- {name = "entity", ty = "i32", value = "entity"},
  {name = "kind", ty = "&str", value = "kind"},
  {name = "source", ty = "&HurtSource<'_>", value = "source"},
- {name = "original_invulnerability", ty = "bool", value = "original_invulnerability"},
  {name = "invulnerable", ty = "&mut bool", value = "&mut *invulnerable"},
 ]
 
