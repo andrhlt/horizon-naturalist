@@ -1,13 +1,13 @@
 # APP-2135 integration checkpoint
 
-Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `2d6d57a` plus diagnostic fixture updates.
+Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `bd5f591` plus checkpoint updates.
 The current source includes the refreshed handoff heads for ocean `bb021967`, freshwater/Alligator
 `7f30ea2`, large animals `8d9f0c5`, insects `b042209`, Duck `fb6298a`, and reptiles/Tortoise
 `8c4d833`, shared-spawn source `29adc01`, Crab `356508a`, Ant `107c67e`, and
 Hedgehog `845dfa5`, with integration fixes in `ab19708`, `b8c6463`, `422a264`,
 `e66b34c`, `d22af89`, Shark `e07f553`, Starfish `83c181a`, Jellyfish `bb81363`,
-and corrected Giraffe/insect fixtures `fa0d59e`/`a8077cf`. The latest candidate is
-`native-0a875da-2c623e51691d`.
+and corrected Giraffe/insect fixtures `fa0d59e`/`a8077cf`. Giraffe production fix `2749649`
+is integrated. The latest candidate is `native-0a875da-5a8e87e09f34`.
 
 Pinned runtime inputs:
 
@@ -33,7 +33,7 @@ launchers, passing `--offscreen`; no accountless-client flag or auth bypass is p
 | Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish support/drop, Shark cooldown, Jellyfish pulse | native build; source checks; prior six offscreen captures | headless capture/conservation, Ray/Anglerfish, Whale/Isopod/Cod/Starfish/Shark/Jellyfish behavior, LAN |
 | Freshwater/coastal | Alligator breeding/laying, Capybara persistence/use, Hippo/Piranha/Catfish/Clam/Bass paths | persistence passed: all six UUIDs and saved fields matched after reopen; Capybara owner interaction passed; six offscreen frames passed | headless Alligator lay/stomp and aquatic LAN; cleanup emitted a non-fatal temporary-world “No world” message |
 | Shared spawning | 36 age-group policies and serial carry wiring | native build; Rust/source checks | controlled loaded-chunk natural spawn and matching artifact runtime |
-| Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | corrected fixture shows raw `Variant=0`, mounted control flag false, and mounted movement false; dismount/flag clear pass | restore Giraffe variant/control/movement; Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield remains disabled because its injected module uses unsupported cohort fields |
+| Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | Giraffe now passes: `Variant="naturalist:giraffe"`, owner mount, mounted control, mounted movement, dismount, and control clear | Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield remains disabled because its injected module uses unsupported cohort fields |
 | Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | corrected fixture proves exactly one Butterfly after hatch and duplicate window; adult Age is `0`, entity persists, but NoAI is `1b` again after 16 ticks and no cocoon is placed | fix adult lifecycle/NoAI reversion, then rerun Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
 | Duck | renderer/appearance, bucket/follow/breed/variant source | native build | headless follow/whistle/parent/save-reopen and offscreen capture |
 | Reptiles | Komodo/Lizard/Mole/Tortoise source, Tortoise fall-on hook | native build; Rust checks | headless interactions/egg landing/save-reopen; Tortoise `stepOn` parity is unsupported by the pinned BlockPart API |
