@@ -726,7 +726,7 @@ helper = "src/current/rhino_shield_block.rs"
 bindings = [
  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
  {name = "attack", ty = "&horizon_client::health::Attack", value = "attack"},
- {name = "blocked", ty = "f32", value = "outcome.blocked"},
+ {name = "outcome", ty = "&BlockOutcome", value = "$local_ref:outcome:0"},
 ]
 
 
