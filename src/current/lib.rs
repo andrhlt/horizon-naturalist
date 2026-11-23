@@ -347,7 +347,7 @@ impl mod_api::Hooks for Naturalist {
                 });
             }
         }
-        if matches!(event.kind, "naturalist:giant_isopod" | "naturalist:jellyfish" | "naturalist:starfish" | "naturalist:whale") {
+        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:whale") {
             if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
                 install_goal(&mob, host, false, 0, mod_api::GoalSpec::Float);
                 install_goal(&mob, host, false, 5, mod_api::GoalSpec::Stroll {
