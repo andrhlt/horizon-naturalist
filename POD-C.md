@@ -44,12 +44,12 @@ Reusable build candidate (read-only; do not mutate or rebuild):
 
 Pod C immutable build manifest:
 
-- Artifact: `native-0a875da-d914d52a96e7`
-- Artifact path: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/native-0a875da-d914d52a96e7`
+- Artifact: `native-0a875da-fd28eda60d95`
+- Artifact path: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/native-0a875da-fd28eda60d95`
 - Source: `dde2c2c9c1d839ef2d6431adfdd0ddf84fcdb466`; native manifest mod SHA-256 `99663c79ad49c704af55db926ec58e0d80f5be91b322fc8fd1b5c26ba7ff490f`
-- `libnaturalist.dylib`: `383bf293daf4d5c204d227a37496f9e12b220094acd32043ee9718533b3e8c77`
-- `libhorizon_patch.dylib`: `c8fdb0612159da3671cdfef1fec6d40e60a6b4e771cdaf99cc321d0ab4e300ba`
-- `native-mods.json`: `09ecebabe3551af069b12565e8cd9cb0df02391225d7846696037e0cd7a13619`
+- `libnaturalist.dylib`: `aa945f65663adb1592f93c420a3f439db30dada4ddcce20ac83ad702c1f6d75a`
+- `libhorizon_patch.dylib`: `42ec9621d33f5fe062de796e07e9d89a6b67129090deab117c901e1de87508bb`
+- `native-mods.json`: `21e1839497c75525665422527afea5bc0dcad76f00aa00ef83e6bafd7cf45463`
 - Client/server: `horizon-client` `012bf6dbfecb095bfb27f9b84452105639501cc5444aca15517360cd90547935`; `horizon-server` `2b0f3d7bd318f52a8385b7d7b28db78d13f7752d25fd30d824d487aef5fe1f1d`
 - Frozen resource client: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da`; client SHA-256 `34be7152dbc8d2c7db6d11771963b97d00c8d7b54ac70b5a9c9e60b5a9d76007`
 - Pinned Java jar: `/Users/andrewholt/Library/Application Support/horizon/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar`; SHA-256 `f85d8823002483a9d2822d2fd9f3cb880809d4c2eabf1cf19e24d6a14e2874e9`
@@ -63,7 +63,7 @@ Delivery checklist:
 - [x] Resolve duplicate native registration IDs found by the pinned build validator.
 - [x] Preserve contributor attribution and individual PRs.
 - [ ] Obtain one source-matched heavy build for this exact Pod C source.
-- [x] Publish immutable Pod C artifact/resource/socket manifest.
+- [x] Publish immutable Pod C artifact/resource/socket manifest (corrected candidate after duplicate-registration startup failure).
 - [x] Dispatch the same artifact to APP-2130, APP-2133, and APP-2158 owners.
 - [ ] Collect independent headless, LAN, persistence, and offscreen results.
 - [ ] Queue fixes into the next frozen batch; no gap waivers.
