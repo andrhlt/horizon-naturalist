@@ -1,7 +1,9 @@
 """Replay the Clam’s shared launch and treasure slot from two players."""
 import json
 import math
+import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,12 +18,14 @@ ctl = version / "horizon-ctl"
 reference_path = Path(sys.argv[2]) if len(sys.argv) > 2 else Path(__file__).parent.parent / "fixtures/clam-java.json"
 expected_increment = json.loads(reference_path.read_text())["launch_vertical"]
 game = version / "horizon-client"
-resources = version / ".local/horizon-client/26.3"
+resources = Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3"
 
 
 def command(socket, *args):
+    home = socket.parent / socket.stem.removesuffix(".sock")
     call = subprocess.run([ctl, "--socket", socket, *map(str, args)], capture_output=True,
-                          check=True, text=True, timeout=60)
+                          check=True, text=True, timeout=60,
+                          env={**os.environ, "HORIZON_HOME": str(home)})
     return json.loads(call.stdout.splitlines()[-1])
 
 def quantize_vertical(value):
@@ -72,6 +76,7 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-clam-", ignore_cleanup_errors=T
     try:
         home = root / "host"
         home.mkdir()
+        shutil.copytree(Path.home() / "Library/Application Support/horizon/jars", home / "jars", dirs_exist_ok=True)
         host("launch", "--headless", "--game", game, "--resources", resources, "--home", home,
              "--game-dir", home, "--name", "NatHost", "--world", "Naturalist Clam LAN", "--creative",
              "--test-terrain", "--render-distance", 4, "--wait")
@@ -87,6 +92,7 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-clam-", ignore_cleanup_errors=T
         address = f"127.0.0.1:{lan['port']}"
         guest_home = root / "guest"
         guest_home.mkdir()
+        shutil.copytree(Path.home() / "Library/Application Support/horizon/jars", guest_home / "jars", dirs_exist_ok=True)
         guest("launch", "--headless", "--game", game, "--resources", resources, "--home", guest_home,
               "--game-dir", guest_home, "--name", "NatGuest", "--server", address, "--render-distance", 4)
         for _ in range(60):
@@ -115,6 +121,11 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-clam-", ignore_cleanup_errors=T
             guest("wait", 3)
 
         def read(field):
+            if field == "HasTreasure":
+                held = read("equipment.mainhand")
+                return "1b" if 'id: "minecraft:ender_pearl"' in (held or "") else "0b"
+            if field == "Open":
+                field = "NaturalistClamOpen"
             rows = run(f"data get entity {shell} {field}")
             return next((row.split("following entity data: ", 1)[1] for row in rows if "following entity data: " in row), None)
 
