@@ -20,6 +20,47 @@ Source code commit: `ffa938ef802f75cbd0b9c41ba9b9053fdb08567b`. Built optimized 
 
 Crab PvP targets are currently excluded because the available target view cannot distinguish an eligible remote player from the selected owner. LAN owner identity and further Java target categories remain open. The complete candidate hashes and outcomes are in `fixtures/naturalist-app2120-841e9e89f209.json`.
 
+## APP-2126 source checkpoint
+
+The current-runtime source now registers Java-derived Bear, Black Bear, Boar,
+and Snake meshes through the Horizon renderer API, selecting adult/baby models
+and the hurt overlay on the shared living render state. Their shared renderer
+also applies a deterministic walk-cycle pose to the source limb/tail bones,
+and entity join installs the Java retaliatory hurt-target/melee path for the
+four predator profiles. The source models were
+adapted from the pinned Naturalist 2.0.7 reference to the pinned Horizon 0.2
+surface. Deer natural grouped finalization now supplies the Java five-percent
+baby roll; its natural variant draw still cannot be made exact because the
+current finalizer seam does not expose the Java spawn-pass RNG. `cargo test
+--lib` passes 22 tests, including construction and locomotion coverage for all
+four adapters. This is source and unit evidence only; no artifact hash or
+headless/offscreen/LAN result is claimed until the pinned launcher produces the
+final candidate.
+
+The continuation adds Naturalist's three-way Bass natural-spawn variant draw
+(`bass`, `bass_medium`, `bass_large`) at the shared natural finalizer seam. The
+mapping is covered by a unit fixture and uses the pinned Horizon world RNG;
+runtime seed/count parity remains subject to the finalizer's shared random
+stream and is not claimed here. Forest Fox/Rabbit modifiers remain data-driven
+vanilla spawns with the Java blacklist predicates preserved in the tracked
+definitions; no new runtime override is introduced for those entities.
+
+The exact pinned launcher (`native-0a875da-80cc9d11713b`) built this source
+against Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`; its
+`libnaturalist.dylib` SHA-256 is
+`531e5b6c31785be3c632e4ddcdd43af61079f87ec4a90d3ad64b859b3e8dd63c` and
+the patch library SHA-256 is
+`cbc83a9a8de1cdb1fbf6c5021b7dc689ad137fc1f64ddba31636256afa66cd8f`.
+`cargo test --lib` passes 22 tests and the optimized native build succeeds.
+The documented offline dedicated-server route also starts this candidate and
+loads its Naturalist content; a Bear summon reports the Java 30.0 max health.
+The client Play route remains blocked because the launcher requires a signed-
+in Microsoft account; the exact failure is `Sign in with a Microsoft account
+that owns Minecraft: Java Edition to play. Sign in with horizon-launcher
+account sign-in`. No gameplay, LAN, persistence, or offscreen render parity is
+claimed from this candidate. Full command output and scope are recorded in
+[`fixtures/naturalist-app2126-wildlife-80cc9d11713b.json`](fixtures/naturalist-app2126-wildlife-80cc9d11713b.json).
+
 ## Previously verified interaction baseline (`codex/naturalist-current-integration`)
 
 Latest combined build: `native-0a875da-e10e994e84a1` (Horizon 0a875da, optimized). Candidate package: `/private/tmp/naturalist-crab-tame.hmod`, SHA-256 `1cfee416646b2ac988a2b5a6bc063b86a24b825edfc5620633ff2e501ec63d8a`, SHA-512 `4e03289bdeb7545a5da3725258bf306760b0f0a3323b736fbf5bcbd030a2a771b37042e918cea495a9569c2b0a67ff7c408ac7a54e9e20fdcdf26fedd345f2cb`. Exact matching-artifact headless checks passed for Crab taming/healing at Java max health/capture/release/whistle and immediate sneak; Duck healing, owner/nonowner/creative, save/reopen, intentional sit, delayed baby-age metadata and adult water fallback; Ant carried-food persistence, sounds and Java gather parity. The exact Mac candidate also connected to a Linux server built from this package; see `fixtures/naturalist-combined-e10e994e84a1.json`, `fixtures/crab-tame-heal-lan-e10e994e84a1.json`, and `fixtures/cross-platform-e10e994e84a1.json`. These are selected feature checks, not full species parity. Package discovery excludes `.local/content` and evidence.
@@ -31,6 +72,8 @@ Previous integrated data-order candidate: `native-0a875da-3d513df20090`, built f
 Latest integrated candidate: `native-0a875da-34ef46d94416`, built optimized from a clean source-only stage. Its mod source SHA-256 is `083a2fc81d812f16f6d3ffc8d6d4eb89fbcb1a83ab5aaba59c20b52b8d288e51`; `libnaturalist.dylib` SHA-256 is `f353e59be73ddbba2effe680db4fb9a4d990f121ea5217cb63fd96973f5adf59`; `libhorizon_patch.dylib` SHA-256 is `0188517097eaf31e8ab1514ef4fad2b3363499608dc825dd838b824cebc4d453`. Ant owner/stranger hill break, carried-food save, Crab LAN capture and isolated whistle retry, Duck pet/delayed-age tests passed. Its Mac client also connected to a Linux server built from the exact installed source and reached the overworld. See `fixtures/naturalist-combined-34ef46d94416.json` and `fixtures/cross-platform-34ef46d94416.json`.
 
 Bird data-order correction: the packer and generated project data now assign the 54 standard biome modifier resource IDs in Naturalist's `forEachSpawn` order. The exact candidate's loaded biome bundle matches recorded Java spawn-row ordering in all 67 reference biomes/categories. At seed 49903 the normal-probability sample produced 3 Horizon Birds versus 2 in Java (seed 49904 produced zero in both); with the controlled 0.5 probability, it produced 29 versus 32, improving exact-position overlap from 10 to 21. This corrects the measured row-order mismatch but does not establish full spawn parity or third-party datapack compatibility.
+
+The source-only registry gate also passes on the current tree: `python3 -B tools/verify_spawn_registry.py` reports 48 Java profile owners, 48 variant-pool owners, 50 mob entity definitions, and 52 ordered modifiers. It intentionally excludes metadata-only `dirt_trail`, allows the two variant-expanded modifier families (Bird and Snake), and does not claim native runtime predicate or RNG parity.
 
 - [x] Entity and item metadata profiles, supported attributes, biome spawn rows, and recorded ground placements (fixture-limited; see `migration/README.md`).
 - [x] Deer selected variant, goals, appearance, breeding and love-persistence paths have Java fixture coverage. Natural-spawn variant assignment is not integrated; age/group RNG was compared in an isolated prototype only.
@@ -50,7 +93,14 @@ Bird data-order correction: the packer and generated project data now assign the
 - [x] Crab selected interaction/owner-follow behavior: matching LAN taming, Java-matched 8 health, owner healing, capture/release with variant/damaged weapon, immediate uninstrumented sneak-click, enabled/disabled `FollowingOwner`, stop/resume, correct owner selection, and disconnect handling passed on 3d; exact a1 follow/whistle movement now also passes (disabled crab stays at x=2.5; enabled crab reaches x=14.5). Immediate uninstrumented interaction/LAN capture and follow/whistle movement pass on exact f68. See `fixtures/naturalist-combined-f68cd22f5f53.json`, `fixtures/naturalist-combined-a1d27763e73b.json`, and `fixtures/crab-follow-3d513df20090.json`. Teleport RNG and broader goals/rendering remain open.
 - [ ] Other Catchable species: Rat matching-candidate fixtures cover wild-net rejection, nonowner capture/release with owner/health/age state, owner/whistle controls, delayed initial metadata, and tamed workstation assignment on chest with save/reopen. Horizon’s built-in item-container classifier matches Java on chest and barrel positives plus the Composter negative on exact candidate a1; other container types still need Java comparison. See `fixtures/rat-workstation-containers-964e6c9e015d.json`. Rat follow/sit/whistle selected behavior now has exact candidate a1 evidence; trajectory magnitude, nav/teleport edges, work AI, natural variants/rendering, and full species parity remain open. Hedgehog throw collision/return, rendering and capture parity remain open. The integrated APP-2120 candidate fixes the two reproduced unarmed targeting mismatches: passive Sheep stay at 8 health after 100 ticks; after an unarmed Crab is hit, its attacker stays at 20 health and the owner-target negative stays unchanged through 600 ticks. Armed controls pass: a Crab takes its owner’s side against a Zombie (20 to 13.112 within 20 ticks), and its owner-target selector attacks a Zombie (19.06 to 12.172) while leaving a Creeper and tamed Wolf unchanged. Exact build and test record: `fixtures/naturalist-app2120-841e9e89f209.json`. Crab player targets, multiplayer owner identity, remaining Java target categories, rendering and broader goals remain open.
 - [ ] Remaining species-specific behavior by Java class: Butterfly breeding and Caterpillar creation pass on exact candidate 964, including cross-species rejection and love/breeder save/reopen; packet-time child rotation, spawn cancellation, and breeding credit remain open. Bird row order now matches Java across all 67 recorded biomes, but fixed-seed counts/positions still differ. Bird lifecycle, alligator, hippo, shark, whale, Crab broader goals/rendering, giraffe, isopod, piranha, anglerfish, clam, vulture, snails and other registered species remain open. Track each Java interaction, AI, loot, breeding, growth and persistence behavior before marking a species complete.
-- [ ] Spawn semantics: specialized aquatic/substrate predicates, natural spawn initialization for all species, and controlled Java RNG comparisons beyond current Deer/Bass samples.
+- [ ] Spawn semantics: standard spawn rows now match Java order in all 67 recorded biomes (zero mismatches on saved candidate `c7c460f00d11`; Bird modifier ordering fixed). Shared ground placement is declared for Deer and 18 land species. Bird natural finalization now has an exact 36-biome Java pool table and zero-baby group hook; `python3 tools/verify_bird_variant_pools.py` passes 36/36 exact pools. The pinned `mob_spawn_placement_check` seam now carries a fixture-backed Hippo water/waterlogged rule and compiles as `native-0a875da-fe1b833e06f7`. An executable fixed-seed entity probe is still required; aquatic/insect and remaining species predicates, plus natural age/variant/group initialization, remain open. See [APP-2133 spawning audit](APP-2133-SPAWNING-AUDIT.md) and Java references `fixtures/natural-group-age-java.json` / `fixtures/bird-region-java.json`.
+- [ ] Spawn semantics: standard spawn rows still match Java order in all 67 recorded biomes (zero mismatches on saved candidate `c7c460f00d11`; Bird modifier ordering fixed). Bird natural finalization has an exact 36-biome Java pool table and zero-baby group hook; the Hippo `mob_spawn_placement_check` seam compiles as `native-0a875da-fe1b833e06f7`. Acceptance reruns on seeds 49903/49904 and the controlled chunk-generation pack observed no Birds on the current candidate; the injected Bird/Hippo commands are absent from the current manifest, so fixed-seed and all-case predicate captures remain open. Aquatic/insect and remaining species predicates, plus natural age/variant/group initialization, remain open. See [APP-2133 spawning audit](APP-2133-SPAWNING-AUDIT.md) and Java references `fixtures/natural-group-age-java.json` / `fixtures/bird-region-java.json`.
+- [ ] Bird resource loading: the six unresolved `has_*` biome selectors were replaced with explicit tags derived from the 67-biome Java table. `python3 tools/test_bird_spawn_coverage.py` passes 67 biomes and 72 Bird rows. Direct optimized launches still expose only the vanilla datapack, so this fixes the source bundle but does not close the launcher/resource-path gate.
+- [ ] Aquatic spawn limits: Java cluster limits for seven aquatic species are now wired through `EntityPart::spawn_cluster_size`, compile-verified on `native-0a875da-7fb27f9b35e4`, and checked by `python3 tools/test_aquatic_spawn_limits.py`. Aquatic biome/fluid/depth predicates remain unimplemented because the retained fixtures do not define a faithful host-query mapping.
+- [ ] Aquatic placement: all seven fixture-rostered fish now declare Java `IN_WATER` via `src/current/aquatic_placements.rs`; `python3 -B tools/test_aquatic_spawn_placements.py` passes. Anglerfish darkness/depth and Blobfish/Piranha depth remain open because the pinned Horizon placement API has no depth field and `LevelRef` has no light accessor; no runtime per-case listener capture is claimed.
+- [ ] Internal spawn seam: `python3 -B tools/audit_internal_spawn_seams.py <pinned-Horizon-source>` verifies the pinned generic/private `SpawnLevel` and internal weighted-loop signatures. A Horizon engine/API export is required for exact per-location light/depth predicates and Bird attempt/RNG parity; no Naturalist-only patch is safe at this boundary.
+- [x] Natural group age mapping: `python3 -B tools/test_natural_group_age_scope.py` verifies all 36 Java species and exact special distributions for Elephant, Lion, Mammoth, and Zebra through `$local_mut:group:0`. This is deterministic fixture/source evidence; same-stream runtime capture remains open.
+- [ ] Insect/land placement: Bright/Dark spawn declarations for Butterfly, Dragonfly, and Firefly compile on `native-0a875da-a90d422dcdd1`; Ostrich/Tortoise/Zebra use the shared Bright substrate rule. Deterministic fixture checks pass, but executable per-case placement captures remain open because no fixture command is registered.
 - [ ] Ant hill world generation: both Java custom features remain absent. A deferred marker/chunk-load prototype is not behaviorally equivalent; exact seed comparisons differ and there is no big-hill feature. Resolve an engine-supported implementation or clearly report the exact remaining engine limitation.
 - [ ] Rendering and animation parity for every non-Deer/Bass species. Duck now has actual offscreen Metal-rendered sit/stand, baby, dye and suspended airborne frames; these prove renderer output, not Java pixel parity or natural walking/flight animation. Other species remain unverified.
 - [ ] Full content sanity matrix: loot, recipes, food, drops, breeding, tame/owner state, save/reload, datapack reload, multiplayer behavior for every applicable species.
