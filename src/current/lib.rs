@@ -1,6 +1,8 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
 mod alligator_egg_part;
+pub mod anglerfish_behavior;
+mod anglerfish_bucket_item;
 mod chrysalis_part;
 pub mod ant_worker;
 mod appearance;
@@ -14,6 +16,10 @@ mod snail_eggs_part;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
+mod blobfish_behavior;
+mod ocean_bucket_item;
+mod ocean_placements;
+mod ocean_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -112,6 +118,7 @@ struct Naturalist {
     clam: Arc<wildlife_renderer::WildlifeRenderer>,
     hippo: Arc<wildlife_renderer::WildlifeRenderer>,
     piranha: Arc<wildlife_renderer::WildlifeRenderer>,
+    ocean: [Arc<ocean_renderer::OceanRenderer>; 8],
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -137,6 +144,16 @@ impl Default for Naturalist {
             piranha: Arc::new(wildlife_renderer::WildlifeRenderer::new(
                 wildlife_renderer::Species::Piranha,
             )),
+            ocean: [
+                Arc::new(ocean_renderer::OceanRenderer::anglerfish()),
+                Arc::new(ocean_renderer::OceanRenderer::blobfish()),
+                Arc::new(ocean_renderer::OceanRenderer::isopod()),
+                Arc::new(ocean_renderer::OceanRenderer::shark()),
+                Arc::new(ocean_renderer::OceanRenderer::jellyfish()),
+                Arc::new(ocean_renderer::OceanRenderer::ray()),
+                Arc::new(ocean_renderer::OceanRenderer::starfish()),
+                Arc::new(ocean_renderer::OceanRenderer::whale()),
+            ],
         }
     }
 }
@@ -151,6 +168,7 @@ impl mod_api::Hooks for Naturalist {
         snail_eggs_part::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
+        ocean_placements::register(registrar);
         registrar
             .declare_spawn_placement(
                 "deer",
@@ -166,6 +184,20 @@ impl mod_api::Hooks for Naturalist {
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
         catfish_bucket_item::register(registrar);
+        anglerfish_bucket_item::register(registrar);
+        ocean_bucket_item::register(registrar);
+        for (kind, limit) in [
+            ("naturalist:anglerfish", 8),
+            ("naturalist:blobfish", 8),
+            ("naturalist:giant_isopod", 4),
+            ("naturalist:great_white_shark", 4),
+            ("naturalist:jellyfish", 8),
+            ("naturalist:ray", 8),
+            ("naturalist:starfish", 4),
+            ("naturalist:whale", 4),
+        ] {
+            registrar.entity_part(kind, aquatic_spawn::PackLimit(limit));
+        }
         for &(id, template, attributes) in profiles::PROFILES {
             let values = attributes
                 .iter()
@@ -242,6 +274,33 @@ impl mod_api::Hooks for Naturalist {
                     add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
                 }
                 _ => {}
+            }
+        }
+        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:great_white_shark") {
+            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                let prey = if event.kind == "naturalist:anglerfish" {
+                    vec!["minecraft:cod", "minecraft:salmon"]
+                } else {
+                    vec!["minecraft:cod", "minecraft:salmon", "minecraft:turtle"]
+                };
+                install_goal(&mob, host, true, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(prey.into_iter().map(str::to_owned).collect()), must_see: true, must_reach: false, interval: 10 });
+                install_goal(&mob, host, false, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true });
+            }
+        }
+        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:whale") {
+            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                install_goal(&mob, host, false, 0, mod_api::GoalSpec::Float);
+                let _ = mob.remove_goal(host, "stroll");
+                install_goal(&mob, host, false, 5, mod_api::GoalSpec::Stroll { speed: 1.0, interval: 40, water_avoiding: None, swim: true, flying: false });
+                install_goal(&mob, host, false, 6, mod_api::GoalSpec::RandomLookAround);
+                if event.kind == "naturalist:giant_isopod" { install_goal(&mob, host, false, 2, mod_api::GoalSpec::Breed { speed: 1.0 }); install_goal(&mob, host, false, 3, mod_api::GoalSpec::FollowParent { speed: 1.1 }); }
+                if event.kind == "naturalist:whale" { install_goal(&mob, host, false, 1, mod_api::GoalSpec::BreathAir); }
+            }
+        }
+        if event.kind == "naturalist:ray" {
+            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                install_goal(&mob, host, true, 1, mod_api::GoalSpec::HurtByTarget { alert: false });
+                install_goal(&mob, host, false, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true });
             }
         }
         if event.kind == "naturalist:bass" {
@@ -339,6 +398,13 @@ impl mod_api::Hooks for Naturalist {
         event.renderers.register("naturalist:clam".into(), self.clam.clone());
         event.renderers.register("naturalist:hippo".into(), self.hippo.clone());
         event.renderers.register("naturalist:piranha".into(), self.piranha.clone());
+        for (kind, renderer) in [
+            "naturalist:anglerfish", "naturalist:blobfish", "naturalist:giant_isopod",
+            "naturalist:great_white_shark", "naturalist:jellyfish", "naturalist:ray",
+            "naturalist:starfish", "naturalist:whale",
+        ].into_iter().zip(self.ocean.iter()) {
+            event.renderers.register(kind.into(), renderer.clone());
+        }
     }
 
     fn render_living_pre(
