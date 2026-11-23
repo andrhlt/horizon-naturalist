@@ -216,6 +216,37 @@ impl mod_api::Hooks for Naturalist {
                 }
             }
         }
+        if event.kind == "naturalist:ray" {
+            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                let has_hurt_target = mob
+                    .target_goals(host)
+                    .is_some_and(|goals| goals.iter().any(|goal| goal.id == "hurt_by_target"));
+                if !has_hurt_target
+                    && !mob.add_target_goal(
+                        host,
+                        1,
+                        &mod_api::GoalSpec::HurtByTarget { alert: false },
+                    )
+                {
+                    eprintln!("Naturalist: failed to add Ray retaliation goal");
+                }
+                let has_melee = mob
+                    .goals(host)
+                    .is_some_and(|goals| goals.iter().any(|goal| goal.id == "melee_attack"));
+                if !has_melee
+                    && !mob.add_goal(
+                        host,
+                        3,
+                        &mod_api::GoalSpec::MeleeAttack {
+                            speed: 1.0,
+                            follow_unseen: true,
+                        },
+                    )
+                {
+                    eprintln!("Naturalist: failed to add Ray melee goal");
+                }
+            }
+        }
         if event.kind == "naturalist:bass" {
             if let Some(mob) = host
                 .entity(event.entity)
