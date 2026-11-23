@@ -1,0 +1,55 @@
+{
+  "artifact": "native-0a875da-ce9e9922f3c1",
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "world": "APP2129 persistence",
+  "dimension": "minecraft:overworld",
+  "block_region_inspected": "saves/APP2129 persistence/dimensions/minecraft/overworld/region/r.0.0.mca",
+  "force_loaded_chunks": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "records": {},
+  "disk_record_parse_complete": false,
+  "disk_record_parse_complete": false,
+  "missing_saved_records": [
+    "alligator",
+    "capybara",
+    "catfish",
+    "clam",
+    "hippo",
+    "piranha"
+  ],
+  "pre_reopen_uuids": {
+    "alligator": "[I; -1658540463, 23217697, -2040372345, -1763398767]",
+    "capybara": "[I; 1698964438, 988171280, -1394709763, -33320776]",
+    "catfish": "[I; -879981951, 1950895637, -1863884967, -738848850]",
+    "clam": "[I; 762025054, 1950892210, -2028463469, -1411625543]",
+    "hippo": "[I; -1708990, 328681030, -1832472652, -576543884]",
+    "piranha": "[I; 1263393305, 1299923191, -1974112580, -1582693951]"
+  },
+  "post_reopen_uuids": {
+    "alligator": "[I; -1658540463, 23217697, -2040372345, -1763398767]",
+    "capybara": "[I; 1698964438, 988171280, -1394709763, -33320776]",
+    "catfish": "[I; -879981951, 1950895637, -1863884967, -738848850]",
+    "clam": "[I; 762025054, 1950892210, -2028463469, -1411625543]",
+    "hippo": "[I; -1708990, 328681030, -1832472652, -576543884]",
+    "piranha": "[I; 1263393305, 1299923191, -1974112580, -1582693951]"
+  },
+  "uuid_matches": {
+    "alligator": true,
+    "capybara": true,
+    "catfish": true,
+    "clam": true,
+    "hippo": true,
+    "piranha": true
+  },
+  "all_six_post_reopen_uuid_matches": true,
+  "disk_record_note": "The inspected block region has no entity records; same-world reopen UUIDs match. Entity-record file layout still needs locating for direct NBT comparison.",
+  "query": "execute in minecraft:overworld run data get entity @e[type=naturalist:<species>,tag=app2129_<species>,limit=1] UUID"
+}
