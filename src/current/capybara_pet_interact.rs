@@ -11,12 +11,25 @@ fn capybara_pet_interact(
     let mob = &game.mobs[index];
     if mob.kind.id != "naturalist:capybara" || !mob.alive() { return ControlFlow::Continue(()) }
     let id = mob.id;
+    // The engine helper resolves the active LAN guest when a guest packet is
+    // being replayed and the host player otherwise.
     let actor = game.acting_player_uuid();
     let item = game.held().map(|stack| stack.item.to_string()).unwrap_or_default();
+    let empty_hand = item.is_empty() || item == "minecraft:air";
     let food = item == "minecraft:melon_slice";
-    let owner = game.mobs[index].extra.tame && game.mobs[index].extra.owner == Some(actor);
+    let saved_tame = game.persist.raw.get(&id).and_then(|tag| tag.get("Tame")).and_then(|tag| match tag {
+        Tag::Byte(value) => Some(*value != 0),
+        _ => None,
+    }).unwrap_or(false);
+    let saved_owner_matches = game.persist.raw.get(&id).and_then(|tag| tag.get("Owner")).and_then(|tag| match tag {
+        Tag::IntArray(value) => Some(value.as_slice() == actor.as_slice()),
+        _ => None,
+    }).unwrap_or(false);
+    let owner = (game.mobs[index].extra.tame || saved_tame)
+        && (game.mobs[index].extra.owner == Some(actor) || saved_owner_matches);
+    let tamed = game.mobs[index].extra.tame || saved_tame;
 
-    if !owner && !game.mobs[index].extra.tame && food {
+    if !owner && !tamed && food {
         use horizon_core::random::RandomSource;
         game.consume_held();
         let success = game.mobs[index].random.next_int_bound(3).unwrap_or(1) == 0;
@@ -42,6 +55,10 @@ fn capybara_pet_interact(
         game.mobs[index].heal(&game.loop_context, 2.0);
         return ControlFlow::Break(Ok(true));
     }
+    const SIT_ACTION: &str = "naturalist:capybara_sit";
+    if empty_hand && owner && game.cooldowns.is_on_cooldown(SIT_ACTION) {
+        return ControlFlow::Break(Ok(true));
+    }
     if food && let Some(_) = horizon_client::mobs::ai::feed_animal(&mut game.mobs[index], &mut game.world.random, Some(actor)) {
         game.consume_held();
         let mob = &game.mobs[index];
@@ -52,15 +69,21 @@ fn capybara_pet_interact(
         }
         return ControlFlow::Break(Ok(true));
     }
-    if !owner || !(item.is_empty() || item == "naturalist:whistle" && !game.keys.held(Action::Sneak)) {
+    if !owner || !(empty_hand || item == "naturalist:whistle" && !game.keys.held(Action::Sneak)) {
         return ControlFlow::Continue(());
     }
-    if item.is_empty() {
-        let sitting = game.mobs[index].extra.sitting;
-        horizon_client::mobs::tame::restore_sitting(&mut game.mobs[index], !sitting);
+    if empty_hand {
+        // The live runtime flag reflects command updates and the loaded mob
+        // state; raw NBT may still hold the prior persisted value.
+        let sitting = !game.mobs[index].extra.sitting;
+        horizon_client::mobs::tame::restore_sitting(&mut game.mobs[index], sitting);
+        game.mobs[index].extra.sitting = sitting;
         game.mobs[index].nav_stop();
         let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
-        if let Tag::Compound(fields) = raw { fields.insert("Sitting".into(), Tag::Byte(i8::from(!sitting))); }
+        if let Tag::Compound(fields) = raw { fields.insert("Sitting".into(), Tag::Byte(i8::from(sitting))); }
+        // One physical right-click can reach this hook through more than one
+        // input path. Debounce the empty-hand toggle like a normal item use.
+        game.add_cooldown(std::sync::Arc::from(SIT_ACTION), 5);
         return ControlFlow::Break(Ok(true));
     }
     if game.cooldowns.is_on_cooldown(&item) { return ControlFlow::Continue(()) }
@@ -68,6 +91,7 @@ fn capybara_pet_interact(
         .and_then(horizon_world::datafix::dynamic::as_number).is_none_or(|n| n.int_value() != 0);
     let at = game.mobs[index].center();
     horizon_client::mobs::tame::restore_sitting(&mut game.mobs[index], false);
+    game.mobs[index].extra.sitting = false;
     if following { game.mobs[index].ai.target = None; }
     let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
     if let Tag::Compound(fields) = raw {

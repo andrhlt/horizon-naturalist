@@ -1,5 +1,6 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
+mod alligator_egg_part;
 pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
@@ -143,6 +144,7 @@ impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
         ant_hill::register(registrar);
+        alligator_egg_part::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
         registrar
@@ -170,6 +172,13 @@ impl mod_api::Hooks for Naturalist {
                 .expect("register Naturalist entity attributes");
         }
         registrar.entity_part("naturalist:bass", bass_hunt::BassPart);
+    }
+    fn server_tick(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        _: &mut mod_api::ServerTickEvent<'_>,
+    ) {
+        alligator_egg_part::hatch_tick(host);
     }
     fn entity_join_level(
         &self,

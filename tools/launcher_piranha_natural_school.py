@@ -5,18 +5,22 @@ import subprocess
 import sys
 import tempfile
 import time
+import os
+import shutil
 
 version = Path(sys.argv[1])
 ctl = version / "horizon-ctl"
 game = version / "horizon-client"
-resources = version / ".local/horizon-client/26.3"
+resources = Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3"
 swap = "--swap" in sys.argv[2:]
 
 
 
 def call(socket, *args):
+    home = socket.parent / socket.stem
     result = subprocess.run(
         [ctl, "--socket", socket, *map(str, args)], capture_output=True, check=True, text=True, timeout=60,
+        env={**os.environ, "HORIZON_HOME": str(home)},
     )
     return json.loads(result.stdout.splitlines()[-1])
 
@@ -31,6 +35,9 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-piranha-school-", ignore_cleanu
         home, guest_home = root / "host", root / "guest"
         home.mkdir()
         guest_home.mkdir()
+        shared_jars = Path.home() / "Library/Application Support/horizon/jars"
+        for side_home in (home, guest_home):
+            shutil.copytree(shared_jars, side_home / "jars", dirs_exist_ok=True)
         host("launch", "--headless", "--game", game, "--resources", resources, "--home", home,
              "--game-dir", home, "--name", "NatHost", "--world", "Naturalist piranha natural school", "--creative",
              "--test-terrain", "--render-distance", 4, "--wait")

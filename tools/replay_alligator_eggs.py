@@ -1,75 +1,74 @@
-"""Exercise the Alligator egg item and natural block random ticking headlessly."""
+"""Exercise Alligator egg placement and natural hatching headlessly."""
 import json
-import os
-import shutil
 from pathlib import Path
 import subprocess
 import sys
-import tempfile
+import time
+from launcher_selected_headless import LAUNCHER, SelectedHeadless
 
 version = Path(sys.argv[1])
-with tempfile.TemporaryDirectory(prefix="nat-gator-eggs-", ignore_cleanup_errors=True) as scratch:
-    home = Path(scratch)
-    socket = home / "game.sock"
-    shared_jars = Path.home() / "Library/Application Support/horizon/jars"
-    if shared_jars.exists():
-        shutil.copytree(shared_jars, home / "jars", dirs_exist_ok=True)
-    env = {**os.environ, "HORIZON_HOME": str(home)}
+world = f"APP2129 Alligator Eggs {time.time_ns()}"
+socket = Path("/private/tmp") / f"{world.replace(' ', '-')}.sock"
+client = SelectedHeadless(version, socket, world, "--creative")
+ctl = client.call
+cmd = client.command
 
-    def ctl(*args):
-        p = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
-                           check=True, capture_output=True, text=True, timeout=75, env=env)
-        return json.loads(p.stdout.splitlines()[-1])
+def step(ticks):
+    cmd(f"tick step {ticks}")
+    ctl("wait", ticks + 2)
 
-    def cmd(line):
-        return ctl("command", line)["chat"]
+def at(x, y, z, expected):
+    return any("Test passed" in line for line in cmd(f"execute if block {x} {y} {z} {expected}"))
 
-    def step(ticks):
-        cmd(f"tick step {ticks}")
-        ctl("wait", ticks + 2)
+try:
+    cmd("gamerule minecraft:spawn_mobs false")
+    cmd("gamerule minecraft:random_tick_speed 0")
+    cmd("tp @s 11.5 92 7.5")
+    ctl("wait", 20)
+    cmd("tick freeze")
+    cmd("fill 4 91 3 16 91 14 minecraft:stone")
+    cmd("fill 4 92 3 16 98 14 minecraft:air")
+    cmd("tp @s 11.5 92 7.5")
+    cmd("item replace entity @s weapon.mainhand with naturalist:alligator_egg 4")
+    step(3)
+    ctl("look-at", 11.5, 91.99, 5.5)
+    placement_crosshair = ctl("looking-at")
+    ctl("mouse", "right", "click")
+    ctl("wait", 4)
+    assert at(11, 92, 5, "naturalist:alligator_egg[hatch=0,eggs=1]"), ctl("block", 11, 92, 5)
 
-    def at(x, y, z, expected):
-        return any("Test passed" in line for line in cmd(f"execute if block {x} {y} {z} {expected}"))
-
-    try:
-        ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-            Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3", "--home", home, "--game-dir", home,
-            "--world", "Alligator Eggs", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
-        cmd("gamerule minecraft:spawn_mobs false")
-        cmd("gamerule minecraft:random_tick_speed 0")
-        cmd("tp @s 11.5 92 7.5")
-        ctl("wait", 20)
-        cmd("tick freeze")
-        cmd("fill 4 91 3 16 91 14 minecraft:stone")
-        cmd("fill 4 92 3 16 98 14 minecraft:air")
-        cmd("tp @s 11.5 92 7.5")
-        cmd("item replace entity @s weapon.mainhand with naturalist:alligator_egg 4")
-        step(3)
-        ctl("look-at", 11.5, 91.99, 5.5)
-        print("placement crosshair", ctl("looking-at"), flush=True)
+    for count in (2, 3, 4):
+        ctl("look-at", 11.5, 92.2, 5.5)
+        stacking_crosshair = ctl("looking-at")
         ctl("mouse", "right", "click")
         ctl("wait", 4)
-        assert at(11, 92, 5, "naturalist:alligator_egg[hatch=0,eggs=1]"), ctl("block", 11, 92, 5)
-
-        for count in (2, 3, 4):
-            ctl("look-at", 11.5, 92.2, 5.5)
-            print("stack crosshair", ctl("looking-at"), flush=True)
-            ctl("mouse", "right", "click")
-            ctl("wait", 4)
-            assert at(11, 92, 5, f"naturalist:alligator_egg[eggs={count}]"), ctl("block", 11, 92, 5)
-        print("Actual item placed and stacked four eggs on stone.", flush=True)
-
-        cmd("time set 21600")
-        cmd("gamerule minecraft:random_tick_speed 4096")
-        for _ in range(10):
-            step(8)
-            if at(11, 92, 5, "minecraft:air"):
-                break
-        else:
-            raise AssertionError(ctl("block", 11, 92, 5))
-        offspring = ctl("entities", 10, "naturalist:alligator")["entities"]
-        assert len(offspring) == 4, offspring
-        print("Normal daytime block random ticks hatched four living Alligators on stone.", flush=True)
-    finally:
-        if socket.exists():
-            ctl("quit")
+        assert at(11, 92, 5, f"naturalist:alligator_egg[eggs={count}]"), ctl("block", 11, 92, 5)
+    cmd("time set 21600")
+    cmd("gamerule minecraft:random_tick_speed 4096")
+    for _ in range(10):
+        step(8)
+        if at(11, 92, 5, "minecraft:air"):
+            break
+    else:
+        raise AssertionError(ctl("block", 11, 92, 5))
+    offspring = ctl("entities", 10, "naturalist:alligator")["entities"]
+    assert len(offspring) == 4, offspring
+    age_rows = cmd("execute as @e[type=naturalist:alligator,distance=..10] run data get entity @s Age")
+    ages = []
+    for row in age_rows:
+        try:
+            ages.append(int(row.rsplit(": ", 1)[1].replace(",", "")))
+        except (IndexError, ValueError):
+            pass
+    assert len(ages) == 4 and all(age <= 0 for age in ages), {"offspring": offspring, "age_rows": age_rows, "ages": ages}
+    result = {"artifact": version.name, "world": world, "stone_support": [11, 91, 5],
+              "placement_crosshair": placement_crosshair, "stacking_crosshair": stacking_crosshair,
+              "eggs_placed": 4, "hatched_count": len(offspring), "hatchling_ages": ages,
+              "headless": True, "random_ticks": 4096}
+    print(json.dumps(result, indent=2), flush=True)
+    if len(sys.argv) > 2:
+        Path(sys.argv[2]).write_text(json.dumps(result, indent=2) + "\n")
+finally:
+    client.close()
+    subprocess.run([LAUNCHER, "worlds", "delete", "--instance", "horizon", world],
+                   capture_output=True, text=True, env=client.env)

@@ -94,11 +94,67 @@ file = "crates/horizon-client/src/game.rs"
 name = "naturalist_piranha_school"
 source = "src/current/piranha_school.rs"
 
+[[native.module]]
+id = "hippo-water-breeding"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_hippo_breed"
+source = "src/current/hippo_breed_goal.rs"
+
+[[native.module]]
+id = "hippo-boat-attack"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_hippo_boat"
+source = "src/current/hippo_boat_goal.rs"
+
 [[native.mixin]]
 id = "piranha-school-tick"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
 kind = "HEAD"
 helper = "src/current/piranha_movement.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "entity", ty = "u32", value = "entity"},
+  {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "hippo-pet-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/hippo_pet_interact.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "hippo-follow-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/hippo_follow_tick.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "entity", ty = "u32", value = "entity"},
+  {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "hippo-behavior-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/hippo_behavior_tick.rs"
+bindings = [
+  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+  {name = "entity", ty = "u32", value = "entity"},
+  {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "hippo-carry-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/hippo_carry_tick.rs"
 bindings = [
   {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
   {name = "entity", ty = "u32", value = "entity"},

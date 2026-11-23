@@ -38,11 +38,19 @@ def capture(version):
             return next((row.split("following entity data: ", 1)[1]
                          for row in rows if "following entity data:" in row), None)
 
+        def live_pet():
+            rows = call("host", "entities", 32, "naturalist:capybara")["entities"]
+            assert len(rows) == 1, rows
+            return rows[0]
+
         def set_hand(player, item, count=1):
             command(f"item replace entity {player} weapon.mainhand with {item} {count}")
 
         def click(side):
             call(side, "look-at", 8.5, 101.55, 8.5)
+            call(side, "wait", 2)
+            target = call(side, "looking-at")
+            assert target.get("entity") and target["entity"].get("type") == "naturalist:capybara", target
             call(side, "mouse", "right", "click")
             call("host", "wait", 5)
 
@@ -53,6 +61,7 @@ def capture(version):
             launch("host", "--world", "Naturalist Capybara LAN Owners", "--creative",
                    "--test-terrain", "--wait")
             command("gamerule minecraft:spawn_mobs false")
+            command("gamerule minecraft:natural_regeneration false")
             command("forceload add 0 0")
             command("tp @s 8.5 101 6.0")
             call("host", "wait", 20)
@@ -77,26 +86,47 @@ def capture(version):
                 if data(pet, "Owner") is not None:
                     break
             assert data(pet, "Owner") is not None
-            command(f"data merge entity {pet} {{Sitting:0b,FollowingOwner:1b,Health:4.0f,InLove:0}}")
+            # Java's owner-following setup leaves the pet unsat; newly tamed
+            # runtime pets start seated, so use the owner interaction here.
+            set_hand("@s", "minecraft:air")
+            click("host")
+            command(f"damage {pet} 10 minecraft:generic")
+            call("host", "wait", 2)
+            setup_health = float(live_pet()["health"])
+            assert abs(setup_health - 4.0) < 0.01, live_pet()
+            print("CAPYBARA_PLAYERS", json.dumps({"host": data("@s", "UUID"), "guest": data("CapybaraGuest", "UUID")}), flush=True)
+            print("CAPYBARA_SETUP", json.dumps({"health": live_pet()["health"], **{field: data(pet, field) for
+                  field in ("Age", "Owner", "Tame", "FollowingOwner", "Sitting", "InLove")}}), flush=True)
             assert data(pet, "Owner") == data("@s", "UUID")
             assert data(pet, "Owner") != data("CapybaraGuest", "UUID")
+            sitting_before_guest = flag(pet, "Sitting")
             set_hand("CapybaraGuest", "minecraft:air")
             click("guest")
-            sample = {"guest_toggles_sit": flag(pet, "Sitting")}
+            print("CAPYBARA_AFTER_GUEST_FOOD", json.dumps({"health": live_pet()["health"], **{field: data(pet, field) for
+                  field in ("Age", "Owner", "Tame", "InLove")}}), flush=True)
+            sample = {"guest_toggles_sit": flag(pet, "Sitting") != sitting_before_guest}
             set_hand("CapybaraGuest", "naturalist:whistle")
             click("guest")
             sample["guest_toggles_follow"] = not flag(pet, "FollowingOwner")
             set_hand("CapybaraGuest", "minecraft:melon_slice", 2)
             click("guest")
-            sample["guest_heals"] = float(data(pet, "Health").rstrip("f")) > 4.0
+            print("CAPYBARA_AFTER_GUEST_FEED", json.dumps({"health": live_pet()["health"], **{field: data(pet, field) for
+                  field in ("Age", "Owner", "Tame", "InLove")}}), flush=True)
+            sample["guest_heals"] = live_pet()["health"] > 4.0
             sample["guest_breeds"] = int(data(pet, "InLove") or "0") > 0
             sample["guest_food_consumed"] = "count: 1" in str(data("CapybaraGuest", "SelectedItem"))
             set_hand("@s", "minecraft:melon_slice", 2)
             click("host")
-            sample["owner_heals"] = float(data(pet, "Health").rstrip("f")) == 6.0
+            print("CAPYBARA_AFTER_OWNER_FOOD", json.dumps({"health": live_pet()["health"], **{field: data(pet, field) for
+                  field in ("Age", "Owner", "Tame", "InLove", "Sitting")}}), flush=True)
+            sample["owner_heals"] = live_pet()["health"] == 6.0
+            sitting_before_owner = flag(pet, "Sitting")
             set_hand("@s", "minecraft:air")
+            print("CAPYBARA_OWNER_EMPTY_HAND", data("@s", "SelectedItem"), flush=True)
             click("host")
-            sample["owner_toggles_sit"] = flag(pet, "Sitting")
+            print("CAPYBARA_OWNER_SIT_TOGGLE", json.dumps({"before": sitting_before_owner,
+                  "after": flag(pet, "Sitting"), "health": live_pet()["health"]}), flush=True)
+            sample["owner_toggles_sit"] = flag(pet, "Sitting") != sitting_before_owner
             return sample
         finally:
             for side in ("guest", "host"):

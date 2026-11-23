@@ -17,6 +17,7 @@ fn follows(world: &MobWorld, leader: Option<u32>) -> bool {
 }
 impl Goal for PiranhaSchool {
     fn box_clone(&self) -> Box<dyn Goal> { Box::new(self.clone()) }
+    fn set_start_delay(&mut self, ticks: i32) { self.next_start = ticks; }
     fn name(&self) -> &'static str { "NaturalistPiranhaSchool" }
     fn flags(&self) -> u8 { 0 }
     fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
@@ -33,18 +34,31 @@ impl Goal for PiranhaSchool {
             let school = if seen.id == mob.id { (mob.extra.leader, mob.extra.followers) } else { seen.school };
             (school.1 > 0 && school.1 + 1 < 24 || !follows(cx.w, school.0)).then_some((seen, school))
         }).collect();
+        // Keep the pinned FollowFlockLeader rule: a candidate school must
+        // already have followers and room. When none qualifies, this fish
+        // becomes the new leader and gathers nearby unattached fish.
         let (leader, followers) = candidates.iter().find(|(_, (_, count))| *count > 0 && *count + 1 < 24)
             .map_or((mob.id, mob.extra.followers), |(seen, (_, count))| (seen.id, *count));
         let room = (24 - followers - 1).max(0) as usize;
-        for (seen, _) in candidates.into_iter().filter(|(_, (leader, _))| !follows(cx.w, *leader)).take(room) {
+        let mut recruited = 0;
+        for (seen, _) in candidates.into_iter()
+            .filter(|(_, (existing_leader, _))| !follows(cx.w, *existing_leader))
+            .take(room)
+            .filter(|(seen, _)| seen.id != leader)
+        {
             if seen.id == mob.id {
                 mob.extra.leader = Some(leader);
                 cx.events.push(MobEvent::SchoolSize { leader, by: 1 });
             } else if seen.id != leader {
                 cx.events.push(MobEvent::StartFollowing { fish: seen.id, leader });
+                recruited += 1;
             }
         }
-        follows(cx.w, mob.extra.leader)
+        // `others_near` omits the current mob, while Java's nearby-entity
+        // query includes it. A new leader therefore has no self entry to
+        // mark itself as following; starting the goal still succeeds when it
+        // has just recruited a school.
+        follows(cx.w, mob.extra.leader) || leader == mob.id && recruited > 0
     }
     fn can_continue(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
         mob.extra.leader.and_then(|id| cx.w.seen(id)).is_some_and(|leader| leader.alive && mob.distance_sqr(leader.position) <= 121.0)
