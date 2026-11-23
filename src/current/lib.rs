@@ -39,6 +39,17 @@ static FIREFLY_AGE: AttachmentType<i32> = AttachmentType {
     copy_on_death: false,
     sync: false,
 };
+static POISON_TARGETS: AttachmentType<Vec<[i32; 2]>> = AttachmentType {
+    namespace: "naturalist",
+    name: "pending_scorpion_poison_targets",
+    default: Vec::new,
+    codec: Some(AttachmentCodec {
+        encode: encode_poison_targets,
+        decode: decode_poison_targets,
+    }),
+    copy_on_death: false,
+    sync: false,
+};
 fn encode(value: &i32) -> Result<Compound, AttachmentError> {
     Ok([("ticks".into(), Tag::Int(*value))].into())
 }
@@ -47,6 +58,19 @@ fn decode(data: &Compound) -> Result<i32, AttachmentError> {
         Some(Tag::Int(value)) => Ok(*value),
         _ => Err(AttachmentError::Decode),
     }
+}
+fn encode_poison_targets(rows: &Vec<[i32; 2]>) -> Result<Compound, AttachmentError> {
+    let flat: Vec<i32> = rows.iter().flat_map(|row| row.iter().copied()).collect();
+    Ok(Compound::from([("rows".into(), Tag::IntArray(flat))]))
+}
+fn decode_poison_targets(data: &Compound) -> Result<Vec<[i32; 2]>, AttachmentError> {
+    let Some(Tag::IntArray(flat)) = data.get(&"rows".into()) else {
+        return Err(AttachmentError::Decode);
+    };
+    if flat.len() % 2 != 0 {
+        return Err(AttachmentError::Decode);
+    }
+    Ok(flat.chunks_exact(2).map(|row| [row[0], row[1]]).collect())
 }
 
 /// Access the authoritative attachment map for this entity, even while the
@@ -228,7 +252,23 @@ impl mod_api::Hooks for Naturalist {
         event.listened = true;
     }
 
-    fn server_tick(&self, host: &mut dyn mod_api::ServerHost, _: &mut mod_api::ServerTickEvent<'_>) {
+    fn living_damage_post(
+        &self,
+        host: &mut dyn mod_api::LevelRandomHost,
+        event: &mut mod_api::LivingDamagePostEvent<'_>,
+    ) {
+        if event.container.health_damage() <= 0.0 || event.source.causing <= 0 {
+            return;
+        }
+        let mut targets = POISON_TARGETS.get(host, Holder::Level).unwrap_or_default();
+        targets.push([event.entity as i32, event.source.causing]);
+        let _ = POISON_TARGETS.set(host, Holder::Level, targets);
+    }
+
+    fn server_tick(&self, host: &mut dyn mod_api::ServerHost, event: &mut mod_api::ServerTickEvent<'_>) {
+        if !matches!(event.phase, mod_api::ServerTickPhase::ServerTickEnd { .. }) {
+            return;
+        }
         let level = host.level("minecraft:overworld");
         if let (Some(level), Ok(mut pending)) = (level, chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level))
             && let Some(pos) = pending.first().copied()
@@ -238,31 +278,45 @@ impl mod_api::Hooks for Naturalist {
             let _ = chrysalis_part::PENDING.set(host, mod_api::Holder::Level, pending);
         }
         if let Some(level) = level {
-            let mut hatches = snail_eggs_part::hatch_queue(host);
-            if let Some(row) = hatches.first_mut() {
+            for row in snail_eggs_part::take_hatch_queue(host) {
                 let pos = [row[0], row[1], row[2]];
                 let still_air = level
                     .block_state(host, pos)
                     .and_then(|state| host.block_state_string(state))
                     .is_some_and(|name| name.starts_with("minecraft:air"));
                 if !still_air {
-                    hatches.remove(0);
-                    snail_eggs_part::save_hatch_queue(host, hatches);
-                } else if let Some(child) = level.spawn_mob(
-                    host,
-                    "naturalist:snail",
-                    [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5],
-                    mod_api::SpawnReason::Breeding,
-                ) {
-                    if let Some(mob) = host.mob(child) {
-                        let _ = mob.set_baby(host, true);
+                    continue;
+                }
+                for _ in 0..row[3].clamp(0, 5) {
+                    if let Some(child) = level.spawn_mob(
+                        host,
+                        "naturalist:snail",
+                        [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5],
+                        mod_api::SpawnReason::Breeding,
+                    ) {
+                        if let Some(mob) = host.mob(child) {
+                            let _ = mob.set_baby(host, true);
+                        }
+                        let _ = child.merge_nbt(host, Compound::from([("Age".into(), Tag::Int(-6000))]));
                     }
-                    let _ = child.merge_nbt(host, Compound::from([("Age".into(), Tag::Int(-24000))]));
-                    row[3] -= 1;
-                    if row[3] <= 0 {
-                        hatches.remove(0);
-                    }
-                    snail_eggs_part::save_hatch_queue(host, hatches);
+                }
+            }
+        }
+        let poison_targets = POISON_TARGETS.get(host, Holder::Level).unwrap_or_default();
+        let _ = POISON_TARGETS.set(host, Holder::Level, Vec::new());
+        if let Some(poison) = host.effect_key("minecraft:poison") {
+            for [target_id, attacker_id] in poison_targets {
+                let is_scorpion = u32::try_from(attacker_id)
+                    .ok()
+                    .and_then(|id| host.entity(id))
+                    .and_then(|entity| entity.kind(host))
+                    .is_some_and(|kind| matches!(kind.id(host).as_str(), "naturalist:desert_scorpion" | "naturalist:jungle_scorpion"));
+                if is_scorpion
+                    && let Ok(target_id) = u32::try_from(target_id)
+                    && let Some(living) = host.entity(target_id).and_then(|entity| host.living(entity))
+                {
+                    let effect = mod_api::ActiveEffect::new(poison, 120, 0, false, true, true);
+                    let _ = living.add_effect(host, &effect);
                 }
             }
         }

@@ -49,8 +49,12 @@ def capture(version, jar, resources=None):
             cmd("tp @s 7.5 100 6.5")
             cmd("forceload add 0 0")
             cmd("tick freeze")
-            placed = cmd("setblock 7 100 8 naturalist:snail_eggs")
-            assert any("Changed the block" in row for row in placed), placed
+            cmd("item replace entity @s weapon.mainhand with naturalist:snail_eggs 4")
+            ctl("look-at", 7.5, 99.95, 8.5)
+            ctl("mouse", "right", "click")
+            ctl("wait", 3)
+            placed = cmd("execute if block 7 100 8 naturalist:snail_eggs")
+            assert any("Test passed" in row for row in placed), placed
             sprint(599)
             still_eggs = cmd("execute if block 7 100 8 naturalist:snail_eggs")
             assert any("Test passed" in row for row in still_eggs), still_eggs

@@ -12,14 +12,16 @@
     "scheduled_tick": "LevelTicksHost::schedule_block_tick(&mut self, pos: [i32; 3], block: BlockKey, delay: i32) -> bool",
     "tick_handler": "BlockPart::tick_block(&self, level: &mut dyn LevelWriteHost, event: &mut TickBlockEvent) -> Flow",
     "deferred_spawn": "Hooks::server_tick(&self, host: &mut dyn ServerHost, event: &mut ServerTickEvent)",
-    "conclusion": "The pinned API supports placement-adjacent scheduling, the due block tick, and deferred server-side offspring creation. No engine change is needed for this path."
+    "conclusion": "The pinned API supports placement-adjacent scheduling, the due block tick, and deferred server-side offspring creation. The neighbor_changed path has no level RNG, and LevelHost has no face-sturdiness query."
   },
   "implementation": {
     "delay_ticks_inclusive": [600, 2399],
     "removed_or_replaced_egg_rejected": true,
     "offspring_count_inclusive": [2, 5],
-    "offspring_retried_after_spawn_failure": true,
+    "offspring_retried_after_spawn_failure": false,
+    "placement_delay_uses_java_rng": false,
+    "support_uses_java_sturdy_top_predicate": false,
     "duplicate_queue_entries_per_position": false
   },
-  "runtime_verification": "Pending headless rerun on a launcher-registered matching artifact."
+  "runtime_verification": "Pending APP-2135 shared matching-artifact headless rerun, including player placement, egg replacement, and no duplicate offspring."
 }

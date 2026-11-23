@@ -132,12 +132,10 @@ pub fn register(registrar: &mut dyn mod_api::Registrar) {
     }
 }
 
-pub fn hatch_queue(host: &mut dyn mod_api::ServerHost) -> Vec<[i32; 4]> {
-    HATCHES.get(host, Holder::Level).unwrap_or_default()
-}
-
-pub fn save_hatch_queue(host: &mut dyn mod_api::ServerHost, pending: Vec<[i32; 4]>) {
-    let _ = HATCHES.set(host, Holder::Level, pending);
+pub fn take_hatch_queue(host: &mut dyn mod_api::ServerHost) -> Vec<[i32; 4]> {
+    let pending = HATCHES.get(host, Holder::Level).unwrap_or_default();
+    let _ = HATCHES.set(host, Holder::Level, Vec::new());
+    pending
 }
 
 fn encode_hatches(pending: &Vec<[i32; 4]>) -> Result<mod_api::Compound, mod_api::AttachmentError> {
