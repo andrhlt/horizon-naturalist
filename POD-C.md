@@ -1,7 +1,7 @@
 # Pod C iteration manifest
 
 Frozen source branch: `codex/naturalist-pod-c`
-Frozen source commit: `bb2d5e6`
+Frozen source commit: `dde2c2c9c1d839ef2d6431adfdd0ddf84fcdb466`
 Base: `origin/main` / `3d03fb7107f9c93f5bc96d5e18602c0921d7d752`
 
 Included reviewed heads:
@@ -37,14 +37,29 @@ Reusable build candidate (read-only; do not mutate or rebuild):
 - Build route: `horizon-launcher native-build --version nightly-2026-11-20-0a875da --trust-native-code .`
 - Runtime route: `tools/launcher_selected_headless.py` with isolated `horizon-ctl` sockets
 
+Pod C immutable build manifest:
+
+- Artifact: `native-0a875da-d914d52a96e7`
+- Artifact path: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/native-0a875da-d914d52a96e7`
+- Source: `dde2c2c9c1d839ef2d6431adfdd0ddf84fcdb466`; native manifest mod SHA-256 `99663c79ad49c704af55db926ec58e0d80f5be91b322fc8fd1b5c26ba7ff490f`
+- `libnaturalist.dylib`: `383bf293daf4d5c204d227a37496f9e12b220094acd32043ee9718533b3e8c77`
+- `libhorizon_patch.dylib`: `c8fdb0612159da3671cdfef1fec6d40e60a6b4e771cdaf99cc321d0ab4e300ba`
+- `native-mods.json`: `09ecebabe3551af069b12565e8cd9cb0df02391225d7846696037e0cd7a13619`
+- Client/server: `horizon-client` `012bf6dbfecb095bfb27f9b84452105639501cc5444aca15517360cd90547935`; `horizon-server` `2b0f3d7bd318f52a8385b7d7b28db78d13f7752d25fd30d824d487aef5fe1f1d`
+- Frozen resource client: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da`; client SHA-256 `34be7152dbc8d2c7db6d11771963b97d00c8d7b54ac70b5a9c9e60b5a9d76007`
+- Pinned Java jar: `/Users/andrewholt/Library/Application Support/horizon/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar`; SHA-256 `f85d8823002483a9d2822d2fd9f3cb880809d4c2eabf1cf19e24d6a14e2874e9`
+- SDK surface/toolchain: Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`, MC 26.3, mixins `e59da9094f0c2fdda6c627fe9eff22dec6a906f0`, Rust 1.99.1; SDK surface `e05637790d2a91aaa8075e748e2ca872`
+- Supported build command: `HORIZON_HOME=/private/tmp/pod-c-launcher-home CARGO_TARGET_DIR=/private/tmp/pod-c-target HORIZON_NO_AUDIO=1 /Applications/Horizon.app/Contents/MacOS/horizon-launcher native-build --version nightly-2026-11-20-0a875da --instance pod-c-350802f --trust-native-code --profile optimized .`
+- Supported headless route: launch the artifact's `horizon-client` with `--headless`, a unique `--home`, `--game-dir`, `--world`, and unique `horizon-ctl --socket`; keep each owner world/socket isolated.
+
 Delivery checklist:
 
 - [x] Integrate reviewed owned commits with shared `lib.rs` and spawn ownership resolved.
 - [x] Resolve duplicate native registration IDs found by the pinned build validator.
 - [x] Preserve contributor attribution and individual PRs.
 - [ ] Obtain one source-matched heavy build for this exact Pod C source.
-- [ ] Publish immutable Pod C artifact/resource/socket manifest.
-- [ ] Dispatch the same artifact to APP-2130, APP-2133, and APP-2158 owners.
+- [x] Publish immutable Pod C artifact/resource/socket manifest.
+- [x] Dispatch the same artifact to APP-2130, APP-2133, and APP-2158 owners.
 - [ ] Collect independent headless, LAN, persistence, and offscreen results.
 - [ ] Queue fixes into the next frozen batch; no gap waivers.
 - [ ] Open one combined Pod C PR only after all three acceptance checklists pass.
