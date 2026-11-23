@@ -350,6 +350,9 @@ impl mod_api::Hooks for Naturalist {
         if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:whale") {
             if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
                 install_goal(&mob, host, false, 0, mod_api::GoalSpec::Float);
+                // The declared entity template may already have a walking
+                // stroll goal. Replace it so this species gets RandomSwimmingGoal.
+                let _ = mob.remove_goal(host, "stroll");
                 install_goal(&mob, host, false, 5, mod_api::GoalSpec::Stroll {
                     speed: 1.0,
                     interval: 40,
