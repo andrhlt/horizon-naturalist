@@ -203,6 +203,7 @@ impl Goal for RhinoCharge {
     fn flags(&self) -> u8 { MOVE | LOOK }
 
     fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        if mob.extra.counter2 > 0 { return false; }
         let Some(target) = mob.ai.target else { return false; };
         if cx.w.target_info(target).is_none_or(|info| !info.alive) { return false; }
         self.target = Some(target);
@@ -215,8 +216,9 @@ impl Goal for RhinoCharge {
         true
     }
 
-    fn can_continue(&mut self, _: &mut Mob, cx: &mut Cx) -> bool {
-        self.target.and_then(|who| cx.w.target_info(who)).is_some_and(|target| target.alive)
+    fn can_continue(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        mob.extra.counter2 <= 0
+            && self.target.and_then(|who| cx.w.target_info(who)).is_some_and(|target| target.alive)
             && (self.windup > 0 || self.charge > 0)
     }
 
@@ -271,6 +273,7 @@ pub fn stun(game: &mut super::Game<'_>, id: u32) {
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     mob.extra.counter2 = 60;
     mob.ints[5] = 0;
+    mob.nav_stop();
     horizon_client::mobs::finalize::set_base(mob, horizon_client::mobs::finalize::Attr::MovementSpeed, 0.0);
     let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
     if let Tag::Compound(fields) = raw { fields.insert("StunTick".into(), Tag::Int(60)); }
@@ -280,6 +283,7 @@ pub fn tick(game: &mut super::Game<'_>, id: u32) {
     let Some(index) = game.mobs.iter().position(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     let stun = game.persist.raw.get(&id).and_then(|tag| tag.get(&"StunTick".into()))
         .and_then(horizon_world::datafix::dynamic::as_number).map_or(0, |value| value.int_value());
+    game.mobs[index].extra.counter2 = stun.saturating_sub(1).max(0);
     if stun > 1 {
         horizon_client::mobs::finalize::set_base(&mut game.mobs[index], horizon_client::mobs::finalize::Attr::MovementSpeed, 0.0);
         let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
