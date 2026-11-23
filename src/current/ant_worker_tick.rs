@@ -265,6 +265,17 @@ fn store(game: &mut Game<'_>, id: u32, room: [i32; 3]) {
     else {
         return;
     };
+    // The goal records its target before the post-tick commit. Recheck the
+    // approach here so cancellation, teleport, or a block update cannot
+    // deposit food into a stale hill target.
+    let center = Vec3::new(
+        f64::from(room[0]) + 0.5,
+        f64::from(room[1]) + 0.5,
+        f64::from(room[2]) + 0.5,
+    );
+    if ant.position.distance_squared(center) > 4.0 {
+        return;
+    }
     let owner = ant.extra.owner;
     let Some(row) = game
         .pack
@@ -407,6 +418,16 @@ fn enter_hill(game: &mut Game<'_>, id: u32, room: [i32; 3]) {
     else {
         return;
     };
+    // Do not consume the worker reservation if the movement goal was
+    // cancelled after reaching a now-stale target.
+    let center = Vec3::new(
+        f64::from(room[0]) + 0.5,
+        f64::from(room[1]) + 0.5,
+        f64::from(room[2]) + 0.5,
+    );
+    if ant.position.distance_squared(center) > 4.0 {
+        return;
+    }
     let owner = ant.extra.owner;
     let Some(row) = game
         .pack
