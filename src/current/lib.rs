@@ -271,7 +271,7 @@ impl mod_api::Hooks for Naturalist {
     ) -> mod_api::Flow {
         let is_snail_egg = host
             .block_state_string(event.state)
-            .is_some_and(|name| name.starts_with("naturalist:snail_eggs["));
+            .is_some_and(|name| name.starts_with("naturalist:snail_eggs"));
         if !is_snail_egg {
             return mod_api::Flow::Continue;
         }
@@ -322,7 +322,7 @@ impl mod_api::Hooks for Naturalist {
                 let still_eggs = level
                     .block_state(host, pos)
                     .and_then(|state| host.block_state_string(state))
-                    .is_some_and(|name| name.starts_with("naturalist:snail_eggs["));
+                    .is_some_and(|name| name.starts_with("naturalist:snail_eggs"));
                 if !still_eggs {
                     continue;
                 }
