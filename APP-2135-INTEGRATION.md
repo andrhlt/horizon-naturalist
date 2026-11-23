@@ -35,7 +35,7 @@ launchers, passing `--offscreen`; no accountless-client flag or auth bypass is p
 | Freshwater/coastal | Alligator breeding/laying, Capybara persistence/use, Hippo/Piranha/Catfish/Clam/Bass paths | persistence passed: all six UUIDs and saved fields matched after reopen; Capybara owner interaction passed; six offscreen frames passed | headless Alligator lay/stomp and aquatic LAN; cleanup emitted a non-fatal temporary-world “No world” message |
 | Shared spawning | 36 age-group policies and serial carry wiring | native build; Rust/source checks | controlled loaded-chunk natural spawn and matching artifact runtime |
 | Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | Giraffe now passes: `Variant="naturalist:giraffe"`, owner mount, mounted control, mounted movement, dismount, and control clear | Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield remains disabled because its injected module uses unsupported cohort fields |
-| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | source-matched production path passes juvenile refusal, adult cocooning, silent discard, facing, and removal; strict fixture cleanup still sees ambient live Butterflies before hatch | isolate ambient Naturalist spawns in fixture, then rerun strict count/Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
+| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | strict source-matched fixture passes juvenile refusal, adult cocooning, silent discard, facing, removal, exactly one live Butterfly at both snapshots, pollination, and breeding | Snail/Scorpion/offscreen remain; Firefly juvenile rendering remains APP-2159 |
 | Duck | renderer/appearance, bucket/follow/breed/variant source | native build | headless follow/whistle/parent/save-reopen and offscreen capture |
 | Reptiles | Komodo/Lizard/Mole/Tortoise source, Tortoise fall-on hook | native build; Rust checks | headless interactions/egg landing/save-reopen; Tortoise `stepOn` parity is unsupported by the pinned BlockPart API |
 | Crab/Ant/Rat/Hedgehog | Crab/Ant/Hedgehog focused handoffs consumed; Rat remains from prior source | Ant carried-food save/reopen passes; Crab owner-defense standard-command matrix passes on `native-0a875da-e5d2daba9883`; Crab probe remains unregistered; Hedgehog item remains absent from staged inventory | supported Crab capture/conservation, Hedgehog item/resource path, and Ant/Rat host/guest checks |
@@ -56,6 +56,9 @@ Source-matched Cocoon result on `native-0a875da-e5d2daba9883`: `baby_makes_cocoo
 `chrysalis_removed=true`, and `butterfly_count_after_window=1`. The first snapshot counted
 three Butterflies because two breeding parents remained; this is fixture cleanup contamination,
 not a duplicate hatch result.
+
+The strict rerun on valid candidate `native-0a875da-e30de3ca2236` now passes all expected
+fixture assertions, including `butterfly_count=1` and `butterfly_count_after_window=1`.
 
 The latest persistence rerun passed on `native-0a875da-2c623e51691d`: all six freshwater UUIDs
 and saved fields matched after reopen, and Capybara owner interaction succeeded. Temporary-world

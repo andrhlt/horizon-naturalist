@@ -55,7 +55,11 @@ def capture(version, reference, jar=None):
             ctl("wait", 20)
             cmd("tick freeze")
             cmd("kill @e[type=naturalist:butterfly]")
-            empty_butterfly_cohort = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            step(2)
+            empty_butterfly_cohort = [
+                entity for entity in ctl("entities", 48, "naturalist:butterfly")["entities"]
+                if entity.get("health", 0.0) > 0.0
+            ]
             assert not empty_butterfly_cohort, empty_butterfly_cohort
             cmd("fill 0 99 0 15 99 15 minecraft:stone")
             cmd("fill 0 100 0 15 107 15 minecraft:air")
