@@ -93,6 +93,7 @@ pub(super) fn hedgehog_hit(game: &mut Game<'_>, projectile: &Projectile, hit: Hi
             attacker_species: None,
         };
         let _ = mob.damage_projectile(
+            crate::game::entity::damage_level_of!(game, scoped),
             6.0,
             source,
             aim,
