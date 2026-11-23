@@ -74,6 +74,11 @@ public final class StarfishProbe {
             output.put("fallback_death_color", killAndRead(level, unknown));
 
             var support = new BlockPos(7, 91, 8);
+            // Keep placement and neighbor updates inside a loaded test chunk;
+            // otherwise the support break can be deferred and look like a
+            // Starfish attachment failure in headless runs.
+            level.getChunkAt(support);
+            level.getChunkAt(support.above());
             var player = FakePlayerFactory.getMinecraft(level);
             player.snapTo(7.5, 92, 6.5, 0, 0);
             var item = new ItemStack(NaturalistRegistry.BLUE_STARFISH.get());
@@ -85,6 +90,19 @@ public final class StarfishProbe {
                 ? BuiltInRegistries.BLOCK.getKey(block.getBlock()).toString() : "");
             output.put("waterlogged", block.getOptionalValue(BlockStateProperties.WATERLOGGED).orElse(false));
             output.put("attached_down", block.getOptionalValue(MultifaceBlock.getFaceProperty(Direction.DOWN)).orElse(false));
+
+            var placedPos = support.above();
+            level.getEntitiesOfClass(ItemEntity.class,
+                new AABB(7, 91, 8, 8, 93, 9)).forEach(ItemEntity::discard);
+            level.destroyBlock(support, false);
+            var afterSupportRemoval = level.getBlockState(placedPos);
+            output.put("support_removed_block", BuiltInRegistries.BLOCK.getKey(afterSupportRemoval.getBlock()).toString());
+            var supportDrops = level.getEntitiesOfClass(ItemEntity.class,
+                new AABB(7, 91, 8, 8, 93, 9));
+            output.put("support_drop", supportDrops.isEmpty() ? "" :
+                BuiltInRegistries.ITEM.getKey(supportDrops.getFirst().getItem().getItem()).toString());
+            output.put("support_drop_count", supportDrops.stream()
+                .mapToInt(drop -> drop.getItem().getCount()).sum());
 
             source.sendSuccess(() -> Component.literal("starfish_fixture " + GSON.toJson(output)), false);
             return 1;
