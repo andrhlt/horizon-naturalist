@@ -118,6 +118,12 @@ python3 tools/launcher_zebra.py "$CANDIDATE" fixtures/zebra-java.json
 
 All four commands use `tools/launcher_managed.py`; Rhino currently exits on the no-grief stun assertion. Zebra was changed to use real held-item inputs for its breeding scenario and to report unavailable age/RNG/variant probes as explicit coverage gaps rather than calling absent fixture commands.
 
+## APP-2135 Giraffe Variant and rider follow-up
+
+On candidate `native-0a875da-53ec73086c7c` / integrated source `1ccec01`, the Giraffe fixture's Variant failure was not a valid observation of entity state. Commit `b65b4ce` changed the query from raw NBT `Variant` to lowercase `variant` and changed the expected value from the pinned Java fixture's `naturalist:giraffe` to `minecraft:temperate`. The corrected fixture reads `Variant`, retains the raw query output for diagnosis, normalizes the serialized string, and compares it to `fixtures/giraffe-java.json`. A missing value will still fail as a real initialization/persistence defect; the corrected query has not yet been run on this candidate.
+
+The same corrected headless fixture now records the virtual saddle equipment while the owner is mounted, verifies mounted movement, dismounts with the shift key, and confirms the control saddle is absent after the entity tick. These source-matched candidate checks are pending APP-2135; no new runtime result is claimed here.
+
 ## LAN identity blocker
 
 APP-2126's successful two-client checkpoint is present under `/private/tmp/app2126-lan-630xzl4c`. Its host log records the LAN server and `APP2126Guest joined the game`; the host's local player file names the player `Player54777`. Those records establish that the test harness can create distinct local test names. They do not record distinct Microsoft account UUIDs or authenticated sessions, so they are not evidence of two owning accounts under managed Play.

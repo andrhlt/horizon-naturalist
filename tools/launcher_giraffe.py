@@ -67,10 +67,15 @@ def capture(version):
             command("gamemode survival @s")
             owner = field("@s", "UUID")
             command('summon naturalist:giraffe 8.5 100 9.0 {NoAI:1b,Tags:[adult]}')
-            variant = field(adult, "variant")
-            assert variant == '"minecraft:temperate"', ("summoned Giraffe variant", variant)
+            raw_variant = field(adult, "Variant")
+            try:
+                default_variant = json.loads(raw_variant) if raw_variant is not None else None
+            except json.JSONDecodeError:
+                default_variant = raw_variant
             click("apple", 3)
             results = {
+                "default_variant": default_variant,
+                "_raw_variant": raw_variant,
                 "default_adult_food_remaining": item_count(),
                 "adult_love": number(adult, "InLove") > 575,
                 "adult_tames_on_food": field(adult, "Owner") is not None,
@@ -101,10 +106,17 @@ def capture(version):
             click()
             after = position("@s")
             results["owner_mounts"] = math.isclose(after[1] - before[1], 3.24, abs_tol=0.06)
+            results["control_flag_mounted"] = "minecraft:saddle" in (field(adult, "equipment") or "")
             command(f"data merge entity {adult} {{NoAI:0b}}")
             call("hold", "w", 0.6)
             call("wait", 12)
             results["mounted_moves"] = math.dist(before, position(adult)) > 1.0
+            call("key", "shift", "down")
+            call("wait", 3)
+            call("key", "shift", "up")
+            call("wait", 3)
+            results["dismounted"] = call("status").get("riding") is None
+            results["control_flag_cleared"] = "minecraft:saddle" not in (field(adult, "equipment") or "")
             return results
         finally:
             if socket.exists():
@@ -123,5 +135,9 @@ if __name__ == "__main__":
     expected["adult_love"] = expected["adult_love"] == 600
     expected["baby_keeps_young_age"] = True
     expected["mounted_moves"] = True
-    differences = {key: [expected[key], value] for key, value in actual.items() if value != expected[key]}
+    expected["control_flag_mounted"] = True
+    expected["control_flag_cleared"] = True
+    expected["dismounted"] = True
+    differences = {key: [expected[key], value] for key, value in actual.items()
+                   if key != "_raw_variant" and value != expected[key]}
     assert not differences, differences
