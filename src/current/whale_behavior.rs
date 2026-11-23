@@ -15,72 +15,6 @@ pub(crate) const FOOD_ITEMS: [&str; 6] = [
     "naturalist:cooked_crab_meat",
 ];
 
-fn is_food(item: &str) -> bool {
-    FOOD_ITEMS.contains(&item)
-}
-
-fn injured(host: &dyn mod_api::Host, id: i32) -> Option<mod_api::LivingRef> {
-    let entity = host.entity(u32::try_from(id).ok()?)?;
-    let living = host.living(entity)?;
-    (living.health(host)? < living.max_health(host)?).then_some(living)
-}
-
-pub(crate) fn interact(
-    host: mod_api::HostSide<'_>,
-    event: &mut mod_api::EntityInteractEvent<'_>,
-) -> Option<mod_api::InteractionResult> {
-    let Some(stack) = event.stack else {
-        return None;
-    };
-    let item = stack.item().id(match &host {
-        mod_api::HostSide::Server(host) => &**host,
-        mod_api::HostSide::Client(host) => &**host,
-    });
-    if event.kind != "naturalist:whale" || !is_food(&item) {
-        return None;
-    }
-    match host {
-        // A client can't query remote mob health through this API. Claim the
-        // known Whale-food click locally; the server decides repair vs feed.
-        mod_api::HostSide::Client(_) => Some(mod_api::InteractionResult::Success),
-        mod_api::HostSide::Server(host) => {
-            let living = injured(host, event.entity)?;
-            let player = host.players().acting_player()?;
-            let slot = match event.hand {
-                mod_api::Hand::Main => player.selected_slot(host)? as u32,
-                mod_api::Hand::Off => 40,
-            };
-            let stack = player
-                .inventory_slots(host)?
-                .into_iter()
-                .find(|(candidate, _)| *candidate == slot)
-                .map(|(_, stack)| stack)?;
-            if !is_food(&stack.item().id(host)) || stack.count() == 0 {
-                return None;
-            }
-            let creative = player.game_mode(host) == Some(mod_api::GameMode::Creative);
-            if !creative {
-                let mut remaining = stack.clone();
-                let replacement = if stack.count() > 1 {
-                    remaining.set_count(stack.count() - 1).ok()?;
-                    Some(remaining)
-                } else {
-                    None
-                };
-                player.set_inventory_slot(host, slot, replacement).ok()?;
-            }
-            if living.heal(host, 4.0) {
-                Some(mod_api::InteractionResult::SuccessServer)
-            } else {
-                if !creative {
-                    let _ = player.set_inventory_slot(host, slot, Some(stack));
-                }
-                None
-            }
-        }
-    }
-}
-
 fn in_love(host: &mut dyn ServerHost, entity: mod_api::EntityRef) -> bool {
     entity
         .nbt(host)
@@ -147,8 +81,6 @@ mod tests {
         assert!(!super::FOOD_ITEMS.contains(&"minecraft:tropical_fish"));
         assert!(!super::FOOD_ITEMS.contains(&"minecraft:pufferfish"));
         assert!(!super::FOOD_ITEMS.contains(&"minecraft:beef"));
-        assert!(super::is_food("minecraft:cod"));
-        assert!(!super::is_food("minecraft:tropical_fish"));
     }
 
     #[test]

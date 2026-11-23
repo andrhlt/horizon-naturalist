@@ -16,6 +16,7 @@ mod bass_renderer;
 mod blobfish_behavior;
 mod isopod_behavior;
 mod jellyfish_behavior;
+mod ocean_feeding;
 mod whale_behavior;
 mod starfish_behavior;
 pub mod shark_behavior;
@@ -168,7 +169,7 @@ impl mod_api::Hooks for Naturalist {
         host: mod_api::HostSide<'_>,
         event: &mut mod_api::EntityInteractEvent<'_>,
     ) -> Option<mod_api::InteractionResult> {
-        whale_behavior::interact(host, event)
+        ocean_feeding::interact(host, event)
     }
 
     fn mob_spawn_placement_check(
