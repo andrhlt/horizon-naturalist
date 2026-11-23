@@ -415,6 +415,13 @@ fn metadata(
         kind.width = width;
         kind.height = height;
         kind.eye_height = eyes;
+        if name == "naturalist:zebra" {
+            // Keep Zebras in the native equine family while giving them a
+            // distinct breeding identity from Donkeys. Java Zebra.canMate
+            // accepts only another Zebra; sharing Species::Donkey lets the
+            // generic native mate selector produce an invalid Zebra×Donkey foal.
+            kind.species = horizon_client::mobs::Species::Mule;
+        }
         if let Some(row) = catalog.entity_row(name) {
             kind.take_attribute_row(Arc::new(row), catalog);
         }
