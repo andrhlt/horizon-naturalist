@@ -39,14 +39,16 @@ fn hippo_water_ok(water_at: bool, water_below: bool, waterlogged_below: bool) ->
     water_at || water_below || waterlogged_below
 }
 
-/// Naturalist's common ageable groups. The pinned finalize_spawn hook lends
-/// group data for this mob only; natural-spawn callers currently supply None
-/// for every candidate, so this cannot reproduce member-indexed pack rules.
-fn natural_age_group(kind: &str) -> Option<mod_api::AgeableGroup> {
-    const NEVER_BABY: &[&str] = &["naturalist:bird", "naturalist:butterfly"];
-    const ALWAYS_BABY: &[&str] = &[
-        "naturalist:bear", "naturalist:black_bear", "naturalist:rhino", "naturalist:whale",
-    ];
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum NaturalAgeRule {
+    Fixed { should_spawn_baby: bool, chance: f32 },
+    ElephantOrMammoth,
+    Lion,
+    Zebra,
+}
+
+fn natural_age_rule(kind: &str) -> Option<NaturalAgeRule> {
+    use NaturalAgeRule::{ElephantOrMammoth, Fixed, Lion, Zebra};
     const FIVE_PERCENT: &[&str] = &[
         "naturalist:alligator", "naturalist:ant", "naturalist:boar",
         "naturalist:capybara", "naturalist:caterpillar", "naturalist:crab",
@@ -57,28 +59,48 @@ fn natural_age_group(kind: &str) -> Option<mod_api::AgeableGroup> {
         "naturalist:mole", "naturalist:ostrich", "naturalist:rat", "naturalist:snail",
         "naturalist:snake", "naturalist:tiger", "naturalist:tortoise", "naturalist:turkey",
     ];
-    if NEVER_BABY.contains(&kind) {
-        Some(mod_api::AgeableGroup::new(false, 0.0))
-    } else if ALWAYS_BABY.contains(&kind) {
-        Some(mod_api::AgeableGroup::new(true, 1.0))
-    } else if FIVE_PERCENT.contains(&kind) {
-        Some(mod_api::AgeableGroup::new(true, 0.05))
-    } else {
-        None
+    match kind {
+        "naturalist:bird" | "naturalist:butterfly" => Some(Fixed { should_spawn_baby: false, chance: 0.0 }),
+        "naturalist:bear" | "naturalist:black_bear" | "naturalist:rhino" | "naturalist:whale" => Some(Fixed { should_spawn_baby: true, chance: 1.0 }),
+        "naturalist:elephant" | "naturalist:mammoth" => Some(ElephantOrMammoth),
+        "naturalist:lion" => Some(Lion),
+        "naturalist:zebra" => Some(Zebra),
+        _ if FIVE_PERCENT.contains(&kind) => Some(Fixed { should_spawn_baby: true, chance: 0.05 }),
+        _ => None,
     }
 }
 
-fn initialize_natural_spawn_group(kind: &str, reason: mod_api::SpawnReason, group: &mut Option<mod_api::SpawnGroup>) {
+fn initialize_natural_spawn_group(
+    kind: &str,
+    reason: mod_api::SpawnReason,
+    group: &mut Option<mod_api::SpawnGroup>,
+) {
     if reason != mod_api::SpawnReason::Natural {
         return;
     }
-    let Some(mut ageable) = natural_age_group(kind) else { return; };
-    if let Some(mod_api::SpawnGroup::Ageable(existing)) = group.as_ref() {
-        ageable.size = existing.size;
+    let Some(rule) = natural_age_rule(kind) else { return; };
+    if group.is_none() {
+        *group = Some(mod_api::SpawnGroup::Ageable(mod_api::AgeableGroup::new(false, 0.0)));
     }
-    // Keep the API's real group index. The frozen natural-spawn sites discard
-    // this output before the next member, so don't invent prior pack members.
-    *group = Some(mod_api::SpawnGroup::Ageable(ageable));
+    let Some(mod_api::SpawnGroup::Ageable(age)) = group.as_mut() else { return; };
+    match rule {
+        NaturalAgeRule::Fixed { should_spawn_baby, chance } => {
+            age.should_spawn_baby = should_spawn_baby;
+            age.baby_chance = chance;
+        }
+        NaturalAgeRule::ElephantOrMammoth => {
+            age.should_spawn_baby = age.size >= 2;
+            age.baby_chance = 1.0;
+        }
+        NaturalAgeRule::Lion => {
+            age.should_spawn_baby = true;
+            age.baby_chance = if age.size <= 1 { 0.05 } else { 0.75 };
+        }
+        NaturalAgeRule::Zebra => {
+            age.should_spawn_baby = true;
+            age.baby_chance = match age.size { 0 | 1 => 0.20, 2 => 0.30, _ => 0.15 };
+        }
+    }
 }
 
 fn scorpion_poison(host: &mut dyn mod_api::ServerHost, id: u32) -> Result<(), ()> {
@@ -791,42 +813,54 @@ impl mod_api::Hooks for Naturalist {
 
 #[cfg(test)]
 mod natural_spawn_group_tests {
-    use super::{initialize_natural_spawn_group, natural_age_group};
+    use super::initialize_natural_spawn_group;
     use mod_api::{AgeableGroup, SpawnGroup, SpawnReason};
 
-    fn age_group(size: i32, baby: bool, chance: f32) -> SpawnGroup {
-        let mut age = AgeableGroup::new(baby, chance);
-        age.size = size;
-        SpawnGroup::Ageable(age)
+    fn apply_member(kind: &str, group: &mut Option<SpawnGroup>) -> (i32, bool, f32) {
+        initialize_natural_spawn_group(kind, SpawnReason::Natural, group);
+        let Some(SpawnGroup::Ageable(age)) = group.as_mut() else { panic!("{kind} lacks age group"); };
+        let result = (age.size, age.should_spawn_baby, age.baby_chance);
+        // Pinned AgeableMob.finalizeSpawn increments the group after its baby roll.
+        age.size += 1;
+        result
     }
 
     #[test]
-    fn finalize_hook_maps_supported_natural_age_groups() {
-        for (kind, baby, chance) in [
-            ("naturalist:bird", false, 0.0),
-            ("naturalist:bear", true, 1.0),
-            ("naturalist:deer", true, 0.05),
+    fn java_special_group_transitions_follow_the_carried_member_index() {
+        for (kind, expected) in [
+            ("naturalist:elephant", [(0, false, 1.0), (1, false, 1.0), (2, true, 1.0), (3, true, 1.0)]),
+            ("naturalist:mammoth", [(0, false, 1.0), (1, false, 1.0), (2, true, 1.0), (3, true, 1.0)]),
+            ("naturalist:lion", [(0, true, 0.05), (1, true, 0.05), (2, true, 0.75), (3, true, 0.75)]),
+            ("naturalist:zebra", [(0, true, 0.20), (1, true, 0.20), (2, true, 0.30), (3, true, 0.15)]),
         ] {
             let mut group = None;
-            initialize_natural_spawn_group(kind, SpawnReason::Natural, &mut group);
-            assert_eq!(group, Some(age_group(0, baby, chance)), "{kind}");
+            let actual = std::array::from_fn(|_| apply_member(kind, &mut group));
+            assert_eq!(actual, expected, "{kind}");
         }
-        assert!(natural_age_group("naturalist:elephant").is_none());
     }
 
     #[test]
-    fn non_natural_finalization_preserves_group() {
-        let mut group = Some(SpawnGroup::Ageable(AgeableGroup::new(true, 0.2)));
+    fn common_groups_keep_their_java_chance_and_birds_never_draw_a_baby_roll() {
+        let mut group = None;
+        assert_eq!(apply_member("naturalist:deer", &mut group), (0, true, 0.05));
+        assert_eq!(apply_member("naturalist:deer", &mut group), (1, true, 0.05));
+        let mut bird = None;
+        for expected_size in 0..4 {
+            assert_eq!(apply_member("naturalist:bird", &mut bird), (expected_size, false, 0.0));
+        }
+        let mut bear = None;
+        assert_eq!(apply_member("naturalist:bear", &mut bear), (0, true, 1.0));
+        assert_eq!(apply_member("naturalist:bear", &mut bear), (1, true, 1.0));
+    }
+
+    #[test]
+    fn mapping_only_changes_natural_spawn_groups() {
+        let mut age = AgeableGroup::new(true, 0.4);
+        age.size = 3;
+        let mut group = Some(SpawnGroup::Ageable(age));
         let original = group.clone();
         initialize_natural_spawn_group("naturalist:deer", SpawnReason::SpawnItemUse, &mut group);
         assert_eq!(group, original);
-    }
-
-    #[test]
-    fn an_existing_age_group_keeps_its_member_index() {
-        let mut group = Some(age_group(4, true, 0.2));
-        initialize_natural_spawn_group("naturalist:deer", SpawnReason::Natural, &mut group);
-        assert_eq!(group, Some(age_group(4, true, 0.05)));
     }
 }
 
