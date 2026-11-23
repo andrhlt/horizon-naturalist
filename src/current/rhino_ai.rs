@@ -17,6 +17,59 @@ pub struct LargeCatPreyTarget {
     state: horizon_client::mobs::goals::TargetState,
 }
 
+#[derive(Clone, Debug, Default)]
+struct TigerStalk {
+    time_to_recalc_path: i32,
+}
+
+// Pinned Tiger.TigerStalkGoal: untamed adults start above 12 blocks, continue
+// above 6, and refresh a 0.7-speed path every adjusted 10 ticks.
+impl Goal for TigerStalk {
+    fn box_clone(&self) -> Box<dyn Goal> { Box::new(self.clone()) }
+    fn name(&self) -> &'static str { "NaturalistTigerStalk" }
+    fn flags(&self) -> u8 { MOVE | LOOK }
+
+    fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        !mob.is_baby()
+            && !mob.extra.tame
+            && mob.pose != mod_api::Pose::Sleeping
+            && mob.target_info(cx.w).is_some_and(|target| {
+                target.alive && mob.distance_sqr(target.position) > 144.0
+            })
+    }
+
+    fn can_continue(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        mob.pose != mod_api::Pose::Sleeping
+            && mob.target_info(cx.w).is_some_and(|target| {
+                target.alive && mob.distance_sqr(target.position) > 36.0
+            })
+    }
+
+    fn start(&mut self, mob: &mut Mob, _: &mut Cx) {
+        mob.pose = mod_api::Pose::Crouching;
+        self.time_to_recalc_path = 0;
+    }
+
+    fn stop(&mut self, mob: &mut Mob, _: &mut Cx) {
+        mob.pose = mod_api::Pose::Standing;
+        mob.nav_stop();
+    }
+
+    fn tick(&mut self, mob: &mut Mob, cx: &mut Cx) {
+        let Some(target) = mob.target_info(cx.w) else { return; };
+        mob.look_at_speed(
+            [target.position.x, target.eye_y, target.position.z],
+            10.0,
+            mob.kind.max_head_x_rot,
+        );
+        self.time_to_recalc_path -= 1;
+        if self.time_to_recalc_path <= 0 {
+            self.time_to_recalc_path = horizon_client::mobs::goals::reduced(10);
+            mob.nav_move_to_entity(cx.w, [target.position.x, target.position.y, target.position.z], 0, 0.7);
+        }
+    }
+}
+
 impl LargeCatPreyTarget {
     pub fn new(prey: HashSet<String>) -> Self {
         Self { prey, found: None, state: Default::default() }
@@ -79,7 +132,12 @@ pub fn install_large_cat(game: &mut super::Game<'_>, entity: u32, kind: &str) {
     if mob.ai.targets.has("NaturalistLargeCatPreyTarget") { return; }
     mob.ai.targets.add(1, LargeCatPreyTarget::new(prey));
     mob.ai.targets.add(2, horizon_client::mobs::goals::HurtByTarget::new());
-    mob.ai.goals.add(1, horizon_client::mobs::goals::MeleeAttack::new(1.2, true));
+    if kind == "naturalist:tiger" {
+        mob.ai.goals.add(1, TigerStalk);
+        mob.ai.goals.add(2, horizon_client::mobs::goals::MeleeAttack::new(1.2, true));
+    } else {
+        mob.ai.goals.add(1, horizon_client::mobs::goals::MeleeAttack::new(1.2, true));
+    }
 }
 
 impl Goal for RhinoCharge {
