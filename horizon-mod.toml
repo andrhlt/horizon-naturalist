@@ -800,6 +800,12 @@ file = "crates/horizon-client/src/game.rs"
 name = "naturalist_rat_follow"
 source = "src/current/rat_follow.rs"
 
+[[native.module]]
+id = "rat-breed-goal"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_rat_breed_goal"
+source = "src/current/rat_breed_goal.rs"
+
 [[native.mixin]]
 id = "rat-follow-tick"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
