@@ -36,8 +36,10 @@ impl Goal for Cocoon {
         state.properties.insert("facing".into(), facing.into());
         let Some(state) = cx.w.registry.id(&state) else { return; };
         cx.events.push(MobEvent::SetBlock { pos: [x, y, z], state });
-        m.health = 0.0;
-        cx.events.push(MobEvent::RemoveKilled { target: m.id });
+        // Caterpillar.discard() in CocoonGoal is a silent removal: it must not
+        // run the killed/death path (drops, XP, or death hooks). The Mob is
+        // the live row passed to this goal, so mark it removed directly.
+        m.removed = true;
     }
 }
 
