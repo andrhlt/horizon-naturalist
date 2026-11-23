@@ -89,6 +89,7 @@ def capture(version, reference, jar=None):
             step(16)
             adult_makes_cocoon = observed(shell)
             caterpillar_discarded = not observed("entity @e[tag=fixture_adult]")
+            cmd("kill @e[type=naturalist:butterfly,distance=..128]")
             cmd("setblock 9 100 8 naturalist:chrysalis[age=3,facing=east]")
             cmd("gamerule minecraft:random_tick_speed 4096")
             for _ in range(8):

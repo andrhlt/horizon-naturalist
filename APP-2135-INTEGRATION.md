@@ -1,13 +1,14 @@
 # APP-2135 integration checkpoint
 
-Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `868c045`.
+Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `878ddfc` plus fixture isolation updates.
 The current source includes the refreshed handoff heads for ocean `bb021967`, freshwater/Alligator
 `7f30ea2`, large animals `8d9f0c5`, insects `b042209`, Duck `fb6298a`, and reptiles/Tortoise
 `8c4d833`, shared-spawn source `29adc01`, Crab `356508a`, Ant `107c67e`, and
 Hedgehog `845dfa5`, with integration fixes in `ab19708`, `b8c6463`, `422a264`,
 `e66b34c`, `d22af89`, Shark `e07f553`, Starfish `83c181a`, Jellyfish `bb81363`,
 and corrected Giraffe/insect fixtures `fa0d59e`/`a8077cf`. Giraffe production fix `2749649`
-is integrated. The latest candidate is `native-0a875da-5a8e87e09f34`.
+and Cocoon discard fix `bcfcd2f` are integrated. The latest source-matched candidate is
+`native-0a875da-e5d2daba9883`.
 
 Pinned runtime inputs:
 
@@ -34,7 +35,7 @@ launchers, passing `--offscreen`; no accountless-client flag or auth bypass is p
 | Freshwater/coastal | Alligator breeding/laying, Capybara persistence/use, Hippo/Piranha/Catfish/Clam/Bass paths | persistence passed: all six UUIDs and saved fields matched after reopen; Capybara owner interaction passed; six offscreen frames passed | headless Alligator lay/stomp and aquatic LAN; cleanup emitted a non-fatal temporary-world “No world” message |
 | Shared spawning | 36 age-group policies and serial carry wiring | native build; Rust/source checks | controlled loaded-chunk natural spawn and matching artifact runtime |
 | Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | Giraffe now passes: `Variant="naturalist:giraffe"`, owner mount, mounted control, mounted movement, dismount, and control clear | Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield remains disabled because its injected module uses unsupported cohort fields |
-| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | corrected fixture proves exactly one Butterfly after hatch and duplicate window; adult Age is `0`, entity persists, but NoAI is `1b` again after 16 ticks and no cocoon is placed | fix adult lifecycle/NoAI reversion, then rerun Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
+| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | source-matched fixture passes juvenile refusal, adult cocooning, silent Caterpillar discard, facing, Chrysalis removal, and one Butterfly after the post-window; two breeding parents still contaminate the first snapshot despite cleanup | isolate parent entities in fixture, then rerun Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
 | Duck | renderer/appearance, bucket/follow/breed/variant source | native build | headless follow/whistle/parent/save-reopen and offscreen capture |
 | Reptiles | Komodo/Lizard/Mole/Tortoise source, Tortoise fall-on hook | native build; Rust checks | headless interactions/egg landing/save-reopen; Tortoise `stepOn` parity is unsupported by the pinned BlockPart API |
 | Crab/Ant/Rat/Hedgehog | Crab/Ant/Hedgehog focused handoffs consumed; Rat remains from prior source | Ant carried-food save/reopen passes: carrier, apple/count, offset, and UUID match; Crab fixture reaches gameplay but its `naturalist_fixture_crab` probe is not registered; Hedgehog reaches gameplay but `naturalist:hedgehog` is absent from staged inventory | add/use supported Crab probe and verify Hedgehog item/resource-pack path; run Ant/Rat host/guest checks |
@@ -49,6 +50,12 @@ The latest integrated runtime attempt also exposed two compile defects in the fo
 (missing scoped `DamageLevel` and an explicit Ant yaw cast); both are fixed and the fresh native
 build passes. The Crab/Hedgehog fixture failures are currently harness/registration observations,
 not counted as gameplay passes or definitive species defects.
+
+Source-matched Cocoon result on `native-0a875da-e5d2daba9883`: `baby_makes_cocoon=false`,
+`adult_makes_cocoon=true`, `caterpillar_discarded=true`, `chrysalis_faces_log=true`,
+`chrysalis_removed=true`, and `butterfly_count_after_window=1`. The first snapshot counted
+three Butterflies because two breeding parents remained; this is fixture cleanup contamination,
+not a duplicate hatch result.
 
 The latest persistence rerun passed on `native-0a875da-2c623e51691d`: all six freshwater UUIDs
 and saved fields matched after reopen, and Capybara owner interaction succeeded. Temporary-world
