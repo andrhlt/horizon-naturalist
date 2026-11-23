@@ -452,7 +452,7 @@
       5.4,
       4.59
     ],
-    "template": "minecraft:cow"
+    "template": "minecraft:horse"
   },
   "naturalist:great_white_shark": {
     "attributes": {
