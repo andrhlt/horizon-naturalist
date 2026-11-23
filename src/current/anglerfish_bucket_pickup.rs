@@ -18,17 +18,27 @@ fn anglerfish_bucket_pickup(
         return ControlFlow::Continue(());
     };
     let mob = &game.mobs[index];
-    if mob.kind.id != "naturalist:anglerfish" || !mob.alive() {
+    let (bucket, default_variant) = match mob.kind.id.as_str() {
+        "naturalist:anglerfish" => ("naturalist:anglerfish_bucket", "naturalist:red"),
+        "naturalist:blobfish" => ("naturalist:blobfish_bucket", "naturalist:blobfish"),
+        "naturalist:giant_isopod" => ("naturalist:giant_isopod_bucket", "naturalist:brown"),
+        "naturalist:jellyfish" => ("naturalist:jellyfish_bucket", "naturalist:white"),
+        "naturalist:ray" => ("naturalist:ray_bucket", "naturalist:eagle_ray"),
+        "naturalist:starfish" => ("naturalist:starfish_bucket", "naturalist:orange"),
+        _ => return ControlFlow::Continue(()),
+    };
+    if !mob.alive() {
         return ControlFlow::Continue(());
     }
     let id = mob.id;
+    let kind = mob.kind.id.clone();
     let variant = game
         .persist
         .raw
         .get(&id)
         .and_then(|raw| raw.get("Variant"))
         .cloned()
-        .unwrap_or_else(|| Tag::String("naturalist:red".into()));
+        .unwrap_or_else(|| Tag::String(default_variant.into()));
     let mut data = entity_nbt::bucket_components(mob);
     let mut entity_data = entity_nbt::bucket_data(mob);
     if let Tag::Compound(fields) = &mut entity_data {
@@ -39,7 +49,7 @@ fn anglerfish_bucket_pickup(
         "minecraft:custom_data",
         Some(Tag::compound([("Variant", variant)])),
     );
-    let mut filled = ItemStack::new("naturalist:anglerfish_bucket", 1);
+    let mut filled = ItemStack::new(bucket, 1);
     filled.extra = Some(Box::new(data));
     let target_entity = game.mob_entity(mob);
     if let Some(entity) = game.entity(id) {
@@ -55,7 +65,7 @@ fn anglerfish_bucket_pickup(
     game.mobs[index].removed = true;
     game.filled_result(filled);
     if let (Some(player), Some(name)) = (game.lan_acting_uuid, game.lan_acting_name.clone()) {
-        game.native_player_bucket_entity(player, &name, id as i32, "naturalist:anglerfish");
+        game.native_player_bucket_entity(player, &name, id as i32, &kind);
     }
     game.swing_arm();
     ControlFlow::Break(Ok(true))

@@ -56,7 +56,8 @@ The shared headless entity resolver now filters by mob kind, test tag, saved var
 
 ### Player bucket conservation implementation (compiled, runtime pending)
 
-The server-side `AnglerfishBucket::empty_contents` now handles player use through Horizon's transactional item-use result. It validates that the target is water or air, places water when needed, creates the fish with `SpawnReason::Bucket`, restores the saved `Variant`, and returns `Some(true)` for Horizon to replace the filled bucket with an empty bucket. Dispenser use continues through its existing handler. This source compiled with pinned Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` as `native-0a875da-5025c0b61d80`; Mac `libnaturalist.dylib` SHA-256 is `7a563c600f68f89b96a60cf2ebe3d8b2d5babd8b4639a36703e84af12a154be5`. No gameplay run is recorded for this candidate yet, so fish creation, one-filled-to-one-empty conservation, and variant retention remain pending integrated headless verification. Baseline mobile-aquatic goals and additional Blobfish/Anglerfish/Ray behavior have since been added; they are not part of this earlier build candidate.
+
+The registered native player bucket-pickup helper now handles water-bucket capture for Anglerfish, Blobfish, Giant Isopod, Jellyfish, Ray, and Starfish. It builds the species bucket with entity bucket data and both `bucket_entity_data` and `custom_data` Variant values, removes the live mob, and returns the filled bucket through the existing transactional player result. The default variants are explicit for entities without a saved value. This source change has only local Rust unit-test coverage; native compilation, successful capture, item conservation, and round-trip variants await APP-2135's combined matching candidate.
 
 
 ### Blobfish pressure behavior increment (local tests pass; runtime pending)
