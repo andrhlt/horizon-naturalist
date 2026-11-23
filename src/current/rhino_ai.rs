@@ -18,6 +18,57 @@ pub struct LargeCatPreyTarget {
 }
 
 #[derive(Clone, Debug, Default)]
+struct LargeCatFollowOwner {
+    recalc: i32,
+}
+
+impl LargeCatFollowOwner {
+    fn owner(mob: &Mob, cx: &Cx) -> Option<(Vec3, f64)> {
+        let (uuid, _) = cx.w.player_identity?;
+        if !mob.extra.tame || !horizon_client::mobs::tame::owned_by(mob.extra.owner, uuid) {
+            return None;
+        }
+        let player = cx.w.player.as_ref()?;
+        (horizon_client::mobs::tame::owned_by(mob.extra.owner, player.uuid)
+            && player.alive && !player.spectator)
+            .then_some((player.position, player.eye[1]))
+    }
+}
+
+// Lion/Tiger Java PetFollowOwnerGoal: only pets ordered to follow move to their
+// owner, starting at 7 blocks, stopping at 2, and refreshing a 1.3-speed path.
+impl Goal for LargeCatFollowOwner {
+    fn box_clone(&self) -> Box<dyn Goal> { Box::new(self.clone()) }
+    fn name(&self) -> &'static str { "NaturalistLargeCatFollowOwner" }
+    fn flags(&self) -> u8 { MOVE | LOOK }
+
+    fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        mob.ints[4] != 0 && !mob.extra.sitting
+            && Self::owner(mob, cx).is_some_and(|(position, _)| mob.distance_sqr(position) >= 49.0)
+    }
+
+    fn can_continue(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        mob.ints[4] != 0 && !mob.extra.sitting && !mob.ai.nav.is_done()
+            && Self::owner(mob, cx).is_some_and(|(position, _)| mob.distance_sqr(position) > 4.0)
+    }
+
+    fn start(&mut self, _: &mut Mob, _: &mut Cx) { self.recalc = 0; }
+    fn stop(&mut self, mob: &mut Mob, _: &mut Cx) { mob.nav_stop(); }
+
+    fn tick(&mut self, mob: &mut Mob, cx: &mut Cx) {
+        let Some((position, eye_y)) = Self::owner(mob, cx) else { return; };
+        if mob.distance_sqr(position) < 144.0 {
+            mob.look_at_speed([position.x, eye_y, position.z], 10.0, mob.max_head_x_rot());
+        }
+        self.recalc -= 1;
+        if self.recalc <= 0 {
+            self.recalc = horizon_client::mobs::goals::reduced(10);
+            mob.nav_move_to_entity(cx.w, [position.x, position.y, position.z], 0, 1.3);
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default)]
 struct TigerStalk {
     time_to_recalc_path: i32,
 }
@@ -128,8 +179,14 @@ pub fn install_large_cat(game: &mut super::Game<'_>, entity: u32, kind: &str) {
         .and_then(|tables| tables.pack_tags.get("entity_type"))
         .unwrap_or(&game.res.mob_data().entity_tags);
     let prey = tags.get(tag).cloned().unwrap_or_default();
+    let following = game.persist.raw.get(&entity)
+        .and_then(|raw| raw.get(&"FollowingOwner".into()))
+        .and_then(horizon_world::datafix::dynamic::as_number)
+        .is_none_or(|value| value.int_value() != 0);
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) else { return; };
+    mob.ints[4] = i32::from(following);
     if mob.ai.targets.has("NaturalistLargeCatPreyTarget") { return; }
+    mob.ai.goals.add(5, LargeCatFollowOwner::default());
     mob.ai.targets.add(1, LargeCatPreyTarget::new(prey));
     mob.ai.targets.add(2, horizon_client::mobs::goals::HurtByTarget::new());
     if kind == "naturalist:tiger" {
