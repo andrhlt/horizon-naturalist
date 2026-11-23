@@ -22,6 +22,7 @@ mod bass_renderer;
 mod blobfish_behavior;
 mod isopod_behavior;
 mod jellyfish_behavior;
+pub mod whale_behavior;
 pub mod shark_behavior;
 mod starfish_behavior;
 mod ocean_bucket_item;
@@ -835,6 +836,9 @@ impl mod_api::Hooks for Naturalist {
         if event.kind == "naturalist:tortoise" {
             self.tortoise_babies.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
                 .remove(&event.entity);
+        }
+        if event.kind == "naturalist:whale" {
+            whale_behavior::update_breeding_goal(host, event.entity);
         }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);

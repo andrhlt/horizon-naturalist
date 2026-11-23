@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import shutil
 import sys
 import tempfile
 import time
@@ -14,6 +15,11 @@ reference = json.loads(Path(sys.argv[2]).read_text())
 with tempfile.TemporaryDirectory(prefix="nat-starfish-", ignore_cleanup_errors=True) as work:
     home = Path(work)
     socket = home / "fish.sock"
+    jar = Path.home() / "Library/Application Support/horizon/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar"
+    if jar.is_file():
+        (home / "jars").mkdir()
+        shutil.copyfile(jar, home / "jars" / jar.name)
+        (home / "horizon-mods.txt").write_text("mod.naturalist:true\n")
 
     def ctl(*args):
         result = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
@@ -56,8 +62,10 @@ with tempfile.TemporaryDirectory(prefix="nat-starfish-", ignore_cleanup_errors=T
             else:
                 raise RuntimeError("Timed out waiting for Horizon Play to load the fixture world")
         else:
+            manifest = json.loads((version / "native-mods.json").read_text())
+            resources = Path.home() / "Library/Application Support/horizon-launcher/versions" / manifest["base"] / ".local/horizon-client/26.3"
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
+                resources, "--home", home, "--game-dir", home,
                 "--world", "Starfish Multiface", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("forceload add 0 0 47 47")

@@ -6,7 +6,7 @@ const BREED_RANGE: f64 = 8.0;
 fn pair_can_breed(current_wet: bool, current_loved: bool, mate_is_wet_and_loved: bool) -> bool {
     current_wet && current_loved && mate_is_wet_and_loved
 }
-pub(crate) const FOOD_ITEMS: [&str; 6] = [
+pub const FOOD_ITEMS: [&str; 6] = [
     "minecraft:cod",
     "minecraft:cooked_cod",
     "minecraft:salmon",

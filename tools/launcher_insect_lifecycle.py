@@ -93,9 +93,6 @@ def capture(version, reference, jar=None):
             step(2)
             empty_butterfly_cohort_before_hatch = ctl("entities", 48, "naturalist:butterfly")["entities"]
             assert not empty_butterfly_cohort_before_hatch, empty_butterfly_cohort_before_hatch
-            step(2)  # let killed breeding parents leave the entity query
-            empty_butterfly_cohort_before_hatch = ctl("entities", 48, "naturalist:butterfly")["entities"]
-            assert not empty_butterfly_cohort_before_hatch, empty_butterfly_cohort_before_hatch
             cmd("setblock 9 100 8 naturalist:chrysalis[age=3,facing=east]")
             cmd("gamerule minecraft:random_tick_speed 4096")
             for _ in range(8):
