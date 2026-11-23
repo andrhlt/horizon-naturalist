@@ -146,3 +146,17 @@ The host opens its test world to LAN; then the guest control socket connects to 
 ## Remaining coverage
 
 The unverified cases are listed under “Independent species behavior check status.” Authenticated host/guest LAN remains open pending a second signed-in account that owns Minecraft: Java Edition.
+
+## Pod B source-matched candidate — launch eligibility
+
+Pod B built `native-0a875da-2cb7d9690c66` from source snapshot `f21814f7a488eb0a8df8ab0bc93377f39ea068b4` (source-tree SHA-256 `ba4821322f395cbddc382db8a8fcfc99f6a8a2476cb0d06177a06b7899a0d892`), Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`, MC 26.3, Rust 1.99.1. Its manifest uses base `nightly-2026-11-20-0a875da`; `libnaturalist.dylib` SHA-256 is `c00477439be3ed852ab95710c6170c2481fd56703b97ecb9379d5cc2de01ab74`. This is the Pod B integrated package, including the APP-2131 compatibility fixes through Zebra installer commit `1d2cc9d` (represented by the equivalent source snapshot commit `f21814f`).
+
+The managed headless `launcher_rhino.py` launch against this candidate did not reach the world. Launcher version is 0.2.82. Exact command argument vector (with the recorded temporary socket path):
+
+```text
+["/Applications/Horizon.app/Contents/MacOS/horizon-launcher", "play", "--instance", "app-2131-verify", "--version", "native-0a875da-2cb7d9690c66", "--world", "Naturalist Rhino Fixture d50e73ae", "--json", "--creative", "--arg", "--headless", "--arg", "--control", "--arg", "--control-socket", "--arg", "/private/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/nat-rhino-qsmobh0i/rhino.sock", "--arg", "--resources", "--arg", "/private/tmp/pod-b-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3", "--arg", "--test-terrain", "--arg", "--render-distance", "--arg", "4"]
+```
+
+It exited 1 with `Sign in with a Microsoft account that owns Minecraft: Java Edition to play`. Setting `HORIZON_LAUNCHER_DEVELOPER_OFFLINE=1` does not make a nightly-based descendant eligible: the pinned launcher CLI permits that mode only for an installed developer-provenance base and blocks LAN hosting in that mode. I also tried the documented APP-2134 offline `horizon-ctl launch` route with the candidate's matching prepared resources; the lease manager refused with `this managed installation has unregistered cache directories; use Horizon Launcher Play from the same launcher data directory with the intended instance and installed version`. No direct game binary launch or lease/auth bypass was used.
+
+This is a launch-eligibility result, not a species gameplay result. Next action: Pod B must prepare the same source snapshot through managed `native-build` against installed developer base `developer-e05268bea02f4384b113d9b9b02f0ce6310883561ccc41fea947e097148ade16`, then publish its exact candidate/resources manifest for the headless species checks. Rhino charge/stun, Lion/Tiger gameplay, Zebra breeding/jump, save/reopen and authenticated LAN remain unverified on the Pod B source-matched candidate.
