@@ -27,6 +27,7 @@ fn hippo_water_ok(water_at: bool, water_below: bool, waterlogged_below: bool) ->
     water_at || water_below || waterlogged_below
 }
 mod net;
+mod rat_cargo_drops;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
 };
@@ -423,6 +424,15 @@ impl mod_api::Hooks for Naturalist {
         self.deer.clear();
         self.bass.clear();
         self.duck.clear();
+    }
+
+    fn living_drops(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::LivingDropsEvent<'_>,
+    ) -> mod_api::Flow {
+        rat_cargo_drops::drops(host, event);
+        mod_api::Flow::Continue
     }
 }
 
