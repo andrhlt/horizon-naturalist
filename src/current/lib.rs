@@ -18,6 +18,7 @@ mod bass_renderer;
 mod blobfish_behavior;
 mod isopod_behavior;
 mod starfish_behavior;
+pub mod shark_behavior;
 mod ocean_renderer;
 mod ocean_bucket_item;
 mod ocean_placements;
@@ -470,6 +471,9 @@ impl mod_api::Hooks for Naturalist {
                     }
                 }
             }
+        }
+        if event.kind == "naturalist:great_white_shark" {
+            shark_behavior::update_target_gate(host, event.entity);
         }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
