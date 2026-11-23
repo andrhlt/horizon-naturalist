@@ -32,13 +32,6 @@ def capture(version, reference, jar=None):
             return any("fixture_condition_true" in row for row in
                        cmd(f"execute if {predicate} run say fixture_condition_true"))
 
-        def raw(target, key):
-            marker = "following entity data: "
-            return next((row.split(marker, 1)[1] for row in cmd(f"data get entity {target} {key}") if marker in row), None)
-
-        def block_state(x, y, z):
-            return cmd(f"data get block {x} {y} {z}")
-
         def step(ticks):
             cmd(f"tick step {ticks}")
             ctl("wait", ticks + 2)
@@ -57,7 +50,6 @@ def capture(version, reference, jar=None):
                 "--render-distance", 4, "--wait")
             cmd("gamerule minecraft:spawn_mobs false")
             cmd("gamerule minecraft:do_mob_spawning false")
-            cmd("gamerule minecraft:do_mob_spawning false")
             cmd("gamerule minecraft:random_tick_speed 0")
             cmd("tp @s 8.5 110 8.5")
             ctl("wait", 20)
@@ -68,32 +60,28 @@ def capture(version, reference, jar=None):
             cmd("fill 0 99 0 15 99 15 minecraft:stone")
             cmd("fill 0 100 0 15 107 15 minecraft:air")
             shell = "block 9 100 8 naturalist:chrysalis[age=0,facing=east]"
-            # Mirror InsectProbe: add the live entity, then call AgeableMob.setAge
-            # before the frozen world advances any AI ticks.
-            summon("naturalist:caterpillar 9.5 100 8.5 {NoGravity:1b,Tags:[fixture_baby]}")
-            cmd("data merge entity @e[tag=fixture_baby] {Age:-24000}")
             cmd("setblock 10 100 8 minecraft:oak_log")
             cmd("setblock 10 99 8 minecraft:oak_log")
             assert observed("block 10 100 8 minecraft:oak_log")
             assert observed("block 10 99 8 minecraft:oak_log")
+            # Caterpillar is a mod-added AgeableMob. The pinned engine's generic
+            # entity NBT Age merge only deserializes age for vanilla Species;
+            # create a real offspring so its internal age is set by the normal
+            # Butterfly breeding path instead of writing an ineffective tag.
+            summon("naturalist:butterfly 8.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
+            summon("naturalist:butterfly 9.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
+            step(100)
+            cmd("tag @e[type=naturalist:caterpillar,x=9,y=100,z=8,distance=..4,limit=1] add fixture_baby")
+            assert observed("entity @e[tag=fixture_baby]")
             step(16)
             baby_makes_cocoon = observed(shell)
-            baby_present = observed("entity @e[tag=fixture_baby]")
-            print("Baby cocoon diagnostics:", json.dumps({
-                "Age": raw("@e[tag=fixture_baby,limit=1]", "Age"),
-                "NoAI": raw("@e[tag=fixture_baby,limit=1]", "NoAI"),
-                "entity_present": baby_present,
-                "blocks": {
-                    "9,100,8": block_state(9, 100, 8),
-                    "10,100,8": block_state(10, 100, 8),
-                    "10,99,8": block_state(10, 99, 8),
-                },
-            }), flush=True)
+            assert observed("entity @e[tag=fixture_baby]")
+            cmd("kill @e[tag=fixture_parent]")
             cmd("kill @e[tag=fixture_baby]")
+            cmd("setblock 9 100 8 minecraft:air")
             cmd("setblock 10 100 8 minecraft:air")
             cmd("setblock 10 99 8 minecraft:air")
             summon("naturalist:caterpillar 9.5 100 8.5 {NoGravity:1b,Tags:[fixture_adult]}")
-            cmd("data merge entity @e[tag=fixture_adult] {Age:0}")
             cmd("setblock 10 100 8 minecraft:oak_log")
             cmd("setblock 10 99 8 minecraft:oak_log")
             assert observed("block 10 100 8 minecraft:oak_log")
@@ -101,16 +89,6 @@ def capture(version, reference, jar=None):
             step(16)
             adult_makes_cocoon = observed(shell)
             caterpillar_discarded = not observed("entity @e[tag=fixture_adult]")
-            print("Adult cocoon diagnostics:", json.dumps({
-                "Age": raw("@e[tag=fixture_adult,limit=1]", "Age"),
-                "NoAI": raw("@e[tag=fixture_adult,limit=1]", "NoAI"),
-                "entity_present": not caterpillar_discarded,
-                "blocks": {
-                    "9,100,8": block_state(9, 100, 8),
-                    "10,100,8": block_state(10, 100, 8),
-                    "10,99,8": block_state(10, 99, 8),
-                },
-            }), flush=True)
             cmd("setblock 9 100 8 naturalist:chrysalis[age=3,facing=east]")
             cmd("gamerule minecraft:random_tick_speed 4096")
             for _ in range(8):
@@ -130,7 +108,7 @@ def capture(version, reference, jar=None):
             print("Butterflies after duplicate window:", json.dumps(
                 [{"id": entity.get("id"), "pos": entity.get("pos")} for entity in after_hatch_window]
             ), flush=True)
-            cmd("kill @e[type=naturalist:butterfly,distance=..128]")
+            cmd("kill @e[type=naturalist:butterfly]")
             cmd("gamerule minecraft:random_tick_speed 0")
 
             cmd("setblock 4 99 4 minecraft:dirt")
