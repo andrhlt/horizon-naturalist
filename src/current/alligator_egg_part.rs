@@ -1,18 +1,23 @@
 use mod_api::{
-    AttachmentType, BlockPart, Compound, FallOnEvent, Flow, Holder, LandingWrite, LevelRandomHost,
-    RandomSource, RandomTickEvent, Tag,
+    BlockPart, Compound, FallOnEvent, Flow, LandingWrite, LevelRandomHost, RandomSource,
+    RandomTickEvent, Tag,
 };
+use std::sync::{LazyLock, Mutex};
 
 /// Hatchlings waiting for the server tick after the egg block is removed.
-/// Each row is x, y, z and the horizontal offset in hundredths of a block.
-static PENDING_HATCHLINGS: AttachmentType<Vec<[i32; 4]>> = AttachmentType {
-    namespace: "naturalist",
-    name: "pending_alligator_hatchlings",
-    default: Vec::new,
-    codec: None,
-    copy_on_death: false,
-    sync: false,
-};
+/// Keep the dimension from the random-tick hook: Java creates the babies in
+/// the same ServerLevel that owned the egg.
+#[derive(Clone, Copy)]
+struct PendingHatchling {
+    dimension: &'static str,
+    x: i32,
+    y: i32,
+    z: i32,
+    offset: i32,
+}
+
+static PENDING_HATCHLINGS: LazyLock<Mutex<Vec<PendingHatchling>>> =
+    LazyLock::new(|| Mutex::new(Vec::new()));
 
 pub struct AlligatorEggPart;
 
@@ -81,13 +86,18 @@ impl BlockPart for AlligatorEggPart {
             return Flow::Cancel;
         }
 
-        let mut pending = PENDING_HATCHLINGS
-            .get(level, Holder::Level)
-            .unwrap_or_default();
+        let Ok(mut pending) = PENDING_HATCHLINGS.lock() else {
+            return Flow::Continue;
+        };
         for index in 0..eggs {
-            pending.push([pos[0], pos[1], pos[2], 30 + 20 * index]);
+            pending.push(PendingHatchling {
+                dimension: event.dimension.key().id(),
+                x: pos[0],
+                y: pos[1],
+                z: pos[2],
+                offset: 30 + 20 * index,
+            });
         }
-        let _ = PENDING_HATCHLINGS.set(level, Holder::Level, pending);
         let _ = level.remove_block(pos, false);
         Flow::Cancel
     }
@@ -99,27 +109,23 @@ pub fn register(registrar: &mut dyn mod_api::Registrar) {
 }
 
 pub fn hatch_tick(host: &mut dyn mod_api::ServerHost) {
-    let Ok(mut pending) = PENDING_HATCHLINGS.get(&mut *host, Holder::Level) else {
+    let Ok(mut pending) = PENDING_HATCHLINGS.lock() else {
         return;
     };
     let Some(row) = pending.first().copied() else {
         return;
     };
-    let Some(level) = host.level("minecraft:overworld") else {
-        return;
-    };
     let mut nbt = Compound::new();
     nbt.insert("Age".into(), Tag::Int(-24_000));
     let pos = [
-        f64::from(row[0]) + f64::from(row[3]) / 100.0,
-        f64::from(row[1]),
-        f64::from(row[2]) + 0.5,
+        f64::from(row.x) + f64::from(row.offset) / 100.0,
+        f64::from(row.y),
+        f64::from(row.z) + 0.5,
     ];
     if host
-        .summon(level.dimension_id(), "naturalist:alligator", pos, nbt)
+        .summon(row.dimension, "naturalist:alligator", pos, nbt)
         .is_some()
     {
         pending.remove(0);
-        let _ = PENDING_HATCHLINGS.set(host, Holder::Level, pending);
     }
 }

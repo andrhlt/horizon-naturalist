@@ -20,6 +20,15 @@ def step(ticks):
 def at(x, y, z, expected):
     return any("Test passed" in line for line in cmd(f"execute if block {x} {y} {z} {expected}"))
 
+def at_dimension(dimension, x, y, z, expected):
+    return any("Test passed" in line for line in cmd(
+        f"execute in {dimension} if block {x} {y} {z} {expected}"))
+
+def alligator_near(dimension, x, y, z):
+    return any("Test passed" in line for line in cmd(
+        f"execute in {dimension} positioned {x + 0.5} {y + 0.5} {z + 0.5} "
+        "if entity @e[type=naturalist:alligator,distance=..8]"))
+
 try:
     cmd("gamerule minecraft:spawn_mobs false")
     cmd("gamerule minecraft:random_tick_speed 0")
@@ -61,9 +70,31 @@ try:
         except (IndexError, ValueError):
             pass
     assert len(ages) == 4 and all(age <= 0 for age in ages), {"offspring": offspring, "age_rows": age_rows, "ages": ages}
+
+    # Java's AlligatorEggBlock hatches in the level receiving randomTick.
+    # Keep the egg far from the Overworld hatch above so a misplaced hatchling
+    # cannot satisfy the wrong-dimension assertion.
+    cmd("execute in minecraft:the_nether run forceload add 0 0 63 63")
+    cmd("execute in minecraft:the_nether run fill 47 91 47 49 91 49 minecraft:stone")
+    cmd("execute in minecraft:the_nether run fill 47 92 47 49 98 49 minecraft:air")
+    cmd("execute in minecraft:the_nether run setblock 48 92 48 naturalist:alligator_egg[eggs=1]")
+    for _ in range(100):
+        step(8)
+        if at_dimension("minecraft:the_nether", 48, 92, 48, "minecraft:air"):
+            break
+    else:
+        raise AssertionError({"nether_egg": cmd("execute in minecraft:the_nether run data get block 48 92 48")})
+    nether_hatchling = alligator_near("minecraft:the_nether", 48, 92, 48)
+    wrong_dimension_hatchling = alligator_near("minecraft:overworld", 48, 92, 48)
+    assert nether_hatchling and not wrong_dimension_hatchling, {
+        "nether_hatchling": nether_hatchling,
+        "wrong_dimension_hatchling": wrong_dimension_hatchling,
+    }
     result = {"artifact": version.name, "world": world, "stone_support": [11, 91, 5],
               "placement_crosshair": placement_crosshair, "stacking_crosshair": stacking_crosshair,
               "eggs_placed": 4, "hatched_count": len(offspring), "hatchling_ages": ages,
+              "nether_hatchling_in_origin_dimension": nether_hatchling,
+              "nether_hatchling_absent_from_overworld": not wrong_dimension_hatchling,
               "headless": True, "random_ticks": 4096}
     print(json.dumps(result, indent=2), flush=True)
     if len(sys.argv) > 2:
