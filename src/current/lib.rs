@@ -14,6 +14,8 @@ pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
 mod blobfish_behavior;
+mod isopod_behavior;
+mod starfish_behavior;
 mod ocean_renderer;
 mod ocean_bucket_item;
 mod ocean_placements;
@@ -219,6 +221,9 @@ impl mod_api::Hooks for Naturalist {
         if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:starfish" | "naturalist:whale") {
             if let Some(entity) = host.entity(event.entity) { ocean_renderer::record_variant(host, entity); }
         }
+        if event.kind == "naturalist:giant_isopod" {
+            isopod_behavior::joined(host, event.entity);
+        }
         if event.kind == "naturalist:blobfish" {
             if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
                 let has_crab_target = mob
@@ -391,6 +396,9 @@ impl mod_api::Hooks for Naturalist {
         if event.kind == "naturalist:blobfish" {
             blobfish_behavior::tick(host, event.entity);
         }
+        if event.kind == "naturalist:giant_isopod" {
+            isopod_behavior::tick(host, event.entity);
+        }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
             let result = (|| {
@@ -403,6 +411,25 @@ impl mod_api::Hooks for Naturalist {
                 eprintln!("Naturalist: bass cooldown tick failed: {error:?}");
             }
         }
+    }
+    fn living_damage_pre(
+        &self,
+        _: &mut dyn mod_api::LevelRandomHost,
+        event: &mut mod_api::LivingDamagePreEvent<'_>,
+    ) {
+        if event.kind == "naturalist:giant_isopod"
+            && event.container.reduction(mod_api::Reduction::Armor) > 0.0
+        {
+            isopod_behavior::cap_shell_damage(event.container);
+        }
+    }
+    fn living_drops(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::LivingDropsEvent<'_>,
+    ) -> mod_api::Flow {
+        starfish_behavior::drops(host, event);
+        mod_api::Flow::Continue
     }
     fn item_picked_up_post(&self, _: &mut dyn mod_api::ServerHost, _: &mut mod_api::ItemPickedUpPostEvent<'_>) {}
     fn register_entity_renderers(
