@@ -145,7 +145,7 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
                 fields.insert("Sitting".into(), Tag::Byte(i8::from(rat_sitting)));
             }
             if kind == "naturalist:hedgehog" && tamed_with_owner {
-                fields.insert("FollowingOwner".into(), Tag::Byte(0));
+                fields.insert("FollowingOwner".into(), rat_following);
                 fields.insert("Sitting".into(), Tag::Byte(i8::from(rat_sitting)));
             }
             if kind == "naturalist:crab" {
@@ -251,7 +251,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                 configured.data_mut().set_other("minecraft:bucket_entity_data", Some(Tag::Compound(fields.clone())));
                 horizon_client::entity_nbt::apply_item_components(mob, &configured);
                 mob.persistent = true;
-                if matches!(kind, "naturalist:ant" | "naturalist:crab" | "naturalist:rat") {
+                if matches!(kind, "naturalist:ant" | "naturalist:crab" | "naturalist:rat" | "naturalist:hedgehog") {
                     let saved = Tag::Compound(fields.clone());
                     let tame = saved.get("Tame").and_then(horizon_world::datafix::dynamic::as_number)
                         .is_some_and(|n| n.int_value() != 0);
