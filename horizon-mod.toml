@@ -21,7 +21,7 @@ bindings = [
 ]
 [[native.module]]
 id = "bass-natural-fixture-api"
-file = "crates/horizon-client/src/game/natural_spawning.rs"
+file = "crates/horizon-client/src/game.rs"
 name = "naturalist_bass_fixture"
 source = "src/legacy_reference/horizon/bass_natural_fixture_api.rs"
 
