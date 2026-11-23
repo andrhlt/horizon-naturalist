@@ -56,22 +56,28 @@ def capture(version, reference, jar=None):
             cmd("fill 0 99 0 15 99 15 minecraft:stone")
             cmd("fill 0 100 0 15 107 15 minecraft:air")
             shell = "block 9 100 8 naturalist:chrysalis[age=0,facing=east]"
-            # Mirror InsectProbe: add the live entity, then call AgeableMob.setAge
-            # before the frozen world advances any AI ticks.
-            summon("naturalist:caterpillar 9.5 100 8.5 {NoGravity:1b,Tags:[fixture_baby]}")
-            cmd("data merge entity @e[tag=fixture_baby] {Age:-24000}")
             cmd("setblock 10 100 8 minecraft:oak_log")
             cmd("setblock 10 99 8 minecraft:oak_log")
             assert observed("block 10 100 8 minecraft:oak_log")
             assert observed("block 10 99 8 minecraft:oak_log")
+            # Caterpillar is a mod-added AgeableMob. The pinned engine's generic
+            # entity NBT Age merge only deserializes age for vanilla Species;
+            # create a real offspring so its internal age is set by the normal
+            # Butterfly breeding path instead of writing an ineffective tag.
+            summon("naturalist:butterfly 9.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
+            summon("naturalist:butterfly 10.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
+            step(100)
+            cmd("tag @e[type=naturalist:caterpillar,x=9,y=100,z=8,distance=..4,limit=1] add fixture_baby")
+            assert observed("entity @e[tag=fixture_baby]")
             step(16)
             baby_makes_cocoon = observed(shell)
             assert observed("entity @e[tag=fixture_baby]")
+            cmd("kill @e[tag=fixture_parent]")
             cmd("kill @e[tag=fixture_baby]")
+            cmd("setblock 9 100 8 minecraft:air")
             cmd("setblock 10 100 8 minecraft:air")
             cmd("setblock 10 99 8 minecraft:air")
             summon("naturalist:caterpillar 9.5 100 8.5 {NoGravity:1b,Tags:[fixture_adult]}")
-            cmd("data merge entity @e[tag=fixture_adult] {Age:0}")
             cmd("setblock 10 100 8 minecraft:oak_log")
             cmd("setblock 10 99 8 minecraft:oak_log")
             assert observed("block 10 100 8 minecraft:oak_log")
