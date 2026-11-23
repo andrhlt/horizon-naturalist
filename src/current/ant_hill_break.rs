@@ -86,7 +86,11 @@ fn ant_hill_player_break(
         if owner != Some(actor)
             && let Some(player) = game.player.as_ref()
         {
-            let delta = player.position - ant.position;
+            let delta = horizon_core::geometry::Vec3::new(
+                player.position.x - ant.position.x,
+                player.position.y - ant.position.y,
+                player.position.z - ant.position.z,
+            );
             yaw = delta.z.atan2(delta.x).to_degrees() - 90.0;
         }
         ant.yaw = yaw;

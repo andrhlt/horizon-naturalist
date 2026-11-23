@@ -3,6 +3,7 @@ import argparse
 import json
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import tempfile
 
@@ -11,6 +12,11 @@ def capture(version):
     with tempfile.TemporaryDirectory(prefix="nat-hedgehog-net-", ignore_cleanup_errors=True) as temporary:
         root = Path(temporary)
         socket = root / "hedgehog.sock"
+        jar = Path.home() / "Library/Application Support/horizon/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar"
+        if jar.is_file():
+            (root / "jars").mkdir()
+            shutil.copyfile(jar, root / "jars" / jar.name)
+            (root / "horizon-mods.txt").write_text("mod.naturalist:true\n")
 
         def ctl(*args):
             result = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
@@ -35,8 +41,10 @@ def capture(version):
             ctl("wait", 6)
 
         try:
+            manifest = json.loads((version / "native-mods.json").read_text())
+            resources = Path.home() / "Library/Application Support/horizon-launcher/versions" / manifest["base"] / ".local/horizon-client/26.3"
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", root, "--game-dir", root,
+                resources, "--home", root, "--game-dir", root,
                 "--world", "Hedgehog Capture", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
             cmd("gamerule minecraft:spawn_mobs false")
             cmd("tp @s 8.5 103 6.5")

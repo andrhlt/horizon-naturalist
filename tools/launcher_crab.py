@@ -1,6 +1,7 @@
 """Compare Crab defense, equipment, pets, and Capture Net with pinned Java."""
 import json
 import os
+import shutil
 from pathlib import Path
 import re
 import subprocess
@@ -13,6 +14,11 @@ reference = json.loads(Path(sys.argv[2]).read_text())
 with tempfile.TemporaryDirectory(prefix="nat-crab-", ignore_cleanup_errors=True) as work:
     home = Path(work)
     socket = home / "fish.sock"
+    jar = Path.home() / "Library/Application Support/horizon/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar"
+    if jar.is_file():
+        (home / "jars").mkdir()
+        shutil.copyfile(jar, home / "jars" / jar.name)
+        (home / "horizon-mods.txt").write_text("mod.naturalist:true\n")
 
     def ctl(*args):
         result = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
