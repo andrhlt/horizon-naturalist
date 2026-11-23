@@ -717,7 +717,7 @@ bindings = [
 
 [[native.mixin]]
 id = "rhino-shield-stun"
-target = "horizon_client::game::items::shield::Game<'_>::after_block"
+target = "horizon_client::game::shield::Game<'_>::after_block"
 kind = "BEFORE_CALL"
 selector = "self.blocked_by_attacker"
 ordinal = 1
