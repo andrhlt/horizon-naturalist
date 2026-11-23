@@ -40,13 +40,17 @@ bindings = [
 [[native.mixin]]
 id = "anglerfish-attack"
 target = "horizon_client::game::combat::Game<'_>::mob_attacks_mob"
-kind = "HEAD"
-cancellable = true
+kind = "WRAP_OPERATION"
+selector = "self.mob_hits_mob"
+ordinal = 0
+require = 1
 helper = "src/current/anglerfish_attack.rs"
 bindings = [
  { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
  { name = "target", ty = "u32", value = "target" },
+ { name = "amount", ty = "f32", value = "amount" },
  { name = "source", ty = "Damage", value = "source" },
+ { name = "original", ty = "impl FnOnce(&mut Game<'_>, u32, f32, Damage) -> bool", value = "$operation" },
 ]
 
 [[native.mixin]]
