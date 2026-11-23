@@ -1,6 +1,7 @@
 // Goal module for Rhino's calf defense, staged charge and shield stun.
 use horizon_core::{geometry::Vec3, nbt::Tag};
 use horizon_client::mobs::{Damage, DamageKind, Mob, MobEvent, Who, goals::{Cx, Goal, LOOK, MOVE}};
+use super::Game;
 use std::collections::HashSet;
 
 #[derive(Clone, Debug, Default)]
@@ -43,12 +44,12 @@ impl Goal for LargeCatFollowOwner {
     fn flags(&self) -> u8 { MOVE | LOOK }
 
     fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
-        mob.ints[4] != 0 && !mob.extra.sitting
+        mob.extra.ints[4] != 0 && !mob.extra.sitting
             && Self::owner(mob, cx).is_some_and(|(position, _)| mob.distance_sqr(position) >= 49.0)
     }
 
     fn can_continue(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
-        mob.ints[4] != 0 && !mob.extra.sitting && !mob.ai.nav.is_done()
+        mob.extra.ints[4] != 0 && !mob.extra.sitting && !mob.ai.nav.is_done()
             && Self::owner(mob, cx).is_some_and(|(position, _)| mob.distance_sqr(position) > 4.0)
     }
 
@@ -69,7 +70,7 @@ impl Goal for LargeCatFollowOwner {
 }
 
 #[derive(Clone, Debug, Default)]
-struct TigerStalk {
+pub struct TigerStalk {
     time_to_recalc_path: i32,
 }
 
@@ -169,7 +170,7 @@ impl Goal for LargeCatPreyTarget {
     }
 }
 
-pub fn install_large_cat(game: &mut super::Game<'_>, entity: u32, kind: &str) {
+pub fn install_large_cat(game: &mut Game<'_>, entity: u32, kind: &str) {
     let tag = match kind {
         "naturalist:lion" => "naturalist:lion_hostiles",
         "naturalist:tiger" => "naturalist:tiger_hostiles",
@@ -184,7 +185,7 @@ pub fn install_large_cat(game: &mut super::Game<'_>, entity: u32, kind: &str) {
         .and_then(horizon_world::datafix::dynamic::as_number)
         .is_none_or(|value| value.int_value() != 0);
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) else { return; };
-    mob.ints[4] = i32::from(following);
+    mob.extra.ints[4] = i32::from(following);
     if mob.ai.targets.has("NaturalistLargeCatPreyTarget") { return; }
     mob.ai.goals.add(5, LargeCatFollowOwner::default());
     mob.ai.targets.add(1, LargeCatPreyTarget::new(prey));
@@ -269,7 +270,7 @@ impl Goal for RhinoCharge {
     }
 }
 
-pub fn stun(game: &mut super::Game<'_>, id: u32) {
+pub fn stun(game: &mut Game<'_>, id: u32) {
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     mob.extra.counter2 = 60;
     mob.extra.counter1 = 0;
@@ -279,7 +280,7 @@ pub fn stun(game: &mut super::Game<'_>, id: u32) {
     if let Tag::Compound(fields) = raw { fields.insert("StunTick".into(), Tag::Int(60)); }
 }
 
-pub fn tick(game: &mut super::Game<'_>, id: u32) {
+pub fn tick(game: &mut Game<'_>, id: u32) {
     let Some(index) = game.mobs.iter().position(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     let stun = game.persist.raw.get(&id).and_then(|tag| tag.get(&"StunTick".into()))
         .and_then(horizon_world::datafix::dynamic::as_number).map_or(0, |value| value.int_value());
@@ -292,5 +293,52 @@ pub fn tick(game: &mut super::Game<'_>, id: u32) {
         horizon_client::mobs::finalize::set_base(&mut game.mobs[index], horizon_client::mobs::finalize::Attr::MovementSpeed, 0.2);
         let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
         if let Tag::Compound(fields) = raw { fields.insert("StunTick".into(), Tag::Int(0)); }
+    }
+}
+
+pub fn break_charge_blocks(game: &mut Game<'_>, index: usize) {
+    use mod_api::BlockUpdateFlags;
+
+    if game.mobs[index].extra.counter1 == 0
+        || !game.ui.rules.bool_at(horizon_client::gamerules::vanilla::MOB_GRIEFING)
+    {
+        return;
+    }
+
+    let mob = &game.mobs[index];
+    let yaw = f64::from(mob.yaw.to_radians());
+    let front_x = mob.position.x - yaw.sin() * 1.65;
+    let front_z = mob.position.z + yaw.cos() * 1.65;
+    let center = [front_x.floor() as i32, mob.position.y.floor() as i32, front_z.floor() as i32];
+    let tags = game
+        .world_tables
+        .as_ref()
+        .and_then(|tables| tables.pack_tags.get("block"))
+        .unwrap_or(&game.res.items().block_tags);
+    let mut breakable = Vec::new();
+    for x in center[0] - 1..=center[0] + 1 {
+        for y in center[1]..=center[1] + 2 {
+            for z in center[2] - 1..=center[2] + 1 {
+                let state = game.world.block(x, y, z);
+                let name = &game.res.facts().get(state).name;
+                if tags
+                    .get("naturalist:rhino_charge_breakable")
+                    .is_some_and(|blocks| blocks.contains(name.as_ref()))
+                {
+                    breakable.push([x, y, z]);
+                }
+            }
+        }
+    }
+    if breakable.is_empty() { return; }
+    let Some(level) = game.level(game.dim.id()) else { return; };
+    let Some(air) = game.pack.assets.registry.default_state("minecraft:air") else { return; };
+    for pos in breakable {
+        let _ = game.level_set_block(
+            level,
+            pos,
+            air,
+            BlockUpdateFlags::NEIGHBORS | BlockUpdateFlags::CLIENTS,
+        );
     }
 }
