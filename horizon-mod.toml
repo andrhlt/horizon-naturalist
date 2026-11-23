@@ -721,7 +721,7 @@ target = "horizon_client::game::shield::Game<'_>::after_block"
 kind = "BEFORE_CALL"
 selector = "self.blocked_by_attacker"
 ordinal = 1
-require = 1
+require = 2
 helper = "src/current/rhino_shield_block.rs"
 bindings = [
  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
