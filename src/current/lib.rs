@@ -420,6 +420,9 @@ impl mod_api::Hooks for Naturalist {
         if event.kind == "naturalist:jellyfish" {
             jellyfish_behavior::tick(host, event.entity);
         }
+        if event.kind == "naturalist:great_white_shark" {
+            shark_behavior::tick_air(host, event.entity);
+        }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
             let result = (|| {
