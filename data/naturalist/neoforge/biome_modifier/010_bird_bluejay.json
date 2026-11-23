@@ -1,6 +1,15 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": "#naturalist:bird_spawn_1",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_bluejay",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_bluejay"
+      }
+    ]
+  },
   "spawners": {
     "type": "naturalist:bird",
     "weight": 10,

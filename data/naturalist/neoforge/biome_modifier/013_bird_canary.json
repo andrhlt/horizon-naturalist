@@ -1,6 +1,15 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": "#naturalist:bird_spawn_2",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_canary",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_canary"
+      }
+    ]
+  },
   "spawners": {
     "type": "naturalist:bird",
     "weight": 10,
