@@ -1,5 +1,7 @@
 """Exercise the Alligator egg item and natural block random ticking headlessly."""
 import json
+import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -9,10 +11,14 @@ version = Path(sys.argv[1])
 with tempfile.TemporaryDirectory(prefix="nat-gator-eggs-", ignore_cleanup_errors=True) as scratch:
     home = Path(scratch)
     socket = home / "game.sock"
+    shared_jars = Path.home() / "Library/Application Support/horizon/jars"
+    if shared_jars.exists():
+        shutil.copytree(shared_jars, home / "jars", dirs_exist_ok=True)
+    env = {**os.environ, "HORIZON_HOME": str(home)}
 
     def ctl(*args):
         p = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
-                           check=True, capture_output=True, text=True, timeout=75)
+                           check=True, capture_output=True, text=True, timeout=75, env=env)
         return json.loads(p.stdout.splitlines()[-1])
 
     def cmd(line):
@@ -27,7 +33,7 @@ with tempfile.TemporaryDirectory(prefix="nat-gator-eggs-", ignore_cleanup_errors
 
     try:
         ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-            version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
+            Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3", "--home", home, "--game-dir", home,
             "--world", "Alligator Eggs", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("gamerule minecraft:random_tick_speed 0")

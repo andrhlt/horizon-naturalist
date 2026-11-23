@@ -1,0 +1,44 @@
+{
+  "artifact": "native-0a875da-9d680d8dec7c",
+  "summon_count": 25,
+  "before_school_tick": {
+    "attached_followers": 0,
+    "largest_school": 1,
+    "leaders": 0,
+    "members": 25,
+    "query": "before-tick",
+    "targeted": 0
+  },
+  "school": {
+    "attached_followers": 17,
+    "largest_school": 15,
+    "leaders": 2,
+    "members": 17,
+    "query": "school",
+    "targeted": 13
+  },
+  "retaliation": {
+    "attached_followers": 19,
+    "largest_school": 15,
+    "leaders": 4,
+    "members": 16,
+    "query": "retaliation",
+    "targeted": 14
+  },
+  "java_baseline": {
+    "max_health": 6.0,
+    "attack_damage": 2.0,
+    "movement_speed": 1.2,
+    "variant": "naturalist:piranha",
+    "attached_at_capacity": 23,
+    "first_recruitment": 23,
+    "hurt_landed": true,
+    "follower_retaliates": true,
+    "leader_retaliates": true,
+    "follower_retargets": true,
+    "follower_clears_target": true,
+    "deep_water": true,
+    "above_sea_level": false,
+    "dry": false
+  }
+}

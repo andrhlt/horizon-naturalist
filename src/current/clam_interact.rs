@@ -13,8 +13,17 @@ fn clam_interact(
     let held = game.held().cloned();
     if let Some(stack) = game.mobs[index].extra.main_hand_stack().cloned() {
         game.mobs[index].extra.set_main_hand_stack(None);
-        let at = game.player.as_ref().map(|player| player.position).unwrap_or(game.mobs[index].position);
-        game.spawn_at_location(at, 0.0, stack);
+        let inserted = if let Some(player) = game.native_acting_player() {
+            let slots = game.player_inventory_slots(player).unwrap_or_default();
+            (0..36).find(|slot| !slots.iter().any(|(occupied, _)| occupied == slot))
+                .is_some_and(|slot| game.player_set_inventory_slot(player, slot, Some(stack.clone())).is_ok())
+        } else { false };
+        if !inserted {
+            let at = game.player.as_ref().map(|player| player.position).unwrap_or(game.mobs[index].position);
+            game.spawn_at_location(at, 0.0, stack);
+        }
+        game.mobs[index].persistent = false;
+        game.mobs[index].extra.scratch[0] = 0;
         let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
         if let Tag::Compound(fields) = raw {
             fields.insert("NaturalistClamOpen".into(), Tag::Byte(0));
@@ -22,6 +31,7 @@ fn clam_interact(
             fields.insert("NaturalistClamCooldown".into(), Tag::Int(60));
             fields.insert("NaturalistClamLaunchDelay".into(), Tag::Int(0));
         }
+        game.mobs[index].extra.scratch[0] = 0;
         return ControlFlow::Break(Ok(true));
     }
     if game.creative && held.as_ref().is_some_and(|stack| stack.item.as_ref() == "minecraft:debug_stick") {
@@ -34,11 +44,13 @@ fn clam_interact(
             fields.insert("NaturalistClamCooldown".into(), Tag::Int(200));
             fields.insert("NaturalistClamLaunchDelay".into(), Tag::Int(0));
         }
+        game.mobs[index].extra.scratch[0] = i32::from(open);
         return ControlFlow::Break(Ok(true));
     }
     let Some(mut treasure) = held.filter(|stack| stack.count > 0) else { return ControlFlow::Continue(()) };
     treasure.count = 1;
     game.mobs[index].extra.set_main_hand_stack(Some(treasure));
+    game.mobs[index].persistent = true;
     game.consume_held();
     let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
     if let Tag::Compound(fields) = raw {
@@ -47,5 +59,6 @@ fn clam_interact(
         fields.insert("NaturalistClamCooldown".into(), Tag::Int(60));
         fields.insert("NaturalistClamLaunchDelay".into(), Tag::Int(0));
     }
+    game.mobs[index].extra.scratch[0] = 1;
     ControlFlow::Break(Ok(true))
 }

@@ -25,7 +25,7 @@ fn clam_fixture(game: &mut Game<'_>, command: &str) -> std::ops::ControlFlow<boo
         "cooldown": number("NaturalistClamCooldown"),
         "delay": number("NaturalistClamLaunchDelay"),
         "pushable": mob.pushable(),
-        "stored_persistent": horizon_client::mobs::ai::requires_custom_persistence(mob),
+        "stored_persistent": mob.persistent || horizon_client::mobs::ai::requires_custom_persistence(mob),
         "state_fields_implemented": raw.is_some_and(|tag| tag.get("NaturalistClamOpen").is_some()),
         "query": query,
     });

@@ -18,7 +18,9 @@ with tempfile.TemporaryDirectory(prefix="nat-piranha-", ignore_cleanup_errors=Tr
 
     def ctl(*args):
         result = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
-                                capture_output=True, check=True, text=True, timeout=100, env=env)
+                                capture_output=True, check=False, text=True, timeout=100, env=env)
+        if result.returncode:
+            raise RuntimeError(f"horizon-ctl failed ({result.returncode}): {result.stderr}\n{result.stdout}")
         return json.loads(result.stdout.splitlines()[-1])
 
     def cmd(line):

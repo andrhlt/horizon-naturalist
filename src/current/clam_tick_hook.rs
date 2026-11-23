@@ -76,4 +76,7 @@ fn clam_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
         fields.insert("NaturalistClamCooldown".into(), Tag::Int(cooldown));
         fields.insert("NaturalistClamLaunchDelay".into(), Tag::Int(delay));
     }
+    if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
+        mob.extra.scratch[0] = i32::from(open);
+    }
 }

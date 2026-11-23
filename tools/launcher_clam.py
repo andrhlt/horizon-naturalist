@@ -130,12 +130,26 @@ with tempfile.TemporaryDirectory(prefix="nat-clam-", ignore_cleanup_errors=True)
         ctl("wait", 3)
         click()
         status = probe()
-        output["inserted"] = (status["treasure"] and 'id: "minecraft:ender_pearl"' in data(shell, "equipment.mainhand")
-            and ctl("inventory")["counts"].get("minecraft:ender_pearl") == 2)
+        hand_data = data(shell, "equipment.mainhand")
+        inventory_after_insert = ctl("inventory")
+        pearls_after_insert = inventory_after_insert["counts"].get("minecraft:ender_pearl", 0)
+        held_pearls_after_insert = (inventory_after_insert.get("held") or {}).get("count", 0) if (inventory_after_insert.get("held") or {}).get("item") == "minecraft:ender_pearl" else 0
+        pearls_total_after_insert = pearls_after_insert + held_pearls_after_insert
+        output["stored_treasure_runtime"] = status["treasure"]
+        output["stored_treasure_hand_data"] = hand_data
+        output["pearls_after_insert"] = pearls_after_insert
+        output["pearls_total_after_insert"] = pearls_total_after_insert
+        output["inventory_snapshot_after_insert"] = inventory_after_insert
+        output["inserted"] = (status["treasure"] and 'id: "minecraft:ender_pearl"' in hand_data
+            and pearls_total_after_insert == 2)
         output["stored_persistent"] = status["stored_persistent"]
         click()
         status = probe()
-        output["returned"] = not status["treasure"] and ctl("inventory")["counts"].get("minecraft:ender_pearl") == 3
+        inventory_after_return = ctl("inventory")
+        output["inventory_snapshot_after_return"] = inventory_after_return
+        returned_held = (inventory_after_return.get("held") or {}).get("count", 0) if (inventory_after_return.get("held") or {}).get("item") == "minecraft:ender_pearl" else 0
+        output["pearls_total_after_return"] = inventory_after_return["counts"].get("minecraft:ender_pearl", 0) + returned_held
+        output["returned"] = not status["treasure"] and output["pearls_total_after_return"] == 3
         output["withdraw_closes"] = not status["open"]
         output["closed_timer_range"] = 200 <= status["timer"] <= 400
 
