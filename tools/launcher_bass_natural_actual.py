@@ -44,6 +44,21 @@ def capture(version: Path):
                 command(f"fill {x} 89 -16 {x + 15} 89 15 minecraft:stone")
                 command(f"fill {x} 90 -16 {x + 15} 104 15 minecraft:water")
                 command(f"fillbiome {x} 90 -16 {x + 15} 104 15 minecraft:swamp")
+            bundles = list((home / ".horizon-cache/mod-content").glob("*/worldgen/biomes.json"))
+            assert len(bundles) == 1, bundles
+            loaded = json.loads(bundles[0].read_text())
+
+            def bass_rows(biome):
+                document = json.loads(loaded[biome])
+                spawns = document["attributes"]["minecraft:gameplay/natural_mob_spawns"]
+                spawns = spawns.get("argument", spawns)
+                return [
+                    [category, entry["type"], entry["weight"], entry["count"]]
+                    for category, entries in spawns["spawns_by_category"].items()
+                    for entry in entries if entry["type"] == "naturalist:bass"
+                ]
+            loaded_rows = {biome: bass_rows(biome) for biome in ("minecraft:swamp", "minecraft:river")}
+            print(json.dumps({"loaded_bass_rows": loaded_rows}, indent=2), flush=True)
             command("gamerule minecraft:spawn_mobs true")
 
             variants = set()
@@ -61,8 +76,10 @@ def capture(version: Path):
                                     if "following entity data:" in line)
                     if len(variants) == 3:
                         break
-            result = {"observed_groups": groups, "initialized_variants": sorted(variants)}
+            result = {"loaded_bass_rows": loaded_rows, "observed_groups": groups,
+                      "initialized_variants": sorted(variants)}
             print(json.dumps(result, indent=2), flush=True)
+            assert any(loaded_rows.values()), result
             assert result["observed_groups"], result
             assert set(result["initialized_variants"]).issubset({
                 "naturalist:bass", "naturalist:bass_medium", "naturalist:bass_large"}), result
