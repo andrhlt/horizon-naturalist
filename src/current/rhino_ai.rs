@@ -20,7 +20,10 @@ impl Goal for RhinoCharge {
         let Some(target) = mob.ai.target else { return false; };
         if cx.w.target_info(target).is_none_or(|info| !info.alive) { return false; }
         self.target = Some(target);
-        self.windup = 20;
+        // Java's prepare goal counts its 42 tick charge cooldown down before
+        // the Rhino starts moving. Keep the visible windup in step with that
+        // same interval instead of charging after an arbitrary short pause.
+        self.windup = 42;
         self.charge = 0;
         true
     }
