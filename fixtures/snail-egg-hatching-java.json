@@ -1,0 +1,50 @@
+{
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+  "java_behavior": {
+    "placement_delay_ticks_inclusive": [600, 2399],
+    "hatch_attempt_rescheduled_after_interruption": false,
+    "egg_removed_before_offspring_spawn": true,
+    "offspring_count_inclusive": [2, 5]
+  },
+  "pinned_api": {
+    "placement_notice": "ItemPart::on_block_placed_by(&self, host: &mut ServerHost, event: &mut OnBlockPlacedByEvent)",
+    "placement_random_and_time": "LevelRef::with_random(host, draw) and LevelRef::game_time(host)",
+    "support_predicate": "LevelRef::block_face_sturdy(host, pos, BlockFace::Up, SupportType::Full)",
+    "deferred_hatch": "Hooks::server_tick(&self, host: &mut dyn ServerHost, event: &mut ServerTickEvent), ServerTickEnd",
+    "conclusion": "The pinned API supports Java RNG and game-time capture after successful item placement, persisted due-time checks, and the full sturdy-top placement predicate. The BlockPart survival and shape-update hosts still do not expose a LevelRef, so later support changes to a non-air non-sturdy block remain a limitation."
+  },
+  "implementation": {
+    "delay_ticks_inclusive": [600, 2399],
+    "removed_or_replaced_egg_rejected": true,
+    "offspring_count_inclusive": [2, 5],
+    "offspring_retried_after_spawn_failure": false,
+    "placement_delay_uses_java_rng": true,
+    "successful_item_placement_records_due_game_time": true,
+    "normal_item_placement_uses_java_sturdy_top_predicate": true,
+    "support_loss_to_non_air_non_sturdy_rejected": false,
+    "duplicate_queue_entries_per_position": false
+  },
+  "runtime_verification": {
+    "candidate": "native-0a875da-47ed79e4f5a5",
+    "integration_source": "f56207f",
+    "manifest_base": "nightly-2026-11-20-0a875da",
+    "checks": {
+      "normal_player_placement": true,
+      "runtime_block_state_string": "naturalist:snail_eggs",
+      "egg_remains_at_599_ticks": true,
+      "egg_remains_at_600_ticks": true,
+      "hatched_by_800_ticks": true,
+      "egg_removed_before_offspring": true,
+      "offspring_count": 4,
+      "offspring_are_babies": true,
+      "offspring_age_after_75_ticks": -5925,
+      "no_duplicate_after_80_ticks": true,
+      "removed_egg_did_not_hatch": true,
+      "replaced_egg_did_not_hatch": true,
+      "unsupported_placement_cancelled": true,
+      "interrupted_attempt_rescheduled": false
+    },
+    "source_note": "The pinned state serializer returns the default block id without a property suffix. Both placement matching and due-time validation now accept the id prefix. The Java delay is 600..2399 ticks; the runtime checked absence at 599 and 600, then observed one four-baby hatch by 800."
+  }
+}
