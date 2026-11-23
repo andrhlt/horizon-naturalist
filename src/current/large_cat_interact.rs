@@ -8,8 +8,8 @@ fn large_cat_interact(
     let Some(index) = game.mob_interaction_target(target) else {
         return ControlFlow::Continue(());
     };
-    let kind = game.mobs[index].kind.id.as_ref();
-    if !matches!(kind, "naturalist:lion" | "naturalist:tiger") || !game.mobs[index].alive() {
+    let kind = game.mobs[index].kind.id.to_string();
+    if !matches!(kind.as_str(), "naturalist:lion" | "naturalist:tiger") || !game.mobs[index].alive() {
         return ControlFlow::Continue(());
     }
     let id = game.mobs[index].id;
@@ -60,7 +60,7 @@ fn large_cat_interact(
             if !game.creative { game.consume_held(); }
             if game.mobs[index].extra.in_love > 0 {
                 game.love_cause.insert(id, game.lan_acting);
-                game.native_entity_enter_love_mode(id, kind, game.lan_acting_uuid);
+                game.native_entity_enter_love_mode(id, kind.as_str(), game.lan_acting_uuid);
                 game.mob_event_particles(id, 18);
             }
             return ControlFlow::Break(Ok(true));
