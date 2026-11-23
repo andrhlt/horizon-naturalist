@@ -280,7 +280,7 @@ pub const PROFILES: &[(&str, &str, &[(&str, f64)])] = &[
     ),
     (
         "naturalist:firefly",
-        "minecraft:wandering_trader",
+        "minecraft:cow",
         &[
             ("minecraft:attack_knockback", 0.0),
             ("minecraft:flying_speed", 0.6000000238418579),

@@ -80,7 +80,7 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
             fields.retain(|key, value| match key.to_string_lossy().as_str() {
                 "Health" | "Variant" => true,
                 "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat") && tamed_with_owner,
-                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab" | "naturalist:rat"),
+                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab" | "naturalist:rat" | "naturalist:firefly"),
                 "FollowingOwner" | "Sitting" => kind == "naturalist:rat" && tamed_with_owner,
                 "Color" => kind == "naturalist:snail",
                 "NoAI" | "Silent" | "NoGravity" | "Glowing" | "Invulnerable" => !matches!(value, Tag::Byte(0)),

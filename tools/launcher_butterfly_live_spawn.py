@@ -8,13 +8,15 @@ import os
 import subprocess
 import tempfile
 from pathlib import Path
+from launcher_setup import prepare_home
 
 
-def capture(version):
+def capture(version, jar):
     os.environ["NATURALIST_FIXTURE_TRACE_SPAWNS"] = "1"
     with tempfile.TemporaryDirectory(prefix="nat-bird-flap-", ignore_cleanup_errors=True) as work:
         directory = Path(work)
         socket = directory / "bird-flap.sock"
+        prepare_home(directory, jar)
 
         def ctl(*args):
             reply = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
@@ -94,5 +96,6 @@ def capture(version):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
+    parser.add_argument("--jar", type=Path, required=True)
     args = parser.parse_args()
-    capture(args.version)
+    capture(args.version, args.jar)

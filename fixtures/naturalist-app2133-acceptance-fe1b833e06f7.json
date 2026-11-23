@@ -1,0 +1,34 @@
+{
+  "candidate": "native-0a875da-fe1b833e06f7",
+  "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": {
+    "naturalist_commit": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+    "jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd"
+  },
+  "bird_density": {
+    "49903": {
+      "horizon_birds": [],
+      "java_birds": ["[4232.0d, 81.0d, 3967.0d]", "[4238.0d, 80.0d, 3967.0d]"]
+    },
+    "49904": {
+      "horizon_birds": [],
+      "java_birds": []
+    }
+  },
+  "bird_chunk_generation": {
+    "seed": 49903,
+    "horizon_taiga_variants": [],
+    "java_taiga_variants": [
+      "naturalist:blue_jay",
+      "naturalist:blue_jay",
+      "naturalist:blue_jay",
+      "naturalist:blue_jay",
+      "naturalist:blue_jay"
+    ]
+  },
+  "injected_probes": {
+    "bird_region": "not_run: naturalist_fixture_bird_region is not registered in the current manifest",
+    "hippo_cases": "not_run: naturalist_fixture_hippo is not registered in the current manifest"
+  },
+  "scope": "Observed candidate outputs only; no fixed-seed parity claim."
+}

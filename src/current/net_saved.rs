@@ -30,7 +30,7 @@ fn net_saved(game: &Game<'_>, mob: &Mob, tag: &mut Tag) {
     } else if let Some(horizon_core::nbt::Tag::String(variant)) = variant {
         fields.insert("Variant".into(), horizon_core::nbt::Tag::String(variant.clone()));
     }
-    if matches!(kind, "naturalist:caterpillar" | "naturalist:crab") {
+    if matches!(kind, "naturalist:caterpillar" | "naturalist:crab" | "naturalist:firefly") {
         fields.insert("Age".into(), horizon_core::nbt::Tag::Int(mob.extra.age));
     }
 }

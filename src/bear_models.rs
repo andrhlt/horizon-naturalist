@@ -1,5 +1,5 @@
 // Based on Naturalist 2.0.7 Java model source (MIT).
-use horizon_client::mobs::model_layers::{CubeDeformation, CubeListBuilder, LayerDefinition, MeshDefinition, ModelPart, PartPose};
+use mod_api::{CubeDeformation, CubeListBuilder, LayerDefinition, MeshDefinition, ModelPart, PartPose};
 pub(super) fn adult() -> ModelPart {
     let mut mesh = MeshDefinition::new();
     let partdefinition = mesh.root();

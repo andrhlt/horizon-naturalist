@@ -30,6 +30,11 @@ def pack_ostrich(jar, pack, dump):
     # loader supplies the actual ridden attributes and the animal's dimensions.
     dump(pack, "data/naturalist/horizon/entity_type/ostrich.json", {
         "template": "minecraft:wandering_trader",
+        "attributes": {
+            "minecraft:max_health": 30.0,
+            "minecraft:movement_speed": 0.24,
+            "minecraft:step_height": 4.0,
+        },
     })
     dump(pack, "data/naturalist/horizon/item/ostrich_spawn_egg.json", {
         "template": "minecraft:cow_spawn_egg",
