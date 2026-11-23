@@ -1,11 +1,13 @@
 # APP-2135 integration checkpoint
 
-Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `00d453cf3f14542f22a0290c9818e10b5767f419`.
+Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `a8077cf`.
 The current source includes the refreshed handoff heads for ocean `bb021967`, freshwater/Alligator
 `7f30ea2`, large animals `8d9f0c5`, insects `b042209`, Duck `fb6298a`, and reptiles/Tortoise
-`8c4d833`, plus the shared-spawn source `29adc01`. The candidate artifact is
-`native-0a875da-53ec73086c7c`; `libnaturalist.dylib` SHA-256 is
-`1e0c4066aee3d3121fb706d7946d3b172d535e59dd3c6b8f688c24e908eedfed`.
+`8c4d833`, shared-spawn source `29adc01`, Crab `356508a`, Ant `107c67e`, and
+Hedgehog `845dfa5`, with integration fixes in `ab19708`, `b8c6463`, `422a264`,
+`e66b34c`, `d22af89`, Shark `e07f553`, Starfish `83c181a`, Jellyfish `bb81363`,
+and corrected Giraffe/insect fixtures `fa0d59e`/`a8077cf`. The latest candidate is
+`native-0a875da-2c623e51691d`.
 
 Pinned runtime inputs:
 
@@ -28,20 +30,29 @@ launchers, passing `--offscreen`; no accountless-client flag or auth bypass is p
 
 | Family | Implemented source in candidate | Verified here | Remaining gate / known gap |
 |---|---|---|---|
-| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish color-drop fallback | native build; 32 Rust tests; freshwater persistence harness; six offscreen captures | headless capture/conservation, Ray landed-hit and Anglerfish cooldown, Whale/Isopod/Cod/Starfish behavior, LAN |
+| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish support/drop, Shark cooldown, Jellyfish pulse | native build; source checks; prior six offscreen captures | headless capture/conservation, Ray/Anglerfish, Whale/Isopod/Cod/Starfish/Shark/Jellyfish behavior, LAN |
 | Freshwater/coastal | Alligator breeding/laying, Capybara persistence/use, Hippo/Piranha/Catfish/Clam/Bass paths | persistence passed: all six UUIDs and saved fields matched after reopen; Capybara owner interaction passed; six offscreen frames passed | headless Alligator lay/stomp and aquatic LAN; cleanup emitted a non-fatal temporary-world “No world” message |
 | Shared spawning | 36 age-group policies and serial carry wiring | native build; Rust/source checks | controlled loaded-chunk natural spawn and matching artifact runtime |
-| Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | native build; Giraffe fixture launches but fails expected summoned Variant observation | Giraffe Variant/movement, Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield behavior is not enabled because its injected module uses unsupported cohort fields |
-| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | corrected fixture route launches; Chrysalis removal and adult cocoon pass, but baby cocoon is false and two butterflies hatch instead of one | fix lifecycle/count defects, then rerun Snail/Scorpion and offscreen; Firefly juvenile rendering remains APP-2159 |
+| Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | corrected fixture shows raw `Variant=0`, mounted control flag false, and mounted movement false; dismount/flag clear pass | restore Giraffe variant/control/movement; Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield remains disabled because its injected module uses unsupported cohort fields |
+| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | corrected fixture proves exactly one Butterfly after hatch and duplicate window; adult cocoon creation/discard/facing still fail | fix adult lifecycle setup/behavior, then rerun Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
 | Duck | renderer/appearance, bucket/follow/breed/variant source | native build | headless follow/whistle/parent/save-reopen and offscreen capture |
 | Reptiles | Komodo/Lizard/Mole/Tortoise source, Tortoise fall-on hook | native build; Rust checks | headless interactions/egg landing/save-reopen; Tortoise `stepOn` parity is unsupported by the pinned BlockPart API |
-| Crab/Ant/Rat/Hedgehog | focused source handoffs are available (PRs #31/#32/#33) | not yet consumed in this candidate; Crab/Hedgehog runners hardcode missing artifact-local resources without the managed jar setup | consume exact heads, then shared runtime and persistence checks |
+| Crab/Ant/Rat/Hedgehog | Crab/Ant/Hedgehog focused handoffs consumed; Rat remains from prior source | native rebuild passes after pinned API fixes; Crab fixture reaches gameplay but its `naturalist_fixture_crab` probe is not registered; Hedgehog reaches gameplay but `naturalist:hedgehog` is absent from the staged inventory | add/use supported Crab probe and verify Hedgehog item registration/resource-pack path; then run Ant/Rat persistence and host/guest checks |
 
 Runtime notes: `tools/launcher_managed.py` and the insect runner were corrected locally to resolve
 resources from the candidate manifest's frozen base instead of an artifact-local directory; this
 was required for the supported pinned route. The remaining failures above are gameplay assertions,
 not authentication or cache-lease failures. Initial sandbox launches hit the normal cache-lease
 permission boundary; the same commands passed with the approved managed escalation.
+
+The latest integrated runtime attempt also exposed two compile defects in the focused handoffs
+(missing scoped `DamageLevel` and an explicit Ant yaw cast); both are fixed and the fresh native
+build passes. The Crab/Hedgehog fixture failures are currently harness/registration observations,
+not counted as gameplay passes or definitive species defects.
+
+The latest persistence rerun passed on `native-0a875da-2c623e51691d`: all six freshwater UUIDs
+and saved fields matched after reopen, and Capybara owner interaction succeeded. Temporary-world
+cleanup again emitted only the non-fatal launcher “No world” message.
 
 This is an integration checkpoint, not a claim of full Naturalist parity or final five-mod
 certification. Missing ordinary gameplay and runtime evidence remain release blockers.

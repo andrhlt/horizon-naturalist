@@ -22,6 +22,7 @@ mod bass_renderer;
 mod blobfish_behavior;
 mod isopod_behavior;
 mod jellyfish_behavior;
+pub mod shark_behavior;
 mod starfish_behavior;
 mod ocean_bucket_item;
 mod ocean_placements;
