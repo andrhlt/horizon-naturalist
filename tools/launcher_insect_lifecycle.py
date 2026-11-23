@@ -91,7 +91,10 @@ def capture(version, reference, jar=None):
             caterpillar_discarded = not observed("entity @e[tag=fixture_adult]")
             cmd("kill @e[type=naturalist:butterfly,distance=..128]")
             step(2)
-            empty_butterfly_cohort_before_hatch = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            empty_butterfly_cohort_before_hatch = [
+                entity for entity in ctl("entities", 48, "naturalist:butterfly")["entities"]
+                if entity.get("health", 0.0) > 0.0
+            ]
             assert not empty_butterfly_cohort_before_hatch, empty_butterfly_cohort_before_hatch
             cmd("setblock 9 100 8 naturalist:chrysalis[age=3,facing=east]")
             cmd("gamerule minecraft:random_tick_speed 4096")

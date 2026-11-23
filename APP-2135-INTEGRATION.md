@@ -1,14 +1,14 @@
 # APP-2135 integration checkpoint
 
-Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `878ddfc` plus fixture isolation updates.
+Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `4420e19` plus final fixture updates.
 The current source includes the refreshed handoff heads for ocean `bb021967`, freshwater/Alligator
 `7f30ea2`, large animals `8d9f0c5`, insects `b042209`, Duck `fb6298a`, and reptiles/Tortoise
 `8c4d833`, shared-spawn source `29adc01`, Crab `356508a`, Ant `107c67e`, and
 Hedgehog `845dfa5`, with integration fixes in `ab19708`, `b8c6463`, `422a264`,
 `e66b34c`, `d22af89`, Shark `e07f553`, Starfish `83c181a`, Jellyfish `bb81363`,
 and corrected Giraffe/insect fixtures `fa0d59e`/`a8077cf`. Giraffe production fix `2749649`
-and Cocoon discard fix `bcfcd2f` are integrated. The latest source-matched candidate is
-`native-0a875da-e5d2daba9883`.
+and Cocoon discard fix `bcfcd2f` are integrated. Whale behavior is source-integrated; the
+latest valid candidate is `native-0a875da-e30de3ca2236`.
 
 Pinned runtime inputs:
 
@@ -31,14 +31,14 @@ launchers, passing `--offscreen`; no accountless-client flag or auth bypass is p
 
 | Family | Implemented source in candidate | Verified here | Remaining gate / known gap |
 |---|---|---|---|
-| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish support/drop, Shark cooldown, Jellyfish pulse | Anglerfish combat damage and 2400-tick cooldown/decrement pass; prior six offscreen captures | Anglerfish bucket capture left a water bucket; Ray, Whale, Isopod, Cod, Starfish, Shark, Jellyfish pulse, LAN |
+| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish support/drop, Shark cooldown, Jellyfish pulse, Whale food/wet breeding | Anglerfish combat/cooldown pass; Whale mating fixture reports two adults with no autonomous offspring; prior six offscreen captures | Anglerfish bucket capture left a water bucket; Whale broad fixture stops on unsupported Fat item-NBT selector; Starfish probe unregistered; Ray, Isopod, Cod, Shark, Jellyfish pulse, LAN |
 | Freshwater/coastal | Alligator breeding/laying, Capybara persistence/use, Hippo/Piranha/Catfish/Clam/Bass paths | persistence passed: all six UUIDs and saved fields matched after reopen; Capybara owner interaction passed; six offscreen frames passed | headless Alligator lay/stomp and aquatic LAN; cleanup emitted a non-fatal temporary-world “No world” message |
 | Shared spawning | 36 age-group policies and serial carry wiring | native build; Rust/source checks | controlled loaded-chunk natural spawn and matching artifact runtime |
 | Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | Giraffe now passes: `Variant="naturalist:giraffe"`, owner mount, mounted control, mounted movement, dismount, and control clear | Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield remains disabled because its injected module uses unsupported cohort fields |
-| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | source-matched fixture passes juvenile refusal, adult cocooning, silent Caterpillar discard, facing, Chrysalis removal, and one Butterfly after the post-window; two breeding parents still contaminate the first snapshot despite cleanup | isolate parent entities in fixture, then rerun Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
+| Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | source-matched production path passes juvenile refusal, adult cocooning, silent discard, facing, and removal; strict fixture cleanup still sees ambient live Butterflies before hatch | isolate ambient Naturalist spawns in fixture, then rerun strict count/Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
 | Duck | renderer/appearance, bucket/follow/breed/variant source | native build | headless follow/whistle/parent/save-reopen and offscreen capture |
 | Reptiles | Komodo/Lizard/Mole/Tortoise source, Tortoise fall-on hook | native build; Rust checks | headless interactions/egg landing/save-reopen; Tortoise `stepOn` parity is unsupported by the pinned BlockPart API |
-| Crab/Ant/Rat/Hedgehog | Crab/Ant/Hedgehog focused handoffs consumed; Rat remains from prior source | Ant carried-food save/reopen passes: carrier, apple/count, offset, and UUID match; Crab fixture reaches gameplay but its `naturalist_fixture_crab` probe is not registered; Hedgehog reaches gameplay but `naturalist:hedgehog` is absent from staged inventory | add/use supported Crab probe and verify Hedgehog item/resource-pack path; run Ant/Rat host/guest checks |
+| Crab/Ant/Rat/Hedgehog | Crab/Ant/Hedgehog focused handoffs consumed; Rat remains from prior source | Ant carried-food save/reopen passes; Crab owner-defense standard-command matrix passes on `native-0a875da-e5d2daba9883`; Crab probe remains unregistered; Hedgehog item remains absent from staged inventory | supported Crab capture/conservation, Hedgehog item/resource path, and Ant/Rat host/guest checks |
 
 Runtime notes: `tools/launcher_managed.py` and the insect runner were corrected locally to resolve
 resources from the candidate manifest's frozen base instead of an artifact-local directory; this
@@ -66,6 +66,11 @@ Additional current-candidate runtime results: Anglerfish combat applied damage a
 left the held item as `minecraft:water_bucket` instead of `naturalist:anglerfish_bucket`. The
 Jellyfish runner now resolves the frozen resource base but still exits before gameplay setup;
 no pulse result is claimed.
+
+APP-2158’s Bass/Fox/Rabbit fixture registration was tested and reverted from this candidate because
+the frozen build rejected the legacy helper with unresolved `naturalist_bass_state`, missing
+`SpawnRequest`, an illegal external inherent impl, and a missing `naturalist_fixture_bass_natural`
+method. This is an SDK/fixture compatibility blocker, not a gameplay result.
 
 Latest live-AI diagnostic rerun (fixture commit `31f73bc` plus cleanup diagnostics) shows
 both baby and adult Cocoon goals activate and place a Chrysalis. Baby diagnostics after 16
