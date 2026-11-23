@@ -56,8 +56,10 @@ with tempfile.TemporaryDirectory(prefix="nat-jellyfish-", ignore_cleanup_errors=
             else:
                 raise RuntimeError("Timed out waiting for Horizon Play to load the fixture world")
         else:
+            manifest = json.loads((version / "native-mods.json").read_text())
+            resources = Path.home() / "Library/Application Support/horizon-launcher/versions" / manifest["base"] / ".local/horizon-client/26.3"
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
+                resources, "--home", home, "--game-dir", home,
                 "--world", "Jellyfish Contact", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("forceload add 0 0 47 47")

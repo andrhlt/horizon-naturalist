@@ -30,14 +30,14 @@ launchers, passing `--offscreen`; no accountless-client flag or auth bypass is p
 
 | Family | Implemented source in candidate | Verified here | Remaining gate / known gap |
 |---|---|---|---|
-| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish support/drop, Shark cooldown, Jellyfish pulse | native build; source checks; prior six offscreen captures | headless capture/conservation, Ray/Anglerfish, Whale/Isopod/Cod/Starfish/Shark/Jellyfish behavior, LAN |
+| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish support/drop, Shark cooldown, Jellyfish pulse | Anglerfish combat damage and 2400-tick cooldown/decrement pass; prior six offscreen captures | Anglerfish bucket capture left a water bucket; Ray, Whale, Isopod, Cod, Starfish, Shark, Jellyfish pulse, LAN |
 | Freshwater/coastal | Alligator breeding/laying, Capybara persistence/use, Hippo/Piranha/Catfish/Clam/Bass paths | persistence passed: all six UUIDs and saved fields matched after reopen; Capybara owner interaction passed; six offscreen frames passed | headless Alligator lay/stomp and aquatic LAN; cleanup emitted a non-fatal temporary-world “No world” message |
 | Shared spawning | 36 age-group policies and serial carry wiring | native build; Rust/source checks | controlled loaded-chunk natural spawn and matching artifact runtime |
 | Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | Giraffe now passes: `Variant="naturalist:giraffe"`, owner mount, mounted control, mounted movement, dismount, and control clear | Zebra/Rhino/Lion/Tiger gameplay; Rhino charge/shield remains disabled because its injected module uses unsupported cohort fields |
 | Insects | Butterfly/Dragonfly/Firefly placements, Chrysalis lifecycle, Snail queue/placement, Scorpion hooks | corrected fixture proves exactly one Butterfly after hatch and duplicate window; adult Age is `0`, entity persists, but NoAI is `1b` again after 16 ticks and no cocoon is placed | fix adult lifecycle/NoAI reversion, then rerun Snail/Scorpion/offscreen; Firefly juvenile rendering remains APP-2159 |
 | Duck | renderer/appearance, bucket/follow/breed/variant source | native build | headless follow/whistle/parent/save-reopen and offscreen capture |
 | Reptiles | Komodo/Lizard/Mole/Tortoise source, Tortoise fall-on hook | native build; Rust checks | headless interactions/egg landing/save-reopen; Tortoise `stepOn` parity is unsupported by the pinned BlockPart API |
-| Crab/Ant/Rat/Hedgehog | Crab/Ant/Hedgehog focused handoffs consumed; Rat remains from prior source | native rebuild passes after pinned API fixes; Crab fixture reaches gameplay but its `naturalist_fixture_crab` probe is not registered; Hedgehog reaches gameplay but `naturalist:hedgehog` is absent from the staged inventory | add/use supported Crab probe and verify Hedgehog item registration/resource-pack path; then run Ant/Rat persistence and host/guest checks |
+| Crab/Ant/Rat/Hedgehog | Crab/Ant/Hedgehog focused handoffs consumed; Rat remains from prior source | Ant carried-food save/reopen passes: carrier, apple/count, offset, and UUID match; Crab fixture reaches gameplay but its `naturalist_fixture_crab` probe is not registered; Hedgehog reaches gameplay but `naturalist:hedgehog` is absent from staged inventory | add/use supported Crab probe and verify Hedgehog item/resource-pack path; run Ant/Rat host/guest checks |
 
 Runtime notes: `tools/launcher_managed.py` and the insect runner were corrected locally to resolve
 resources from the candidate manifest's frozen base instead of an artifact-local directory; this
@@ -53,6 +53,12 @@ not counted as gameplay passes or definitive species defects.
 The latest persistence rerun passed on `native-0a875da-2c623e51691d`: all six freshwater UUIDs
 and saved fields matched after reopen, and Capybara owner interaction succeeded. Temporary-world
 cleanup again emitted only the non-fatal launcher “No world” message.
+
+Additional current-candidate runtime results: Anglerfish combat applied damage and started the
+2400-tick cooldown; the cooldown loaded at 2399 and decremented to 2398. Its bucket interaction
+left the held item as `minecraft:water_bucket` instead of `naturalist:anglerfish_bucket`. The
+Jellyfish runner now resolves the frozen resource base but still exits before gameplay setup;
+no pulse result is claimed.
 
 Latest live-AI diagnostic rerun (fixture commit `31f73bc` plus cleanup diagnostics) shows
 both baby and adult Cocoon goals activate and place a Chrysalis. Baby diagnostics after 16

@@ -37,8 +37,10 @@ def capture(version, jar):
                          if marker in row), None)
 
         def launch():
+            manifest = json.loads((version / "native-mods.json").read_text())
+            resources = Path.home() / "Library/Application Support/horizon-launcher/versions" / manifest["base"] / ".local/horizon-client/26.3"
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", root, "--game-dir", root,
+                resources, "--home", root, "--game-dir", root,
                 "--world", "Carried Food Persistence", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
 
         def quit_game():
