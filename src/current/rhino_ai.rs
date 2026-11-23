@@ -212,7 +212,7 @@ impl Goal for RhinoCharge {
         // same interval instead of charging after an arbitrary short pause.
         self.windup = 42;
         self.charge = 0;
-        mob.ints[5] = 0;
+        mob.extra.counter1 = 0;
         true
     }
 
@@ -224,7 +224,7 @@ impl Goal for RhinoCharge {
 
     fn stop(&mut self, mob: &mut Mob, _: &mut Cx) {
         mob.nav_stop();
-        mob.ints[5] = 0;
+        mob.extra.counter1 = 0;
         self.target = None;
         self.windup = 0;
         self.charge = 0;
@@ -238,7 +238,7 @@ impl Goal for RhinoCharge {
         mob.look_at([target.position.x, target.eye_y, target.position.z]);
         if self.windup > 0 {
             mob.nav_stop();
-            mob.ints[5] = 0;
+            mob.extra.counter1 = 0;
             self.windup -= 1;
             if self.windup == 0 { self.charge = 60; }
             return;
@@ -259,20 +259,20 @@ impl Goal for RhinoCharge {
                 }),
             }
             self.charge = 0;
-            mob.ints[5] = 0;
+            mob.extra.counter1 = 0;
             mob.nav_stop();
             return;
         }
         mob.nav_move_to_entity(cx.w, [target.position.x, target.position.y, target.position.z], 0, 2.5);
         self.charge = self.charge.saturating_sub(1);
-        mob.ints[5] = i32::from(self.charge > 0);
+        mob.extra.counter1 = i32::from(self.charge > 0);
     }
 }
 
 pub fn stun(game: &mut super::Game<'_>, id: u32) {
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     mob.extra.counter2 = 60;
-    mob.ints[5] = 0;
+    mob.extra.counter1 = 0;
     mob.nav_stop();
     horizon_client::mobs::finalize::set_base(mob, horizon_client::mobs::finalize::Attr::MovementSpeed, 0.0);
     let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));

@@ -60,7 +60,7 @@ fn rhino_ai_tick(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
 fn rhino_break_charge_blocks(game: &mut crate::game::Game<'_>, index: usize) {
     use mod_api::BlockUpdateFlags;
 
-    if game.mobs[index].ints[5] == 0
+    if game.mobs[index].extra.counter1 == 0
         || !game.ui.rules.bool_at(horizon_client::gamerules::vanilla::MOB_GRIEFING)
     {
         return;
