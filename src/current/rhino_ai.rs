@@ -29,6 +29,11 @@ impl Goal for LargeCatPreyTarget {
     fn flags(&self) -> u8 { horizon_client::mobs::goals::TARGET }
 
     fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        if horizon_client::mobs::animal_brain::hunting_cooldown(mob)
+            .is_some_and(|ticks| ticks > 0)
+        {
+            return false;
+        }
         if mob.random.next_int_bound(10).unwrap_or(1) != 0 { return false; }
         let origin = Vec3::new(mob.position.x, mob.eye_y(), mob.position.z);
         let range = mob.attrs.follow_range;

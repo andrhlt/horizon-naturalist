@@ -1,7 +1,28 @@
 fn rhino_ai_tick(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
     use horizon_client::mobs::goals;
+    use horizon_core::nbt::Tag;
     use mod_api::Host;
     if matches!(kind, "naturalist:lion" | "naturalist:tiger") {
+        let saved_cooldown = game.persist.raw.get(&entity)
+            .and_then(|raw| raw.get(&"HuntingCooldown".into()))
+            .and_then(horizon_world::datafix::dynamic::as_number)
+            .map(|value| value.int_value().max(0));
+        let next_cooldown = if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
+            let ticks = saved_cooldown.or_else(|| {
+                horizon_client::mobs::animal_brain::hunting_cooldown(mob)
+                    .map(|ticks| ticks.clamp(0, i64::from(i32::MAX)) as i32)
+            }).unwrap_or(0);
+            if ticks > 0 {
+                // Lions and Tigers use the Java HuntingCooldown field, but their
+                // custom profiles don't enter Horizon's vanilla animal-brain tick.
+                horizon_client::mobs::animal_brain::set_hunting_cooldown(mob, i64::from(ticks - 1));
+            }
+            Some(ticks.saturating_sub(1))
+        } else { None };
+        if let Some(ticks) = next_cooldown {
+            let raw = game.persist.raw.entry(entity).or_insert_with(|| Tag::Compound(Default::default()));
+            if let Tag::Compound(fields) = raw { fields.insert("HuntingCooldown".into(), Tag::Int(ticks)); }
+        }
         crate::game::naturalist_rhino_goals::install_large_cat(game, entity, kind);
         return;
     }
