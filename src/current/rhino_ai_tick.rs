@@ -10,21 +10,19 @@ fn rhino_ai_tick(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
             && mob.alive() && mob.distance_sqr(position) <= 256.0
     });
     let has_target = game.mobs[index].ai.targets.has("nearest_target");
-    let has_attack = game.mobs[index].ai.goals.has("melee_attack");
+    let has_attack = game.mobs[index].ai.goals.has("NaturalistRhinoCharge");
     if calf_nearby {
         if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
             if !has_target {
                 mob.ai.targets.add(1, goals::NearestTarget::player(true));
             }
-            if !has_attack {
-                mob.ai.goals.add(2, goals::MeleeAttack::new(1.0, true));
-            }
+            if !has_attack { mob.ai.goals.add(2, crate::game::naturalist_rhino_goals::RhinoCharge::default()); }
         }
     } else if has_target || has_attack {
         if let Some(entity_ref) = game.entity(entity) {
             if let Some(handle) = game.mob(entity_ref) {
                 if has_target { handle.remove_target_goal(game, "nearest_target"); }
-                if has_attack { handle.remove_goal(game, "melee_attack"); }
+                if has_attack { handle.remove_goal(game, "NaturalistRhinoCharge"); }
             }
         }
         if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
