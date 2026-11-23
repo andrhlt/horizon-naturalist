@@ -14,7 +14,7 @@ Java reference: Naturalist `1471124ae26bcbf90a2106a1f68080d1dd03a53a` (2.0.7 Neo
 
 Current source checks pass:
 
-- `CARGO_NET_OFFLINE=true cargo test --lib --quiet` — 23 tests.
+- `CARGO_NET_OFFLINE=true cargo test --lib --quiet` — 26 tests.
 - `python3 -B tools/test_aquatic_spawn_placements.py` — seven placement declarations and Java predicate cases.
 - `python3 -B tools/test_aquatic_spawn_limits.py` — seven aquatic natural group caps.
 - `python3 -B tools/test_bird_spawn_coverage.py` — 67 biomes, 72 Bird rows.
