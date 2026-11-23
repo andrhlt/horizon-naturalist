@@ -670,6 +670,17 @@ bindings = [
  {name = "target", ty = "Option<InteractTarget>", value = "target"},
 ]
 
+[[native.mixin]]
+id = "lion-tiger-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/large_cat_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
 
 [[native.mixin]]
 id = "duck-client-pet"
