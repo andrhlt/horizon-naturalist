@@ -1,5 +1,6 @@
 """Compare Java Alligator attributes, egg lifecycle and live targeting headlessly."""
 import json
+import shutil
 import os
 from pathlib import Path
 import re
@@ -15,10 +16,14 @@ live_java = json.loads(Path(sys.argv[3]).read_text()) if len(sys.argv) > 3 else 
 with tempfile.TemporaryDirectory(prefix="nat-gator-", ignore_cleanup_errors=True) as scratch:
     home = Path(scratch)
     socket = home / "mobs.sock"
+    shared_jars = Path.home() / "Library/Application Support/horizon/jars"
+    if shared_jars.exists():
+        shutil.copytree(shared_jars, home / "jars", dirs_exist_ok=True)
+    env = {**os.environ, "HORIZON_HOME": str(home)}
 
     def ctl(*args):
         proc = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str,args)],
-                              check=True, capture_output=True, text=True, timeout=75)
+                              check=True, capture_output=True, text=True, timeout=75, env=env)
         return json.loads(proc.stdout.splitlines()[-1])
 
     def cmd(command):
@@ -60,7 +65,7 @@ with tempfile.TemporaryDirectory(prefix="nat-gator-", ignore_cleanup_errors=True
                 raise RuntimeError("Horizon did not open a headless world")
         else:
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
+                Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3", "--home", home, "--game-dir", home,
                 "--world", "Alligator", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("gamerule minecraft:random_tick_speed 0")

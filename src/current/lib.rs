@@ -1,7 +1,7 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
+mod alligator_egg_part;
 mod chrysalis_part;
-mod snail_eggs_part;
 pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
@@ -9,133 +9,27 @@ mod duck_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
+mod catfish_bucket_item;
+mod snail_eggs_part;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
-mod aquatic_spawn;
-mod aquatic_placements;
 mod land_placements;
 mod profiles;
 mod renderer;
-use mod_api::{AttachmentQueries, BlockMetadata, HostBlockStates};
+mod wildlife_renderer;
+use mod_api::AttachmentQueries;
 use std::sync::Arc;
 mod net;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
 };
 
-fn hippo_water_ok(water_at: bool, water_below: bool, waterlogged_below: bool) -> bool {
-    water_at || water_below || waterlogged_below
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
-enum NaturalAgeRule {
-    Fixed { should_spawn_baby: bool, chance: f32 },
-    ElephantOrMammoth,
-    Lion,
-    Zebra,
-}
-
-fn natural_age_rule(kind: &str) -> Option<NaturalAgeRule> {
-    use NaturalAgeRule::{ElephantOrMammoth, Fixed, Lion, Zebra};
-    const FIVE_PERCENT: &[&str] = &[
-        "naturalist:alligator", "naturalist:ant", "naturalist:boar",
-        "naturalist:capybara", "naturalist:caterpillar", "naturalist:crab",
-        "naturalist:deer", "naturalist:desert_scorpion", "naturalist:duck",
-        "naturalist:firefly", "naturalist:giant_isopod", "naturalist:giraffe",
-        "naturalist:great_white_shark", "naturalist:hedgehog", "naturalist:hippo",
-        "naturalist:jungle_scorpion", "naturalist:komodo_dragon", "naturalist:lizard",
-        "naturalist:mole", "naturalist:ostrich", "naturalist:rat", "naturalist:snail",
-        "naturalist:snake", "naturalist:tiger", "naturalist:tortoise", "naturalist:turkey",
-    ];
-    match kind {
-        "naturalist:bird" | "naturalist:butterfly" => Some(Fixed { should_spawn_baby: false, chance: 0.0 }),
-        "naturalist:bear" | "naturalist:black_bear" | "naturalist:rhino" | "naturalist:whale" => Some(Fixed { should_spawn_baby: true, chance: 1.0 }),
-        "naturalist:elephant" | "naturalist:mammoth" => Some(ElephantOrMammoth),
-        "naturalist:lion" => Some(Lion),
-        "naturalist:zebra" => Some(Zebra),
-        _ if FIVE_PERCENT.contains(&kind) => Some(Fixed { should_spawn_baby: true, chance: 0.05 }),
-        _ => None,
-    }
-}
-
-fn initialize_natural_spawn_group(
-    kind: &str,
-    reason: mod_api::SpawnReason,
-    group: &mut Option<mod_api::SpawnGroup>,
-) {
-    if reason != mod_api::SpawnReason::Natural {
-        return;
-    }
-    let Some(rule) = natural_age_rule(kind) else { return; };
-    if group.is_none() {
-        *group = Some(mod_api::SpawnGroup::Ageable(mod_api::AgeableGroup::new(false, 0.0)));
-    }
-    let Some(mod_api::SpawnGroup::Ageable(age)) = group.as_mut() else { return; };
-    match rule {
-        NaturalAgeRule::Fixed { should_spawn_baby, chance } => {
-            age.should_spawn_baby = should_spawn_baby;
-            age.baby_chance = chance;
-        }
-        NaturalAgeRule::ElephantOrMammoth => {
-            age.should_spawn_baby = age.size >= 2;
-            age.baby_chance = 1.0;
-        }
-        NaturalAgeRule::Lion => {
-            age.should_spawn_baby = true;
-            age.baby_chance = if age.size <= 1 { 0.05 } else { 0.75 };
-        }
-        NaturalAgeRule::Zebra => {
-            age.should_spawn_baby = true;
-            age.baby_chance = match age.size { 0 | 1 => 0.20, 2 => 0.30, _ => 0.15 };
-        }
-    }
-}
-
-fn scorpion_poison(host: &mut dyn mod_api::ServerHost, id: u32) -> Result<(), ()> {
-    let entity = host.entity(id).ok_or(())?;
-    let level = entity.level(host).ok_or(())?;
-    let origin = entity.position(host).ok_or(())?;
-    let jungle = entity.kind(host).is_some_and(|kind| kind.id(host) == "naturalist:jungle_scorpion");
-    let poison = host.effect_key("minecraft:poison").ok_or(())?;
-    for target in level.entities_in(host, [origin[0] - 2.5, origin[1] - 1.5, origin[2] - 2.5], [origin[0] + 2.5, origin[1] + 1.5, origin[2] + 2.5]).unwrap_or_default() {
-        if target == entity || target.kind(host).is_none_or(|kind| kind.id(host) != "minecraft:player") {
-            continue;
-        }
-        let Some(living) = host.living(target) else { continue; };
-        let _ = living.add_effect(host, &mod_api::ActiveEffect::new(poison, 120, 0, false, true, true));
-        let hit = if jungle { &SCORPION_JUNGLE_HIT } else { &SCORPION_DESERT_HIT };
-        if hit.get(host, Holder::Entity(id)).unwrap_or(false) { continue; }
-        if let Some(health) = living.health(host) {
-            let next = (health - 0.5).max(0.0);
-            let _ = living.set_health(host, next);
-            let _ = target.merge_nbt(host, mod_api::Compound::from([("Health".into(), mod_api::Tag::Float(next.to_bits()))]));
-        } else if let Some(data) = target.nbt(host)
-            && let Some(Tag::Float(bits)) = data.get(&"Health".into())
-        {
-            let next = (f32::from_bits(*bits) - 0.5).max(0.0);
-            let _ = target.merge_nbt(host, mod_api::Compound::from([("Health".into(), Tag::Float(next.to_bits()))]));
-        }
-        let _ = hit.set(host, Holder::Entity(id), true);
-    }
-    Ok(())
-}
-
 static COOLDOWN: AttachmentType<i32> = AttachmentType {
     namespace: "naturalist",
     name: "bass_eat_cooldown",
     default: || 0,
     codec: Some(AttachmentCodec { encode, decode }),
-    copy_on_death: false,
-    sync: false,
-};
-static SCORPION_DESERT_HIT: AttachmentType<bool> = AttachmentType { namespace: "naturalist", name: "scorpion_desert_hit", default: || false, codec: None, copy_on_death: false, sync: false };
-static SCORPION_JUNGLE_HIT: AttachmentType<bool> = AttachmentType { namespace: "naturalist", name: "scorpion_jungle_hit", default: || false, codec: None, copy_on_death: false, sync: false };
-static FIREFLY_AGE: AttachmentType<i32> = AttachmentType {
-    namespace: "naturalist",
-    name: "firefly_age",
-    default: || 0,
-    codec: None,
     copy_on_death: false,
     sync: false,
 };
@@ -212,6 +106,12 @@ struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
     bass: Arc<bass_renderer::BassRenderer>,
     duck: Arc<duck_renderer::DuckRenderer>,
+    alligator: Arc<wildlife_renderer::WildlifeRenderer>,
+    capybara: Arc<wildlife_renderer::WildlifeRenderer>,
+    catfish: Arc<wildlife_renderer::WildlifeRenderer>,
+    clam: Arc<wildlife_renderer::WildlifeRenderer>,
+    hippo: Arc<wildlife_renderer::WildlifeRenderer>,
+    piranha: Arc<wildlife_renderer::WildlifeRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -219,101 +119,38 @@ impl Default for Naturalist {
             deer: Arc::new(renderer::DeerRenderer::new()),
             bass: Arc::new(bass_renderer::BassRenderer::new()),
             duck: Arc::new(duck_renderer::DuckRenderer::new()),
+            alligator: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Alligator,
+            )),
+            capybara: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Capybara,
+            )),
+            catfish: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Catfish,
+            )),
+            clam: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Clam,
+            )),
+            hippo: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Hippo,
+            )),
+            piranha: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Piranha,
+            )),
         }
     }
 }
 
 #[mod_api::horizon_mod]
 impl mod_api::Hooks for Naturalist {
-    fn finalize_spawn(
-        &self,
-        _: &dyn mod_api::Host,
-        event: &mut mod_api::FinalizeSpawnEvent<'_>,
-    ) -> mod_api::Flow {
-        initialize_natural_spawn_group(event.kind, event.reason, event.group);
-        mod_api::Flow::Continue
-    }
-
-    fn mob_spawn_placement_check(
-        &self,
-        host: &dyn mod_api::Host,
-        event: &mut mod_api::MobSpawnPlacementCheckEvent<'_>,
-    ) {
-        if event.reason != mod_api::SpawnReason::Natural {
-            return;
-        }
-        let pos = [event.pos.x, event.pos.y, event.pos.z];
-        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:piranha") {
-            let sea_level = event.level.sea_level(host);
-            let fluid_water = host.fluid_key("minecraft:water");
-            let water_fluid_at = |at| event.level.fluid_state(host, at)
-                .is_some_and(|state| !state.is_empty() && Some(state.fluid) == fluid_water);
-            let water_block_at = |at| event.level.block(host, at)
-                .and_then(|block| host.block_states().name(block).ok().map(str::to_owned))
-                .is_some_and(|name| name == "minecraft:water");
-            let decision = match event.kind {
-                "naturalist:anglerfish" => {
-                    let surface_rule = aquatic_placements::anglerfish_surface_spawn_ok(
-                        event.default_result,
-                        pos[1],
-                        sea_level,
-                        water_fluid_at([pos[0], pos[1] - 1, pos[2]]),
-                        water_block_at([pos[0], pos[1] + 1, pos[2]]),
-                    );
-                    let block_light = event.level.brightness(host, mod_api::LightLayer::Block, pos);
-                    let sky_light = event.level.brightness(host, mod_api::LightLayer::Sky, pos);
-                    aquatic_placements::anglerfish_spawn_ok(
-                        surface_rule,
-                        pos[1],
-                        sea_level,
-                        water_block_at(pos),
-                        block_light,
-                        sky_light,
-                    )
-                }
-                "naturalist:blobfish" => aquatic_placements::deep_water_spawn_ok(
-                    event.default_result, pos[1], sea_level, 33,
-                ),
-                "naturalist:piranha" => aquatic_placements::deep_water_spawn_ok(
-                    event.default_result, pos[1], sea_level, 0,
-                ),
-                _ => unreachable!(),
-            };
-            *event.result = if decision { mod_api::SpawnCheck::Succeed } else { mod_api::SpawnCheck::Fail };
-            return;
-        }
-        if event.kind != "naturalist:hippo" {
-            return;
-        }
-        let water_at = |at| {
-            event
-                .level
-                .block(host, at)
-                .and_then(|block| host.block_states().name(block).ok().map(str::to_owned))
-                .is_some_and(|name| name == "minecraft:water")
-        };
-        let waterlogged_below = event
-            .level
-            .block_property(host, [pos[0], pos[1] - 1, pos[2]], "waterlogged")
-            .is_some_and(|value| value == "true");
-        *event.result = if hippo_water_ok(
-            water_at(pos),
-            water_at([pos[0], pos[1] - 1, pos[2]]),
-            waterlogged_below,
-        ) {
-            mod_api::SpawnCheck::Succeed
-        } else {
-            mod_api::SpawnCheck::Fail
-        };
-    }
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
         ant_hill::register(registrar);
+        alligator_egg_part::register(registrar);
         chrysalis_part::register(registrar);
         snail_eggs_part::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
-        aquatic_placements::register(registrar);
         registrar
             .declare_spawn_placement(
                 "deer",
@@ -328,16 +165,7 @@ impl mod_api::Hooks for Naturalist {
             .expect("register deer spawn placement");
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
-        for (kind, limit) in [
-            ("naturalist:anglerfish", 8),
-            ("naturalist:blobfish", 8),
-            ("naturalist:catfish", 8),
-            ("naturalist:jellyfish", 8),
-            ("naturalist:piranha", 24),
-            ("naturalist:ray", 8),
-        ] {
-            registrar.entity_part(kind, aquatic_spawn::PackLimit(limit));
-        }
+        catfish_bucket_item::register(registrar);
         for &(id, template, attributes) in profiles::PROFILES {
             let values = attributes
                 .iter()
@@ -349,46 +177,74 @@ impl mod_api::Hooks for Naturalist {
         }
         registrar.entity_part("naturalist:bass", bass_hunt::BassPart);
     }
+    fn server_tick(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        _: &mut mod_api::ServerTickEvent<'_>,
+    ) {
+        alligator_egg_part::hatch_tick(host);
+    }
     fn entity_join_level(
         &self,
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityJoinLevelEvent<'_>,
     ) -> mod_api::Flow {
-        if event.kind == "naturalist:firefly" {
-            if let Some(entity) = host.entity(event.entity) {
-                let age = entity.nbt(host).and_then(|data| match data.get(&"Age".into()) {
-                    Some(Tag::Int(value)) => Some(*value),
-                    Some(Tag::Short(value)) => Some(i32::from(*value)),
-                    Some(Tag::Byte(value)) => Some(i32::from(*value)),
-                    _ => None,
-                }).or_else(|| entity.nbt(host).and_then(|data| match data.get(&"NoAI".into()) { Some(Tag::Byte(value)) if *value != 0 => Some(-2), _ => None })).unwrap_or(-2);
-                let _ = FIREFLY_AGE.set(host, Holder::Entity(event.entity), age);
-                if let Some(mob) = host.mob(entity) { let _ = mob.set_baby(host, age < 0); }
-                let _ = entity.merge_nbt(host, Compound::from([("Age".into(), Tag::Int(age))]));
-            }
-        } else if matches!(event.kind, "naturalist:desert_scorpion" | "naturalist:jungle_scorpion") {
-            let variant = if event.kind == "naturalist:jungle_scorpion" { "naturalist:black" } else { "naturalist:desert_scorpion" };
-            if let Some(entity) = host.entity(event.entity)
-                && entity.nbt(host).is_some_and(|data| !data.contains_key(&"Variant".into()))
-            {
-                let _ = entity.merge_nbt(host, mod_api::Compound::from([("Variant".into(), mod_api::Tag::String(variant.into()))]));
-            }
-            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
-                let target = mod_api::GoalSpec::NearestTarget {
-                    prey: mod_api::MobFilter::Player,
-                    must_see: true,
-                    must_reach: false,
-                    interval: 10,
-                };
-                if !mob.add_target_goal(host, 1, &target) {
-                    eprintln!("Naturalist: failed to add scorpion player target goal");
+        // Species-specific vanilla goal parity. Shared spawn selection and
+        // initialization remain in APP-2133; this only fills each mob's AI.
+        if let Some(mob) = host
+            .entity(event.entity)
+            .and_then(|entity| host.mob(entity))
+        {
+            let add_goal = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_goal(host, priority, &goal);
                 }
-                let attack = mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true };
-                if !mob.add_goal(host, 2, &attack) {
-                    eprintln!("Naturalist: failed to add scorpion melee goal");
+            };
+            let add_target = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.target_goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_target_goal(host, priority, &goal);
                 }
+            };
+            let fish_prey = || mod_api::MobFilter::Species(vec![
+                "minecraft:cod".into(), "minecraft:salmon".into(),
+                "minecraft:tropical_fish".into(), "minecraft:pufferfish".into(),
+            ]);
+            match event.kind {
+                "naturalist:alligator" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_goal(&mob, host, 6, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 7, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(vec!["minecraft:cow".into(), "minecraft:pig".into(), "minecraft:sheep".into(), "minecraft:chicken".into()]), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
+                }
+                "naturalist:capybara" => {
+                    add_goal(&mob, host, 2, mod_api::GoalSpec::Tempt { speed: 1.25, items: vec!["minecraft:melon".into()], can_scare: true });
+                    add_goal(&mob, host, 4, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 5, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                }
+                "naturalist:catfish" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(vec!["naturalist:bass".into(), "minecraft:cod".into(), "minecraft:salmon".into(), "minecraft:tropical_fish".into(), "minecraft:pufferfish".into()]), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: false });
+                }
+                "naturalist:hippo" => {
+                    add_goal(&mob, host, 2, mod_api::GoalSpec::Tempt { speed: 1.0, items: vec!["minecraft:melon".into()], can_scare: true });
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_goal(&mob, host, 6, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 7, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::HurtByTarget { alert: true });
+                }
+                "naturalist:piranha" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: fish_prey(), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
+                }
+                _ => {}
             }
-        } else if event.kind == "naturalist:bass" {
+        }
+        if event.kind == "naturalist:bass" {
             if let Some(mob) = host
                 .entity(event.entity)
                 .and_then(|entity| host.mob(entity))
@@ -421,36 +277,11 @@ impl mod_api::Hooks for Naturalist {
         event.listened = true;
     }
 
-    fn server_tick(&self, host: &mut dyn mod_api::ServerHost, _: &mut mod_api::ServerTickEvent<'_>) {
-        let Ok(mut pending) = chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level) else { return; };
-        let Some(pos) = pending.first().copied() else { return; };
-        let Some(level) = host.level("minecraft:overworld") else { return; };
-        if level.spawn_mob(host, "naturalist:butterfly", [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5], mod_api::SpawnReason::Command).is_some() {
-            pending.remove(0);
-            let _ = chrysalis_part::PENDING.set(host, mod_api::Holder::Level, pending);
-        }
-    }
-
     fn entity_tick_pre(
         &self,
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPreEvent<'_>,
     ) -> mod_api::Flow {
-        if matches!(event.kind, "naturalist:desert_scorpion" | "naturalist:jungle_scorpion") {
-            let _ = scorpion_poison(host, event.entity);
-        }
-        if event.kind == "naturalist:firefly" {
-            if let Ok(age) = FIREFLY_AGE.get(host, Holder::Entity(event.entity)) {
-                let next = (age + 1).min(0);
-                if next != age {
-                    let _ = FIREFLY_AGE.set(host, Holder::Entity(event.entity), next);
-                    if let Some(entity) = host.entity(event.entity) {
-                        if let Some(mob) = host.mob(entity) { let _ = mob.set_baby(host, next < 0); }
-                        let _ = entity.merge_nbt(host, Compound::from([("Age".into(), Tag::Int(next))]));
-                    }
-                }
-            }
-        }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
             let result = (|| {
@@ -502,6 +333,12 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:bass".into(), self.bass.clone());
+        event.renderers.register("naturalist:alligator".into(), self.alligator.clone());
+        event.renderers.register("naturalist:capybara".into(), self.capybara.clone());
+        event.renderers.register("naturalist:catfish".into(), self.catfish.clone());
+        event.renderers.register("naturalist:clam".into(), self.clam.clone());
+        event.renderers.register("naturalist:hippo".into(), self.hippo.clone());
+        event.renderers.register("naturalist:piranha".into(), self.piranha.clone());
     }
 
     fn render_living_pre(
@@ -577,82 +414,6 @@ impl mod_api::Hooks for Naturalist {
         self.deer.clear();
         self.bass.clear();
         self.duck.clear();
-    }
-}
-
-#[cfg(test)]
-mod natural_spawn_group_tests {
-    use super::initialize_natural_spawn_group;
-    use mod_api::{AgeableGroup, SpawnGroup, SpawnReason};
-
-    fn apply_member(kind: &str, group: &mut Option<SpawnGroup>) -> (i32, bool, f32) {
-        initialize_natural_spawn_group(kind, SpawnReason::Natural, group);
-        let Some(SpawnGroup::Ageable(age)) = group.as_mut() else { panic!("{kind} lacks age group"); };
-        let result = (age.size, age.should_spawn_baby, age.baby_chance);
-        // Pinned AgeableMob.finalizeSpawn increments the group after its baby roll.
-        age.size += 1;
-        result
-    }
-
-    #[test]
-    fn java_special_group_transitions_follow_the_carried_member_index() {
-        for (kind, expected) in [
-            ("naturalist:elephant", [(0, false, 1.0), (1, false, 1.0), (2, true, 1.0), (3, true, 1.0)]),
-            ("naturalist:mammoth", [(0, false, 1.0), (1, false, 1.0), (2, true, 1.0), (3, true, 1.0)]),
-            ("naturalist:lion", [(0, true, 0.05), (1, true, 0.05), (2, true, 0.75), (3, true, 0.75)]),
-            ("naturalist:zebra", [(0, true, 0.20), (1, true, 0.20), (2, true, 0.30), (3, true, 0.15)]),
-        ] {
-            let mut group = None;
-            let actual = std::array::from_fn(|_| apply_member(kind, &mut group));
-            assert_eq!(actual, expected, "{kind}");
-        }
-    }
-
-    #[test]
-    fn common_groups_keep_their_java_chance_and_birds_never_draw_a_baby_roll() {
-        let mut group = None;
-        assert_eq!(apply_member("naturalist:deer", &mut group), (0, true, 0.05));
-        assert_eq!(apply_member("naturalist:deer", &mut group), (1, true, 0.05));
-        let mut bird = None;
-        for expected_size in 0..4 {
-            assert_eq!(apply_member("naturalist:bird", &mut bird), (expected_size, false, 0.0));
-        }
-        let mut bear = None;
-        assert_eq!(apply_member("naturalist:bear", &mut bear), (0, true, 1.0));
-        assert_eq!(apply_member("naturalist:bear", &mut bear), (1, true, 1.0));
-    }
-
-    #[test]
-    fn mapping_only_changes_natural_spawn_groups() {
-        let mut age = AgeableGroup::new(true, 0.4);
-        age.size = 3;
-        let mut group = Some(SpawnGroup::Ageable(age));
-        let original = group.clone();
-        initialize_natural_spawn_group("naturalist:deer", SpawnReason::SpawnItemUse, &mut group);
-        assert_eq!(group, original);
-    }
-}
-
-#[cfg(test)]
-mod hippo_spawn_tests {
-    use super::hippo_water_ok;
-
-    #[test]
-    fn matches_pinned_spawn_fixture_predicates() {
-        let cases = [
-            ("no_water", false, false, false, false),
-            ("natural_corner_16", true, false, false, true),
-            ("generated_cross_chunk", false, false, false, false),
-            ("horizontal_17", false, false, false, false),
-            ("two_above", false, false, false, false),
-            ("two_below", false, false, false, false),
-            ("waterlogged_one_below", false, false, true, true),
-            ("generated_same_chunk", true, false, false, true),
-            ("stone_rejected", false, false, false, false),
-        ];
-        for (name, at, below, waterlogged, expected) in cases {
-            assert_eq!(hippo_water_ok(at, below, waterlogged), expected, "{name}");
-        }
     }
 }
 

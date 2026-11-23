@@ -1,0 +1,28 @@
+{
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "artifact": "native-0a875da-ce9e9922f3c1",
+  "replay": "tools/launcher_capybara.py",
+  "matching_artifact": true,
+  "checks": {
+    "failed_tame_attempt_consumed_food": true,
+    "eventual_tame": true,
+    "owner_saved": true,
+    "tame_saved": true,
+    "default_dye": "red",
+    "ordered_sit": true,
+    "whistle_flipped_following": true,
+    "whistle_stood_pet_up": true,
+    "healed_health": 6.0,
+    "heal_consumed": true
+  },
+  "tame_attempts": 3,
+  "unverified_java_fields": [
+    "untamed_wont_mate",
+    "tamed_can_mate",
+    "offspring_tamed",
+    "offspring_owner",
+    "offspring_dye",
+    "fall_damage",
+    "sleep goal behavior"
+  ]
+}
