@@ -54,6 +54,21 @@
     "visible_species": ["naturalist:jellyfish", "naturalist:giant_isopod", "naturalist:great_white_shark", "naturalist:ray", "naturalist:whale"],
     "scope": "Earlier renderer candidate only; reusable for presence/model visibility, not current behavior or Java pixel parity."
   },
+  "latest_headless_replay": {
+    "source_commit": "b413c33d49c5818499a22851f644f7640d90db37",
+    "client_candidate": "native-0a875da-c5f09af2e30f",
+    "launcher_home": "/Users/andrewholt/Library/Application Support/horizon-launcher",
+    "account_configuration": "selected account reports ready for online play; replay ran through supported Play with --instance and --account",
+    "headless": true,
+    "attributes_and_default_variant": "matched Java: 8 health, 1.2 speed, 2.0 damage, naturalist:red",
+    "retaliation": "the live Anglerfish killed the 2-health nearby Cod within 40 ticks",
+    "attack_triggered_cooldown": "failed; HuntingCooldown remained 0 after combat",
+    "seeded_cooldown_tick": "2400 decremented to 2399",
+    "bucket_capture": "captured an Anglerfish bucket, but both bucket_entity_data and custom_data held naturalist:red despite fixture setup requesting naturalist:glow",
+    "player_release": "failed; held item remained naturalist:anglerfish_bucket and no live Anglerfish was found",
+    "dispenser_release": "not measured; fixture dispenser coordinates were outside loaded chunks after player-position setup",
+    "acceptance_status": "open"
+  },
   "unchecked_visual_states": [
     "controlled Java pixel comparison",
     "all variant texture comparisons",
