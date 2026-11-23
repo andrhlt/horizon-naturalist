@@ -325,7 +325,7 @@ impl mod_api::Hooks for Naturalist {
         use mod_api::Host;
         if let Some(level) = host.level(event.dimension)
             && let Ok(Some(mod_api::GameRuleValue::Bool(enabled))) =
-                host.level_game_rule(level, "minecraft:mob_griefing")
+                level.game_rule(host, "minecraft:mob_griefing")
         {
             tortoise_egg_part::set_mob_griefing(enabled);
         }
