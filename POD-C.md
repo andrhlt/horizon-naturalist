@@ -1,7 +1,7 @@
 # Pod C iteration manifest
 
 Frozen source branch: `codex/naturalist-pod-c`
-Frozen source commit: `8d550b8`
+Frozen source commit: `75a04af`
 Base: `origin/main` / `3d03fb7107f9c93f5bc96d5e18602c0921d7d752`
 
 Included reviewed heads:
@@ -33,6 +33,7 @@ Reusable build candidate (read-only; do not mutate or rebuild):
 Delivery checklist:
 
 - [x] Integrate reviewed owned commits with shared `lib.rs` and spawn ownership resolved.
+- [x] Resolve duplicate native registration IDs found by the pinned build validator.
 - [x] Preserve contributor attribution and individual PRs.
 - [ ] Obtain one coordinated heavy-build slot for this exact Pod C source.
 - [ ] Publish immutable Pod C artifact/resource/socket manifest.
