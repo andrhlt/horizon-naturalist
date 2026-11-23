@@ -204,6 +204,14 @@ impl Default for Naturalist {
 
 #[mod_api::horizon_mod]
 impl mod_api::Hooks for Naturalist {
+    fn entity_interact(
+        &self,
+        host: mod_api::HostSide<'_>,
+        event: &mut mod_api::EntityInteractEvent<'_>,
+    ) -> Option<mod_api::InteractionResult> {
+        whale_behavior::interact(host, event)
+    }
+
     fn mob_spawn_placement_check(
         &self,
         host: &dyn mod_api::Host,
