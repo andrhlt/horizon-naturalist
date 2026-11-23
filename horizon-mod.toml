@@ -19,23 +19,6 @@ bindings = [
  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
  {name = "command", ty = "&str", value = "command"},
 ]
-[[native.module]]
-id = "bass-natural-fixture-api"
-file = "crates/horizon-client/src/game.rs"
-name = "naturalist_bass_fixture"
-source = "src/legacy_reference/horizon/bass_natural_fixture_api.rs"
-
-[[native.mixin]]
-id = "bass-natural-fixture-command"
-target = "horizon_client::game::commands::Game<'_>::run_command"
-kind = "HEAD"
-cancellable = true
-helper = "src/legacy_reference/horizon/bass_natural_fixture_command.rs"
-bindings = [
- {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
- {name = "command", ty = "&str", value = "command"},
-]
-
 [[native.mixin]]
 id = "forest-spawns-config-fixture"
 target = "horizon_client::game::commands::Game<'_>::run_command"
@@ -149,6 +132,12 @@ id = "biome-routes"
 file = "crates/horizon-client/src/game.rs"
 name = "naturalist_spawn_routes"
 source = "src/current/biome_routes.rs"
+
+[[native.module]]
+id = "whale-behavior"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_whale_behavior"
+source = "src/current/whale_behavior.rs"
 
 [[native.module]]
 id = "caterpillar-cocoon-goal"

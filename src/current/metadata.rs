@@ -429,7 +429,7 @@ fn metadata(
             kind.tempt = cod;
         }
         if name == "naturalist:whale" {
-            let food: Arc<[String]> = whale_behavior::FOOD_ITEMS
+            let food: Arc<[String]> = naturalist_whale_behavior::FOOD_ITEMS
                 .iter()
                 .map(|item| (*item).to_owned())
                 .collect::<Vec<_>>()
