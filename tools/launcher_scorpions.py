@@ -5,12 +5,14 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
+from launcher_setup import prepare_home
 
 
-def capture(version, *, targeting=False):
+def capture(version, jar, *, targeting=False):
     with tempfile.TemporaryDirectory(prefix="nat-scorpion-", ignore_cleanup_errors=True) as path:
         home = Path(path)
         socket = home / "scorpion.sock"
+        prepare_home(home, jar)
 
         def ctl(*args):
             process = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
@@ -78,6 +80,7 @@ def capture(version, *, targeting=False):
                 cmd(f"kill {selector}")
                 cmd("effect clear @s minecraft:poison")
                 cmd("effect give @s minecraft:instant_health 1 4 true")
+                cmd("data merge entity @s {Health:20f}")
                 cmd("tp @s 8.5 101 5.5")
                 cmd("time set noon")
                 output[kind] = result
@@ -177,8 +180,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
     parser.add_argument("fixture", type=Path)
+    parser.add_argument("--jar", type=Path, required=True)
     parser.add_argument("--targeting", action="store_true")
     options = parser.parse_args()
-    result = capture(options.version, targeting=options.targeting)
+    result = capture(options.version, options.jar, targeting=options.targeting)
     print(json.dumps(result, indent=2), flush=True)
     compare(result, json.loads(options.fixture.read_text()))

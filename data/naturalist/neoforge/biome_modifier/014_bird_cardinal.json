@@ -1,6 +1,15 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": "#naturalist:bird_spawn_3",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_cardinal",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_cardinal"
+      }
+    ]
+  },
   "spawners": {
     "type": "naturalist:bird",
     "weight": 10,

@@ -2,14 +2,23 @@
 import argparse
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 
 
-def capture(version, reference):
+def capture(version, reference, jar=None):
     with tempfile.TemporaryDirectory(prefix="nat-insect-", ignore_cleanup_errors=True) as work:
         home = Path(work)
         socket = home / "insect.sock"
+        if jar is not None:
+            import hashlib
+            from prepare import JAR_SHA
+            if hashlib.sha512(jar.read_bytes()).hexdigest() != JAR_SHA:
+                raise ValueError("expected the pinned Naturalist 2.0.7 NeoForge 26.3 jar")
+            (home / "jars").mkdir()
+            shutil.copyfile(jar, home / "jars" / f"{JAR_SHA}.jar")
+            (home / "horizon-mods.txt").write_text("mod.naturalist:true\n")
 
         def ctl(*args):
             reply = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
@@ -102,5 +111,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
     parser.add_argument("reference", type=Path)
+    parser.add_argument("--jar", type=Path, help="original jar required by the current external-jar package")
     args = parser.parse_args()
-    capture(args.version, json.loads(args.reference.read_text()))
+    capture(args.version, json.loads(args.reference.read_text()), args.jar)

@@ -9,18 +9,6 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 from prepare import JAR_SHA, ROOT
 
 
-# The native capture-net hook requests this particle by registry key.  Keep
-# these original client resources alongside the native mod so Horizon's
-# resource loader can resolve the animation without bundling the Java jar.
-CAPTURE_NET_PARTICLE_RESOURCES = (
-    'assets/naturalist/particles/capture_net_swing.json',
-    'assets/naturalist/textures/particle/capture_net_swing_0.png',
-    'assets/naturalist/textures/particle/capture_net_swing_1.png',
-    'assets/naturalist/textures/particle/capture_net_swing_2.png',
-    'assets/naturalist/textures/particle/capture_net_swing_3.png',
-)
-
-
 def build(jar: Path, output: Path):
     if hashlib.sha512(jar.read_bytes()).hexdigest() != JAR_SHA:
         raise ValueError('expected Naturalist 2.0.7 NeoForge for Minecraft 26.3')
@@ -50,9 +38,6 @@ def build(jar: Path, output: Path):
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     for path in sorted((ROOT / 'src/current').rglob('*.rs')):
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
-    with ZipFile(jar) as original:
-        for name in CAPTURE_NET_PARTICLE_RESOURCES:
-            payloads[name] = original.read(name)
     output.parent.mkdir(parents=True, exist_ok=True)
     with ZipFile(output, 'w', ZIP_DEFLATED, compresslevel=9) as z:
         for name, data in sorted(payloads.items()):

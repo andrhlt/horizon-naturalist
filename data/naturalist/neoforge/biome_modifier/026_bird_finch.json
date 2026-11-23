@@ -1,6 +1,15 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": "#naturalist:bird_spawn_4",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_finch",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_finch"
+      }
+    ]
+  },
   "spawners": {
     "type": "naturalist:bird",
     "weight": 10,
