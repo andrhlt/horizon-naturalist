@@ -1,6 +1,6 @@
 # APP-2135 integration checkpoint
 
-Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree).
+Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `459dd0a49d09bf41787ebae64bc7e4af5ce67d60`.
 The current source includes the refreshed handoff heads for ocean `bb021967`, freshwater/Alligator
 `7f30ea2`, large animals `8d9f0c5`, insects `b042209`, Duck `fb6298a`, and reptiles/Tortoise
 `8c4d833`, plus the shared-spawn source `29adc01`.
@@ -20,13 +20,13 @@ CARGO_NET_OFFLINE=true cargo test --lib --quiet
   --version nightly-2026-11-20-0a875da --trust-native-code .
 ```
 
-Both commands pass on this candidate (`29/29` Rust tests; native build/install succeeds).
+Both commands pass on this candidate (`32/32` Rust tests; native build/install succeeds).
 The supported offscreen route is through `tools/launcher_selected_headless.py` or the family
 launchers, passing `--offscreen`; no accountless-client flag or auth bypass is part of setup.
 
 | Family | Implemented source in candidate | Verified here | Remaining gate / known gap |
 |---|---|---|---|
-| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers | native build; source checks | headless capture/conservation, Ray landed-hit and Anglerfish cooldown, Whale/Isopod/Jellyfish behavior, LAN/persistence |
+| Ocean | bucket capture/release, aquatic placement/limits, swimmer goals, combat wrappers, Isopod hiding/shell/Cod food, Starfish color-drop fallback | native build; 32 Rust tests; source checks | headless capture/conservation, Ray landed-hit and Anglerfish cooldown, Whale/Isopod/Cod/Starfish behavior, LAN/persistence |
 | Freshwater/coastal | Alligator breeding/laying, Capybara persistence/use, Hippo/Piranha/Catfish/Clam/Bass paths | native build; source checks | headless Alligator lay/stomp, aquatic LAN/persistence, Alligator stomp remains open |
 | Shared spawning | 36 age-group policies and serial carry wiring | native build; Rust/source checks | controlled loaded-chunk natural spawn and matching artifact runtime |
 | Large animals | renderers, Giraffe interaction/control registration, Lion/Tiger interaction/death hook, Rhino/Zebra source | native build | Giraffe/Zebra/Rhino/Lion/Tiger gameplay fixtures; Rhino charge/shield behavior is not enabled in this candidate because its injected module uses unsupported cohort fields |
