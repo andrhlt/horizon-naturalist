@@ -1,31 +1,34 @@
-# APP-2133 spawning evidence and pin plan
+# APP-2133 spawning handoff
 
-## Java predicates
+## Frozen baseline and scope
 
-The Java reference is Naturalist commit `1471124ae26bcbf90a2106a1f68080d1dd03a53a` (the commit and JAR SHA-512 are recorded in `fixtures/naturalist-app2133-acceptance-fe1b833e06f7.json`). Its spawn methods define these rules:
+Java reference: Naturalist `1471124ae26bcbf90a2106a1f68080d1dd03a53a` (2.0.7 NeoForge 26.3.0.95). Horizon remains `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`, Minecraft 26.3, SDK Rust 1.99.1. No engine patch publication or pin change is part of this PR.
 
-- Anglerfish: vanilla `WaterAnimal.checkSurfaceWaterAnimalSpawnRules`, or water at/below `sea_level - 33` with raw brightness zero.
-- Blobfish: water fluid at/below `sea_level - 33`.
-- Piranha: water fluid at or below sea level.
+## Implemented behavior
 
-The implementation keeps each species' `InWater` placement and evaluates the additional rule in `mob_spawn_placement_check`. The pinned API already exposes `LevelRef::brightness`, `LevelRef::sea_level`, and `LevelRef::fluid_state`; no placement API extension is required for these predicates.
+- The seven fixture-rostered aquatic species use Java's `IN_WATER` placement and natural cluster caps: Anglerfish 8, Bass 6, Blobfish 8, Catfish 8, Jellyfish 8, Piranha 24, Ray 8.
+- The existing `mob_spawn_placement_check` handles Natural Anglerfish, Blobfish, and Piranha candidates. Anglerfish accepts the Java surface-water case or deep water at/below sea level minus 33 with block and sky light zero. Blobfish requires the default water-placement result and Y at/below sea level minus 33. Piranha requires the default water-placement result and Y at/below sea level.
+- These checks use existing pinned APIs for the candidate, default placement result, sea level, fluid/block state, brightness, and `SpawnCheck`. The callback can accept or reject a concrete candidate; it cannot force a species to be selected, expose every attempt/RNG draw, or report spawn-group state.
 
-`python3 -B tools/test_aquatic_spawn_placements.py` checks the 7 aquatic declarations and their Java fixture cases. The Rust boundary test covers Anglerfish light and surface/deep cases and the Blobfish/Piranha sea-level boundaries.
+## Verification and remaining gaps
 
-## Bird discrepancy
+Current source checks pass:
 
-Keep `fixtures/naturalist-combined-3d513df20090.json` as reusable evidence: it contains 515 Java spawn rows across 67 biomes with no row mismatches. Do not regenerate it as part of APP-2133.
+- `CARGO_NET_OFFLINE=true cargo test --lib --quiet` — 23 tests.
+- `python3 -B tools/test_aquatic_spawn_placements.py` — seven placement declarations and Java predicate cases.
+- `python3 -B tools/test_aquatic_spawn_limits.py` — seven aquatic natural group caps.
+- `python3 -B tools/test_bird_spawn_coverage.py` — 67 biomes, 72 Bird rows.
+- `python3 -B tools/verify_bird_variant_pools.py` — 36/36 biome pools.
+- `python3 -B tools/test_natural_group_age_scope.py` — 36 species and Java-backed special group distributions.
 
-The selected fixed-seed cache in `fixtures/naturalist-app2133-selected-cache-a2a655b.json` still differs for Bird at seed `49903`: Horizon has 3 entities and Java has 2. Seed `49904` has 0 on both. The recorded finalizer A/B comparison produced identical Horizon positions, so Bird finalizer behavior is ruled out as the cause. The remaining candidate is the natural-spawn selection/finalization sequence before Bird finalizer behavior.
+Reusable table evidence remains `fixtures/naturalist-combined-3d513df20090.json` (515 Java spawn rows across 67 biomes, zero row mismatches). Do not regenerate it for this ticket.
 
-The isolated Horizon hook work adds read-only `natural_spawn_attempt` observations at category-local, start, position, type-check, and successful-spawn stages. Successful events include the zero-based group member index passed to finalization. The hook makes no random calls and returns no decision. The serial loop still owns the same random source and draw sites; observer calls occur after the corresponding stage. Existing hooked natural spawning already selects the serial path, so this does not switch a hooked run from parallel to serial.
+Earlier matching frozen-SDK headless evidence on candidate `native-0a875da-408c6cec89f6` observed natural Butterfly and Firefly spawns and Bird initialization. Its installed `libnaturalist.dylib` SHA-256 was `baa44853edf3af9d179acd2ad4d0f85c8796baa44a1d31dcdde4b120c1e8dc1e`. This is prior candidate evidence; the current merged PR head still needs the centralized APP-2135 artifact/build and runtime checks.
 
-The isolated engine source is based on Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`; the local hook commit is `511d5f883070ba7516b74bb79f1a49eee500a495`. Its generated API surface is additive (four items, zero breaking or conditional changes) with surface hash `fcdd1a7515da5be8f29cac6e6853b52d`, against frozen surface `e05637790d2a91aaa8075e748e2ca872`. This is a local development API source identity, not a published or signed SDK artifact. The official SDK release requires four platform builds, smoke checks, and signed publication; those have not run for this local branch. The pinned frozen installation and SDK were left untouched.
+The earlier high-weight river Piranha probe observed no aquatic entities after 1,200 ticks but did not establish that a valid Piranha candidate was attempted, so it is inconclusive. A fresh headless launch of the registered matching candidate is currently blocked at Horizon Launcher's Microsoft account ownership gate. Do not bypass authentication or managed cache leases. APP-2135 owns the next shared controlled aquatic run using loaded chunks, correct biome/fluid/light/depth, and the normal production spawn path.
 
-The engine build check passed (`cargo check -p horizon-client --lib`). The two existing RNG guard tests are marked daily-ignored. A forced ignored run reached the shared game fixture and failed at `native_entity_refs.rs:1239` on an `Option::unwrap` before reaching these hooks. No matching-artifact fixed-seed trace has been captured yet, so the Bird 3-vs-2 residual remains undiagnosed at the individual draw level, and natural group initialization has not been verified through a matching artifact.
+Bird seed `49903` remains Horizon 3 vs Java 2; `49904` is 0 vs 0. Exact cross-engine Bird count/RNG parity is a separate full-parity follow-up absent a demonstrated player-visible defect.
 
-## Shared pin plan
+## Ownership and next action
 
-The patched Horizon hook changes the generated API surface. After the engine branch is reviewed and its signed SDK is published, move only this Naturalist branch's `horizon` pin to the exact patched engine commit and record the published SDK metadata here. Keep other mods on their current pins until each has been checked against the updated SDK; do not roll a workspace-wide pin from this ticket. Do not pin Naturalist to the local development surface hash as though it were a releasable SDK.
-
-The currently installed frozen Horizon revision `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` and its SDK remain untouched and available: game `26.3`, SDK date `2026-11-20`, Rust `1.99.1`, mixins revision `e59da9094f0c2fdda6c627fe9eff22dec6a906f0`, API surface `e05637790d2a91aaa8075e748e2ca872`, package format `6`. No candidate install or game binary is part of this repository change.
+APP-2133 code is on [PR #22](https://github.com/andrhlt/horizon-naturalist/pull/22), head `caa3224b6a882151e7bb96322f3096489a16b6ea`, based on current main `3d03fb7107f9c93f5bc96d5e18602c0921d7d752`. This branch owns `src/current/aquatic_placements.rs`, the aquatic placement callback/registration in `src/current/lib.rs`, Natural Bass's natural cluster cap in `src/current/bass_hunt.rs`, the focused predicate test, and this spawning record/checklist entry. Full-package build, shared cache use, and the integrated aquatic runtime result belong to APP-2135. Keep APP-2133 In Review until its gameplay acceptance gates receive matching integrated runtime evidence.
