@@ -368,6 +368,7 @@ impl mod_api::Hooks for Naturalist {
                     eprintln!("Naturalist: failed to add scorpion melee goal");
                 }
             }
+        }
         if event.kind == "naturalist:komodo_dragon" {
             self.komodo_entities.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
                 .insert(event.entity);
