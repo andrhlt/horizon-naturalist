@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_bass",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_bass"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:bass",
+    "weight": 10,
+    "minCount": 3,
+    "maxCount": 6
+  }
+}

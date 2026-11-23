@@ -4,12 +4,14 @@ import json
 from pathlib import Path
 import subprocess
 import tempfile
+from launcher_setup import prepare_home
 
 from dragonfly_contact_arena import capture, stepper, vanilla_entry
 
 parser = argparse.ArgumentParser()
 parser.add_argument("version", type=Path)
 parser.add_argument("--lan", action="store_true")
+parser.add_argument("--jar", type=Path, required=True)
 args = parser.parse_args()
 version = args.version
 
@@ -29,6 +31,7 @@ with tempfile.TemporaryDirectory(prefix="nat-dragonfly-contact-", ignore_cleanup
     def launch(side, *options):
         home = root / side
         home.mkdir()
+        prepare_home(home, args.jar)
         ctl(side, "launch", "--headless", "--game", version / "horizon-client", "--resources",
             version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
             "--render-distance", 4, *options)

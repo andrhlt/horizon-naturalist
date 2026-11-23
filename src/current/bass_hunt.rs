@@ -123,6 +123,17 @@ pub fn prepare(
 pub struct BassPart;
 #[mod_api::horizon_part]
 impl mod_api::EntityPart for BassPart {
+    fn spawn_cluster_size(
+        &self,
+        _: &dyn mod_api::Host,
+        _: mod_api::UnspawnedMobRef,
+        reason: mod_api::SpawnReason,
+        _: Option<mod_api::SpawnSource>,
+        _: u32,
+    ) -> Option<u32> {
+        (reason == mod_api::SpawnReason::Natural).then_some(6)
+    }
+
     fn register_goals(&self, goals: &mut GoalRegistrar<'_>) {
         goals.add_target_goal(1, BassHunt::default());
     }

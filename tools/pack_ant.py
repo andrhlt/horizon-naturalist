@@ -66,6 +66,12 @@ def pack_ant(jar, pack, dump):
             "minecraft:attack_damage": 2.0,
             "minecraft:follow_range": 20.0,
         },
+        "sounds": {
+            "ambient": "naturalist:entity.ant.ambient",
+            "hurt": "naturalist:entity.ant.hurt",
+            "death": "naturalist:entity.ant.death",
+            "step": "naturalist:entity.ant.step",
+        },
     })
     dump(pack, "data/naturalist/horizon/entity_type/carried_food.json", {
         "template": "minecraft:wandering_trader",

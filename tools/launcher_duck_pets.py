@@ -2,14 +2,18 @@
 import argparse
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 
 
-def capture(version, reference):
+def capture(version, reference, jar=None):
     with tempfile.TemporaryDirectory(prefix="nat-pet-", ignore_cleanup_errors=True) as work:
         home = Path(work)
         socket = home / "pet.sock"
+        if jar is not None:
+            (home / "jars").mkdir()
+            shutil.copyfile(jar, home / "jars" / jar.name)
 
         def control(*words):
             result = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, words)],
@@ -90,10 +94,21 @@ def capture(version, reference):
             output["stand"] = standing in {"false", "0b", "0"}
             print("Sitting after whistle:", standing, flush=True)
 
-            command(f"data merge entity {duck} {{Health:1.0f,Age:-12345}}")
+            for _ in range(3):
+                rows = control("entities", 10, "naturalist:duck")["entities"]
+                assert len(rows) == 1, rows
+                if rows[0]["health"] <= 1.0:
+                    break
+                control("look-at", "entity", rows[0]["id"])
+                control("mouse", "left", "click")
+                control("wait", 12)
+            rows = control("entities", 10, "naturalist:duck")["entities"]
+            assert len(rows) == 1 and rows[0]["health"] == 1.0, rows
             replace("minecraft:salmon", 2)
             interact()
-            output["healed"] = float(value(duck, "Health").rstrip("f"))
+            rows = control("entities", 10, "naturalist:duck")["entities"]
+            assert len(rows) == 1, rows
+            output["healed"] = float(rows[0]["health"])
             command("fill 5 100 9 10 100 14 minecraft:air")
             replace("minecraft:bucket")
             before = control("state")
@@ -125,5 +140,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
     parser.add_argument("fixture", type=Path)
+    parser.add_argument("jar", type=Path, nargs="?", help="pinned original mod jar required by this build")
     args = parser.parse_args()
-    capture(args.version, json.loads(args.fixture.read_text()))
+    capture(args.version, json.loads(args.fixture.read_text()), args.jar)

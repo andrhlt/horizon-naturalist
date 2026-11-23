@@ -1,0 +1,20 @@
+{
+  "horizon_build": "native-0a875da-9232d5e30d7e",
+  "package": "/private/tmp/naturalist-ant-crab-duck-pet.hmod",
+  "package_sha512": "89ddf5d1d9d6f3aef1281ead8a25281a730dd6b33e1f8f228b7f588c596337b12ad19ea4aa552a4f793652fd2e9694ab7d00b98d0c63cdfcc7c03f462137fabd",
+  "checks": {
+    "ant_gather_java_parity": true,
+    "ant_food_owner_lan": true,
+    "ant_hill_overflow_delivery": true,
+    "ant_carried_food_save_reopen": true,
+    "crab_immediate_sneak_lan": true,
+    "crab_follow_movement": true,
+    "crab_follow_save_reopen": true,
+    "duck_pet_owner_nonowner_sneak_and_repeat_clicks": true,
+    "duck_pet_save_reopen": true,
+    "duck_wild_offhand_bucket_capture_release": true,
+    "duck_foreign_offhand_water_fallback_next_use": true,
+    "duck_mainhand_bucket_capture_release": true
+  },
+  "status": "All checks listed were headless on this build or its exact-source isolated candidate. Linux connection to the independent server built from commit 6c9be00 passed; evidence is in fixtures/cross-platform-6c9be00.json."
+}

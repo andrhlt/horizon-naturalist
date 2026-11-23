@@ -11,3 +11,7 @@ Horizon `Game::interact_mob` in the same source file and commit. It applies
 the corresponding behavior to Naturalist ants.
 
 Naturalist Java-derived source and original resources have separate notices.
+
+`src/current/ant_carried_save.rs` derives from `Game::save_item` in
+`crates/horizon-client/src/game/world/persist.rs` at the same Horizon commit,
+and adds Naturalist's carried-food entity ID and save fields.

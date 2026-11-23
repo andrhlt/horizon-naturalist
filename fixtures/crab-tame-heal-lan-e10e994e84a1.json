@@ -1,0 +1,16 @@
+{
+  "horizon_build": "native-0a875da-e10e994e84a1",
+  "java_fixture": "fixtures/crab-java.json",
+  "package_sha256": "1cfee416646b2ac988a2b5a6bc063b86a24b825edfc5620633ff2e501ec63d8a",
+  "checks": {
+    "tropical_fish_tames_untamed_crab": true,
+    "owner_and_following_state_set": true,
+    "health_remains_java_max_8_after_tame": true,
+    "owner_fish_heals_4_to_6_and_consumes_one": true,
+    "capture_release_preserves_variant_and_damaged_weapon": true,
+    "whistle_follow_toggle": true,
+    "immediate_sneak_click_lan": true
+  },
+  "result": "pass",
+  "scope": "Selected matching-client LAN behavior; exact tame RNG distribution and broader Crab goals/rendering remain open."
+}

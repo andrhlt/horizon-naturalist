@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_desert_scorpion",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_desert_scorpion"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:desert_scorpion",
+    "weight": 20,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_black_bear",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_black_bear"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:black_bear",
+    "weight": 10,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}

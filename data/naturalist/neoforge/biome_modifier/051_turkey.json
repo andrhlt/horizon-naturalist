@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": {
+    "type": "neoforge:and",
+    "values": [
+      "#naturalist:has_turkey",
+      {
+        "type": "neoforge:not",
+        "value": "#naturalist:blacklist/blacklist_turkey"
+      }
+    ]
+  },
+  "spawners": {
+    "type": "naturalist:turkey",
+    "weight": 17,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}

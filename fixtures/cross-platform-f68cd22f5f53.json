@@ -1,0 +1,25 @@
+{
+  "horizon_build": "native-0a875da-f68cd22f5f53",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "minecraft": "26.3",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "source_stage_sha256": "7cf28e306ac79bcd48eeb79ac0fea096dda1978fce94004ebe3669eacbfd0967",
+  "linux_engine_sha256": "74211ea4d09b1ecde6d0bbcb5ff336bf1bdec41e98d1e6a07832996566f5de0a",
+  "linux_naturalist_library_sha256": "6e138905a443a0f8740f4ebf95812580d05a5327276a92c1ac0eb847372e4bd0",
+  "mac_libnaturalist_sha256": "8630e7508bde5b3a7e4fc4ce3b9dacfaf5580872006a187d8d8fd4c37de83d95",
+  "mac_libhorizon_patch_sha256": "380fdbc13f9b8d6dc33e7d450d73a9c7680299be2c8aa46a247a03c715ffd074",
+  "result": "pass",
+  "checks": {
+    "mac_client_connected_to_linux_server": true,
+    "entered_playing_state": true,
+    "loaded_minecraft_overworld": true
+  },
+  "resources": "/private/tmp/duck-prepared-26.3",
+  "server": "root@152.53.38.147:/root/dev/naturalist-cross-f68-20261121/server-config",
+  "fresh_world": "NaturalistF68",
+  "port": 25582,
+  "player": "NatCrossF68",
+  "matching_client_server_artifacts": true,
+  "mixed_artifact_compatibility": "not tested; outside the matching-artifact verification",
+  "server_and_tunnel_stopped": true
+}

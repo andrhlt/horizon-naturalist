@@ -1,0 +1,20 @@
+{
+  "horizon_build": "native-0a875da-427189079e3e",
+  "package_sha256": "511c15a92c33338ee3d6781004b967697b5f79aead42912f0111640ab8b4f201",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "before": {
+    "carrier": true,
+    "food": true,
+    "one": true,
+    "offset": 0.55,
+    "food_uuid": "00000005-0000-0006-0000-000700000008"
+  },
+  "after_reopen": {
+    "carrier": true,
+    "food": true,
+    "one": true,
+    "offset": 0.55,
+    "same_food_uuid": true
+  },
+  "result": "pass"
+}

@@ -1,0 +1,36 @@
+{
+  "horizon_build": "native-0a875da-3d513df20090",
+  "java_fixture": "fixtures/crab-java.json",
+  "checks": {
+    "following_enabled_moves_toward_owner": {
+      "passed": true,
+      "start_x": 2.5,
+      "end_x": 6.27
+    },
+    "following_disabled_stays_put": true,
+    "whistle_stop_and_resume": {
+      "passed": true,
+      "disabled_x": 2.5,
+      "resumed_x": 11.5
+    },
+    "follows_guest_owner_not_nearer_host": {
+      "passed": true,
+      "guest_x": 11.5
+    },
+    "owner_disconnect_stops_following": true
+  },
+  "java_behavior": {
+    "following_owner_gate": true,
+    "follow_goal_priority": 7,
+    "follow_speed": 1.5,
+    "start_distance": 5,
+    "stop_distance": 1
+  },
+  "result": "pass",
+  "limits": [
+    "Exact teleport collision and random destination behavior remain unverified.",
+    "Broader Crab AI and an earlier isolated second-click miss remain open.",
+    "No mismatch was observed in the enabled/disabled, correct-owner, stop/resume, or disconnect checks."
+  ],
+  "evidence_directory": "/Users/andrewholt/.codex/visualizations/2026/11/15/01a1e063-ac0b-7770-8e39-6d61fd857fc5/crab-follow-3d513-evidence"
+}
