@@ -4,6 +4,19 @@ use mod_api::{GoalSpec, MobFilter, ServerHost, Tag};
 
 pub const HUNTING_COOLDOWN: i32 = 2400;
 
+const DROWN_TICKS: i32 = 20;
+const DROWN_DAMAGE: f32 = 2.0;
+
+fn next_air(current: i32, in_water: bool, maximum: i32) -> (i32, bool) {
+    if in_water {
+        (maximum, false)
+    } else if current <= 1 - DROWN_TICKS {
+        (0, true)
+    } else {
+        (current - 1, false)
+    }
+}
+
 pub const fn next_hunting_cooldown(ticks: i32) -> i32 {
     if ticks > 0 {
         ticks - 1
@@ -62,9 +75,25 @@ pub(crate) fn update_target_gate(host: &mut dyn ServerHost, id: u32) {
     }
 }
 
+/// Keep Shark air behavior independent of its Cow-derived mob template.
+/// Java loses one air per dry tick and takes two drown damage on tick twenty.
+pub(crate) fn tick_air(host: &mut dyn ServerHost, id: u32) {
+    let Some(entity) = host.entity(id) else { return };
+    let Some(current) = entity.air_supply(host) else { return };
+    let maximum = entity.max_air_supply(host).unwrap_or(300);
+    let in_water = entity.is_in_water(host) == Some(true);
+    let (next, drown) = next_air(current, in_water, maximum);
+    if !entity.set_air_supply(host, next) {
+        return;
+    }
+    if drown {
+        let _ = entity.hurt(host, "minecraft:drown", DROWN_DAMAGE, None, None);
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{next_hunting_cooldown, targeting_enabled, HUNTING_COOLDOWN};
+    use super::{next_air, next_hunting_cooldown, targeting_enabled, HUNTING_COOLDOWN};
 
     #[test]
     fn hunting_timer_starts_at_java_value_and_stops_at_zero() {
@@ -76,5 +105,19 @@ mod tests {
         assert!(!targeting_enabled(HUNTING_COOLDOWN));
         assert!(!targeting_enabled(1));
         assert!(targeting_enabled(0));
+    }
+
+    #[test]
+    fn shark_dry_air_matches_nineteen_safe_ticks_and_twenty_tick_damage() {
+        let mut air = 0;
+        for _ in 0..19 {
+            let (next, damage) = next_air(air, false, 300);
+            assert!(!damage);
+            air = next;
+        }
+        assert_eq!(air, -19);
+        assert_eq!(next_air(air, false, 300), (0, true));
+        assert_eq!(next_air(-19, true, 300), (300, false));
+        assert_eq!(next_air(300, false, 300), (299, false));
     }
 }
