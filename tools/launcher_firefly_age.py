@@ -2,6 +2,7 @@
 import argparse
 import json
 from pathlib import Path
+import re
 from launcher_setup import prepare_home
 import subprocess
 import tempfile
@@ -23,10 +24,18 @@ def capture(version, jar):
         def command(line):
             return call("command", line)["chat"]
 
-        def state(age):
+        def state(requested_age):
             mobs = call("entities", 8, "naturalist:firefly")["entities"]
-            assert len(mobs) == 1, (age, mobs, call("status").get("player"))
-            return {"age": age, "baby": mobs[0]["baby"]}
+            assert len(mobs) == 1, (requested_age, mobs, call("status").get("player"))
+            rows = command("data get entity @e[type=naturalist:firefly,tag=firefly_age,limit=1] Age")
+            stored_age = next((int(match[1]) for row in rows
+                               if (match := re.search(r"following entity data: (-?\d+)", row))), None)
+            assert stored_age is not None, (requested_age, rows)
+            return {
+                "requested_age": requested_age,
+                "stored_age": stored_age,
+                "baby_state": mobs[0]["baby"],
+            }
 
         try:
             call("launch", "--headless", "--game", version / "horizon-client",
@@ -69,5 +78,5 @@ if __name__ == "__main__":
     for stage, age in (("juvenile", -2), ("near_adult", -1), ("adult", 0)):
         actual = observed[stage]
         expected = fixture["juvenile" if age < 0 else "adult"]
-        assert actual["age"] == age, (stage, actual, age)
-        assert actual["baby"] == expected["baby"], (stage, actual, expected)
+        assert actual["stored_age"] == age, (stage, actual, age)
+        assert actual["baby_state"] == expected["baby"], (stage, actual, expected)

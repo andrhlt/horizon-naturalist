@@ -8,7 +8,7 @@ import time
 from launcher_setup import prepare_home
 
 
-def capture(version, jar):
+def capture(version, jar, resources=None):
     with tempfile.TemporaryDirectory(prefix="nat-snail-eggs-", ignore_cleanup_errors=True) as work:
         directory = Path(work)
         socket = directory / "snail-eggs.sock"
@@ -38,7 +38,7 @@ def capture(version, jar):
 
         try:
             ctl("launch", "--headless", "--game", version / "horizon-client",
-                "--resources", version / ".local/horizon-client/26.3", "--home", directory,
+                "--resources", resources or version / ".local/horizon-client/26.3", "--home", directory,
                 "--game-dir", directory, "--world", "Snail Eggs Fixture", "--creative",
                 "--test-terrain", "--render-distance", 4, "--wait")
             cmd("gamerule minecraft:spawn_mobs false")
@@ -62,6 +62,15 @@ def capture(version, jar):
             observed = {"count": len(snails), "all_babies": all(row["baby"] for row in snails), "age_rows": ages}
             print(json.dumps(observed, indent=2), flush=True)
             assert 2 <= len(snails) <= 5 and observed["all_babies"], observed
+            sprint(2400)
+            after_retry_window = ctl("entities", 24, "naturalist:snail")["entities"]
+            assert len(after_retry_window) == len(snails), (snails, after_retry_window)
+
+            cmd("setblock 5 100 8 naturalist:snail_eggs")
+            cmd("setblock 5 100 8 minecraft:stone")
+            sprint(2400)
+            replaced = ctl("entities", 24, "naturalist:snail")["entities"]
+            assert len(replaced) == len(snails), (snails, replaced)
 
             cmd("setblock 6 100 8 naturalist:snail_eggs")
             cmd("setblock 6 99 8 minecraft:air")
@@ -76,5 +85,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
     parser.add_argument("--jar", type=Path, required=True)
+    parser.add_argument("--resources", type=Path)
     args = parser.parse_args()
-    capture(args.version, args.jar)
+    capture(args.version, args.jar, args.resources)

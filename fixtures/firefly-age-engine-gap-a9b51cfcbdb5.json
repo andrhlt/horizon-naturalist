@@ -8,7 +8,7 @@
     "baby_renderer": "/private/tmp/crab-java-source/common/src/main/java/com/crispytwig/naturalist/client/renderer/entity/FireflyRenderer.java:11-14",
     "baby_model": "/private/tmp/crab-java-source/common/src/main/java/com/crispytwig/naturalist/client/model/animal/firefly/FireflyBabyModel.java:17-24"
   },
-  "java_reachability": "Firefly extends NaturalistAnimal -> Animal/AgeableMob; normal Minecraft Age NBT and isBaby state select the dedicated FireflyBabyModel and baby texture. The Java class's tick path also branches on isBaby for animation behavior.",
+  "java_reachability": "Firefly extends NaturalistAnimal -> Animal/AgeableMob. Normal breeding creates a juvenile with negative Age; Animal.isBaby() selects FireflyRenderer's dedicated FireflyBabyModel and baby texture, and Firefly.tick also branches on isBaby for juvenile animation.",
   "reproduction": {
     "commands": [
       "gamerule minecraft:spawn_mobs false",
@@ -20,15 +20,13 @@
       "tick step 2",
       "tick step 40",
       "data get entity @e[tag=ff,limit=1] Age"
-    ],
-    "observed": {
-      "summon": "Summoned new Firefly",
-      "age_immediate": 0,
-      "age_after_1_tick": 0,
-      "age_after_3_ticks": 0,
-      "age_after_43_ticks": 0
-    }
+    ]
   },
-  "missing_engine_seam": "Pinned Horizon normalizes negative Firefly Age before EntityJoinLevelEvent and entity_tick_pre/entity_tick_post can observe it. Those hooks expose entity id/kind/position but no pre-finalization NBT or spawn-NBT callback. A synced mod attachment can preserve an age after receipt, but cannot distinguish the requested juvenile Age from an adult once Horizon has replaced both with 0.",
-  "status": "blocked_engine_requirement"
+  "diagnosis": {
+    "stored_age": "The earlier capture labeled states with the requested -2/-1/0 argument; it did not read the entity's stored Age. Its reported zero values are withdrawn as evidence of normalization.",
+    "baby_state": "The corrected headless runner reads stored Age with data get entity and reads the independent entity baby flag from horizon-ctl entities. fixtures/firefly-age-java.json records the pinned Java baby-state expectation.",
+    "rendering": "Java selects FireflyBabyModel and the baby texture from isBaby(). This is a separate rendered-output check; the previous age capture did not establish what the renderer displayed.",
+    "remaining_limitation": "Juvenile Firefly behavior and baby rendering remain an open parity gap tracked by APP-2159 until the corrected matching-artifact capture passes. The earlier explanation that Horizon normalized Age before EntityJoinLevelEvent is disproven and removed."
+  },
+  "status": "open_engine_follow_up"
 }

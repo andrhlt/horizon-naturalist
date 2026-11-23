@@ -1,0 +1,25 @@
+{
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+  "java_behavior": {
+    "placement_delay_ticks_inclusive": [600, 2399],
+    "hatch_attempt_rescheduled_after_interruption": false,
+    "egg_removed_before_offspring_spawn": true,
+    "offspring_count_inclusive": [2, 5]
+  },
+  "pinned_api": {
+    "placement_notice": "BlockPart::neighbor_changed(&self, level: &mut dyn LevelTicksHost, event: &mut NeighborChangedEvent)",
+    "scheduled_tick": "LevelTicksHost::schedule_block_tick(&mut self, pos: [i32; 3], block: BlockKey, delay: i32) -> bool",
+    "tick_handler": "BlockPart::tick_block(&self, level: &mut dyn LevelWriteHost, event: &mut TickBlockEvent) -> Flow",
+    "deferred_spawn": "Hooks::server_tick(&self, host: &mut dyn ServerHost, event: &mut ServerTickEvent)",
+    "conclusion": "The pinned API supports placement-adjacent scheduling, the due block tick, and deferred server-side offspring creation. No engine change is needed for this path."
+  },
+  "implementation": {
+    "delay_ticks_inclusive": [600, 2399],
+    "removed_or_replaced_egg_rejected": true,
+    "offspring_count_inclusive": [2, 5],
+    "offspring_retried_after_spawn_failure": true,
+    "duplicate_queue_entries_per_position": false
+  },
+  "runtime_verification": "Pending headless rerun on a launcher-registered matching artifact."
+}

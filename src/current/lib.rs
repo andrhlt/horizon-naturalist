@@ -2,6 +2,7 @@
 mod ant_hill;
 mod chrysalis_part;
 mod snail_eggs_part;
+mod scorpion;
 pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
@@ -22,35 +23,6 @@ use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
 };
 
-fn scorpion_poison(host: &mut dyn mod_api::ServerHost, id: u32) -> Result<(), ()> {
-    let entity = host.entity(id).ok_or(())?;
-    let level = entity.level(host).ok_or(())?;
-    let origin = entity.position(host).ok_or(())?;
-    let jungle = entity.kind(host).is_some_and(|kind| kind.id(host) == "naturalist:jungle_scorpion");
-    let poison = host.effect_key("minecraft:poison").ok_or(())?;
-    for target in level.entities_in(host, [origin[0] - 2.5, origin[1] - 1.5, origin[2] - 2.5], [origin[0] + 2.5, origin[1] + 1.5, origin[2] + 2.5]).unwrap_or_default() {
-        if target == entity || target.kind(host).is_none_or(|kind| kind.id(host) != "minecraft:player") {
-            continue;
-        }
-        let Some(living) = host.living(target) else { continue; };
-        let _ = living.add_effect(host, &mod_api::ActiveEffect::new(poison, 120, 0, false, true, true));
-        let hit = if jungle { &SCORPION_JUNGLE_HIT } else { &SCORPION_DESERT_HIT };
-        if hit.get(host, Holder::Entity(id)).unwrap_or(false) { continue; }
-        if let Some(health) = living.health(host) {
-            let next = (health - 0.5).max(0.0);
-            let _ = living.set_health(host, next);
-            let _ = target.merge_nbt(host, mod_api::Compound::from([("Health".into(), mod_api::Tag::Float(next.to_bits()))]));
-        } else if let Some(data) = target.nbt(host)
-            && let Some(Tag::Float(bits)) = data.get(&"Health".into())
-        {
-            let next = (f32::from_bits(*bits) - 0.5).max(0.0);
-            let _ = target.merge_nbt(host, mod_api::Compound::from([("Health".into(), Tag::Float(next.to_bits()))]));
-        }
-        let _ = hit.set(host, Holder::Entity(id), true);
-    }
-    Ok(())
-}
-
 static COOLDOWN: AttachmentType<i32> = AttachmentType {
     namespace: "naturalist",
     name: "bass_eat_cooldown",
@@ -59,8 +31,6 @@ static COOLDOWN: AttachmentType<i32> = AttachmentType {
     copy_on_death: false,
     sync: false,
 };
-static SCORPION_DESERT_HIT: AttachmentType<bool> = AttachmentType { namespace: "naturalist", name: "scorpion_desert_hit", default: || false, codec: None, copy_on_death: false, sync: false };
-static SCORPION_JUNGLE_HIT: AttachmentType<bool> = AttachmentType { namespace: "naturalist", name: "scorpion_jungle_hit", default: || false, codec: None, copy_on_death: false, sync: false };
 static FIREFLY_AGE: AttachmentType<i32> = AttachmentType {
     namespace: "naturalist",
     name: "firefly_age",
@@ -186,6 +156,8 @@ impl mod_api::Hooks for Naturalist {
                 .expect("register Naturalist entity attributes");
         }
         registrar.entity_part("naturalist:bass", bass_hunt::BassPart);
+        registrar.entity_part("naturalist:desert_scorpion", scorpion::ScorpionPart);
+        registrar.entity_part("naturalist:jungle_scorpion", scorpion::ScorpionPart);
     }
     fn entity_join_level(
         &self,
@@ -211,16 +183,13 @@ impl mod_api::Hooks for Naturalist {
             {
                 let _ = entity.merge_nbt(host, mod_api::Compound::from([("Variant".into(), mod_api::Tag::String(variant.into()))]));
             }
+            let from_hand = host.entity(event.entity).and_then(|entity| entity.nbt(host)).is_some_and(|data| {
+                matches!(data.get(&"FromHand".into()), Some(mod_api::Tag::Byte(value)) if *value != 0)
+            });
+            scorpion::set_from_hand(host, event.entity, from_hand);
             if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
-                let target = mod_api::GoalSpec::NearestTarget {
-                    prey: mod_api::MobFilter::Player,
-                    must_see: true,
-                    must_reach: false,
-                    interval: 10,
-                };
-                if !mob.add_target_goal(host, 1, &target) {
-                    eprintln!("Naturalist: failed to add scorpion player target goal");
-                }
+                let retaliation = mod_api::GoalSpec::HurtByTarget { alert: false };
+                let _ = mob.add_target_goal(host, 0, &retaliation);
                 let attack = mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true };
                 if !mob.add_goal(host, 2, &attack) {
                     eprintln!("Naturalist: failed to add scorpion melee goal");
@@ -260,12 +229,42 @@ impl mod_api::Hooks for Naturalist {
     }
 
     fn server_tick(&self, host: &mut dyn mod_api::ServerHost, _: &mut mod_api::ServerTickEvent<'_>) {
-        let Ok(mut pending) = chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level) else { return; };
-        let Some(pos) = pending.first().copied() else { return; };
-        let Some(level) = host.level("minecraft:overworld") else { return; };
-        if level.spawn_mob(host, "naturalist:butterfly", [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5], mod_api::SpawnReason::Command).is_some() {
+        let level = host.level("minecraft:overworld");
+        if let (Some(level), Ok(mut pending)) = (level, chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level))
+            && let Some(pos) = pending.first().copied()
+            && level.spawn_mob(host, "naturalist:butterfly", [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5], mod_api::SpawnReason::Command).is_some()
+        {
             pending.remove(0);
             let _ = chrysalis_part::PENDING.set(host, mod_api::Holder::Level, pending);
+        }
+        if let Some(level) = level {
+            let mut hatches = snail_eggs_part::hatch_queue(host);
+            if let Some(row) = hatches.first_mut() {
+                let pos = [row[0], row[1], row[2]];
+                let still_air = level
+                    .block_state(host, pos)
+                    .and_then(|state| host.block_state_string(state))
+                    .is_some_and(|name| name.starts_with("minecraft:air"));
+                if !still_air {
+                    hatches.remove(0);
+                    snail_eggs_part::save_hatch_queue(host, hatches);
+                } else if let Some(child) = level.spawn_mob(
+                    host,
+                    "naturalist:snail",
+                    [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5],
+                    mod_api::SpawnReason::Breeding,
+                ) {
+                    if let Some(mob) = host.mob(child) {
+                        let _ = mob.set_baby(host, true);
+                    }
+                    let _ = child.merge_nbt(host, Compound::from([("Age".into(), Tag::Int(-24000))]));
+                    row[3] -= 1;
+                    if row[3] <= 0 {
+                        hatches.remove(0);
+                    }
+                    snail_eggs_part::save_hatch_queue(host, hatches);
+                }
+            }
         }
     }
 
@@ -274,9 +273,6 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPreEvent<'_>,
     ) -> mod_api::Flow {
-        if matches!(event.kind, "naturalist:desert_scorpion" | "naturalist:jungle_scorpion") {
-            let _ = scorpion_poison(host, event.entity);
-        }
         if event.kind == "naturalist:firefly" {
             if let Ok(age) = FIREFLY_AGE.get(host, Holder::Entity(event.entity)) {
                 let next = (age + 1).min(0);
