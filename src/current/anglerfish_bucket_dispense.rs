@@ -32,10 +32,11 @@ fn anglerfish_bucket_dispense(
     if game.dimension_type().water_evaporates {
         game.evaporation_smoke([target.0, target.1, target.2]);
     }
-    if let Some(id) = game.spawn_bucket_mob("naturalist:anglerfish", target) {
-        if let Err(error) = crate::game::naturalist_anglerfish_bucket::restore(game, id, stack) {
-            return ControlFlow::Break(Err(error));
-        }
+    let Some(id) = game.spawn_bucket_mob("naturalist:anglerfish", target) else {
+        return ControlFlow::Break(Ok(false));
+    };
+    if let Err(error) = crate::game::naturalist_anglerfish_bucket::restore(game, id, stack) {
+        return ControlFlow::Break(Err(error));
     }
     game.post_block_game_event("minecraft:entity_place", [target.0, target.1, target.2], None, None);
     ControlFlow::Break(Ok(true))

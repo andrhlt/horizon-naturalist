@@ -16,10 +16,6 @@ fn anglerfish_attack(
     if game.mobs[index].kind.id != "naturalist:anglerfish" || !game.mobs[index].alive() {
         return std::ops::ControlFlow::Continue(());
     }
-    horizon_client::mobs::animal_brain::set_hunting_cooldown(
-        &mut game.mobs[index],
-        i64::from(naturalist::anglerfish_behavior::HUNTING_COOLDOWN),
-    );
     let raw = game
         .persist
         .raw
