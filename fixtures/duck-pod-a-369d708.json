@@ -1,0 +1,65 @@
+{
+  "candidate": {
+    "artifact": "native-0a875da-369d7085755a",
+    "source_commit": "c767a0006e8f61476fda9c3992ff0f24b45fc880",
+    "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "minecraft": "26.3",
+    "libnaturalist_sha256": "e1b855dadc3d6a7521f64b6fd0fc5398d9858504e859f367b7914c39dbfb2669",
+    "libhorizon_patch_sha256": "35fad7d3dce67a882d47b32e2cd465e5f745de8a6a7137d79578132b418fdf93",
+    "native_mods_sha256": "60177403b8e587bf31f38b16c58416d16409795131c4e81e3360573e535161d1",
+    "horizon_client_sha256": "012bf6dbfecb095bfb27f9b84452105639501cc5444aca15517360cd90547935",
+    "horizon_server_sha256": "2b0f3d7bd318f52a8385b7d7b28db78d13f7752d25fd30d824d487aef5fe1f1d"
+  },
+  "checks": [
+    {
+      "name": "adult_parent_follow_and_representative_save_reopen",
+      "result": "pass",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_follow.py '<artifact>'",
+      "world": "APP2121 Duck Parent app2121-poda-duck-follow-ax9hixe2",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-follow-ax9hixe2/headless.sock",
+      "observed": {
+        "adult_with_normal_ai": true,
+        "untamed_duckling_start_distance": 12.0,
+        "distance_after_80_ticks": 1.3445,
+        "adult_relocated": true,
+        "distance_before_save": 8.9926,
+        "entities_before_save": 2,
+        "distance_after_reopen": 6.8689,
+        "age_after_reopen": -11886,
+        "distance_after_80_more_ticks": 1.0103,
+        "entities_after_reopen": 2,
+        "duplicate_or_lost_duck": false
+      }
+    },
+    {
+      "name": "supported_offscreen_adult_and_duckling_frame",
+      "result": "pass",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_frame.py '<artifact>'",
+      "world": "APP2121 Duck Frame app2121-poda-duck-frame-ect0xpi3",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-frame-ect0xpi3/offscreen.sock",
+      "frame": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-frame-ect0xpi3/parent-duckling.png",
+      "frame_sha256": "a6b7fe7f10b04d832898fcd51ec0d88859561d1eecb83dbef69ab48241040baf",
+      "frame_bytes": 1549124,
+      "process_mode": "--offscreen; not --headless; no visible window or desktop input"
+    }
+  ],
+  "reused_unchanged_evidence": [
+    {
+      "fixture": "fixtures/duck-healing-3ebfc9ae34ce.json",
+      "coverage": "owner/nonowner/creative feeding controls and owner/health/sit save-reopen"
+    },
+    {
+      "fixture": "fixtures/naturalist-combined-964e6c9e015d.json",
+      "coverage": "matching-client LAN delayed-age capture once, adult bucket fallback, raw-fish breeding, seed rejection, births, and variant inheritance"
+    },
+    {
+      "fixture": "fixtures/duck-ai-3d513df20090.json",
+      "coverage": "pet follow, stop on owner disconnect/dimension change, water/short-wall controls, sit attack condition"
+    }
+  ],
+  "coverage_basis": "Comparison of 01a05879ce7b453970171101d38b0bdacc73ecc1 to c767a0006e8f61476fda9c3992ff0f24b45fc880 produced no Duck-file, shared_spawn.rs, Duck biome modifier, Naturalist entity data, or horizon-mod.toml differences. Existing matching-artifact Duck interaction/LAN evidence therefore remains source-applicable.",
+  "still_open": [
+    "Natural-spawn predicate/placement/init runtime acceptance is shared with APP-2133 Pod C and remains pending its integration result.",
+    "No player-visible movement, interaction, persistence, or loot/reload defect was observed in this Duck acceptance slice. Exact Java frame/pixel comparison and remaining goal parity are follow-up coverage, not blockers under the current practical-playability policy."
+  ]
+}

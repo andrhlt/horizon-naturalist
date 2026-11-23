@@ -1,0 +1,89 @@
+{
+  "candidate": {
+    "artifact": "native-0a875da-8df2890cec01",
+    "source_freeze_commit": "01a05879ce7b453970171101d38b0bdacc73ecc1",
+    "manifest_commit": "59215fce9133a0fffffb6f6b3d9a2b7055a702a7",
+    "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "minecraft": "26.3",
+    "libnaturalist_sha256": "d125d7dbd1558f7a48ebab1a336d650b2b04c75e539422c5a94fa48ad630c5cf",
+    "libhorizon_patch_sha256": "ea8f84227107383b40bc107978e6b54453c812b063d4e24b137014b4abf014e4",
+    "horizon_client_sha256": "012bf6dbfecb095bfb27f9b84452105639501cc5444aca15517360cd90547935",
+    "horizon_server_sha256": "2b0f3d7bd318f52a8385b7d7b28db78d13f7752d25fd30d824d487aef5fe1f1d",
+    "native_mods_sha256": "ebfffcbfcd95c91fe2c60b007668ebc87f32657c5d35185570e31dc27cf8df96",
+    "naturalist_jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd",
+    "launch": "tools/launcher_selected_headless.py with isolated horizon-ctl socket; --offscreen separately for frame captures"
+  },
+  "checks": [
+    {
+      "name": "duckling_parent_follow_move_save_reopen",
+      "result": "pass",
+      "world": "APP2121 Duck Parent app2121-poda-duck-follow-lkfhv4fn",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-follow-lkfhv4fn/headless.sock",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_follow.py '<artifact>'",
+      "observed": {
+        "adult_ai": "normal Chicken AI enabled",
+        "child_start_distance": 12.0,
+        "child_distance_after_80_ticks": 1.3445,
+        "parent_moved": true,
+        "distance_at_save": 9.03,
+        "duck_count_after_reload": 2,
+        "age_remained_negative_and_advanced": true,
+        "distance_after_80_ticks_post_reload": 0.677,
+        "duplicate_entities": false
+      },
+      "limitations": ["No active-goal selector trace was exposed; navigation competition was verified behaviorally."]
+    },
+    {
+      "name": "adult_duckling_offscreen_frame",
+      "result": "pass",
+      "world": "APP2121 Duck Frame app2121-poda-duck-frame-ckef8s5z",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-frame-ckef8s5z/offscreen.sock",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_frame.py '<artifact>'",
+      "frame": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-frame-ckef8s5z/parent-duckling.png",
+      "frame_sha256": "17501b35adfbd90c56004091fdd45a8247940268e1461db28c120216ef511f5c"
+    },
+    {
+      "name": "invisibility_rendering",
+      "result": "pass",
+      "world": "APP2121 Duck Visibility app2121-poda-duck-invisible-p4i477sk",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-invisible-p4i477sk/offscreen.sock",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_invisibility.py '<artifact>'",
+      "visible_frame_sha256": "a2ae477d08f10c822c26601d3b39d5c9a0cb94a618a9f10a01f97d2d34237112",
+      "invisible_frame_sha256": "3f8f2988f229dc781145ee60922b10a035570c2ad58a9d4c957ad6e2b78c9b0a",
+      "observed": "Duck visible before effect; absent after effect."
+    },
+    {
+      "name": "moving_duckling_presentation_sample",
+      "result": "pass",
+      "world": "APP2121 Duck Walk app2121-poda-duck-walk-9ab1dri9",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-walk-9ab1dri9/offscreen.sock",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_walk_frames.py '<artifact>'",
+      "distance_after_40_ticks": 5.87,
+      "start_frame_sha256": "d1bf1e5b41378d7cdf5e1a0406b0ff6debeee9a52de8a505673750263a74f5b8",
+      "moving_frame_sha256": "901c02347bbab21982a92dd0f0727b7d723dcb59220eb7cb5a01afd2152de62b",
+      "limitations": ["Representative walking sample only; no Java frame/pixel comparison.", "Flight animation was not captured on this candidate."]
+    },
+    {
+      "name": "duck_loot_table_and_death_drops",
+      "result": "pass",
+      "world": "APP2121 Duck Loot Reload app2121-poda-duck-loot-reload-ywxp01yd",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-loot-reload-ywxp01yd/headless.sock",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_loot_reload.py '<artifact>'",
+      "loot_table": "naturalist:entities/duck",
+      "observed": "12 loot rolls produced 12 naturalist:duck and 15 minecraft:feather in player inventory; actual Duck death emitted one raw Duck and two feathers as item entities."
+    },
+    {
+      "name": "datapack_reload_live_duck",
+      "result": "pass",
+      "world": "APP2121 Duck Reload app2121-poda-duck-reload-879sqsua",
+      "socket": "/var/folders/kh/01bq8xn56w555wp18nv342m40000gn/T/app2121-poda-duck-reload-879sqsua/headless.sock",
+      "command": "python3 -u /private/tmp/app2121_poda_duck_reload_only.py '<artifact>'",
+      "observed": "One live tagged Duck remained at 4.0 health across /reload; a new Duck summoned afterward; entity count 1 before/after reload and 2 after new summon."
+    }
+  ],
+  "notes": [
+    "One first combined loot/reload runner failed its harness-only count assertion because it counted an already death-resolved Duck before reload. The subsequent isolated live-tag reload check passed; no gameplay failure was observed.",
+    "Previously recorded exact-candidate Duck bucket, breeding, pet, feeding, dye, egg-laying and hatch evidence is reused where Duck source paths were unchanged.",
+    "Remaining acceptance gaps: natural-spawn init/predicate/biome/ground-placement coverage, remaining AI goal cases, adult airborne animation frame and Java presentation parity, and full content sanity matrix."
+  ]
+}
