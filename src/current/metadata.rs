@@ -428,6 +428,15 @@ fn metadata(
             kind.food = cod.clone();
             kind.tempt = cod;
         }
+        if name == "naturalist:whale" {
+            let food: Arc<[String]> = whale_behavior::FOOD_ITEMS
+                .iter()
+                .map(|item| (*item).to_owned())
+                .collect::<Vec<_>>()
+                .into();
+            kind.food = food.clone();
+            kind.tempt = food;
+        }
         if name == "naturalist:caterpillar" {
             kind.baby_scale = 1.0;
         }
