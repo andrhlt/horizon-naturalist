@@ -35,6 +35,56 @@ use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
 };
 
+fn hippo_water_ok(water_at: bool, water_below: bool, waterlogged_below: bool) -> bool {
+    water_at || water_below || waterlogged_below
+}
+
+/// Naturalist's common ageable groups. The pinned finalize_spawn hook lends
+/// group data for this mob only; natural-spawn callers currently supply None
+/// for every candidate, so this cannot reproduce member-indexed pack rules.
+fn natural_age_group(kind: &str) -> Option<mod_api::AgeableGroup> {
+    const NEVER_BABY: &[&str] = &["naturalist:bird", "naturalist:butterfly"];
+    const ALWAYS_BABY: &[&str] = &[
+        "naturalist:bear", "naturalist:black_bear", "naturalist:rhino", "naturalist:whale",
+    ];
+    const FIVE_PERCENT: &[&str] = &[
+        "naturalist:alligator", "naturalist:ant", "naturalist:boar",
+        "naturalist:capybara", "naturalist:caterpillar", "naturalist:crab",
+        "naturalist:deer", "naturalist:desert_scorpion", "naturalist:duck",
+        "naturalist:firefly", "naturalist:giant_isopod", "naturalist:giraffe",
+        "naturalist:great_white_shark", "naturalist:hedgehog", "naturalist:hippo",
+        "naturalist:jungle_scorpion", "naturalist:komodo_dragon", "naturalist:lizard",
+        "naturalist:mole", "naturalist:ostrich", "naturalist:rat", "naturalist:snail",
+        "naturalist:snake", "naturalist:tiger", "naturalist:tortoise", "naturalist:turkey",
+    ];
+    if NEVER_BABY.contains(&kind) {
+        Some(mod_api::AgeableGroup::new(false, 0.0))
+    } else if ALWAYS_BABY.contains(&kind) {
+        Some(mod_api::AgeableGroup::new(true, 1.0))
+    } else if FIVE_PERCENT.contains(&kind) {
+        Some(mod_api::AgeableGroup::new(true, 0.05))
+    } else {
+        None
+    }
+}
+
+fn initialize_natural_spawn_group(kind: &str, reason: mod_api::SpawnReason, group: &mut Option<mod_api::SpawnGroup>) {
+    if reason != mod_api::SpawnReason::Natural {
+        return;
+    }
+    let Some(mut ageable) = natural_age_group(kind) else { return; };
+    if let Some(mod_api::SpawnGroup::Ageable(existing)) = group.as_ref() {
+        ageable.size = existing.size;
+    }
+    // A new AgeableGroup starts at size zero, which suppresses the baby roll.
+    // Natural spawning doesn't carry the listener's group to its next member;
+    // seed the current mob as a later member so mapped probabilities take effect.
+    if ageable.should_spawn_baby && ageable.size == 0 {
+        ageable.size = 1;
+    }
+    *group = Some(mod_api::SpawnGroup::Ageable(ageable));
+}
+
 fn scorpion_poison(host: &mut dyn mod_api::ServerHost, id: u32) -> Result<(), ()> {
     let entity = host.entity(id).ok_or(())?;
     let level = entity.level(host).ok_or(())?;
@@ -211,6 +261,14 @@ impl mod_api::Hooks for Naturalist {
         event: &mut mod_api::EntityInteractEvent<'_>,
     ) -> Option<mod_api::InteractionResult> {
         ocean_feeding::interact(host, event)
+    }
+    fn finalize_spawn(
+        &self,
+        _: &dyn mod_api::Host,
+        event: &mut mod_api::FinalizeSpawnEvent<'_>,
+    ) -> mod_api::Flow {
+        initialize_natural_spawn_group(event.kind, event.reason, event.group);
+        mod_api::Flow::Continue
     }
 
     fn mob_spawn_placement_check(
@@ -732,6 +790,70 @@ impl mod_api::Hooks for Naturalist {
         self.bass.clear();
         self.duck.clear();
         for renderer in &self.ocean { renderer.clear(); }
+    }
+}
+
+#[cfg(test)]
+mod natural_spawn_group_tests {
+    use super::{initialize_natural_spawn_group, natural_age_group};
+    use mod_api::{AgeableGroup, SpawnGroup, SpawnReason};
+
+    fn age_group(size: i32, baby: bool, chance: f32) -> SpawnGroup {
+        let mut age = AgeableGroup::new(baby, chance);
+        age.size = size;
+        SpawnGroup::Ageable(age)
+    }
+
+    #[test]
+    fn finalize_hook_maps_supported_natural_age_groups() {
+        for (kind, baby, chance) in [
+            ("naturalist:bird", false, 0.0),
+            ("naturalist:bear", true, 1.0),
+            ("naturalist:deer", true, 0.05),
+        ] {
+            let mut group = None;
+            initialize_natural_spawn_group(kind, SpawnReason::Natural, &mut group);
+            assert_eq!(group, Some(age_group(if baby { 1 } else { 0 }, baby, chance)), "{kind}");
+        }
+        assert!(natural_age_group("naturalist:elephant").is_none());
+    }
+
+    #[test]
+    fn non_natural_finalization_preserves_group() {
+        let mut group = Some(SpawnGroup::Ageable(AgeableGroup::new(true, 0.2)));
+        let original = group.clone();
+        initialize_natural_spawn_group("naturalist:deer", SpawnReason::SpawnItemUse, &mut group);
+        assert_eq!(group, original);
+    }
+
+    #[test]
+    fn an_existing_age_group_keeps_its_member_index() {
+        let mut group = Some(age_group(4, true, 0.2));
+        initialize_natural_spawn_group("naturalist:deer", SpawnReason::Natural, &mut group);
+        assert_eq!(group, Some(age_group(4, true, 0.05)));
+    }
+}
+
+#[cfg(test)]
+mod hippo_spawn_tests {
+    use super::hippo_water_ok;
+
+    #[test]
+    fn matches_pinned_spawn_fixture_predicates() {
+        let cases = [
+            ("no_water", false, false, false, false),
+            ("natural_corner_16", true, false, false, true),
+            ("generated_cross_chunk", false, false, false, false),
+            ("horizontal_17", false, false, false, false),
+            ("two_above", false, false, false, false),
+            ("two_below", false, false, false, false),
+            ("waterlogged_one_below", false, false, true, true),
+            ("generated_same_chunk", true, false, false, true),
+            ("stone_rejected", false, false, false, false),
+        ];
+        for (name, at, below, waterlogged, expected) in cases {
+            assert_eq!(hippo_water_ok(at, below, waterlogged), expected, "{name}");
+        }
     }
 }
 

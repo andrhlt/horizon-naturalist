@@ -16,4 +16,4 @@ for species, expected in java.items():
 print("PASS: Java natural-group-age fixture covers 36 species")
 print("PASS: fixture records mapped probability groups and the $local_mut:group:0 input")
 print("PASS: exact special distributions recorded for Elephant, Lion, Mammoth, and Zebra")
-print("NOTE: this scope check does not establish that the current native mixin calls the mapping")
+print("NOTE: fixture scope is separate from per-mob finalize_spawn runtime behavior and pack continuity")
