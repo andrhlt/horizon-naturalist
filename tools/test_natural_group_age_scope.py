@@ -25,6 +25,8 @@ natural = (ROOT / ".horizon/sdk/api/crates/horizon-client/src/game/mobs/natural_
 assert "self.group.borrow().clone()" in natural
 assert ".finalize_spawn_event(&mut mob, r.reason, None, &mut group)" in natural
 assert "*self.group.borrow_mut() = group;" in natural
+parallel = (ROOT / ".horizon/sdk/api/crates/horizon-client/src/game/mobs/natural_spawning/parallel.rs").read_text()
+assert "level.spawn_hooks()" in parallel
 library = (ROOT / "src/current/lib.rs").read_text()
 rules = library.split("fn natural_age_rule", 1)[1].split("fn initialize_natural_spawn_group", 1)[0]
 assert set(re.findall(r'"(naturalist:[a-z_]+)"', rules)) == set(java)
@@ -36,5 +38,6 @@ print("PASS: fixture records mapped probability groups and the $local_mut:group:
 print("PASS: exact special distributions recorded for Elephant, Lion, Mammoth, and Zebra")
 print("PASS: existing mixin binds the shared initializer and mutable finalize group")
 print("PASS: pinned natural-spawn pass carries the listener group across pack members")
+print("PASS: pinned parallel spawning falls back to serial when spawn hooks are active")
 print("PASS: the public hook maps all 36 fixture species")
 print("NOTE: these checks verify source wiring, not a same-stream runtime capture")
