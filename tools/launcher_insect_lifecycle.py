@@ -32,6 +32,13 @@ def capture(version, reference, jar=None):
             return any("fixture_condition_true" in row for row in
                        cmd(f"execute if {predicate} run say fixture_condition_true"))
 
+        def raw(target, key):
+            marker = "following entity data: "
+            return next((row.split(marker, 1)[1] for row in cmd(f"data get entity {target} {key}") if marker in row), None)
+
+        def block_state(x, y, z):
+            return cmd(f"data get block {x} {y} {z}")
+
         def step(ticks):
             cmd(f"tick step {ticks}")
             ctl("wait", ticks + 2)
@@ -49,11 +56,12 @@ def capture(version, reference, jar=None):
                 "--world", "Insect Lifecycle Fixture", "--creative", "--test-terrain",
                 "--render-distance", 4, "--wait")
             cmd("gamerule minecraft:spawn_mobs false")
+            cmd("gamerule minecraft:do_mob_spawning false")
             cmd("gamerule minecraft:random_tick_speed 0")
             cmd("tp @s 8.5 110 8.5")
             ctl("wait", 20)
             cmd("tick freeze")
-            cmd("kill @e[type=naturalist:butterfly]")
+            cmd("kill @e[type=naturalist:butterfly,distance=..128]")
             empty_butterfly_cohort = ctl("entities", 48, "naturalist:butterfly")["entities"]
             assert not empty_butterfly_cohort, empty_butterfly_cohort
             cmd("fill 0 99 0 15 99 15 minecraft:stone")
@@ -75,6 +83,16 @@ def capture(version, reference, jar=None):
             step(16)
             adult_makes_cocoon = observed(shell)
             caterpillar_discarded = not observed("entity @e[tag=fixture_adult]")
+            print("Adult cocoon diagnostics:", json.dumps({
+                "Age": raw("@e[tag=fixture_adult,limit=1]", "Age"),
+                "NoAI": raw("@e[tag=fixture_adult,limit=1]", "NoAI"),
+                "entity_present": not caterpillar_discarded,
+                "blocks": {
+                    "9,100,8": block_state(9, 100, 8),
+                    "10,100,8": block_state(10, 100, 8),
+                    "10,99,8": block_state(10, 99, 8),
+                },
+            }), flush=True)
             cmd("setblock 9 100 8 naturalist:chrysalis[age=3,facing=east]")
             cmd("gamerule minecraft:random_tick_speed 4096")
             for _ in range(8):
