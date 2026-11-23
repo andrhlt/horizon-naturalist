@@ -3,7 +3,7 @@ pub(crate) fn entity_interact(
     event: &mut mod_api::EntityInteractEvent<'_>,
 ) -> Option<mod_api::InteractionResult> {
     use mod_api::RandomSource;
-    use mod_api::{Host, InteractionResult, ServerHost, Tag, prelude::ServicesServerHost};
+    use mod_api::{prelude::ServicesServerHost, Host, InteractionResult, ServerHost, Tag};
 
     if event.kind != "naturalist:lizard"
         && event.kind != "naturalist:tortoise"
