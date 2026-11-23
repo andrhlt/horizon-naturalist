@@ -13,8 +13,9 @@ fn crab_follow_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
     let following=game.persist.raw.get(&entity).and_then(|raw|raw.get("FollowingOwner"))
         .and_then(horizon_world::datafix::dynamic::as_number).map_or(true,|n|n.int_value()!=0);
     let owner_uuid=game.mobs.iter().find(|m|m.id==entity && m.extra.tame).and_then(|m|m.extra.owner);
-    let has=|name|game.mobs.iter().find(|m|m.id==entity).is_some_and(|m|m.ai.goals.has(name));
-    let (has_wolf,has_crab)=(has("FollowOwner"),has("NaturalistCrabFollowOwner"));
+    let (has_wolf,has_crab)=game.mobs.iter().find(|m|m.id==entity)
+        .map(|m|(m.ai.goals.has("FollowOwner"),m.ai.goals.has("NaturalistCrabFollowOwner")))
+        .unwrap_or((false,false));
     if has_wolf {handle.remove_goal(game,"FollowOwner");}
     let holder=Holder::Entity(entity);
     if !following || owner_uuid.is_none() {

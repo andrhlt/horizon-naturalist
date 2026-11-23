@@ -17,7 +17,7 @@ fn hippo_carry_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
     if timer <= 1 {
         game.mobs[index].extra.set_main_hand_stack(None);
         if let Some(Tag::Compound(fields)) = game.persist.raw.get_mut(&entity) {
-            fields.remove("NaturalistHippoCarryTimer");
+            fields.remove(&"NaturalistHippoCarryTimer".into());
         }
     } else if let Some(Tag::Compound(fields)) = game.persist.raw.get_mut(&entity) {
         fields.insert("NaturalistHippoCarryTimer".into(), Tag::Int(timer - 1));

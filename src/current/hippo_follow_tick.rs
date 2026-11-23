@@ -36,13 +36,10 @@ fn hippo_follow_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
         }
     }
 
-    let has = |name| {
-        game.mobs
-            .iter()
-            .find(|mob| mob.id == entity)
-            .is_some_and(|mob| mob.ai.goals.has(name))
-    };
-    if has("FollowOwner") {
+    let (has_follow_owner, has_sit, has_follow) = game.mobs.iter().find(|mob| mob.id == entity)
+        .map(|mob| (mob.ai.goals.has("FollowOwner"), mob.ai.goals.has("NaturalistDuckSit"), mob.ai.goals.has("NaturalistDuckFollowOwner")))
+        .unwrap_or((false, false, false));
+    if has_follow_owner {
         handle.remove_goal(game, "FollowOwner");
     }
     let holder = Holder::Entity(entity);
@@ -92,7 +89,7 @@ fn hippo_follow_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
         *state = view;
     }
 
-    if !has("NaturalistDuckSit") {
+    if !has_sit {
         if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
             mob.ai.goals.add(
                 1,
@@ -103,12 +100,12 @@ fn hippo_follow_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
         }
     }
     if !following || owner_uuid.is_none() {
-        if has("NaturalistDuckFollowOwner") {
+        if has_follow {
             handle.remove_goal(game, "NaturalistDuckFollowOwner");
         }
         return;
     }
-    if !has("NaturalistDuckFollowOwner") {
+    if !has_follow {
         if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
             mob.ai.goals.add(4, DuckFollow::new(cell));
         }

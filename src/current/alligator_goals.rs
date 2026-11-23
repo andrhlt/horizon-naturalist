@@ -173,7 +173,7 @@ impl Goal for LayAlligatorEgg {
             };
 
             let at = [mob.position.x, mob.position.y, mob.position.z];
-            let pitch = 0.9 + cx.lr.next_float() * 0.2;
+            let pitch = 0.9 + mob.random.next_float() * 0.2;
             let eggs = mob.random.next_int_bound(4).unwrap_or(0) + 1;
             egg_state.properties.insert("eggs".into(), eggs.to_string());
             egg_state.properties.insert("hatch".into(), "0".into());

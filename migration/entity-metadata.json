@@ -452,7 +452,7 @@
       5.4,
       4.59
     ],
-    "template": "minecraft:horse"
+    "template": "minecraft:wandering_trader"
   },
   "naturalist:great_white_shark": {
     "attributes": {

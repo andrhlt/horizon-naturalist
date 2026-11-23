@@ -29,7 +29,6 @@ fn rhino_ai_tick(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
     if kind != "naturalist:rhino" { return; }
     crate::game::naturalist_rhino_goals::tick(game, entity);
     let Some(index) = game.mobs.iter().position(|mob| mob.id == entity) else { return; };
-    rhino_break_charge_blocks(game, index);
     let position = game.mobs[index].position;
     let calf_nearby = game.mobs.iter().any(|mob| {
         mob.id != entity && mob.kind.id == "naturalist:rhino" && mob.is_baby()
@@ -54,52 +53,5 @@ fn rhino_ai_tick(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
         if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
             mob.ai.target = None;
         }
-    }
-}
-
-fn rhino_break_charge_blocks(game: &mut crate::game::Game<'_>, index: usize) {
-    use mod_api::BlockUpdateFlags;
-
-    if game.mobs[index].ints[5] == 0
-        || !game.ui.rules.bool_at(horizon_client::gamerules::vanilla::MOB_GRIEFING)
-    {
-        return;
-    }
-
-    let mob = &game.mobs[index];
-    let yaw = f64::from(mob.yaw.to_radians());
-    let front_x = mob.position.x - yaw.sin() * 1.65;
-    let front_z = mob.position.z + yaw.cos() * 1.65;
-    let center = [front_x.floor() as i32, mob.position.y.floor() as i32, front_z.floor() as i32];
-    let tags = game
-        .world_tables
-        .as_ref()
-        .and_then(|tables| tables.pack_tags.get("block"))
-        .unwrap_or(&game.res.items().block_tags);
-    let mut breakable = Vec::new();
-    for x in center[0] - 1..=center[0] + 1 {
-        for y in center[1]..=center[1] + 2 {
-            for z in center[2] - 1..=center[2] + 1 {
-                let state = game.world.block(x, y, z);
-                let name = &game.res.facts().get(state).name;
-                if tags
-                    .get("naturalist:rhino_charge_breakable")
-                    .is_some_and(|blocks| blocks.contains(name.as_ref()))
-                {
-                    breakable.push([x, y, z]);
-                }
-            }
-        }
-    }
-    if breakable.is_empty() { return; }
-    let Some(level) = game.level(game.dim.id()) else { return; };
-    let Some(air) = game.pack.assets.registry.default_state("minecraft:air") else { return; };
-    for pos in breakable {
-        let _ = game.level_set_block(
-            level,
-            pos,
-            air,
-            BlockUpdateFlags::NEIGHBORS | BlockUpdateFlags::CLIENTS,
-        );
     }
 }

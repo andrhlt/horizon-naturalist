@@ -1,4 +1,5 @@
-fn large_cat_death_post(game: &mut crate::game::Game<'_>, _: u32, _: &str, attacker: u32) {
+fn large_cat_death_post(game: &mut crate::game::Game<'_>, entity: u32, damage_type: &str, attacker: u32) {
+    let _ = (entity, damage_type);
     use horizon_core::nbt::Tag;
     let Some(mob) = game.mobs.iter_mut().find(|mob| {
         mob.id == attacker && matches!(mob.kind.id.as_ref(), "naturalist:lion" | "naturalist:tiger")
