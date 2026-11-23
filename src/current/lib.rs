@@ -26,6 +26,7 @@ pub mod shark_behavior;
 mod ocean_renderer;
 mod ocean_bucket_item;
 mod ocean_placements;
+mod forest_config;
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -274,6 +275,49 @@ impl Default for Naturalist {
 
 #[mod_api::horizon_mod]
 impl mod_api::Hooks for Naturalist {
+    fn register_configs(
+        &self,
+        _: mod_api::HostSide<'_>,
+        event: &mut mod_api::RegisterConfigsEvent<'_>,
+    ) {
+        event.configs.push(mod_api::Config::new(
+            "naturalist",
+            mod_api::ConfigKind::Server,
+            forest_config::default_config(),
+        ));
+    }
+
+    fn config_loading(
+        &self,
+        _: mod_api::HostSide<'_>,
+        event: &mut mod_api::ConfigLoadingEvent<'_>,
+    ) {
+        if event.config.mod_id == "naturalist" && event.config.kind == mod_api::ConfigKind::Server {
+            forest_config::update(&event.config.text);
+        }
+    }
+
+    fn config_reloading(
+        &self,
+        _: mod_api::HostSide<'_>,
+        event: &mut mod_api::ConfigReloadingEvent<'_>,
+    ) {
+        if event.config.mod_id == "naturalist" && event.config.kind == mod_api::ConfigKind::Server {
+            forest_config::update(&event.config.text);
+        }
+    }
+
+    fn potential_spawns(
+        &self,
+        _: &dyn mod_api::Host,
+        event: &mut mod_api::PotentialSpawnsEvent<'_>,
+    ) -> mod_api::Flow {
+        if event.category == "creature" {
+            forest_config::filter(event.entries);
+        }
+        mod_api::Flow::Continue
+    }
+
     fn entity_interact(
         &self,
         host: mod_api::HostSide<'_>,
