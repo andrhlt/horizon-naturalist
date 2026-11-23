@@ -428,6 +428,17 @@ bindings = [
 ]
 
 [[native.mixin]]
+id = "hedgehog-hit"
+target = "horizon_client::game::creatures::Game<'_>::projectile_hit_landed"
+kind = "HEAD"
+helper = "src/current/hedgehog_hit.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "projectile", ty = "&Projectile", value = "p"},
+ {name = "hit", ty = "Hit", value = "hit"},
+]
+
+[[native.mixin]]
 id = "crab-net-interact"
 target = "horizon_client::game::creatures::Game<'_>::interact_mob"
 kind = "HEAD"
