@@ -8,6 +8,8 @@ pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
 mod duck_renderer;
+mod large_renderer;
+mod elephant_melon;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
@@ -27,6 +29,7 @@ mod wildlife_renderer;
 use mod_api::AttachmentQueries;
 use std::sync::Arc;
 mod net;
+mod elephant_melon;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
 };
@@ -119,6 +122,13 @@ struct Naturalist {
     hippo: Arc<wildlife_renderer::WildlifeRenderer>,
     piranha: Arc<wildlife_renderer::WildlifeRenderer>,
     ocean: [Arc<ocean_renderer::OceanRenderer>; 8],
+    elephant: Arc<large_renderer::LargeRenderer>,
+    mammoth: Arc<large_renderer::LargeRenderer>,
+    giraffe: Arc<large_renderer::LargeRenderer>,
+    lion: Arc<large_renderer::LargeRenderer>,
+    rhino: Arc<large_renderer::LargeRenderer>,
+    tiger: Arc<large_renderer::LargeRenderer>,
+    zebra: Arc<large_renderer::LargeRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -154,6 +164,13 @@ impl Default for Naturalist {
                 Arc::new(ocean_renderer::OceanRenderer::starfish()),
                 Arc::new(ocean_renderer::OceanRenderer::whale()),
             ],
+            elephant: Arc::new(large_renderer::LargeRenderer::elephant()),
+            mammoth: Arc::new(large_renderer::LargeRenderer::mammoth()),
+            giraffe: Arc::new(large_renderer::LargeRenderer::giraffe()),
+            lion: Arc::new(large_renderer::LargeRenderer::lion()),
+            rhino: Arc::new(large_renderer::LargeRenderer::rhino()),
+            tiger: Arc::new(large_renderer::LargeRenderer::tiger()),
+            zebra: Arc::new(large_renderer::LargeRenderer::zebra()),
         }
     }
 }
@@ -162,6 +179,7 @@ impl Default for Naturalist {
 impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
+        elephant_melon::register(registrar);
         ant_hill::register(registrar);
         alligator_egg_part::register(registrar);
         chrysalis_part::register(registrar);
@@ -404,6 +422,17 @@ impl mod_api::Hooks for Naturalist {
             "naturalist:starfish", "naturalist:whale",
         ].into_iter().zip(self.ocean.iter()) {
             event.renderers.register(kind.into(), renderer.clone());
+        }
+        for (id, renderer) in [
+            ("naturalist:elephant", self.elephant.clone()),
+            ("naturalist:mammoth", self.mammoth.clone()),
+            ("naturalist:giraffe", self.giraffe.clone()),
+            ("naturalist:lion", self.lion.clone()),
+            ("naturalist:rhino", self.rhino.clone()),
+            ("naturalist:tiger", self.tiger.clone()),
+            ("naturalist:zebra", self.zebra.clone()),
+        ] {
+            event.renderers.register(id.into(), renderer);
         }
     }
 

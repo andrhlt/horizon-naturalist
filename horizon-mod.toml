@@ -450,6 +450,18 @@ name = "naturalist_shared_spawn"
 source = "src/current/shared_spawn.rs"
 
 [[native.module]]
+id = "zebra-breed-goal"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_zebra_breed"
+source = "src/current/zebra_breed_goal.rs"
+
+[[native.module]]
+id = "rhino-goals"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_rhino_goals"
+source = "src/current/rhino_ai.rs"
+
+[[native.module]]
 id = "deer_appearance"
 file = "crates/horizon-client/src/game.rs"
 name = "naturalist_appearance"
@@ -977,6 +989,167 @@ bindings = [
  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
  {name = "target", ty = "Option<InteractTarget>", value = "target"},
 ]
+
+[[native.mixin]]
+id = "elephant-cake-tame"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/elephant_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "giraffe-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/giraffe_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "giraffe-control-tick"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/giraffe_control_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "lion-tiger-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/large_cat_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "large-cat-death-cooldown"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_living_death_post"
+kind = "HEAD"
+helper = "src/current/large_cat_death_post.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "zebra-same-species-breeding"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/zebra_breed_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "rhino-calf-defense-goals"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/rhino_ai_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "rhino-shield-stun"
+target = "horizon_client::game::items::shield::Game<'_>::after_block"
+kind = "BEFORE_CALL"
+selector = "self.blocked_by_attacker"
+ordinal = 1
+require = 1
+helper = "src/current/rhino_shield_block.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "attack", ty = "&horizon_client::health::Attack", value = "attack"},
+ {name = "blocked", ty = "f32", value = "outcome.blocked"},
+]
+
+[[native.mixin]]
+id = "elephant-cake-tame"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/elephant_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "giraffe-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/giraffe_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "lion-tiger-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/large_cat_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "zebra-same-species-breeding"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/zebra_breed_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "rhino-calf-defense-goals"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/rhino_ai_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "rhino-shield-stun"
+target = "horizon_client::game::items::shield::Game<'_>::after_block"
+kind = "BEFORE_CALL"
+selector = "self.blocked_by_attacker"
+ordinal = 1
+require = 1
+helper = "src/current/rhino_shield_block.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "attack", ty = "&horizon_client::health::Attack", value = "attack"},
+ {name = "blocked", ty = "f32", value = "outcome.blocked"},
+]
+
 
 [[native.mixin]]
 id = "duck-client-pet"
