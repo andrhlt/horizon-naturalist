@@ -19,6 +19,7 @@ mod renderer;
 use mod_api::AttachmentQueries;
 use std::sync::Arc;
 mod net;
+mod elephant_melon;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
 };
@@ -172,6 +173,7 @@ impl Default for Naturalist {
 impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
+        elephant_melon::register(registrar);
         ant_hill::register(registrar);
         chrysalis_part::register(registrar);
         snail_eggs_part::register(registrar);
