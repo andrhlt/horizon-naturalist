@@ -16,7 +16,7 @@ mod bass_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
-use mod_api::AttachmentQueries;
+use mod_api::{AttachmentQueries, RandomSource};
 use std::sync::Arc;
 mod net;
 use mod_api::{
@@ -100,7 +100,6 @@ pub fn meal_cooldown(deferred: bool, attacker_ticked: bool) -> i32 {
 
 /// Snapshot the resident entity's cooldown without mutating its attachment map.
 pub fn saved_cooldown(host: &dyn mod_api::Host, id: u32) -> Option<i32> {
-    use mod_api::AttachmentQueries;
     let entity = host.entity(id)?;
     host.query(&COOLDOWN)
         .ok()?
@@ -265,29 +264,63 @@ impl mod_api::Hooks for Naturalist {
         let _ = POISON_TARGETS.set(host, Holder::Level, targets);
     }
 
+    fn entity_place(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::EntityPlaceEvent,
+    ) -> mod_api::Flow {
+        let is_snail_egg = host
+            .block_state_string(event.state)
+            .is_some_and(|name| name.starts_with("naturalist:snail_eggs["));
+        if !is_snail_egg {
+            return mod_api::Flow::Continue;
+        }
+        let Some(level) = event.placer.and_then(|placer| placer.level(host)) else {
+            return mod_api::Flow::Continue;
+        };
+        let support = [event.pos.x, event.pos.y - 1, event.pos.z];
+        if level.block_face_sturdy(
+            host,
+            support,
+            mod_api::BlockFace::Up,
+            mod_api::SupportType::Full,
+        ) != Some(true)
+        {
+            return mod_api::Flow::Cancel;
+        }
+        mod_api::Flow::Continue
+    }
+
+
     fn server_tick(&self, host: &mut dyn mod_api::ServerHost, event: &mut mod_api::ServerTickEvent<'_>) {
         if !matches!(event.phase, mod_api::ServerTickPhase::ServerTickEnd { .. }) {
             return;
         }
         let level = host.level("minecraft:overworld");
-        if let (Some(level), Ok(mut pending)) = (level, chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level))
-            && let Some(pos) = pending.first().copied()
-            && level.spawn_mob(host, "naturalist:butterfly", [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5], mod_api::SpawnReason::Command).is_some()
-        {
-            pending.remove(0);
-            let _ = chrysalis_part::PENDING.set(host, mod_api::Holder::Level, pending);
-        }
         if let Some(level) = level {
-            for row in snail_eggs_part::take_hatch_queue(host) {
-                let pos = [row[0], row[1], row[2]];
-                let still_air = level
-                    .block_state(host, pos)
-                    .and_then(|state| host.block_state_string(state))
-                    .is_some_and(|name| name.starts_with("minecraft:air"));
-                if !still_air {
+            let now = level.game_time(host).unwrap_or(i64::MIN);
+            let mut future = Vec::new();
+            for row in snail_eggs_part::hatch_queue(host) {
+                if row[3] > now {
+                    future.push(row);
                     continue;
                 }
-                for _ in 0..row[3].clamp(0, 5) {
+                let pos = [row[0] as i32, row[1] as i32, row[2] as i32];
+                let still_eggs = level
+                    .block_state(host, pos)
+                    .and_then(|state| host.block_state_string(state))
+                    .is_some_and(|name| name.starts_with("naturalist:snail_eggs["));
+                if !still_eggs {
+                    continue;
+                }
+                let count = level
+                    .with_random(host, |random| random.next_int_bound(4).unwrap_or(0) + 2)
+                    .unwrap_or(2)
+                    .clamp(2, 5);
+                if !level.remove_block(host, pos, false) {
+                    continue;
+                }
+                for _ in 0..count {
                     if let Some(child) = level.spawn_mob(
                         host,
                         "naturalist:snail",
@@ -301,6 +334,14 @@ impl mod_api::Hooks for Naturalist {
                     }
                 }
             }
+            snail_eggs_part::save_hatch_queue(host, future);
+        }
+        if let (Some(level), Ok(mut pending)) = (level, chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level))
+            && let Some(pos) = pending.first().copied()
+            && level.spawn_mob(host, "naturalist:butterfly", [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5], mod_api::SpawnReason::Command).is_some()
+        {
+            pending.remove(0);
+            let _ = chrysalis_part::PENDING.set(host, mod_api::Holder::Level, pending);
         }
         let poison_targets = POISON_TARGETS.get(host, Holder::Level).unwrap_or_default();
         let _ = POISON_TARGETS.set(host, Holder::Level, Vec::new());

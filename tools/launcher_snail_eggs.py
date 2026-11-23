@@ -36,6 +36,14 @@ def capture(version, jar, resources=None):
                 time.sleep(0.05)
             ctl("wait", 5)
 
+        def place_egg(x, y=100, z=8):
+            cmd("item replace entity @s weapon.mainhand with naturalist:snail_eggs 1")
+            cmd(f"tp @s {x + 0.5} {y} {z - 1.5}")
+            ctl("look-at", x + 0.5, y - 0.05, z + 0.5)
+            ctl("mouse", "right", "click")
+            ctl("wait", 3)
+            return cmd(f"execute if block {x} {y} {z} naturalist:snail_eggs")
+
         try:
             ctl("launch", "--headless", "--game", version / "horizon-client",
                 "--resources", resources or version / ".local/horizon-client/26.3", "--home", directory,
@@ -49,11 +57,7 @@ def capture(version, jar, resources=None):
             cmd("tp @s 7.5 100 6.5")
             cmd("forceload add 0 0")
             cmd("tick freeze")
-            cmd("item replace entity @s weapon.mainhand with naturalist:snail_eggs 4")
-            ctl("look-at", 7.5, 99.95, 8.5)
-            ctl("mouse", "right", "click")
-            ctl("wait", 3)
-            placed = cmd("execute if block 7 100 8 naturalist:snail_eggs")
+            placed = place_egg(7)
             assert any("Test passed" in row for row in placed), placed
             sprint(599)
             still_eggs = cmd("execute if block 7 100 8 naturalist:snail_eggs")
@@ -70,13 +74,23 @@ def capture(version, jar, resources=None):
             after_retry_window = ctl("entities", 24, "naturalist:snail")["entities"]
             assert len(after_retry_window) == len(snails), (snails, after_retry_window)
 
-            cmd("setblock 5 100 8 naturalist:snail_eggs")
+            placed_then_replaced = place_egg(5)
+            assert any("Test passed" in row for row in placed_then_replaced), placed_then_replaced
             cmd("setblock 5 100 8 minecraft:stone")
             sprint(2400)
             replaced = ctl("entities", 24, "naturalist:snail")["entities"]
             assert len(replaced) == len(snails), (snails, replaced)
 
-            cmd("setblock 6 100 8 naturalist:snail_eggs")
+            cmd("setblock 4 99 8 minecraft:stone_slab[type=bottom]")
+            unsupported_placement = place_egg(4)
+            assert not any("Test passed" in row for row in unsupported_placement), unsupported_placement
+            held = cmd("data get entity @s SelectedItem")
+            assert any("naturalist:snail_eggs" in row for row in held), held
+            cmd("clear @s naturalist:snail_eggs")
+
+            cmd("setblock 6 99 8 minecraft:stone")
+            placed_on_stone = place_egg(6)
+            assert any("Test passed" in row for row in placed_on_stone), placed_on_stone
             cmd("setblock 6 99 8 minecraft:air")
             unsupported = cmd("execute if block 6 100 8 minecraft:air")
             assert any("Test passed" in row for row in unsupported), unsupported
