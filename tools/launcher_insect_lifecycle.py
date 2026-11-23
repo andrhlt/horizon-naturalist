@@ -64,8 +64,8 @@ def capture(version, reference, jar=None):
             # entity NBT Age merge only deserializes age for vanilla Species;
             # create a real offspring so its internal age is set by the normal
             # Butterfly breeding path instead of writing an ineffective tag.
+            summon("naturalist:butterfly 8.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
             summon("naturalist:butterfly 9.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
-            summon("naturalist:butterfly 10.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
             step(100)
             cmd("tag @e[type=naturalist:caterpillar,x=9,y=100,z=8,distance=..4,limit=1] add fixture_baby")
             assert observed("entity @e[tag=fixture_baby]")
