@@ -54,7 +54,7 @@ def capture(version, reference, jar=None):
             cmd("tp @s 8.5 110 8.5")
             ctl("wait", 20)
             cmd("tick freeze")
-            cmd("kill @e[type=naturalist:butterfly,distance=..128]")
+            cmd("kill @e[type=naturalist:butterfly]")
             empty_butterfly_cohort = ctl("entities", 48, "naturalist:butterfly")["entities"]
             assert not empty_butterfly_cohort, empty_butterfly_cohort
             cmd("fill 0 99 0 15 99 15 minecraft:stone")
@@ -90,6 +90,12 @@ def capture(version, reference, jar=None):
             adult_makes_cocoon = observed(shell)
             caterpillar_discarded = not observed("entity @e[tag=fixture_adult]")
             cmd("kill @e[type=naturalist:butterfly,distance=..128]")
+            step(2)
+            empty_butterfly_cohort_before_hatch = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            assert not empty_butterfly_cohort_before_hatch, empty_butterfly_cohort_before_hatch
+            step(2)  # let killed breeding parents leave the entity query
+            empty_butterfly_cohort_before_hatch = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            assert not empty_butterfly_cohort_before_hatch, empty_butterfly_cohort_before_hatch
             cmd("setblock 9 100 8 naturalist:chrysalis[age=3,facing=east]")
             cmd("gamerule minecraft:random_tick_speed 4096")
             for _ in range(8):
