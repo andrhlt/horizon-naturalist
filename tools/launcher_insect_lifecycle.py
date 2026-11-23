@@ -51,6 +51,7 @@ def capture(version, reference, jar=None):
             ctl("wait", 20)
             cmd("tick freeze")
             cmd("kill @e[type=naturalist:butterfly]")
+            step(2)  # drain the killed cohort before measuring live entities
             empty_butterfly_cohort = ctl("entities", 48, "naturalist:butterfly")["entities"]
             assert not empty_butterfly_cohort, empty_butterfly_cohort
             cmd("fill 0 99 0 15 99 15 minecraft:stone")
