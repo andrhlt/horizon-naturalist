@@ -13,6 +13,7 @@ mod bass_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
+mod blobfish_behavior;
 mod ocean_renderer;
 mod ocean_placements;
 mod land_placements;
@@ -182,6 +183,39 @@ impl mod_api::Hooks for Naturalist {
         if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:starfish" | "naturalist:whale") {
             if let Some(entity) = host.entity(event.entity) { ocean_renderer::record_variant(host, entity); }
         }
+        if event.kind == "naturalist:blobfish" {
+            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                let has_crab_target = mob
+                    .target_goals(host)
+                    .is_some_and(|goals| goals.iter().any(|goal| goal.id == "nearest_target"));
+                if !has_crab_target {
+                    let goal = mod_api::GoalSpec::NearestTarget {
+                        prey: mod_api::MobFilter::Species(vec!["naturalist:crab".into()]),
+                        must_see: true,
+                        must_reach: false,
+                        interval: 10,
+                    };
+                    if !mob.add_target_goal(host, 2, &goal) {
+                        eprintln!("Naturalist: failed to add Blobfish Crab target goal");
+                    }
+                }
+                let has_melee = mob
+                    .goals(host)
+                    .is_some_and(|goals| goals.iter().any(|goal| goal.id == "melee_attack"));
+                if !has_melee
+                    && !mob.add_goal(
+                        host,
+                        3,
+                        &mod_api::GoalSpec::MeleeAttack {
+                            speed: 1.0,
+                            follow_unseen: true,
+                        },
+                    )
+                {
+                    eprintln!("Naturalist: failed to add Blobfish melee goal");
+                }
+            }
+        }
         if event.kind == "naturalist:bass" {
             if let Some(mob) = host
                 .entity(event.entity)
@@ -245,6 +279,9 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPostEvent<'_>,
     ) {
+        if event.kind == "naturalist:blobfish" {
+            blobfish_behavior::tick(host, event.entity);
+        }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
             let result = (|| {
