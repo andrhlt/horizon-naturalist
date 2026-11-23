@@ -43,7 +43,10 @@ with tempfile.TemporaryDirectory(prefix="nat-anglerfish-", ignore_cleanup_errors
         value = next((row.split("following entity data: ", 1)[1]
                       for row in rows if "following entity data: " in row), None)
         if value is None:
-            if default is not None and rows == [f"Found no elements matching {key}"]:
+            if default is not None and (
+                rows == [f"Found no elements matching {key}"]
+                or any("No entity was found" in row for row in rows)
+            ):
                 return default
             raise RuntimeError(f"Could not read {key} from {target}; Horizon replied: {rows!r}")
         return value
@@ -61,9 +64,18 @@ with tempfile.TemporaryDirectory(prefix="nat-anglerfish-", ignore_cleanup_errors
         if launcher:
             log = Path(sys.argv[2]).parent.parent / "anglerfish/play.log"
             with log.open("w") as handle:
-                child = subprocess.Popen([launcher, "play", "--version", version.name,
-                    "--world", f"Anglerfish Combat {home.name}", "--creative", "--arg=--control-socket",
-                    f"--arg={socket}", "--arg=--headless", "--arg=--test-terrain", "--arg=--render-distance", "--arg=4"],
+                command = [launcher, "play", "--version", version.name]
+                if os.environ.get("NATURALIST_ALLOW_JAR_DOWNLOADS") == "1":
+                    command.append("--allow-jar-downloads")
+                instance = os.environ.get("NATURALIST_INSTANCE")
+                if instance:
+                    command.extend(("--instance", instance))
+                account = os.environ.get("NATURALIST_ACCOUNT")
+                if account:
+                    command.extend(("--account", account))
+                command.extend(("--world", f"Anglerfish Combat {home.name}", "--creative", "--arg=--control-socket",
+                    f"--arg={socket}", "--arg=--headless", "--arg=--test-terrain", "--arg=--render-distance", "--arg=4"))
+                child = subprocess.Popen(command,
                     stdout=handle, stderr=subprocess.STDOUT)
             for _ in range(50):
                 if child.poll() is not None:
@@ -79,21 +91,25 @@ with tempfile.TemporaryDirectory(prefix="nat-anglerfish-", ignore_cleanup_errors
                 "--world", "Anglerfish Combat", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("difficulty normal")
-        cmd("tp @s 8.5 92 6.5")
+        ctl("tp", 8.5, 74, 7.0)
+        ctl("wait", 2)
+        print("initial player position", ctl("state").get("player", {}).get("position"), flush=True)
         ctl("wait", 20)
         cmd("tick freeze")
-        cmd("fill 4 91 3 14 91 14 minecraft:stone")
+        print("floor fill", cmd("fill 4 91 3 14 91 14 minecraft:stone"), flush=True)
         cmd("fill 4 92 3 14 96 14 minecraft:air")
-        cmd("fill 5 92 8 13 95 13 minecraft:water")
+        cmd("fill 5 75 8 13 78 13 minecraft:water")
         cmd("fill 2 22 2 27 33 14 minecraft:stone")
         cmd("fill 5 25 5 22 31 11 minecraft:water")
         cmd("fill 14 23 3 14 32 13 minecraft:stone")
         cmd("setblock 21 27 8 minecraft:sea_lantern")
         cmd("fill 5 39 5 12 41 12 minecraft:water")
         cmd("fill 5 53 5 12 55 12 minecraft:water")
+        print("floor sample", cmd("data get block 8 91 6"), flush=True)
         step(20)
-        cmd('summon naturalist:anglerfish 8.5 93 8.5 {NoGravity:1b,PersistenceRequired:1b,Tags:[fish]}')
-        cmd('summon minecraft:cod 10.25 93 8.5 {NoAI:1b,NoGravity:1b,Health:2f,PersistenceRequired:1b,Tags:[attacker]}')
+        print("fixture player position", ctl("state").get("player", {}).get("position"), flush=True)
+        cmd('summon naturalist:anglerfish 8.5 76 8.5 {NoGravity:1b,PersistenceRequired:1b,Tags:[fish]}')
+        cmd('summon minecraft:cod 10.25 76 8.5 {NoAI:1b,NoGravity:1b,Health:2f,PersistenceRequired:1b,Tags:[attacker]}')
         fish = "@e[type=naturalist:anglerfish,tag=fish,limit=1]"
         attacker = "@e[tag=attacker,limit=1]"
         output = {}
@@ -109,7 +125,7 @@ with tempfile.TemporaryDirectory(prefix="nat-anglerfish-", ignore_cleanup_errors
                    for line in cmd(f"damage {fish} 1 minecraft:mob_attack by {attacker}"))
         output["retaliation_damage_applied"] = True
         step(40)
-        output["attacker_health_after_retaliation"] = float(data(attacker, "Health").removesuffix("f"))
+        output["attacker_health_after_retaliation"] = float(data_or(attacker, "Health", "0f").removesuffix("f"))
         combat_cooldown = int(data_or(fish, "HuntingCooldown", "0"))
         output["cooldown_started_by_combat"] = combat_cooldown == 2400
         if combat_cooldown == 0:
@@ -125,27 +141,32 @@ with tempfile.TemporaryDirectory(prefix="nat-anglerfish-", ignore_cleanup_errors
 
         cmd("kill @e[type=naturalist:anglerfish]")
         step(21)
-        cmd('summon naturalist:anglerfish 8.5 92.5 8.5 {NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Tags:[fish]}')
+        spawn_result = cmd('summon naturalist:anglerfish 8.5 76 8.5 {NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Tags:[fish]}')
+        assert any("Summoned" in row for row in spawn_result), spawn_result
         cmd(f'data merge entity {fish} {{Variant:"naturalist:glow"}}')
-        cmd(f"tp {fish} 8.5 92.5 8.5")
-        cmd("tp @s 8.5 92 6.5")
+        cmd(f"tp {fish} 8.5 76 8.5")
+        ctl("wait", 2)
+        print("bucket player position", ctl("state").get("player", {}).get("position"), flush=True)
         cmd("gamemode survival @s")
         cmd("item replace entity @s weapon.mainhand with minecraft:water_bucket")
         step(4)
-        nearby = ctl("entities", 5, "naturalist:anglerfish")
+        nearby = ctl("entities", 6, "naturalist:anglerfish")
         assert nearby.get("entities"), nearby
         ctl("look-at-entity", nearby["entities"][0]["id"])
         ctl("mouse", "right", "click")
         ctl("wait", 4)
-        inventory = data("@s", "Inventory")
-        assert 'id: "naturalist:anglerfish_bucket"' in inventory, (inventory, ctl("state"))
+        held = ctl("state").get("held") or {}
+        assert held.get("item") == "naturalist:anglerfish_bucket", (held, ctl("state"))
+        inventory = (ctl("inventory").get("held") or {}).get("components", "")
+        print("captured bucket components", inventory, flush=True)
+        assert "naturalist:anglerfish_bucket" in (ctl("inventory").get("held") or {}).get("item", "")
         for component, key in (("bucket_entity_data", "bucket_variant"), ("custom_data", "custom_variant")):
-            match = re.search(rf'"minecraft:{component}": \{{[^{{}}]*Variant: "([^"]+)"', inventory)
+            match = re.search(rf'"minecraft:{component}":\s*\{{[^{{}}]*Variant:"([^"]+)"', inventory)
             assert match, inventory
             output[key] = match[1]
         ctl("mouse", "right", "click")
         ctl("wait", 4)
-        output["after_player_release_inventory"] = data("@s", "Inventory")
+        output["after_player_release_held"] = (ctl("state").get("held") or {}).get("item")
         try:
             output["player_released_variant"] = data(
                 "@e[type=naturalist:anglerfish,limit=1]", "Variant"
@@ -153,13 +174,13 @@ with tempfile.TemporaryDirectory(prefix="nat-anglerfish-", ignore_cleanup_errors
         except RuntimeError as error:
             output["player_release_error"] = str(error)
         print("player release", json.dumps(output), flush=True)
-        print("dispenser", cmd('setblock 8 93 7 minecraft:dispenser[facing=south]'), flush=True)
-        print("insert", cmd('item replace block 8 93 7 container.0 with '
+        print("dispenser", cmd('setblock 8 76 7 minecraft:dispenser[facing=south]'), flush=True)
+        print("insert", cmd('item replace block 8 76 7 container.0 with '
             'naturalist:anglerfish_bucket[minecraft:bucket_entity_data={Variant:"naturalist:glow"}]'), flush=True)
-        print("stored", cmd('data get block 8 93 7 Items'), flush=True)
-        print("redstone", cmd('setblock 8 94 7 minecraft:redstone_block'), flush=True)
+        print("stored", cmd('data get block 8 76 7 Items'), flush=True)
+        print("redstone", cmd('setblock 8 77 7 minecraft:redstone_block'), flush=True)
         step(10)
-        print("after", cmd('data get block 8 93 7 Items'), flush=True)
+        print("after", cmd('data get block 8 76 7 Items'), flush=True)
         live = "@e[type=naturalist:anglerfish,limit=1]"
         output["dispenser_released_variant"] = data(live, "Variant").strip('"')
         print(json.dumps(output, indent=2), flush=True)
