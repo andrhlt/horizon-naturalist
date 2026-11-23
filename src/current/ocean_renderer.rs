@@ -7,6 +7,11 @@ static OCEAN_VARIANT: mod_api::AttachmentType<String> = mod_api::AttachmentType 
     codec: Some(mod_api::AttachmentCodec { encode: encode_variant, decode: decode_variant }),
     copy_on_death: true, sync: true,
 };
+static BLOBFISH_GRAY: mod_api::AttachmentType<bool> = mod_api::AttachmentType {
+    namespace: "naturalist", name: "blobfish_gray", default: || false,
+    codec: Some(mod_api::AttachmentCodec { encode: encode_blobfish_gray, decode: decode_blobfish_gray }),
+    copy_on_death: true, sync: true,
+};
 fn encode_variant(value: &String) -> Result<mod_api::Compound, mod_api::AttachmentError> {
     Ok([("variant".into(), mod_api::Tag::String(value.as_str().into()))].into())
 }
@@ -16,8 +21,18 @@ fn decode_variant(data: &mod_api::Compound) -> Result<String, mod_api::Attachmen
         _ => Err(mod_api::AttachmentError::Decode),
     }
 }
+fn encode_blobfish_gray(value: &bool) -> Result<mod_api::Compound, mod_api::AttachmentError> {
+    Ok([("gray".into(), mod_api::Tag::Byte(if *value { 1 } else { 0 }))].into())
+}
+fn decode_blobfish_gray(data: &mod_api::Compound) -> Result<bool, mod_api::AttachmentError> {
+    match data.get(&"gray".into()) {
+        Some(mod_api::Tag::Byte(value)) => Ok(*value != 0),
+        _ => Err(mod_api::AttachmentError::Decode),
+    }
+}
 pub(crate) fn record_variant(host: &mut dyn mod_api::ServerHost, entity: mod_api::EntityRef) {
-    let variant = entity.nbt(host).and_then(|data| match data.get(&"Variant".into()) {
+    let data = entity.nbt(host);
+    let variant = data.as_ref().and_then(|data| match data.get(&"Variant".into()) {
         Some(mod_api::Tag::String(value)) => Some(value.to_string_lossy()), _ => None,
     });
     if let Some(variant) = variant {
@@ -25,9 +40,19 @@ pub(crate) fn record_variant(host: &mut dyn mod_api::ServerHost, entity: mod_api
             eprintln!("Naturalist: ocean variant sync failed: {error:?}");
         }
     }
+    if entity.kind(host).is_some_and(|kind| kind.id(host) == "naturalist:blobfish") {
+        let gray = data.as_ref().is_some_and(|data| matches!(data.get(&"Gray".into()), Some(mod_api::Tag::Byte(value)) if *value != 0));
+        if let Err(error) = BLOBFISH_GRAY.set(host, mod_api::Holder::Entity(entity.id()), gray) {
+            eprintln!("Naturalist: Blobfish appearance sync failed: {error:?}");
+        }
+    }
 }
 pub(crate) fn synced_variant(host: &dyn mod_api::ClientHost, entity: mod_api::EntityRef) -> Option<String> {
     use mod_api::AttachmentQueries;
+    if entity.kind(host).is_some_and(|kind| kind.id(host) == "naturalist:blobfish") {
+        let gray = host.query(&BLOBFISH_GRAY).ok()?.get(mod_api::AttachmentHolder::Entity(entity)).ok().flatten().unwrap_or(false);
+        return Some(if gray { "naturalist:gray" } else { "naturalist:pink" }.to_owned());
+    }
     host.query(&OCEAN_VARIANT).ok()?.get(mod_api::AttachmentHolder::Entity(entity)).ok().flatten()
 }
 
@@ -102,11 +127,11 @@ impl Clip {
 #[allow(dead_code)]
 #[path="ocean_assets/whale_animations.rs"] mod whale_animations;
 
-pub(crate) struct OceanRenderer { model: ModelPart, baby_model: Option<ModelPart>, texture: &'static str, species: &'static str, animation: &'static Clip, variants: Mutex<HashMap<u32, String>> }
+pub(crate) struct OceanRenderer { model: ModelPart, baby_model: Option<ModelPart>, alternate_model: Option<ModelPart>, texture: &'static str, species: &'static str, animation: &'static Clip, variants: Mutex<HashMap<u32, String>> }
 impl OceanRenderer {
-    fn new(species: &'static str, model: ModelPart, texture: &'static str, animation: &'static Clip) -> Self { Self { species, model, baby_model: None, texture, animation, variants: Mutex::new(HashMap::new()) } }
+    fn new(species: &'static str, model: ModelPart, texture: &'static str, animation: &'static Clip) -> Self { Self { species, model, baby_model: None, alternate_model: None, texture, animation, variants: Mutex::new(HashMap::new()) } }
     pub(crate) fn anglerfish() -> Self { Self::new("anglerfish", anglerfish_models::adult(), "naturalist:entity/anglerfish/red", &anglerfish_animations::ADULT_SWIM) }
-    pub(crate) fn blobfish() -> Self { Self::new("blobfish", blobfish_models::gray(), "naturalist:entity/blobfish/gray", &blobfish_animations::ADULT_GRAY_SWIM) }
+    pub(crate) fn blobfish() -> Self { let mut renderer = Self::new("blobfish", blobfish_models::gray(), "naturalist:entity/blobfish/gray", &blobfish_animations::ADULT_GRAY_SWIM); renderer.alternate_model = Some(blobfish_models::pink()); renderer }
     pub(crate) fn isopod() -> Self { Self::new("giant_isopod", giant_isopod_models::adult(), "naturalist:entity/giant_isopod/brown", &giant_isopod_animations::ADULT_WALK) }
     pub(crate) fn shark() -> Self { Self::new("great_white_shark", shark_models::adult(), "naturalist:entity/great_white_shark", &shark_animations::ADULT_SWIM) }
     pub(crate) fn jellyfish() -> Self { Self::new("jellyfish", jellyfish_models::adult(), "naturalist:entity/jellyfish/white", &jellyfish_animations::ADULT_SWIM) }
@@ -125,6 +150,9 @@ impl OceanRenderer {
         let variants = self.variants.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
         let name = variants.get(&id).map(|v| v.rsplit(':').next().unwrap_or(v.as_str()));
         texture_path(self.species, name, self.texture)
+    }
+    fn variant(&self, id: u32) -> Option<String> {
+        self.variants.lock().unwrap_or_else(std::sync::PoisonError::into_inner).get(&id).cloned()
     }
 }
 
@@ -152,8 +180,16 @@ fn texture_path(species: &str, name: Option<&str>, fallback: &str) -> String {
 impl EntityRenderer for OceanRenderer {
     fn submit(&self, entity: &EntityRenderState, draw: &mut dyn BlockEntityDrawContext) -> Result<(), String> {
         let Some(living) = entity.living.as_ref() else { return Ok(()); };
-        let mut model = if living.is_baby { self.baby_model.as_ref().unwrap_or(&self.model).clone() } else { self.model.clone() };
-        self.animation.pose(&mut model, entity.age.max(0.0) * 0.05 * (living.walk_animation_speed / 0.25).clamp(0.4, 2.0));
+        let pink_blobfish = self.species == "blobfish" && self.variant(entity.id).as_deref() == Some("naturalist:pink");
+        let mut model = if pink_blobfish {
+            self.alternate_model.as_ref().unwrap_or(&self.model).clone()
+        } else if living.is_baby {
+            self.baby_model.as_ref().unwrap_or(&self.model).clone()
+        } else {
+            self.model.clone()
+        };
+        let animation = if pink_blobfish { &blobfish_animations::ADULT_PINK_IDLE } else { self.animation };
+        animation.pose(&mut model, entity.age.max(0.0) * 0.05 * (living.walk_animation_speed / 0.25).clamp(0.4, 2.0));
         draw.scale([living.scale; 3]);
         draw.rotate_about([0.0,1.0,0.0], 180.0-living.body_rot, [0.0;3]);
         draw.scale([1.0,-1.0,-1.0]);
@@ -173,6 +209,25 @@ mod tests {
         let expected = "naturalist:mobula_ray".to_owned();
         let encoded = encode_variant(&expected).expect("encode variant");
         assert_eq!(decode_variant(&encoded).expect("decode variant"), expected);
+    }
+
+    #[test]
+    fn blobfish_pressure_appearance_round_trips_as_synced_state() {
+        for expected in [false, true] {
+            let encoded = encode_blobfish_gray(&expected).expect("encode Blobfish appearance");
+            assert_eq!(
+                decode_blobfish_gray(&encoded).expect("decode Blobfish appearance"),
+                expected
+            );
+        }
+        assert_eq!(
+            texture_path("blobfish", Some("pink"), "unused"),
+            "naturalist:entity/blobfish/pink"
+        );
+        assert_eq!(
+            texture_path("blobfish", Some("gray"), "unused"),
+            "naturalist:entity/blobfish/gray"
+        );
     }
 
     #[test]
