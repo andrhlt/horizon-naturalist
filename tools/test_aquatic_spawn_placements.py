@@ -9,11 +9,12 @@ anglerfish = json.loads((ROOT / "fixtures/anglerfish-java.json").read_text())
 blobfish = json.loads((ROOT / "fixtures/blobfish-java.json").read_text())
 piranha = json.loads((ROOT / "fixtures/piranha-java.json").read_text())
 source = (ROOT / "src/current/aquatic_placements.rs").read_text()
+ocean_source = (ROOT / "src/current/ocean_placements.rs").read_text()
 hook = (ROOT / "src/current/lib.rs").read_text()
 species = sorted(fixture["cluster_limits"])
 assert len(species) == 7, species
 for kind in species:
-    assert f'"{kind.split(":", 1)[1]}"' in source, kind
+    assert f'"{kind.split(":", 1)[1]}"' in source + ocean_source, kind
 assert source.count("SpawnPlacementType::InWater") == 1
 assert source.count("SpawnLight::Any") == 1
 for predicate in (
