@@ -203,6 +203,7 @@ impl Goal for LayAlligatorEgg {
 }
 
 pub(super) fn install(game: &mut Game<'_>, id: u32) {
+    use mod_api::Host;
     if let Some(mob) = game.entity(id).and_then(|entity| game.mob(entity)) {
         mob.remove_goal(game, "BreedGoal");
     }
