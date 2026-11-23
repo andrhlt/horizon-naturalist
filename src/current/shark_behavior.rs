@@ -75,6 +75,30 @@ pub(crate) fn update_target_gate(host: &mut dyn ServerHost, id: u32) {
     }
 }
 
+/// Advance the prey cooldown saved by the landed-kill combat hook.
+///
+/// Keep this in the entity tick path so the timer survives save/reload and
+/// eventually re-enables the prey selector instead of leaving a Shark sated
+/// forever.
+pub(crate) fn tick_hunting_cooldown(host: &mut dyn ServerHost, id: u32) {
+    let Some(entity) = host.entity(id) else {
+        return;
+    };
+    let Some(data) = entity.nbt(host) else {
+        return;
+    };
+    let current = hunting_cooldown(&data);
+    if current == 0 {
+        return;
+    }
+    let mut patch = mod_api::Compound::new();
+    patch.insert(
+        "HuntingCooldown".into(),
+        Tag::Int(next_hunting_cooldown(current)),
+    );
+    let _ = entity.merge_nbt(host, patch);
+}
+
 /// Keep Shark air behavior independent of its Cow-derived mob template.
 /// Java loses one air per dry tick and takes two drown damage on tick twenty.
 pub(crate) fn tick_air(host: &mut dyn ServerHost, id: u32) {

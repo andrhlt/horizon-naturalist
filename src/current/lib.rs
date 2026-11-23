@@ -525,6 +525,7 @@ impl mod_api::Hooks for Naturalist {
         }
         if event.kind == "naturalist:great_white_shark" {
             shark_behavior::tick_air(host, event.entity);
+            shark_behavior::tick_hunting_cooldown(host, event.entity);
         }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
