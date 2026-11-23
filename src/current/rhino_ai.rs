@@ -8,7 +8,6 @@ pub struct RhinoCharge {
     target: Option<Who>,
     windup: u8,
     charge: u8,
-    cooldown: u8,
 }
 
 #[derive(Clone, Debug)]
@@ -84,7 +83,6 @@ impl Goal for RhinoCharge {
     fn flags(&self) -> u8 { MOVE | LOOK }
 
     fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
-        if self.cooldown > 0 { self.cooldown -= 1; return false; }
         let Some(target) = mob.ai.target else { return false; };
         if cx.w.target_info(target).is_none_or(|info| !info.alive) { return false; }
         self.target = Some(target);
@@ -108,7 +106,6 @@ impl Goal for RhinoCharge {
         self.target = None;
         self.windup = 0;
         self.charge = 0;
-        self.cooldown = 42;
     }
 
     fn every_tick(&self) -> bool { true }
@@ -140,7 +137,6 @@ impl Goal for RhinoCharge {
                 }),
             }
             self.charge = 0;
-            self.cooldown = 42;
             mob.ints[5] = 0;
             mob.nav_stop();
             return;
