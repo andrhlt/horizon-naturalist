@@ -14,6 +14,7 @@ pub mod bass_hunt;
 mod bass_renderer;
 mod species_renderer;
 mod species_behavior;
+mod species_goals;
 mod species_interact;
 mod land_placements;
 mod profiles;
@@ -151,41 +152,12 @@ struct Naturalist {
     dirt_trail: Arc<species_renderer::SpeciesRenderer>,
     mole: Arc<species_renderer::SpeciesRenderer>,
     tortoise: Arc<species_renderer::SpeciesRenderer>,
-    mole_states: Mutex<HashMap<u32, MoleRuntime>>,
     komodo_entities: Mutex<HashSet<u32>>,
     tortoise_babies: Mutex<HashSet<u32>>,
     pending_poison: Mutex<HashSet<u32>>,
     komodo_ticks: Mutex<HashMap<u32, u16>>,
 }
 
-#[derive(Default, Clone)]
-struct MoleRuntime {
-    state: i32,
-    state_ticks: i32,
-    calm_ticks: i32,
-    peek_ticks: i32,
-    grace_ticks: i32,
-    lockout_ticks: i32,
-    peek_saw_threat: bool,
-    threat_detected: bool,
-    attacker: Option<u32>,
-    attacker_ticks: i32,
-    last_mound: Option<[i32; 3]>,
-}
-
-impl MoleRuntime {
-    fn at_state(state: i32) -> Self {
-        let mut runtime = Self { state, ..Self::default() };
-        match state {
-            1 => runtime.state_ticks = 20,
-            2 => { runtime.grace_ticks = 60; runtime.peek_ticks = 60; }
-            3 => runtime.state_ticks = 57,
-            4 => runtime.state_ticks = 25,
-            _ => {}
-        }
-        runtime
-    }
-}
 impl Default for Naturalist {
     fn default() -> Self {
         Self {
@@ -198,7 +170,6 @@ impl Default for Naturalist {
             dirt_trail: Arc::new(species_renderer::SpeciesRenderer::new(species_renderer::Species::Trail)),
             mole: Arc::new(species_renderer::SpeciesRenderer::new(species_renderer::Species::Mole)),
             tortoise: Arc::new(species_renderer::SpeciesRenderer::new(species_renderer::Species::Tortoise)),
-            mole_states: Mutex::default(),
             komodo_entities: Mutex::default(),
             tortoise_babies: Mutex::default(),
             pending_poison: Mutex::default(),
@@ -255,6 +226,10 @@ impl mod_api::Hooks for Naturalist {
                 .expect("register Naturalist entity attributes");
         }
         registrar.entity_part("naturalist:bass", bass_hunt::BassPart);
+        registrar.entity_part("naturalist:mole", species_goals::MolePart);
+        registrar.entity_part("minecraft:wolf", species_goals::WolfPart);
+        registrar.entity_part("naturalist:lizard", species_goals::PetPart);
+        registrar.entity_part("naturalist:tortoise", species_goals::PetPart);
     }
 
     fn entity_interact(
@@ -428,8 +403,8 @@ impl mod_api::Hooks for Naturalist {
         {
             set_mole_step_height(host, entity);
             if let Some(state) = mole_state(host, entity) {
-                self.mole_states.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
-                    .insert(event.entity, MoleRuntime::at_state(state));
+                species_goals::MOLE_STATES.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+                    .insert(event.entity, species_goals::MoleRuntime::at_state(state));
             }
         }
         if event.kind == "naturalist:tortoise"
@@ -506,7 +481,7 @@ impl mod_api::Hooks for Naturalist {
             }
         }
         if event.kind == "naturalist:mole" {
-            tick_mole(host, event.entity, &self.mole_states);
+            tick_mole(host, event.entity, &species_goals::MOLE_STATES);
         }
         if event.kind == "naturalist:lizard" {
             tick_lizard_tail(host, event.entity);
@@ -614,7 +589,7 @@ impl mod_api::Hooks for Naturalist {
         event: &mut mod_api::EntityLeaveLevelEvent<'_>,
     ) {
         if event.kind == "naturalist:mole" {
-            self.mole_states.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+            species_goals::MOLE_STATES.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
                 .remove(&event.entity);
         }
         if event.kind == "naturalist:komodo_dragon" {
@@ -631,7 +606,7 @@ impl mod_api::Hooks for Naturalist {
         event: &mut mod_api::LivingIncomingDamageEvent<'_>,
     ) -> mod_api::Flow {
         if event.kind == "naturalist:mole"
-            && self.mole_states.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+            && species_goals::MOLE_STATES.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
                 .get(&(event.entity as u32)).is_some_and(|state| matches!(state.state, 1 | 2 | 4))
         {
             return mod_api::Flow::Cancel;
@@ -658,7 +633,7 @@ impl mod_api::Hooks for Naturalist {
             let attacker = u32::try_from(causing).ok().filter(|id| *id != 0)
                 .or_else(|| u32::try_from(direct).ok().filter(|id| *id != 0));
             if let Some(attacker) = attacker {
-                let mut states = self.mole_states.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+                let mut states = species_goals::MOLE_STATES.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
                 let state = states.entry(event.entity as u32).or_default();
                 state.attacker = Some(attacker);
                 state.attacker_ticks = 1_200;
@@ -795,7 +770,7 @@ fn tick_lizard_tail(host: &mut dyn mod_api::ServerHost, id: u32) {
 fn tick_mole(
     host: &mut dyn mod_api::ServerHost,
     id: u32,
-    states: &Mutex<HashMap<u32, MoleRuntime>>,
+    states: &Mutex<HashMap<u32, species_goals::MoleRuntime>>,
 ) {
     use mod_api::{BlockFace, Host, SupportType, Tag};
     let Some(entity) = host.entity(id) else { return; };
@@ -805,11 +780,31 @@ fn tick_mole(
     let tick = entity.tick_count(host).unwrap_or(0);
     let state = mole_state(host, entity).unwrap_or(0);
     let mut map = states.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
-    let runtime = map.entry(id).or_insert_with(|| MoleRuntime::at_state(state));
+    let runtime = map.entry(id).or_insert_with(|| species_goals::MoleRuntime::at_state(state));
     runtime.state = state;
     runtime.lockout_ticks = runtime.lockout_ticks.saturating_sub(1);
     runtime.grace_ticks = runtime.grace_ticks.saturating_sub(1);
-    runtime.attacker_ticks = runtime.attacker_ticks.saturating_sub(1);
+    runtime.dug_out_hold_ticks = runtime.dug_out_hold_ticks.saturating_sub(1);
+    let popped = runtime.pop_out_pending && state == 2;
+    if !popped {
+        runtime.attacker_ticks = runtime.attacker_ticks.saturating_sub(1);
+    }
+    if popped {
+        runtime.pop_out_pending = false;
+        runtime.dug_out_hold_ticks = 0;
+        runtime.lockout_ticks = 60;
+        runtime.state_ticks = 25;
+        runtime.state = 4;
+        let _ = entity.merge_nbt(host, [("MoleState".into(), Tag::Int(4))].into());
+    }
+    if !popped && runtime.dug_out_hold_ticks > 0 {
+        if let Some(mob) = host.mob(entity) {
+            let _ = mob.stop(host);
+        }
+        let _ = entity.set_velocity(host, [0.0; 3]);
+        drop(map);
+        return;
+    }
 
     if tick.rem_euclid(4) == 0 {
         let min = [pos[0] - 7.0, pos[1] - 2.0, pos[2] - 7.0];
@@ -842,8 +837,10 @@ fn tick_mole(
         && !interrupted
         && runtime.lockout_ticks <= 0;
 
-    let mut next_state = state;
-    if state != 0 && state != 4 && interrupted {
+    let mut next_state = if runtime.state != state { runtime.state } else { state };
+    if popped {
+        next_state = 4;
+    } else if state != 0 && state != 4 && interrupted {
         next_state = 4;
     } else {
         match state {
@@ -883,7 +880,7 @@ fn tick_mole(
 
     if next_state != state {
         let _ = entity.merge_nbt(host, [("MoleState".into(), Tag::Int(next_state))].into());
-        let mut new_runtime = MoleRuntime::at_state(next_state);
+        let mut new_runtime = species_goals::MoleRuntime::at_state(next_state);
         new_runtime.attacker = runtime.attacker;
         new_runtime.attacker_ticks = runtime.attacker_ticks;
         new_runtime.threat_detected = runtime.threat_detected;
@@ -917,7 +914,7 @@ fn leave_mole_mound(
     entity: mod_api::EntityRef,
     level: mod_api::LevelRef,
     pos: [f64; 3],
-    runtime: &mut MoleRuntime,
+    runtime: &mut species_goals::MoleRuntime,
 ) {
     use mod_api::{BlockFace, BlockShapeKind, Host, SupportType, Tag};
     if !entity.on_ground(host).unwrap_or(false) { return; }
