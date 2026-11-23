@@ -288,6 +288,19 @@ impl mod_api::Hooks for Naturalist {
         {
             return mod_api::Flow::Cancel;
         }
+        let Some(now) = level.game_time(host) else {
+            return mod_api::Flow::Continue;
+        };
+        let Some(delay) = level.with_random(host, |random| {
+            random.next_int_bound(1800).unwrap_or(0) + 600
+        }) else {
+            return mod_api::Flow::Continue;
+        };
+        snail_eggs_part::schedule_hatch(
+            host,
+            [event.pos.x, event.pos.y, event.pos.z],
+            now + i64::from(delay),
+        );
         mod_api::Flow::Continue
     }
 

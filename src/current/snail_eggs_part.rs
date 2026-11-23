@@ -1,4 +1,7 @@
-use mod_api::{AttachmentCodec, AttachmentType, BlockPart, CanSurviveEvent, Direction, Holder, ItemPart, OnBlockPlacedByEvent, RandomSource, ServerHost, UpdateShapeEvent};
+use mod_api::{
+    AttachmentCodec, AttachmentType, BlockPart, CanSurviveEvent, Direction, Holder, RandomSource,
+    ServerHost, UpdateShapeEvent,
+};
 
 static HATCHES: AttachmentType<Vec<[i64; 4]>> = AttachmentType {
     namespace: "naturalist",
@@ -48,37 +51,10 @@ impl BlockPart for SnailEggs {
     }
 }
 
-
-pub struct SnailEggItem;
-
-#[mod_api::horizon_part]
-impl ItemPart for SnailEggItem {
-    fn on_block_placed_by(&self, host: &mut dyn ServerHost, event: &mut OnBlockPlacedByEvent<'_>) {
-        let Some(level) = event
-            .placer
-            .and_then(|placer| placer.level(host))
-            .or_else(|| host.level("minecraft:overworld"))
-        else {
-            return;
-        };
-        let Some(now) = level.game_time(host) else {
-            return;
-        };
-        let Some(delay) = level.with_random(host, |random| {
-            random.next_int_bound(1800).unwrap_or(0) + 600
-        }) else {
-            return;
-        };
-        schedule_hatch(host, event.pos, now + i64::from(delay));
-    }
-}
-
 pub fn register(registrar: &mut dyn mod_api::Registrar) {
     let key = registrar.block_key("naturalist:snail_eggs");
     let part = SnailEggs;
     registrar.block_part(key, part.clone());
-    let item = registrar.item_key("naturalist:snail_eggs");
-    registrar.item_part(item, SnailEggItem);
     for tag in [
         "minecraft:dirt",
         "minecraft:base_stone_overworld",
