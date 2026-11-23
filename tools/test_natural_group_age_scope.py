@@ -13,6 +13,7 @@ assert sum(horizon["mapped_probability_groups"].values()) + len(horizon["special
 for species, expected in java.items():
     if species in horizon["special_group_species"]:
         assert horizon["special_group_species"][species]["expected_babies"] == expected
-print("PASS: Java natural-group-age roster has 36 species")
-print("PASS: Horizon finalize_with local maps all 36 species to Java-backed Ageable transitions")
+print("PASS: Java natural-group-age fixture covers 36 species")
+print("PASS: fixture records mapped probability groups and the $local_mut:group:0 input")
 print("PASS: exact special distributions recorded for Elephant, Lion, Mammoth, and Zebra")
+print("NOTE: this scope check does not establish that the current native mixin calls the mapping")

@@ -25,6 +25,8 @@ Reusable table evidence remains `fixtures/naturalist-combined-3d513df20090.json`
 
 Earlier matching frozen-SDK headless evidence on candidate `native-0a875da-408c6cec89f6` observed natural Butterfly and Firefly spawns and Bird initialization. Its installed `libnaturalist.dylib` SHA-256 was `baa44853edf3af9d179acd2ad4d0f85c8796baa44a1d31dcdde4b120c1e8dc1e`. This is prior candidate evidence; the current merged PR head still needs the centralized APP-2135 artifact/build and runtime checks.
 
+Natural group-age fixture coverage must not be mistaken for current hook wiring. `src/current/shared_spawn.rs` contains the Java-backed mapping, but the current `deer_finalize_variant` mixin only calls Deer variant selection and does not invoke `before_grouped`; Bird variant and shared group initialization therefore remain unwired on this merged head. APP-2135 should resolve this shared mixin change, preserve the existing finalizer/RNG order and non-natural spawn reasons, and verify on its combined candidate. No new engine API is needed for this mapping.
+
 The earlier high-weight river Piranha probe observed no aquatic entities after 1,200 ticks but did not establish that a valid Piranha candidate was attempted, so it is inconclusive. A fresh headless launch of the registered matching candidate is currently blocked at Horizon Launcher's Microsoft account ownership gate. Do not bypass authentication or managed cache leases. APP-2135 owns the next shared controlled aquatic run using loaded chunks, correct biome/fluid/light/depth, and the normal production spawn path.
 
 Bird seed `49903` remains Horizon 3 vs Java 2; `49904` is 0 vs 0. Exact cross-engine Bird count/RNG parity is a separate full-parity follow-up absent a demonstrated player-visible defect.
