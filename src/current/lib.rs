@@ -150,6 +150,32 @@ struct Naturalist {
     duck: Arc<duck_renderer::DuckRenderer>,
     ocean: [Arc<ocean_renderer::OceanRenderer>; 8],
 }
+
+fn install_goal(
+    mob: &mod_api::MobRef,
+    host: &mut dyn mod_api::ServerHost,
+    target: bool,
+    priority: i32,
+    goal: mod_api::GoalSpec,
+) {
+    let existing = if target {
+        mob.target_goals(host)
+    } else {
+        mob.goals(host)
+    };
+    if existing.is_some_and(|goals| goals.iter().any(|installed| installed.id == goal.id())) {
+        return;
+    }
+    let installed = if target {
+        mob.add_target_goal(host, priority, &goal)
+    } else {
+        mob.add_goal(host, priority, &goal)
+    };
+    if !installed {
+        eprintln!("Naturalist: failed to add {} goal", goal.id());
+    }
+}
+
 impl Default for Naturalist {
     fn default() -> Self {
         Self {
@@ -291,6 +317,45 @@ impl mod_api::Hooks for Naturalist {
                     )
                 {
                     eprintln!("Naturalist: failed to add Blobfish melee goal");
+                }
+            }
+        }
+        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:great_white_shark") {
+            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                let prey = if event.kind == "naturalist:anglerfish" {
+                    vec!["minecraft:cod", "minecraft:salmon"]
+                } else {
+                    vec!["minecraft:cod", "minecraft:salmon", "minecraft:turtle"]
+                };
+                install_goal(&mob, host, true, 1, mod_api::GoalSpec::NearestTarget {
+                    prey: mod_api::MobFilter::Species(prey.into_iter().map(str::to_owned).collect()),
+                    must_see: true,
+                    must_reach: false,
+                    interval: 10,
+                });
+                install_goal(&mob, host, false, 3, mod_api::GoalSpec::MeleeAttack {
+                    speed: 1.0,
+                    follow_unseen: true,
+                });
+            }
+        }
+        if matches!(event.kind, "naturalist:giant_isopod" | "naturalist:jellyfish" | "naturalist:starfish" | "naturalist:whale") {
+            if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                install_goal(&mob, host, false, 0, mod_api::GoalSpec::Float);
+                install_goal(&mob, host, false, 5, mod_api::GoalSpec::Stroll {
+                    speed: 1.0,
+                    interval: 40,
+                    water_avoiding: None,
+                    swim: true,
+                    flying: false,
+                });
+                install_goal(&mob, host, false, 6, mod_api::GoalSpec::RandomLookAround);
+                if event.kind == "naturalist:giant_isopod" {
+                    install_goal(&mob, host, false, 2, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    install_goal(&mob, host, false, 3, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                }
+                if event.kind == "naturalist:whale" {
+                    install_goal(&mob, host, false, 1, mod_api::GoalSpec::BreathAir);
                 }
             }
         }
