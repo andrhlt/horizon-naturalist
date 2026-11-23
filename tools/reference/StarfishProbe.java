@@ -86,6 +86,17 @@ public final class StarfishProbe {
             output.put("waterlogged", block.getOptionalValue(BlockStateProperties.WATERLOGGED).orElse(false));
             output.put("attached_down", block.getOptionalValue(MultifaceBlock.getFaceProperty(Direction.DOWN)).orElse(false));
 
+            var placedPos = support.above();
+            level.getEntitiesOfClass(ItemEntity.class,
+                new AABB(7, 91, 8, 8, 93, 9)).forEach(ItemEntity::discard);
+            level.destroyBlock(support, false);
+            var afterSupportRemoval = level.getBlockState(placedPos);
+            output.put("support_removed_block", BuiltInRegistries.BLOCK.getKey(afterSupportRemoval.getBlock()).toString());
+            var supportDrops = level.getEntitiesOfClass(ItemEntity.class,
+                new AABB(7, 91, 8, 8, 93, 9));
+            output.put("support_drop", supportDrops.isEmpty() ? "" :
+                BuiltInRegistries.ITEM.getKey(supportDrops.getFirst().getItem().getItem()).toString());
+
             source.sendSuccess(() -> Component.literal("starfish_fixture " + GSON.toJson(output)), false);
             return 1;
         }));

@@ -16,5 +16,7 @@
   "fallback_death_color": "naturalist:orange_starfish",
   "placed_block": "naturalist:blue_starfish",
   "waterlogged": true,
-  "attached_down": true
+  "attached_down": true,
+  "support_removed_block": "minecraft:air",
+  "support_drop": "naturalist:blue_starfish"
 }
