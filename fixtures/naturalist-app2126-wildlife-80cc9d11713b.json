@@ -1,0 +1,34 @@
+{
+  "issue": "APP-2126",
+  "pinned": {
+    "naturalist_version": "2.0.7",
+    "neoforge_version": "26.3.0.95",
+    "naturalist_source_sha256": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+    "horizon_source_sha256": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a"
+  },
+  "candidate": {
+    "version": "native-0a875da-80cc9d11713b",
+    "libnaturalist_sha256": "531e5b6c31785be3c632e4ddcdd43af61079f87ec4a90d3ad64b859b3e8dd63c",
+    "libhorizon_patch_sha256": "cbc83a9a8de1cdb1fbf6c5021b7dc689ad137fc1f64ddba31636256afa66cd8f"
+  },
+  "checks": {
+    "cargo_test_lib": {"passed": true, "tests": 22},
+    "native_build": {"passed": true, "profile": "optimized"},
+    "offline_server_start": {"passed": true, "engine": "native-0a875da-80cc9d11713b", "resources": "nightly-2026-11-20-0a875da"},
+    "offline_server_summon": {"passed": true, "bear_max_health": 30.0},
+    "play_client": {
+      "passed": false,
+      "command": "HORIZON_LAUNCHER_HOME=/private/tmp/horizon-app-2136/.sdk/launcher-data horizon-launcher play --instance Horizon --version native-0a875da-80cc9d11713b",
+      "error": "Sign in with a Microsoft account that owns Minecraft: Java Edition to play. Sign in with horizon-launcher account sign-in"
+    }
+  },
+  "implementation": {
+    "terrestrial_renderers": ["bear", "black_bear", "boar", "snake"],
+    "locomotion": "living walk position/speed drives source limb and snake-tail bones",
+    "retaliatory_behavior": "join-time HurtByTarget plus MeleeAttack goals for all four profiles",
+    "deer_natural_initialization": "grouped finalizer supplies the Java five-percent baby roll",
+    "deer_natural_variant": "open: current finalizer seam does not expose Java spawn-pass RNG",
+    "forest_fox_rabbit": "tracked data modifiers retained; no native override added"
+  },
+  "runtime_scope": "No gameplay, LAN, persistence, or offscreen render parity is claimed because client Play requires an owning Microsoft account. The isolated offline dedicated server route starts and loads the candidate content, but has no client/player for the fixture harnesses."
+}

@@ -1,14 +1,19 @@
 """Observe naturally spawned Deer and their saved fields in the installed build."""
 import argparse
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
 import time
 
 def capture(version):
+    resources = Path(os.environ.get("NATURALIST_RESOURCES", version / ".local/horizon-client/26.3"))
     with tempfile.TemporaryDirectory(prefix="nat-scoped-deer-", ignore_cleanup_errors=True) as tmp:
         home = Path(tmp)
+        jar_cache = os.environ.get("NATURALIST_JAR_CACHE")
+        if jar_cache:
+            (home / "jars").symlink_to(Path(jar_cache), target_is_directory=True)
         socket = home / "deer.sock"
 
         def ctl(*args):
@@ -21,7 +26,7 @@ def capture(version):
 
         try:
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
+                resources, "--home", home, "--game-dir", home,
                 "--world", "Naturalist Scoped Deer Spawn", "--creative",
                 "--test-terrain", "--render-distance", 8, "--wait")
             command("gamerule minecraft:spawn_mobs false")
