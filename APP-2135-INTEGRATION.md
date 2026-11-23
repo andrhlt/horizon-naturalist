@@ -54,12 +54,15 @@ The latest persistence rerun passed on `native-0a875da-2c623e51691d`: all six fr
 and saved fields matched after reopen, and Capybara owner interaction succeeded. Temporary-world
 cleanup again emitted only the non-fatal launcher “No world” message.
 
-Adult cocoon diagnostic details: after the live `Age:0`/`NoAI:0b` setup and 16 ticks,
-`Age` remained `0`, `NoAI` read back as `1b`, and `entity @e[tag=fixture_adult]` remained
-present. The target at `[9,100,8]` remained air; `[10,100,8]` and `[10,99,8]` remained
-the two oak-log support blocks. The resulting fixture was
-`adult_makes_cocoon=false`, `caterpillar_discarded=false`, `chrysalis_faces_log=false`,
-with exactly one Butterfly after hatch and after the duplicate window.
+Latest live-AI diagnostic rerun (fixture commit `31f73bc` plus cleanup diagnostics) shows
+both baby and adult Cocoon goals activate and place a Chrysalis. Baby diagnostics after 16
+ticks: entity absent, raw Age/NoAI unavailable, and support blocks unchanged. Adult diagnostics:
+raw Age `0`, NoAI absent/default, entity still present, and support blocks unchanged. The final
+fixture result was `baby_makes_cocoon=true`, `adult_makes_cocoon=true`,
+`caterpillar_discarded=false`, `chrysalis_faces_log=true`, `chrysalis_removed=false`,
+one Butterfly at the first hatch snapshot and two after the later 20-tick window. This narrows
+the remaining issue from goal activation to entity removal/Chrysalis random-tick timing and
+duplicate-window setup; it is not a missing Cocoon goal registration.
 
 This is an integration checkpoint, not a claim of full Naturalist parity or final five-mod
 certification. Missing ordinary gameplay and runtime evidence remain release blockers.

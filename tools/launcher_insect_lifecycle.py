@@ -57,6 +57,7 @@ def capture(version, reference, jar=None):
                 "--render-distance", 4, "--wait")
             cmd("gamerule minecraft:spawn_mobs false")
             cmd("gamerule minecraft:do_mob_spawning false")
+            cmd("gamerule minecraft:do_mob_spawning false")
             cmd("gamerule minecraft:random_tick_speed 0")
             cmd("tp @s 8.5 110 8.5")
             ctl("wait", 20)
@@ -77,7 +78,17 @@ def capture(version, reference, jar=None):
             assert observed("block 10 99 8 minecraft:oak_log")
             step(16)
             baby_makes_cocoon = observed(shell)
-            assert observed("entity @e[tag=fixture_baby]")
+            baby_present = observed("entity @e[tag=fixture_baby]")
+            print("Baby cocoon diagnostics:", json.dumps({
+                "Age": raw("@e[tag=fixture_baby,limit=1]", "Age"),
+                "NoAI": raw("@e[tag=fixture_baby,limit=1]", "NoAI"),
+                "entity_present": baby_present,
+                "blocks": {
+                    "9,100,8": block_state(9, 100, 8),
+                    "10,100,8": block_state(10, 100, 8),
+                    "10,99,8": block_state(10, 99, 8),
+                },
+            }), flush=True)
             cmd("kill @e[tag=fixture_baby]")
             cmd("setblock 10 100 8 minecraft:air")
             cmd("setblock 10 99 8 minecraft:air")
@@ -119,7 +130,7 @@ def capture(version, reference, jar=None):
             print("Butterflies after duplicate window:", json.dumps(
                 [{"id": entity.get("id"), "pos": entity.get("pos")} for entity in after_hatch_window]
             ), flush=True)
-            cmd("kill @e[type=naturalist:butterfly]")
+            cmd("kill @e[type=naturalist:butterfly,distance=..128]")
             cmd("gamerule minecraft:random_tick_speed 0")
 
             cmd("setblock 4 99 4 minecraft:dirt")
