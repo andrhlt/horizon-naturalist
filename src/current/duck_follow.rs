@@ -87,7 +87,9 @@ pub(super) struct DuckFollowParent { parent: Option<u32>, recalc: i32 }
 impl Goal for DuckFollowParent {
     fn box_clone(&self) -> Box<dyn Goal> { Box::new(self.clone()) }
     fn name(&self) -> &'static str { "NaturalistDuckFollowParent" }
-    fn flags(&self) -> u8 { 0 }
+    // This goal issues navigation requests and must exclude the inherited
+    // Chicken movement goals while a duckling is following an adult Duck.
+    fn flags(&self) -> u8 { MOVE }
     fn can_use(&mut self, m: &mut Mob, cx: &mut Cx) -> bool {
         if m.extra.age >= 0 || m.extra.tame { return false; }
         let p=m.position;
