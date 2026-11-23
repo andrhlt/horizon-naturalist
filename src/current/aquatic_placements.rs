@@ -98,13 +98,9 @@ mod tests {
 
 pub fn register(registrar: &mut dyn mod_api::Registrar) {
     for id in [
-        "anglerfish",
         "bass",
-        "blobfish",
         "catfish",
-        "jellyfish",
         "piranha",
-        "ray",
     ] {
         registrar
             .declare_spawn_placement(
