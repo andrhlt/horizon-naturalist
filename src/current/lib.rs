@@ -23,6 +23,7 @@ mod blobfish_behavior;
 mod ocean_bucket_item;
 mod ocean_placements;
 mod ocean_renderer;
+mod aquatic_spawn;
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -33,11 +34,7 @@ mod species_renderer;
 mod species_behavior;
 mod species_goals;
 mod species_interact;
-mod land_placements;
-mod profiles;
-mod renderer;
-use mod_api::AttachmentQueries;
-use std::{collections::{HashMap, HashSet}, sync::{Arc, Mutex}};
+use std::{collections::{HashMap, HashSet}, sync::Mutex};
 mod net;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
@@ -414,26 +411,26 @@ impl mod_api::Hooks for Naturalist {
     ) -> mod_api::Flow {
         // Species-specific vanilla goal parity. Shared spawn selection and
         // initialization remain in APP-2133; this only fills each mob's AI.
+        let add_goal = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+            let id = goal.id();
+            if !mob.goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                let _ = mob.add_goal(host, priority, &goal);
+            }
+        };
+        let add_target = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+            let id = goal.id();
+            if !mob.target_goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                let _ = mob.add_target_goal(host, priority, &goal);
+            }
+        };
+        let fish_prey = || mod_api::MobFilter::Species(vec![
+            "minecraft:cod".into(), "minecraft:salmon".into(),
+            "minecraft:tropical_fish".into(), "minecraft:pufferfish".into(),
+        ]);
         if let Some(mob) = host
             .entity(event.entity)
             .and_then(|entity| host.mob(entity))
         {
-            let add_goal = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
-                let id = goal.id();
-                if !mob.goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
-                    let _ = mob.add_goal(host, priority, &goal);
-                }
-            };
-            let add_target = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
-                let id = goal.id();
-                if !mob.target_goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
-                    let _ = mob.add_target_goal(host, priority, &goal);
-                }
-            };
-            let fish_prey = || mod_api::MobFilter::Species(vec![
-                "minecraft:cod".into(), "minecraft:salmon".into(),
-                "minecraft:tropical_fish".into(), "minecraft:pufferfish".into(),
-            ]);
             match event.kind {
                 "naturalist:alligator" => {
                     add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
@@ -487,24 +484,25 @@ impl mod_api::Hooks for Naturalist {
                 } else {
                     vec!["minecraft:cod", "minecraft:salmon", "minecraft:turtle"]
                 };
-                install_goal(&mob, host, true, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(prey.into_iter().map(str::to_owned).collect()), must_see: true, must_reach: false, interval: 10 });
-                install_goal(&mob, host, false, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true });
+                let prey = mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(prey.into_iter().map(str::to_owned).collect()), must_see: true, must_reach: false, interval: 10 };
+                add_target(&mob, host, 1, prey);
+                add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true });
             }
         }
         if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:whale") {
             if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
-                install_goal(&mob, host, false, 0, mod_api::GoalSpec::Float);
+                add_goal(&mob, host, 0, mod_api::GoalSpec::Float);
                 let _ = mob.remove_goal(host, "stroll");
-                install_goal(&mob, host, false, 5, mod_api::GoalSpec::Stroll { speed: 1.0, interval: 40, water_avoiding: None, swim: true, flying: false });
-                install_goal(&mob, host, false, 6, mod_api::GoalSpec::RandomLookAround);
-                if event.kind == "naturalist:giant_isopod" { install_goal(&mob, host, false, 2, mod_api::GoalSpec::Breed { speed: 1.0 }); install_goal(&mob, host, false, 3, mod_api::GoalSpec::FollowParent { speed: 1.1 }); }
-                if event.kind == "naturalist:whale" { install_goal(&mob, host, false, 1, mod_api::GoalSpec::BreathAir); }
+                add_goal(&mob, host, 5, mod_api::GoalSpec::Stroll { speed: 1.0, interval: 40, water_avoiding: None, swim: true, flying: false });
+                add_goal(&mob, host, 6, mod_api::GoalSpec::RandomLookAround);
+                if event.kind == "naturalist:giant_isopod" { add_goal(&mob, host, 2, mod_api::GoalSpec::Breed { speed: 1.0 }); add_goal(&mob, host, 3, mod_api::GoalSpec::FollowParent { speed: 1.1 }); }
+                if event.kind == "naturalist:whale" { add_goal(&mob, host, 1, mod_api::GoalSpec::BreathAir); }
             }
         }
         if event.kind == "naturalist:ray" {
             if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
-                install_goal(&mob, host, true, 1, mod_api::GoalSpec::HurtByTarget { alert: false });
-                install_goal(&mob, host, false, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true });
+                add_target(&mob, host, 1, mod_api::GoalSpec::HurtByTarget { alert: false });
+                add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true });
             }
         }
         if event.kind == "naturalist:komodo_dragon" {
@@ -600,6 +598,27 @@ impl mod_api::Hooks for Naturalist {
         let mut targets = POISON_TARGETS.get(host, Holder::Level).unwrap_or_default();
         targets.push([event.entity as i32, event.source.causing]);
         let _ = POISON_TARGETS.set(host, Holder::Level, targets);
+        let causing = event.source.causing as u32;
+        let direct = event.source.direct as u32;
+        let komodo_attack = {
+            let entities = self.komodo_entities.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+            [causing, direct].into_iter().any(|attacker| attacker > 0 && entities.contains(&attacker))
+        };
+        if event.kind == "minecraft:player" && komodo_attack {
+            self.pending_poison.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+                .insert(event.entity as u32);
+        }
+        if event.kind == "naturalist:mole" {
+            let attacker = u32::try_from(causing).ok().filter(|id| *id != 0)
+                .or_else(|| u32::try_from(direct).ok().filter(|id| *id != 0));
+            if let Some(attacker) = attacker {
+                let mut states = species_goals::MOLE_STATES.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+                let state = states.entry(event.entity as u32).or_default();
+                state.attacker = Some(attacker);
+                state.attacker_ticks = 1_200;
+                state.threat_detected = true;
+            }
+        }
     }
 
     fn entity_place(
@@ -850,34 +869,6 @@ impl mod_api::Hooks for Naturalist {
             return mod_api::Flow::Cancel;
         }
         mod_api::Flow::Continue
-    }
-
-    fn living_damage_post(
-        &self,
-        _: &mut dyn mod_api::LevelRandomHost,
-        event: &mut mod_api::LivingDamagePostEvent<'_>,
-    ) {
-        let causing = event.source.causing as u32;
-        let direct = event.source.direct as u32;
-        let komodo_attack = {
-            let entities = self.komodo_entities.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
-            [causing, direct].into_iter().any(|attacker| attacker > 0 && entities.contains(&attacker))
-        };
-        if event.kind == "minecraft:player" && komodo_attack {
-            self.pending_poison.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
-                .insert(event.entity as u32);
-        }
-        if event.kind == "naturalist:mole" {
-            let attacker = u32::try_from(causing).ok().filter(|id| *id != 0)
-                .or_else(|| u32::try_from(direct).ok().filter(|id| *id != 0));
-            if let Some(attacker) = attacker {
-                let mut states = species_goals::MOLE_STATES.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
-                let state = states.entry(event.entity as u32).or_default();
-                state.attacker = Some(attacker);
-                state.attacker_ticks = 1_200;
-                state.threat_detected = true;
-            }
-        }
     }
 
     fn item_picked_up_post(&self, _: &mut dyn mod_api::ServerHost, _: &mut mod_api::ItemPickedUpPostEvent<'_>) {}

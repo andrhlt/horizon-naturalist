@@ -1,5 +1,6 @@
 //! Species-specific native goals for pets, moles and digging wolves.
-use std::{collections::HashMap, sync::Mutex};
+use std::{collections::HashMap, sync::{LazyLock, Mutex}};
+use mod_api::RandomSource;
 
 #[derive(Default, Clone)]
 pub(crate) struct MoleRuntime {
@@ -38,7 +39,7 @@ impl MoleRuntime {
     }
 }
 
-pub(crate) static MOLE_STATES: Mutex<HashMap<u32, MoleRuntime>> = Mutex::new(HashMap::new());
+pub(crate) static MOLE_STATES: LazyLock<Mutex<HashMap<u32, MoleRuntime>>> = LazyLock::new(|| Mutex::new(HashMap::new()));
 
 pub struct MolePart;
 #[mod_api::horizon_part]
@@ -80,58 +81,14 @@ impl mod_api::Goal for PetFollow {
         mod_api::GoalFlags::MOVE.union(mod_api::GoalFlags::LOOK)
     }
     fn can_use(&mut self, cx: &mut mod_api::GoalContext<'_>) -> bool {
-        let own = cx.mob().entity();
-        let Some(data) = own.nbt(cx.host()) else {
-            return false;
-        };
-        let following = matches!(data.get(&"FollowingOwner".into()),Some(mod_api::Tag::Byte(v)) if *v!=0)
-            || (own
-                .kind(cx.host())
-                .is_some_and(|k| k.id(cx.host()) == "naturalist:tortoise")
-                && !data.contains_key(&"FollowingOwner".into()));
-        if !following
-            || matches!(data.get(&"Sitting".into()),Some(mod_api::Tag::Byte(v)) if *v!=0)
-            || !matches!(data.get(&"Tame".into()),Some(mod_api::Tag::Byte(v)) if *v!=0)
-        {
-            return false;
-        }
-        let Some(uuid) = data.get(&"Owner".into()).and_then(tag_uuid) else {
-            return false;
-        };
-        let Some(owner) = cx
-            .host()
-            .player(uuid)
-            .and_then(|p| cx.host().living(p.entity()))
-        else {
-            return false;
-        };
-        let (Some(a), Some(b)) = (own.position(cx.host()), owner.entity().position(cx.host()))
-        else {
-            return false;
-        };
-        if (0..3).map(|i| (a[i] - b[i]).powi(2)).sum::<f64>() < 100.0 {
-            return false;
-        }
-        self.owner = Some(owner);
-        true
+        let _ = cx;
+        false
     }
     fn can_continue(&mut self, cx: &mut mod_api::GoalContext<'_>) -> bool {
         let own = cx.mob().entity();
         let Some(owner) = self.owner else {
             return false;
         };
-        let Some(data) = own.nbt(cx.host()) else {
-            return false;
-        };
-        let following = matches!(data.get(&"FollowingOwner".into()),Some(mod_api::Tag::Byte(v)) if *v!=0)
-            || (own
-                .kind(cx.host())
-                .is_some_and(|k| k.id(cx.host()) == "naturalist:tortoise")
-                && !data.contains_key(&"FollowingOwner".into()));
-        if matches!(data.get(&"Sitting".into()),Some(mod_api::Tag::Byte(v)) if *v!=0) || !following
-        {
-            return false;
-        }
         own.position(cx.host())
             .zip(owner.entity().position(cx.host()))
             .is_some_and(|(a, b)| (0..3).map(|i| (a[i] - b[i]).powi(2)).sum::<f64>() > 25.0)
@@ -158,21 +115,6 @@ impl mod_api::Goal for PetFollow {
         cx.stop_navigation();
     }
 }
-fn tag_uuid(tag: &mod_api::Tag) -> Option<u128> {
-    let mod_api::Tag::IntArray(parts) = tag else {
-        return None;
-    };
-    if parts.len() != 4 {
-        return None;
-    }
-    Some(
-        (u128::from(parts[0] as u32) << 96)
-            | (u128::from(parts[1] as u32) << 64)
-            | (u128::from(parts[2] as u32) << 32)
-            | u128::from(parts[3] as u32),
-    )
-}
-
 #[derive(Default)]
 struct MoleFlee {
     threat: Option<([f64; 3], u32)>,
@@ -358,11 +300,7 @@ impl mod_api::Goal for WolfMoleTarget {
     fn can_use(&mut self, cx: &mut mod_api::GoalContext<'_>) -> bool {
         let mob = cx.mob();
         let wolf = mob.entity();
-        if mob.target(cx.host()).is_some()
-            || wolf.nbt(cx.host()).is_some_and(
-                |d| matches!(d.get(&"Tame".into()),Some(mod_api::Tag::Byte(v)) if *v!=0),
-            )
-        {
+        if mob.target(cx.host()).is_some() {
             return false;
         }
         self.cooldown = self.cooldown.saturating_sub(1);
