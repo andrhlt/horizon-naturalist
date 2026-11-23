@@ -190,7 +190,7 @@ fn metadata(
         ),
         (
             "naturalist:giraffe",
-            "minecraft:cow",
+            "minecraft:horse",
             "creature",
             1.9,
             5.4,
