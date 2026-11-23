@@ -1,6 +1,6 @@
 # APP-2135 integration checkpoint
 
-Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `bd5f591` plus checkpoint updates.
+Candidate source: `andrmholt/app-2135-naturalist-verify-full-integration` (isolated worktree), current commit `868c045`.
 The current source includes the refreshed handoff heads for ocean `bb021967`, freshwater/Alligator
 `7f30ea2`, large animals `8d9f0c5`, insects `b042209`, Duck `fb6298a`, and reptiles/Tortoise
 `8c4d833`, shared-spawn source `29adc01`, Crab `356508a`, Ant `107c67e`, and
