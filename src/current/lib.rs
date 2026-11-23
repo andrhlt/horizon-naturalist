@@ -29,7 +29,7 @@ mod ocean_placements;
 mod land_placements;
 mod profiles;
 mod renderer;
-use mod_api::AttachmentQueries;
+use mod_api::{AttachmentQueries, BlockMetadata, HostBlockStates};
 use std::sync::Arc;
 mod net;
 use mod_api::{
