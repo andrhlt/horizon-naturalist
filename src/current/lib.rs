@@ -17,6 +17,7 @@ pub mod bass_hunt;
 mod bass_renderer;
 mod blobfish_behavior;
 mod ocean_renderer;
+mod ocean_bucket_item;
 mod ocean_placements;
 mod land_placements;
 mod profiles;
@@ -229,6 +230,7 @@ impl mod_api::Hooks for Naturalist {
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
         anglerfish_bucket_item::register(registrar);
+        ocean_bucket_item::register(registrar);
         for (kind, limit) in [
             ("naturalist:anglerfish", 8),
             ("naturalist:blobfish", 8),
