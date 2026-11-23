@@ -10,6 +10,7 @@ mod ant_queen;
 mod aquatic_spawn;
 pub mod anglerfish_behavior;
 mod anglerfish_bucket_item;
+mod anglerfish_bucket_pickup;
 pub mod bass_appearance;
 mod bass_bucket_item;
 pub mod bass_fx;
@@ -323,7 +324,19 @@ impl mod_api::Hooks for Naturalist {
         host: mod_api::HostSide<'_>,
         event: &mut mod_api::EntityInteractEvent<'_>,
     ) -> Option<mod_api::InteractionResult> {
-        ocean_feeding::interact(host, event)
+        if matches!(
+            event.kind,
+            "naturalist:anglerfish"
+                | "naturalist:blobfish"
+                | "naturalist:giant_isopod"
+                | "naturalist:jellyfish"
+                | "naturalist:ray"
+                | "naturalist:starfish"
+        ) {
+            anglerfish_bucket_pickup::interact(host, event)
+        } else {
+            ocean_feeding::interact(host, event)
+        }
     }
     fn finalize_spawn(
         &self,
