@@ -16,6 +16,7 @@ pub fn register(r: &mut dyn mod_api::Registrar) {
         "caterpillar",
         "scorpion",
         "snail",
+        "hedgehog",
     ] {
         let key = r.item_key(&format!("naturalist:{id}"));
         r.item_part(key, CaughtItem);
