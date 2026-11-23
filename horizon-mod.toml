@@ -21,6 +21,34 @@ bindings = [
 ]
 
 [[native.module]]
+id = "bass-natural-fixture-api"
+file = "crates/horizon-client/src/game/natural_spawning.rs"
+name = "naturalist_bass_fixture"
+source = "src/legacy_reference/horizon/bass_natural_fixture_api.rs"
+
+[[native.mixin]]
+id = "bass-natural-fixture-command"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "src/legacy_reference/horizon/bass_natural_fixture_command.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "command", ty = "&str", value = "command"},
+]
+
+[[native.mixin]]
+id = "forest-spawns-config-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "src/legacy_reference/horizon/forest_spawns_config_fixture.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "command", ty = "&str", value = "command"},
+]
+
+[[native.module]]
 id = "anglerfish-goals"
 file = "crates/horizon-client/src/game.rs"
 name = "naturalist_anglerfish_goals"
