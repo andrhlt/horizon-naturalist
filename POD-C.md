@@ -1,7 +1,7 @@
 # Pod C iteration manifest
 
 Frozen source branch: `codex/naturalist-pod-c`
-Frozen source commit: `75a04af`
+Frozen source commit: `bb2d5e6`
 Base: `origin/main` / `3d03fb7107f9c93f5bc96d5e18602c0921d7d752`
 
 Included reviewed heads:
@@ -21,6 +21,13 @@ Fast checks:
 - PASS: `CARGO_NET_OFFLINE=true cargo test --lib --quiet` (46 tests)
 - BLOCKED: natural-group and seam source checks require Horizon engine source files, which are not included in the pinned SDK API package.
 
+Build-scope note: the pinned manifest validator found stale registrations for
+unavailable, non-Pod-C Catfish, Clam, Capybara, Piranha, Alligator, and Hippo
+source files. Those native blocks were removed from this Pod C candidate only;
+their gameplay ownership and acceptance remain with their contributing pods.
+No APP-2130 ocean, APP-2133 shared-spawn, or APP-2158 Bass/Fox/Rabbit
+registration was removed.
+
 Reusable build candidate (read-only; do not mutate or rebuild):
 
 - `native-0a875da-8df2890cec01`
@@ -35,7 +42,7 @@ Delivery checklist:
 - [x] Integrate reviewed owned commits with shared `lib.rs` and spawn ownership resolved.
 - [x] Resolve duplicate native registration IDs found by the pinned build validator.
 - [x] Preserve contributor attribution and individual PRs.
-- [ ] Obtain one coordinated heavy-build slot for this exact Pod C source.
+- [ ] Obtain one source-matched heavy build for this exact Pod C source.
 - [ ] Publish immutable Pod C artifact/resource/socket manifest.
 - [ ] Dispatch the same artifact to APP-2130, APP-2133, and APP-2158 owners.
 - [ ] Collect independent headless, LAN, persistence, and offscreen results.
