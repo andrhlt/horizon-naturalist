@@ -1,5 +1,6 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
+mod alligator_egg_part;
 mod chrysalis_part;
 mod snail_eggs_part;
 mod scorpion;
@@ -11,12 +12,14 @@ mod large_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
+mod catfish_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
+mod wildlife_renderer;
 use mod_api::{AttachmentQueries, RandomSource};
 use std::sync::Arc;
 mod net;
@@ -144,6 +147,12 @@ struct Naturalist {
     rhino: Arc<large_renderer::LargeRenderer>,
     tiger: Arc<large_renderer::LargeRenderer>,
     zebra: Arc<large_renderer::LargeRenderer>,
+    alligator: Arc<wildlife_renderer::WildlifeRenderer>,
+    capybara: Arc<wildlife_renderer::WildlifeRenderer>,
+    catfish: Arc<wildlife_renderer::WildlifeRenderer>,
+    clam: Arc<wildlife_renderer::WildlifeRenderer>,
+    hippo: Arc<wildlife_renderer::WildlifeRenderer>,
+    piranha: Arc<wildlife_renderer::WildlifeRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -158,6 +167,12 @@ impl Default for Naturalist {
             rhino: Arc::new(large_renderer::LargeRenderer::rhino()),
             tiger: Arc::new(large_renderer::LargeRenderer::tiger()),
             zebra: Arc::new(large_renderer::LargeRenderer::zebra()),
+            alligator: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Alligator)),
+            capybara: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Capybara)),
+            catfish: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Catfish)),
+            clam: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Clam)),
+            hippo: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Hippo)),
+            piranha: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Piranha)),
         }
     }
 }
@@ -166,6 +181,7 @@ impl Default for Naturalist {
 impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
+        alligator_egg_part::register(registrar);
         elephant_melon::register(registrar);
         ant_hill::register(registrar);
         chrysalis_part::register(registrar);
@@ -186,6 +202,7 @@ impl mod_api::Hooks for Naturalist {
             .expect("register deer spawn placement");
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
+        catfish_bucket_item::register(registrar);
         for &(id, template, attributes) in profiles::PROFILES {
             let values = attributes
                 .iter()
@@ -198,6 +215,9 @@ impl mod_api::Hooks for Naturalist {
         registrar.entity_part("naturalist:bass", bass_hunt::BassPart);
         registrar.entity_part("naturalist:desert_scorpion", scorpion::ScorpionPart);
         registrar.entity_part("naturalist:jungle_scorpion", scorpion::ScorpionPart);
+    }
+    fn server_tick(&self, host: &mut dyn mod_api::ServerHost, _: &mut mod_api::ServerTickEvent<'_>) {
+        alligator_egg_part::hatch_tick(host);
     }
     fn entity_join_level(
         &self,
@@ -469,6 +489,12 @@ impl mod_api::Hooks for Naturalist {
             ("naturalist:rhino", self.rhino.clone()),
             ("naturalist:tiger", self.tiger.clone()),
             ("naturalist:zebra", self.zebra.clone()),
+            ("naturalist:alligator", self.alligator.clone()),
+            ("naturalist:capybara", self.capybara.clone()),
+            ("naturalist:catfish", self.catfish.clone()),
+            ("naturalist:clam", self.clam.clone()),
+            ("naturalist:hippo", self.hippo.clone()),
+            ("naturalist:piranha", self.piranha.clone()),
         ] {
             event.renderers.register(id.into(), renderer);
         }
