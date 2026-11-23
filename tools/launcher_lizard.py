@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
+from launcher_managed import start as start_managed, stop as stop_managed
 
 
 def capture(version):
@@ -46,11 +47,10 @@ def capture(version):
             stack = read("@s", "SelectedItem") or ""
             return bool(re.search(r"count:\s*1\b", stack))
 
+        managed = None
         try:
-            ctl("launch", "--headless", "--game", version / "horizon-client",
-                "--resources", version / ".local/horizon-client/26.3", "--home", home,
-                "--game-dir", home, "--world", "Naturalist Lizard Fixture", "--creative",
-                "--test-terrain", "--render-distance", 4, "--wait")
+            managed = start_managed(version, home, socket, "Naturalist Lizard Fixture",
+                                    ("--test-terrain", "--render-distance", "4"))
             cmd("gamerule minecraft:spawn_mobs false")
             cmd("forceload add 0 0")
             cmd("fill 1 100 1 15 100 15 minecraft:stone")
@@ -86,9 +86,14 @@ def capture(version):
                 previous = health(lizard)
                 if previous >= 20.0:
                     break
-                consumed.append(feed())
+                did_consume = feed()
+                consumed.append(did_consume)
                 after = health(lizard)
-                assert abs(after - min(20.0, previous + 5.0)) < 1e-6, (previous, after)
+                assert abs(after - min(20.0, previous + 5.0)) < 1e-6, (
+                    previous, after, attr(lizard, "max_health"), read(lizard, "HasTail"),
+                    read(lizard, "Owner"), read("@s", "UUID"), did_consume,
+                    read("@s", "SelectedItem"),
+                )
                 if after < 20.0:
                     assert not flag(lizard, "HasTail")
             result["healing_food_consumed"] = bool(consumed) and all(consumed)
@@ -98,6 +103,7 @@ def capture(version):
         finally:
             if socket.exists():
                 ctl("quit")
+            stop_managed(managed)
 
 
 def compare(output, reference):

@@ -5,6 +5,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from launcher_managed import start as start_managed, stop as stop_managed
 
 version = Path(sys.argv[1])
 java = json.loads(Path(sys.argv[2]).read_text())
@@ -86,11 +87,10 @@ with tempfile.TemporaryDirectory(prefix="nat-tortoise-", ignore_cleanup_errors=T
     def replace(item, count=1):
         cmd(f"item replace entity @s weapon.mainhand with {item} {count}")
 
+    managed = None
     try:
-        ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-            version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
-            "--world", "Naturalist Tortoise", "--creative", "--test-terrain",
-            "--render-distance", 4, "--wait")
+        managed = start_managed(version, home, socket, "Naturalist Tortoise",
+                                ("--test-terrain", "--render-distance", "4"))
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("gamerule minecraft:random_tick_speed 0")
         cmd("gamerule minecraft:mob_griefing true")
@@ -111,6 +111,9 @@ with tempfile.TemporaryDirectory(prefix="nat-tortoise-", ignore_cleanup_errors=T
         spawn(12.5, 5.5, "owned", f"{frozen},Owner:{owner},Health:17.0f")
         summons = {"normal": normal, "explicit_wild": stats(adult), "explicit_tamed": stats(target("owned"))}
         assert all(summons[key] == spawn_java[key][0] for key in summons), summons
+        cmd("tick unfreeze")
+        ctl("wait", 2)
+        cmd("tick freeze")
         first, second = inspect("adult"), inspect("baby")
         actual = {
             "adult_dims": first["dims"], "baby_dims": second["dims"],
@@ -199,10 +202,14 @@ with tempfile.TemporaryDirectory(prefix="nat-tortoise-", ignore_cleanup_errors=T
             spawn(6.5, 5.5, "adult", f"NoGravity:1b,InLove:600{owned}")
             spawn(8.5, 5.5, "mate", f"NoGravity:1b,InLove:600{owned}")
             mate = target("mate")
+            if tamed:
+                replace("minecraft:cactus", 2)
+                click(6.5)
+                click(8.5)
             has_egg = []
             for _ in range(12):
                 step(8)
-                has_egg = [data(parent, "HasEgg") == "1b" for parent in (adult, mate)]
+                has_egg = [data(parent, "HasEgg", optional=True) == "1b" for parent in (adult, mate)]
                 if any(has_egg):
                     break
             if tamed:
@@ -222,3 +229,4 @@ with tempfile.TemporaryDirectory(prefix="nat-tortoise-", ignore_cleanup_errors=T
     finally:
         if socket.exists():
             ctl("quit")
+        stop_managed(managed)
