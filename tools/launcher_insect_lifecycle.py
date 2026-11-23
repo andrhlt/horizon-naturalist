@@ -70,7 +70,13 @@ def capture(version, reference, jar=None):
                 step(2)
                 if observed("block 9 100 8 minecraft:air"):
                     break
-            butterfly_hatches = observed("entity @e[type=naturalist:butterfly,x=9,y=100,z=8,distance=..2]")
+            chrysalis_removed = observed("block 9 100 8 minecraft:air")
+            hatched = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            butterfly_count = len(hatched)
+            butterfly_hatches = butterfly_count > 0
+            step(20)
+            after_hatch_window = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            butterfly_count_after_window = len(after_hatch_window)
             cmd("kill @e[type=naturalist:butterfly]")
             cmd("gamerule minecraft:random_tick_speed 0")
 
@@ -91,13 +97,19 @@ def capture(version, reference, jar=None):
                 "adult_makes_cocoon": adult_makes_cocoon,
                 "caterpillar_discarded": caterpillar_discarded,
                 "chrysalis_faces_log": adult_makes_cocoon,
+                "chrysalis_removed": chrysalis_removed,
                 "butterfly_hatches": butterfly_hatches,
+                "butterfly_count": butterfly_count,
+                "butterfly_count_after_window": butterfly_count_after_window,
                 "grew_crop": grew_crop,
                 "breeds_caterpillar": breeds_caterpillar,
             }
             expected = {
                 **{name: reference[name] for name in result.keys() & reference.keys()},
+                "chrysalis_removed": True,
                 "butterfly_hatches": True,
+                "butterfly_count": 1,
+                "butterfly_count_after_window": 1,
                 "grew_crop": True,
             }
             print(json.dumps(result, indent=2), flush=True)

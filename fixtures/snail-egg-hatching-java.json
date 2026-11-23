@@ -1,0 +1,29 @@
+{
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+  "java_behavior": {
+    "placement_delay_ticks_inclusive": [600, 2399],
+    "hatch_attempt_rescheduled_after_interruption": false,
+    "egg_removed_before_offspring_spawn": true,
+    "offspring_count_inclusive": [2, 5]
+  },
+  "pinned_api": {
+    "placement_notice": "ItemPart::on_block_placed_by(&self, host: &mut ServerHost, event: &mut OnBlockPlacedByEvent)",
+    "placement_random_and_time": "LevelRef::with_random(host, draw) and LevelRef::game_time(host)",
+    "support_predicate": "LevelRef::block_face_sturdy(host, pos, BlockFace::Up, SupportType::Full)",
+    "deferred_hatch": "Hooks::server_tick(&self, host: &mut dyn ServerHost, event: &mut ServerTickEvent), ServerTickEnd",
+    "conclusion": "The pinned API supports Java RNG and game-time capture after successful item placement, persisted due-time checks, and the full sturdy-top placement predicate. The BlockPart survival and shape-update hosts still do not expose a LevelRef, so later support changes to a non-air non-sturdy block remain a limitation."
+  },
+  "implementation": {
+    "delay_ticks_inclusive": [600, 2399],
+    "removed_or_replaced_egg_rejected": true,
+    "offspring_count_inclusive": [2, 5],
+    "offspring_retried_after_spawn_failure": false,
+    "placement_delay_uses_java_rng": true,
+    "successful_item_placement_records_due_game_time": true,
+    "normal_item_placement_uses_java_sturdy_top_predicate": true,
+    "support_loss_to_non_air_non_sturdy_rejected": false,
+    "duplicate_queue_entries_per_position": false
+  },
+  "runtime_verification": "Pending APP-2135 shared matching-artifact headless rerun, including player placement, exact 600..2399 due-time bounds, non-sturdy placement rejection, egg replacement/removal, and no duplicate offspring."
+}

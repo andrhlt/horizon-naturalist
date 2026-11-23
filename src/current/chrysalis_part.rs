@@ -24,8 +24,14 @@ impl BlockPart for Chrysalis {
         if age >= 3 {
             let mut pending = PENDING.get(level, Holder::Level).unwrap_or_default();
             if !pending.contains(&pos) { pending.push(pos); }
-            let _ = PENDING.set(level, Holder::Level, pending);
-            let _ = level.remove_block(pos, false);
+            if PENDING.set(level, Holder::Level, pending.clone()).is_err() {
+                return Flow::Continue;
+            }
+            if !level.remove_block(pos, false) {
+                pending.retain(|entry| *entry != pos);
+                let _ = PENDING.set(level, Holder::Level, pending);
+                return Flow::Continue;
+            }
             return Flow::Cancel;
         }
         let _ = level.set_block_property(pos, "age", &(age + 1).to_string(), 3);
