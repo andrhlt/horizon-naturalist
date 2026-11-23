@@ -35,6 +35,7 @@ mod species_behavior;
 mod species_goals;
 mod species_interact;
 use std::{collections::{HashMap, HashSet}, sync::Mutex};
+mod tortoise_egg_part;
 mod net;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
@@ -257,6 +258,7 @@ impl mod_api::Hooks for Naturalist {
         alligator_egg_part::register(registrar);
         chrysalis_part::register(registrar);
         snail_eggs_part::register(registrar);
+        tortoise_egg_part::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
         ocean_placements::register(registrar);
@@ -313,6 +315,32 @@ impl mod_api::Hooks for Naturalist {
         event: &mut mod_api::EntityInteractEvent<'_>,
     ) -> Option<mod_api::InteractionResult> {
         species_interact::entity_interact(side, event)
+    }
+
+    fn level_load(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::LevelLoadEvent<'_>,
+    ) {
+        use mod_api::Host;
+        if let Some(level) = host.level(event.dimension)
+            && let Ok(Some(mod_api::GameRuleValue::Bool(enabled))) =
+                host.level_game_rule(level, "minecraft:mob_griefing")
+        {
+            tortoise_egg_part::set_mob_griefing(enabled);
+        }
+    }
+
+    fn game_rule_changed(
+        &self,
+        _: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::GameRuleChangedEvent<'_>,
+    ) {
+        if event.rule == "minecraft:mob_griefing"
+            && let mod_api::GameRuleValue::Bool(enabled) = event.value
+        {
+            tortoise_egg_part::set_mob_griefing(enabled);
+        }
     }
 
     fn register_commands(
