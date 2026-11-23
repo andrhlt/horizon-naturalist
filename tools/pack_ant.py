@@ -49,8 +49,10 @@ def pack_ant(jar, pack, dump):
             existing = json.loads((pack / file).read_text())
             existing.update({key: value for key, value in original.items() if selected(key)})
             dump(pack, file, existing)
-    # Each named feature keeps its Java placement chain and decoration ID.
-    # The native Ant Hill callback handles construction at its accepted biome.
+    # Keep the Java placement chain and decoration IDs loadable. These no-op
+    # configured features do not build hills: pinned Horizon has no mod feature
+    # callback for Naturalist's `basic` feature type yet. See the migration
+    # notes and APP-2124's recorded engine limitation.
     for size in ("small", "big"):
         dump(pack, f"data/naturalist/worldgen/feature/ant_hill_{size}.json", {"type": "minecraft:no_op"})
     for item, template in ANT_ITEMS.items():
