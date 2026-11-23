@@ -1,5 +1,24 @@
 fn net_saved(game: &Game<'_>, mob: &Mob, tag: &mut Tag) {
     let kind = mob.kind.id.as_str();
+    if kind == "naturalist:giraffe" {
+        // Java's DataDrivenVariantAnimal stores its namespaced variant as a
+        // string in `Variant`. Horizon simulates this entity with its Horse
+        // species, whose generic serializer writes an integer coat index to
+        // the same key. Keep the Naturalist value authoritative in saved NBT.
+        if let Tag::Compound(fields) = &mut *tag {
+            let variant = game
+                .persist
+                .raw
+                .get(&mob.id)
+                .and_then(|raw| raw.get("Variant"));
+            let value = match variant {
+                Some(Tag::String(value)) => value.clone(),
+                _ => "naturalist:giraffe".into(),
+            };
+            fields.insert("Variant".into(), Tag::String(value));
+        }
+        return;
+    }
     if kind == "naturalist:duck" {
         if let Tag::Compound(fields) = &mut *tag {
             if let Some(owner) = mob.extra.owner.filter(|_| mob.extra.tame) { fields.insert("Owner".into(), Tag::IntArray(owner.to_vec())); } else { fields.remove(&"Owner".into()); }
