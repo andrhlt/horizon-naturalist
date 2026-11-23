@@ -65,12 +65,8 @@ fn initialize_natural_spawn_group(kind: &str, reason: mod_api::SpawnReason, grou
     if let Some(mod_api::SpawnGroup::Ageable(existing)) = group.as_ref() {
         ageable.size = existing.size;
     }
-    // A new AgeableGroup starts at size zero, which suppresses the baby roll.
-    // Natural spawning doesn't carry the listener's group to its next member;
-    // seed the current mob as a later member so mapped probabilities take effect.
-    if ageable.should_spawn_baby && ageable.size == 0 {
-        ageable.size = 1;
-    }
+    // Keep the API's real group index. The frozen natural-spawn sites discard
+    // this output before the next member, so don't invent prior pack members.
     *group = Some(mod_api::SpawnGroup::Ageable(ageable));
 }
 
@@ -582,7 +578,7 @@ mod natural_spawn_group_tests {
         ] {
             let mut group = None;
             initialize_natural_spawn_group(kind, SpawnReason::Natural, &mut group);
-            assert_eq!(group, Some(age_group(if baby { 1 } else { 0 }, baby, chance)), "{kind}");
+            assert_eq!(group, Some(age_group(0, baby, chance)), "{kind}");
         }
         assert!(natural_age_group("naturalist:elephant").is_none());
     }
