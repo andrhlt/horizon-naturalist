@@ -28,4 +28,4 @@ The engine build check passed (`cargo check -p horizon-client --lib`). The two e
 
 The patched Horizon hook changes the generated API surface. After the engine branch is reviewed and its signed SDK is published, move only this Naturalist branch's `horizon` pin to the exact patched engine commit and record the published SDK metadata here. Keep other mods on their current pins until each has been checked against the updated SDK; do not roll a workspace-wide pin from this ticket. Do not pin Naturalist to the local development surface hash as though it were a releasable SDK.
 
-The currently installed frozen Horizon revision `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` and its SDK remain untouched and available. No candidate install or game binary is part of this repository change.
+The currently installed frozen Horizon revision `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` and its SDK remain untouched and available: game `26.3`, SDK date `2026-11-20`, Rust `1.99.1`, mixins revision `e59da9094f0c2fdda6c627fe9eff22dec6a906f0`, API surface `e05637790d2a91aaa8075e748e2ca872`, package format `6`. No candidate install or game binary is part of this repository change.
