@@ -247,11 +247,20 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::LevelLoadEvent<'_>,
     ) {
-        use mod_api::Host;
-        if let Some(level) = host.level(event.dimension)
-            && let Ok(Some(mod_api::GameRuleValue::Bool(enabled))) =
-                host.level_game_rule(level, "minecraft:mob_griefing")
-        {
+        use mod_api::{Host, prelude::ServicesServerHost};
+        let enabled = host
+            .level(event.dimension)
+            .and_then(|level| level.game_rules(host).ok())
+            .and_then(|rules| {
+                rules.into_iter().find_map(|(rule, value)| {
+                    (rule == "minecraft:mob_griefing").then_some(value)
+                })
+            })
+            .and_then(|value| match value {
+                mod_api::GameRuleValue::Bool(enabled) => Some(enabled),
+                mod_api::GameRuleValue::Int(_) => None,
+            });
+        if let Some(enabled) = enabled {
             tortoise_egg_part::set_mob_griefing(enabled);
         }
     }
