@@ -68,6 +68,10 @@ fn giraffe_interact(
     if owner && !baby && item.is_empty() {
         if game.native_may_board(id) {
             game.start_riding(id);
+            // Java's Giraffe.getControllingPassenger accepts its owner without
+            // a saddle. Horizon's equine rider path gates movement on this
+            // flag, so mirror that control state while the passenger is aboard.
+            game.mobs[index].extra.set_saddled(true);
             return ControlFlow::Break(Ok(true));
         }
     }
