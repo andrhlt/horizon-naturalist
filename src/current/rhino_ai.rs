@@ -1,6 +1,7 @@
 // Goal module for Rhino's calf defense, staged charge and shield stun.
 use horizon_core::{geometry::Vec3, nbt::Tag};
 use horizon_client::mobs::{Damage, DamageKind, Mob, MobEvent, Who, goals::{Cx, Goal, LOOK, MOVE}};
+use std::collections::HashSet;
 
 #[derive(Clone, Debug, Default)]
 pub struct RhinoCharge {
@@ -8,6 +9,73 @@ pub struct RhinoCharge {
     windup: u8,
     charge: u8,
     cooldown: u8,
+}
+
+#[derive(Clone, Debug)]
+pub struct LargeCatPreyTarget {
+    prey: HashSet<String>,
+    found: Option<Who>,
+    state: horizon_client::mobs::goals::TargetState,
+}
+
+impl LargeCatPreyTarget {
+    pub fn new(prey: HashSet<String>) -> Self {
+        Self { prey, found: None, state: Default::default() }
+    }
+}
+
+impl Goal for LargeCatPreyTarget {
+    fn box_clone(&self) -> Box<dyn Goal> { Box::new(self.clone()) }
+    fn name(&self) -> &'static str { "NaturalistLargeCatPreyTarget" }
+    fn flags(&self) -> u8 { horizon_client::mobs::goals::TARGET }
+
+    fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        if mob.random.next_int_bound(10).unwrap_or(1) != 0 { return false; }
+        let origin = Vec3::new(mob.position.x, mob.eye_y(), mob.position.z);
+        let range = mob.attrs.follow_range;
+        let candidates: Vec<u32> = cx.w.nearby(origin, range, |seen| {
+            seen.id != mob.id && !seen.playing_dead && self.prey.contains(seen.kind.id.as_str())
+        }).map(|seen| seen.id).collect();
+        self.found = candidates.into_iter().find_map(|id| {
+            let who = Who::Mob(id);
+            let target = cx.w.target_info(who)?;
+            (target.alive && target.can_be_seen_as_enemy
+                && mob.distance_sqr(target.position) <= cx.w.reach_sqr(id, mob, range)
+                && mob.sees(cx.w, who)).then_some(who)
+        });
+        self.found.is_some()
+    }
+
+    fn can_continue(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
+        horizon_client::mobs::goals::target_continue(&mut self.state, true, mob, cx)
+    }
+
+    fn start(&mut self, mob: &mut Mob, cx: &mut Cx) {
+        mob.set_ai_target(cx.w, self.found);
+    }
+
+    fn stop(&mut self, mob: &mut Mob, cx: &mut Cx) {
+        mob.set_ai_target(cx.w, None);
+        self.found = None;
+        self.state = Default::default();
+    }
+}
+
+pub fn install_large_cat(game: &mut super::Game<'_>, entity: u32, kind: &str) {
+    let tag = match kind {
+        "naturalist:lion" => "naturalist:lion_hostiles",
+        "naturalist:tiger" => "naturalist:tiger_hostiles",
+        _ => return,
+    };
+    let tags = game.world_tables.as_ref()
+        .and_then(|tables| tables.pack_tags.get("entity_type"))
+        .unwrap_or(&game.res.mob_data().entity_tags);
+    let prey = tags.get(tag).cloned().unwrap_or_default();
+    let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) else { return; };
+    if mob.ai.targets.has("NaturalistLargeCatPreyTarget") { return; }
+    mob.ai.targets.add(1, LargeCatPreyTarget::new(prey));
+    mob.ai.targets.add(2, horizon_client::mobs::goals::HurtByTarget::new());
+    mob.ai.goals.add(1, horizon_client::mobs::goals::MeleeAttack::new(1.2, true));
 }
 
 impl Goal for RhinoCharge {

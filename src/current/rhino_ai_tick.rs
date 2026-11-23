@@ -1,6 +1,10 @@
 fn rhino_ai_tick(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
     use horizon_client::mobs::goals;
     use mod_api::Host;
+    if matches!(kind, "naturalist:lion" | "naturalist:tiger") {
+        crate::game::naturalist_rhino_goals::install_large_cat(game, entity, kind);
+        return;
+    }
     if kind != "naturalist:rhino" { return; }
     crate::game::naturalist_rhino_goals::tick(game, entity);
     let Some(index) = game.mobs.iter().position(|mob| mob.id == entity) else { return; };
