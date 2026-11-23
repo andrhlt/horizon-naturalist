@@ -17,6 +17,7 @@ pub mod bass_hunt;
 mod bass_renderer;
 mod blobfish_behavior;
 mod isopod_behavior;
+mod jellyfish_behavior;
 mod starfish_behavior;
 pub mod shark_behavior;
 mod ocean_renderer;
@@ -505,6 +506,9 @@ impl mod_api::Hooks for Naturalist {
         }
         if event.kind == "naturalist:giant_isopod" {
             isopod_behavior::tick(host, event.entity);
+        }
+        if event.kind == "naturalist:jellyfish" {
+            jellyfish_behavior::tick(host, event.entity);
         }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
