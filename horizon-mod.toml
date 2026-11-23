@@ -839,3 +839,25 @@ id = "duck-variant-reload"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_data_pack_files"
 kind = "HEAD"
 helper = "src/current/duck_variant_reload.rs"
+
+[[native.mixin]]
+id = "naturalist-species-food-heal"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/species_interact_game.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "target", ty = "Option<InteractTarget>", value = "target" },
+]
+
+[[native.mixin]]
+id = "tortoise-lay-love"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/tortoise_lay_love.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]

@@ -597,7 +597,7 @@ pub const PROFILES: &[(&str, &str, &[(&str, f64)])] = &[
         "naturalist:tortoise",
         "minecraft:cow",
         &[
-            ("minecraft:attack_damage", 2.0),
+            ("minecraft:attack_damage", 4.0),
             ("minecraft:attack_knockback", 0.0),
             ("minecraft:follow_range", 16.0),
             ("minecraft:knockback_resistance", 0.6),

@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
+from launcher_managed import start as start_managed, stop as stop_managed
 
 
 def capture(version, reference):
@@ -39,11 +40,19 @@ def capture(version, reference):
             ctl("mouse", "right", "click")
             ctl("wait", 2)
 
+        def interact_at(food, x):
+            rows = cmd(f"item replace entity @s weapon.mainhand with {food} 2")
+            assert any("Replaced" in row for row in rows), (food, rows)
+            entities = ctl("entities", 8, "naturalist:komodo_dragon")["entities"]
+            target = min(entities, key=lambda mob: abs(mob["pos"][0] - x))
+            ctl("look-at-entity", target["id"])
+            ctl("mouse", "right", "click")
+            ctl("wait", 4)
+
+        managed = None
         try:
-            ctl("launch", "--headless", "--game", version / "horizon-client",
-                "--resources", version / ".local/horizon-client/26.3", "--home", home,
-                "--game-dir", home, "--world", "Naturalist Komodo Fixture", "--creative",
-                "--test-terrain", "--render-distance", 4, "--wait")
+            managed = start_managed(version, home, socket, "Naturalist Komodo Fixture",
+                                    ("--test-terrain", "--render-distance", "4"))
             cmd("gamerule minecraft:spawn_mobs false")
             cmd("forceload add 0 0")
             cmd("fill 4 100 4 13 100 13 minecraft:stone")
@@ -76,6 +85,8 @@ def capture(version, reference):
             result["heal_consumed"] = bool(re.search(r"count:\s*1\b", read("@s", "SelectedItem") or ""))
             cmd(f'data merge entity {dragon} {{Health:30f,Age:0,InLove:600,NoAI:0b,Variant:"fixture:first_parent"}}')
             summon('{InLove:600,Tags:[mate],Variant:"fixture:second_parent"}', x=9.9)
+            interact_at("minecraft:beef", 8.5)
+            interact_at("minecraft:beef", 9.9)
             ctl("wait", 105)
             nearby = ctl("entities", 20, "naturalist:komodo_dragon")["entities"]
             result["same_species_mate"] = any(mob["baby"] for mob in nearby)
@@ -102,10 +113,19 @@ def capture(version, reference):
             result["attack_landed"] = poison is not None and after["health"] < before["health"]
             result["poison_duration"] = poison["duration_ticks"] if poison else 0
             result["poison_amplifier"] = poison["amplifier"] if poison else None
+            if not result["attack_landed"]:
+                events = ctl("events").get("events", [])
+                print("komodo attack debug", {
+                    "attacks": [event for event in events if event.get("cause") == "minecraft:mob_attack"],
+                    "effects_before": before["effects"],
+                    "player_health": after["health"],
+                    "hunter": next((mob for mob in ctl("mobs", 64).get("near", []) if mob["kind"] == "naturalist:komodo_dragon"), None),
+                }, flush=True)
             return result
         finally:
             if socket.exists():
                 ctl("quit")
+            stop_managed(managed)
 
 
 def compare(output, reference):

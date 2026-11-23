@@ -1,0 +1,55 @@
+{
+  "issue": "APP-2132",
+  "candidate": {
+    "version": "native-0a875da-369d7085755a",
+    "platform": "macOS arm64",
+    "horizon_source_sha256": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "sdk": "nightly-2026-11-20-0a875da",
+    "profile": "optimized",
+    "native_mod_sha256": "7ece5cb4ec366dc2f84c1b2a1b3bc260264caf635c0fba2b0abec9cdff287a38",
+    "libnaturalist_sha256": "e1b855dadc3d6a7521f64b6fd0fc5398d9858504e859f367b7914c39dbfb2669",
+    "libhorizon_patch_sha256": "35fad7d3dce67a882d47b32e2cd465e5f745de8a6a7137d79578132b418fdf93",
+    "horizon_client_sha256": "012bf6dbfecb095bfb27f9b84452105639501cc5444aca15517360cd90547935",
+    "launcher_instance": "app-2132",
+    "prepared_resources": "nightly-2026-11-20-0a875da/.local/horizon-client/26.3"
+  },
+  "source": {
+    "head": "2cae30328d3de64a8b35e830d83e121482543a44",
+    "working_diff_sha256": "edeaaf09baab79e7b0e31414d421aef5cd4188a50596e20a3a008b37b8a7c687",
+    "source_artifact_match": false,
+    "source_artifact_note": "Additional source edits were made after this build. The 369d7085755a candidate remains a valid build record, but it does not include the current worktree and cannot validate it.",
+    "temporary_diagnostic_code": false,
+    "diff_check": "passed"
+  },
+  "checks": {
+    "native_build": {"passed": true},
+    "entity_and_renderer_source_registration": {
+      "passed": true,
+      "species": ["komodo_dragon", "lizard", "lizard_tail", "mole", "tortoise"],
+      "runtime_registration": "compiled into the candidate; live query not run"
+    },
+    "komodo": {"status": "blocked_before_fixture", "fixture": "fixtures/komodo-java.json"},
+    "lizard": {"status": "blocked_before_fixture", "fixture": "fixtures/lizard-java.json"},
+    "mole": {"status": "blocked_before_fixture", "fixture": "fixtures/mole-java.json"},
+    "tortoise": {
+      "status": "blocked_before_fixture",
+      "fixtures": ["fixtures/tortoise-java.json", "fixtures/tortoise-spawn-java.json"]
+    },
+    "persistence": {"status": "not_run"},
+    "lan": {"status": "not_run", "scope": "authenticated second-account test is separate from local behavior"},
+    "rendering": {"status": "not_run", "mode": "--offscreen"}
+  },
+  "launch_attempt": {
+    "command": "python3 tools/launcher_komodo.py <native version directory> fixtures/komodo-java.json",
+    "result": "Horizon Launcher Play exited 1 before fixture setup",
+    "error": "Sign in with a Microsoft account that owns Minecraft: Java Edition to play. Sign in with horizon-launcher account sign-in.",
+    "account_state": "selected LightTheTorch; authentication state retry (Could not open the account lock); owner false",
+    "authentication_flow_started": false
+  },
+  "prior_artifact_evidence": {
+    "scope": "Not evidence for this candidate",
+    "candidate": "native-0a875da-7bcfb6d9bc22 (Komodo, Lizard and Mole); native-0a875da-55bb7e595b42 (Tortoise)",
+    "summary": "Those earlier headless runs passed their recorded species fixtures, including 27 Tortoise comparisons and three spawn paths. They were not rerun on 369d7085755a."
+  },
+  "runtime_scope": "No fresh gameplay, persistence, LAN, or rendered-output pass is claimed for this candidate. The supported Launcher Play path stopped at its Java ownership gate."
+}
