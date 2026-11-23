@@ -1,6 +1,6 @@
 # APP-2131 runtime evidence
 
-Status: partial evidence for review. APP-2131 remains open. The owner melon interaction passes on the final candidate. The offscreen Elephant movement capture from the prior integrated candidate applies to the final package because renderer, model, animation and prepared-resource inputs are unchanged. Authenticated host/guest LAN is blocked pending a second owning account. This does not claim full species parity.
+Status: partial evidence for review. APP-2131 remains open. Elephant/Mammoth interactions and Giraffe feeding/taming/mount checks were run headlessly on the managed developer-offline candidate below. Elephant rider placement, dismount, cake taming, chests, saddle, shearing and owner healing passed. Giraffe feeding, juvenile taming, healing and boarding passed, but mounted movement failed. Rhino shield stun with mob griefing disabled failed its fixture. Zebra feeding/equipment ran; the candidate allowed Zebra×Donkey breeding and used a 0.5 jump strength where Java expects 0.7. Zebra's selected check therefore failed. Lion/Tiger runtime behaviors remain unverified because their inspection commands are absent from the installed package. Authenticated host/guest LAN remains separately pending. This does not claim full species parity.
 
 ## Candidate identity
 
@@ -8,13 +8,14 @@ Status: partial evidence for review. APP-2131 remains open. The owner melon inte
 - Horizon: `0a875da91dbb0fdcb7ba8c42c11341aa229af51a` (26.3)
 - Launcher: `0.2.82`
 - Rust: `1.99.1`; optimized profile
-- Installed managed candidate: `native-0a875da-97b13615be3b`
-- Candidate Naturalist package SHA-256: `141dd2ea86c28b074f7b11b31a0604fe8ea09bf8f9f3c6a0ce7a0c6e719242aa`
-- Candidate `libnaturalist.dylib` SHA-256: `691998f93fdc5e75efcfc58cf9906a3a049aad643692cd516f893112c8178696`
-- Source SHA-256: `src/current/lib.rs` `fbf0ba843e54d4aa00ac2cac294287528a51bc85094edf90f0865cf6fd9e511f`; `src/current/elephant_melon.rs` `e3019e5421d13bd3d30e82952c0be5484a94155af40c78dc74637e6f15a61fa5`; `src/current/large_renderer.rs` `e85e3ce23030bfa8b86ce3f2cb8392817129bc7dd5c30eed7c485bcf6806ab52`
+- Installed managed candidate: `native-0a875da-04848d315bac`
+- Developer base: `developer-e05268bea02f4384b113d9b9b02f0ce6310883561ccc41fea947e097148ade16`
+- Candidate Naturalist package SHA-256: `ac346ce6f245f8d78865ba2e78ef485d943c3757edc6b9d7c28a413f4feda496`
+- Candidate `libnaturalist.dylib` SHA-256: `a6c05a3afeca085e8d9549d0624cb0da3edf476f173ec15c669d80b507e7c8c2`
+- Candidate renderer/interaction source matches this checkout for Elephant, Giraffe, metadata and renderer registration; the candidate manifest differs only by an extra blank line from this checkout.
 - Java reference: Naturalist 2.0.7 NeoForge 26.3.0.95, source commit `1471124ae26bcbf90a2106a1f68080d1dd03a53a`
 
-The candidate was built and selected through the pinned launcher's `native-build --json --instance app-2131-verify --version nightly-2026-11-20-0a875da --profile optimized --trust-native-code <workspace>` flow. The installed `native-mods.json` identifies the same Horizon revision, package hash and library hash above. Gameplay and rendering were then started only through launcher-managed `play`, passing the prepared 26.3 resources path; no managed binary was launched directly.
+The candidate was built through launcher-managed `native-build` with launcher `0.2.82`, optimized Rust `1.99.1`, and selected through launcher-managed `play`. Its manifest records the pinned Horizon revision, developer base, package hash and library hash above. Gameplay was headless and started only through the launcher-managed helper with the prepared 26.3 resources path; no managed binary was launched directly.
 
 ## Elephant melon interaction
 
@@ -74,9 +75,11 @@ The captured `9aa2d80bd80f` movement candidate and final `97b13615be3b` candidat
 
 ## Independent species behavior check status
 
-Passed evidence: the final candidate builds through managed `native-build`; `cargo test --offline --lib` passes all 20 tests; the previously recorded headless Elephant owner healing, consumption, max-health and save/reopen cases pass; all seven species have offscreen static rendered output; and Elephant has the movement sequence above. The tests are not evidence that all seven species' behaviors match Java.
+Previously recorded evidence: the former `97b13615be3b` candidate builds through managed `native-build`; its recorded `cargo test --offline --lib` passed all 20 tests; Elephant owner melon healing, consumption, max-health and save/reopen cases passed; all seven species have offscreen static rendered output; and Elephant has the movement sequence above. The gameplay findings in this update are on the newer managed developer candidate `04848d315bac`; they are not evidence that all seven species' behaviors match Java.
 
-The repository's per-species launcher behavior scripts (`launcher_elephant.py`, `launcher_giraffe.py`, `launcher_lion.py`, `launcher_rhino.py`, `launcher_tiger.py`, and `launcher_zebra.py`) call `horizon-ctl launch` directly. They are not used because they do not go through the required launcher-managed Play/cache-lease path. A managed final-candidate Play retry was:
+The per-species behavior harnesses now start only through `tools/launcher_managed.py`, which invokes launcher-managed Play with `--headless`, a private control socket, and the manifest-derived prepared 26.3 resources path. It requires a candidate whose manifest uses an installed `developer-*` base and sets the launcher's documented developer-offline mode; it does not invoke `horizon-client` directly or bypass cache leases. The six harnesses cover Elephant/Mammoth interactions and spawn rules, Giraffe taming/feeding/riding, Lion and Tiger owner/AI behaviors, Rhino charge/stun, and Zebra feeding/equipment/breeding.
+
+An earlier candidate `native-0a875da-97b13615be3b` was built on `nightly-2026-11-20-0a875da`, so it was not eligible for the developer-offline workflow. Its ordinary managed Play retry was:
 
 ```sh
 HORIZON_LAUNCHER_HOME="$HOME/Library/Application Support/horizon-launcher" \
@@ -89,9 +92,31 @@ HORIZON_LAUNCHER_HOME="$HOME/Library/Application Support/horizon-launcher" \
   --arg=--render-distance --arg=4 --json
 ```
 
-On launcher `0.2.82`, Play exited before startup with `Sign in with a Microsoft account that owns Minecraft: Java Edition to play.` `account list` showed cached account `LightTheTorch` (`c0afadba732a45779467cfe95babef58`) but reported `Could not check sign-in: Could not open the account lock.` The documented `horizon-launcher account refresh --json LightTheTorch` recovery returned `{"state":"retry","expires_at":null,"message":"Could not open the account lock."}`. No new species gameplay session was started and no lease check was bypassed.
+On launcher `0.2.82`, ordinary Play exited before startup with `Sign in with a Microsoft account that owns Minecraft: Java Edition to play.` `account list` showed cached account `LightTheTorch` (`c0afadba732a45779467cfe95babef58`) but reported `Could not check sign-in: Could not open the account lock.` The documented refresh also returned `{"state":"retry","expires_at":null,"message":"Could not open the account lock."}`. This lock error is distinct from entitlement failure and does not establish whether a second account is required for authenticated LAN. The supported APP-2134 offline flow requires rebuilding this package against installed developer base `developer-e05268bea02f4384b113d9b9b02f0ce6310883561ccc41fea947e097148ade16`, with the matching prepared 26.3 resources under that base. An attempted managed native-build was deferred while another repository's launcher build held the launcher's shared build lock. No lease or authentication check was bypassed.
 
-Still unverified on the current candidate: family groups; species targeting and live AI movement; non-melon interaction rejection and remaining feeding/taming/mounting interactions; lifecycle including growth and breeding; drops; spawn predicates and variants; per-species save/reopen; LAN synchronization with distinct authenticated users; and offscreen movement sequences for Mammoth, Giraffe, Lion, Rhino, Tiger, and Zebra. These are separate from the Elephant melon cases and existing rendered static output.
+Managed-helper results on `native-0a875da-04848d315bac`:
+
+- Elephant and Mammoth: five-cake baby taming, survival consumption, owner melon heal, chest/saddle, owner mount, Java rider heights, shift dismount, shears and live melee fixture passed.
+- Giraffe: adult breeding food, juvenile tame attempt, owner healing and owner boarding passed. The harness observed no player-controlled movement while mounted; this is an actual behavior defect. A direct hook to `horizon_client::mobs::equine::controlled` is unsupported by the pinned function index (`E_MIXIN_TARGET_MISSING`) and was removed.
+- Rhino: after adding the Java-required nearby calf, facing the adult toward the player, and targeting its current entity ID, the no-grief shield-charge check still did not observe `StunTick`. The adult moved away from the player and `StunTick` was absent, so the Rhino charge/blocked-shield behavior is missing or not wired in this candidate; the corrected fixture no longer points to the earlier calf/facing setup as the cause.
+- Lion and Tiger harnesses call inspection commands absent from the installed candidate; those checks remain unverified rather than failed gameplay. Zebra's runtime interaction output was retained; exact age/RNG probes were removed from the managed run.
+- Zebra actual output against Java: all ten selected food/health/temper cases matched; chest and saddle interaction passed; same-species breeding passed; crossbreeding with a Donkey produced a baby (`can_mate` observed `[true, true, false]`, Java `[true, false, false]`); jump strength was `0.5` versus Java `0.7`; the entity NBT had no `Variant` field. A source change now sets the Zebra jump-strength base to `0.7`; it is not in candidate `04848d315bac` and awaits the shared integration build.
+
+The matching developer candidate is source-matched to the current Elephant/Giraffe interaction and renderer files as checked in `horizon-native-mods/naturalist`; its package identity is recorded above. Reuse the previously captured Elephant gait only for unchanged renderer/model/animation inputs.
+
+Still unverified: family groups; Lion/Tiger ordinary interactions and targeting; Rhino charge implementation; Zebra cross-species breeding correction, variant persistence and new jump-strength source change; Giraffe mounted movement; other species' growth/lifecycle, drops and save/reopen; authenticated LAN synchronization; and offscreen movement for the six species without gait evidence. Static seven-species output and Elephant gait are already retained.
+
+Focused managed-headless commands for integration reuse:
+
+```sh
+CANDIDATE="$HOME/Library/Application Support/horizon-launcher/versions/native-0a875da-04848d315bac"
+python3 tools/launcher_elephant.py "$CANDIDATE" fixtures/elephant-java.json --live-melee
+python3 tools/launcher_giraffe.py "$CANDIDATE" fixtures/giraffe-java.json
+python3 tools/launcher_rhino.py "$CANDIDATE" fixtures/rhino-java.json
+python3 tools/launcher_zebra.py "$CANDIDATE" fixtures/zebra-java.json
+```
+
+All four commands use `tools/launcher_managed.py`; Rhino currently exits on the no-grief stun assertion. Zebra was changed to use real held-item inputs for its breeding scenario and to report unavailable age/RNG/variant probes as explicit coverage gaps rather than calling absent fixture commands.
 
 ## LAN identity blocker
 

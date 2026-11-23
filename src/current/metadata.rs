@@ -427,8 +427,20 @@ fn metadata(
             kind.baby_scale = 1.0;
         }
         match name {
-            "naturalist:giraffe" => kind.max_head_y_rot = 45.0,
-            "naturalist:elephant" | "naturalist:mammoth" => kind.max_head_y_rot = 35.0,
+            "naturalist:giraffe" => {
+                kind.max_head_y_rot = 45.0;
+                // Java Giraffe.getPassengerAttachmentPoint(…, …) at 60% height.
+                kind.passenger_attachments = vec![[0.0, 3.84, -0.1]];
+            }
+            "naturalist:elephant" => {
+                kind.max_head_y_rot = 35.0;
+                // Java getPassengerRidingPosition, including the rider offset.
+                kind.passenger_attachments = vec![[0.0, 3.82, -0.1]];
+            }
+            "naturalist:mammoth" => {
+                kind.max_head_y_rot = 35.0;
+                kind.passenger_attachments = vec![[0.0, 4.8, -0.1]];
+            }
             _ => (),
         }
         types.insert(name.to_owned(), kind);

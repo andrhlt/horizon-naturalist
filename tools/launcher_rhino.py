@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 import subprocess
 import tempfile
+from launcher_managed import launch_managed, wait_managed
 
 
 def capture(version):
@@ -39,8 +40,12 @@ def capture(version):
             return any("rhino-block-matched" in row for row in rows)
 
         def shield_charge(rhino):
+            nearby = ctl("entities", 24, "naturalist:rhino")["entities"]
+            target = min(nearby, key=lambda row: (row["pos"][0] - 8.5) ** 2 + (row["pos"][2] - 11.5) ** 2)
+            # Rhino AI can move between fixture setup and the shield raise;
+            # target the actual entity instead of its original summon point.
             cmd("item replace entity @s weapon.mainhand with minecraft:shield")
-            ctl("look-at", 8.5, 102.25, 11.5)
+            ctl("look-at-entity", target["id"])
             ctl("mouse", "right", "down")
             ctl("wait", 8)
             assert ctl("state")["using"] is not None, "Fixture shield was not raised"
@@ -56,11 +61,10 @@ def capture(version):
             cmd("item replace entity @s armor.head with minecraft:air")
             return stun, speed
 
+        play = None
         try:
-            ctl("launch", "--headless", "--game", version / "horizon-client",
-                "--resources", version / ".local/horizon-client/26.3", "--home", home,
-                "--game-dir", home, "--world", "Naturalist Rhino Fixture", "--creative",
-                "--test-terrain", "--render-distance", 4, "--wait")
+            play = launch_managed(version, socket, home, "Naturalist Rhino Fixture",
+                                  creative=True, test_terrain=True)
             cmd("gamerule minecraft:spawn_mobs false")
             cmd("forceload add 0 0")
             cmd("fill 1 100 1 15 100 15 minecraft:stone")
@@ -70,8 +74,10 @@ def capture(version):
             cmd("gamemode survival @s")
             cmd("effect give @s minecraft:resistance infinite 4 true")
             rhino = "@e[type=naturalist:rhino,tag=charge_fixture,limit=1]"
-            rows = cmd("summon naturalist:rhino 8.5 101 11.5 {NoAI:1b,Tags:[charge_fixture]}")
+            rows = cmd("summon naturalist:rhino 8.5 101 11.5 {NoAI:1b,Rotation:[180f,0f],Tags:[charge_fixture]}")
             assert any("Summoned" in row for row in rows), rows
+            # Java's Rhino only targets players while a nearby calf is present.
+            cmd("summon naturalist:rhino 10.5 101 11.5 {Age:-24000,NoAI:1b,Tags:[charge_calf]}")
 
             result = {name: attr(rhino, name) for name in (
                 "max_health", "movement_speed", "attack_damage", "attack_knockback",
@@ -102,16 +108,24 @@ def capture(version):
             cmd("gamerule minecraft:mob_griefing false")
             cmd("setblock 8 101 9 minecraft:dandelion")
             cmd("tp @s 8.5 101 5.5")
-            cmd("summon naturalist:rhino 8.5 101 11.5 {Tags:[nogrief_fixture]}")
+            cmd("summon naturalist:rhino 8.5 101 11.5 {Rotation:[180f,0f],Tags:[nogrief_fixture]}")
+            cmd("summon naturalist:rhino 10.5 101 11.5 {Age:-24000,NoAI:1b,Tags:[nogrief_calf]}")
             ctl("wait", 12)
             guard = "@e[type=naturalist:rhino,tag=nogrief_fixture,limit=1]"
             no_grief_stun, _ = shield_charge(guard)
-            assert no_grief_stun > 0, "The same charge must run with mob_griefing disabled"
+            assert no_grief_stun > 0, {
+                "failure": "Rhino did not stun the shield while mob_griefing was disabled",
+                "stun_tick": read(guard, "StunTick"),
+                "speed": attr(guard, "movement_speed"),
+                "entities": ctl("entities", 24, "naturalist:rhino")["entities"],
+                "shield_state": ctl("state").get("using"),
+            }
             result["no_grief_dandelion_survived"] = block_matches("8 101 9 minecraft:dandelion")
             return result
         finally:
             if socket.exists():
                 ctl("quit")
+            wait_managed(play)
 
 
 def compare(output, reference):

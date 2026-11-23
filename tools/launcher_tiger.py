@@ -5,6 +5,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from launcher_managed import launch_managed, wait_managed
 
 native = Path(sys.argv[1])
 reference = json.loads(Path(sys.argv[2]).read_text())
@@ -68,10 +69,10 @@ with tempfile.TemporaryDirectory(prefix="nat-tiger-", ignore_cleanup_errors=True
         ctl("mouse", "right", "click")
         ctl("wait", 3)
 
+    play = None
     try:
-        ctl("launch", "--headless", "--game", native / "horizon-client", "--resources",
-            native / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
-            "--world", "Naturalist Tiger", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
+        play = launch_managed(native, socket, home, "Naturalist Tiger",
+                              creative=True, test_terrain=True)
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("gamerule minecraft:random_tick_speed 0")
         cmd("gamerule minecraft:advance_time false")
@@ -157,3 +158,4 @@ with tempfile.TemporaryDirectory(prefix="nat-tiger-", ignore_cleanup_errors=True
     finally:
         if socket.exists():
             ctl("quit")
+        wait_managed(play)

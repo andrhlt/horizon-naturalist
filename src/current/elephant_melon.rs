@@ -14,7 +14,7 @@ impl mod_api::ItemPart for ElephantMelon {
         let HostSide::Server(host) = side else {
             return None;
         };
-        if event.kind != "naturalist:elephant"
+        if !matches!(event.kind, "naturalist:elephant" | "naturalist:mammoth")
             || mod_api::__private::item_key_id(event.stack.item()) != Some("minecraft:melon_slice")
         {
             return None;

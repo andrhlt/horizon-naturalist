@@ -5,6 +5,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from launcher_managed import launch_managed, wait_managed
 
 native = Path(sys.argv[1])
 reference = json.loads(Path(sys.argv[2]).read_text())
@@ -47,10 +48,10 @@ with tempfile.TemporaryDirectory(prefix="nat-lion-", ignore_cleanup_errors=True)
         result = cmd(f"summon naturalist:lion {x} 92 {z} {{Tags:[{tag}]{extra}}}")
         assert any("Summoned" in row for row in result), result
 
+    play = None
     try:
-        ctl("launch", "--headless", "--game", native / "horizon-client", "--resources",
-            native / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
-            "--world", "Naturalist Lion", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
+        play = launch_managed(native, socket, home, "Naturalist Lion",
+                              creative=True, test_terrain=True)
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("gamerule minecraft:random_tick_speed 0")
         cmd("gamerule minecraft:advance_time false")
@@ -123,3 +124,4 @@ with tempfile.TemporaryDirectory(prefix="nat-lion-", ignore_cleanup_errors=True)
     finally:
         if socket.exists():
             ctl("quit")
+        wait_managed(play)

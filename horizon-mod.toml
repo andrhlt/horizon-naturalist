@@ -649,6 +649,29 @@ bindings = [
 ]
 
 [[native.mixin]]
+id = "elephant-cake-tame"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/elephant_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "giraffe-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/giraffe_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+
+[[native.mixin]]
 id = "duck-client-pet"
 target = "horizon_client::game::remote_mob_use::Game<'_>::remote_mob_takes"
 kind = "HEAD"
