@@ -1,7 +1,7 @@
 # Pod C iteration manifest
 
 Frozen source branch: `codex/naturalist-pod-c`
-Frozen source commit: `6e90167`
+Frozen source commit: `8d550b8`
 Base: `origin/main` / `3d03fb7107f9c93f5bc96d5e18602c0921d7d752`
 
 Included reviewed heads:
@@ -18,7 +18,8 @@ Fast checks:
 
 - PASS: `git diff --check`
 - PASS: `python3 -B tools/test_aquatic_spawn_placements.py`
-- BLOCKED: Cargo and natural-group source checks require the managed Horizon SDK, absent from this checkout.
+- PASS: `CARGO_NET_OFFLINE=true cargo test --lib --quiet` (46 tests)
+- BLOCKED: natural-group and seam source checks require Horizon engine source files, which are not included in the pinned SDK API package.
 
 Reusable build candidate (read-only; do not mutate or rebuild):
 
