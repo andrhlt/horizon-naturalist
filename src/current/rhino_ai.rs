@@ -1,7 +1,7 @@
 // Goal module for Rhino's calf defense, staged charge and shield stun.
 use horizon_core::{geometry::Vec3, nbt::Tag};
+use horizon_core::random::RandomSource;
 use horizon_client::mobs::{Damage, DamageKind, Mob, MobEvent, Who, goals::{Cx, Goal, LOOK, MOVE}};
-use super::Game;
 use std::collections::HashSet;
 
 #[derive(Clone, Debug, Default)]
@@ -84,26 +84,26 @@ impl Goal for TigerStalk {
     fn can_use(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
         !mob.is_baby()
             && !mob.extra.tame
-            && mob.pose != mod_api::Pose::Sleeping
+            && mob.pose() != mod_api::Pose::Sleeping
             && mob.target_info(cx.w).is_some_and(|target| {
                 target.alive && mob.distance_sqr(target.position) > 144.0
             })
     }
 
     fn can_continue(&mut self, mob: &mut Mob, cx: &mut Cx) -> bool {
-        mob.pose != mod_api::Pose::Sleeping
+        mob.pose() != mod_api::Pose::Sleeping
             && mob.target_info(cx.w).is_some_and(|target| {
                 target.alive && mob.distance_sqr(target.position) > 36.0
             })
     }
 
     fn start(&mut self, mob: &mut Mob, _: &mut Cx) {
-        mob.pose = mod_api::Pose::Crouching;
+        mob.extra.pose = horizon_client::mobs::sync::CROUCHING;
         self.time_to_recalc_path = 0;
     }
 
     fn stop(&mut self, mob: &mut Mob, _: &mut Cx) {
-        mob.pose = mod_api::Pose::Standing;
+        mob.extra.pose = horizon_client::mobs::sync::STANDING;
         mob.nav_stop();
     }
 
@@ -170,7 +170,7 @@ impl Goal for LargeCatPreyTarget {
     }
 }
 
-pub fn install_large_cat(game: &mut Game<'_>, entity: u32, kind: &str) {
+pub fn install_large_cat(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
     let tag = match kind {
         "naturalist:lion" => "naturalist:lion_hostiles",
         "naturalist:tiger" => "naturalist:tiger_hostiles",
@@ -181,7 +181,7 @@ pub fn install_large_cat(game: &mut Game<'_>, entity: u32, kind: &str) {
         .unwrap_or(&game.res.mob_data().entity_tags);
     let prey = tags.get(tag).cloned().unwrap_or_default();
     let following = game.persist.raw.get(&entity)
-        .and_then(|raw| raw.get(&"FollowingOwner".into()))
+        .and_then(|raw| raw.get("FollowingOwner"))
         .and_then(horizon_world::datafix::dynamic::as_number)
         .is_none_or(|value| value.int_value() != 0);
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) else { return; };
@@ -191,7 +191,7 @@ pub fn install_large_cat(game: &mut Game<'_>, entity: u32, kind: &str) {
     mob.ai.targets.add(1, LargeCatPreyTarget::new(prey));
     mob.ai.targets.add(2, horizon_client::mobs::goals::HurtByTarget::new());
     if kind == "naturalist:tiger" {
-        mob.ai.goals.add(1, TigerStalk);
+        mob.ai.goals.add(1, TigerStalk::default());
         mob.ai.goals.add(2, horizon_client::mobs::goals::MeleeAttack::new(1.2, true));
     } else {
         mob.ai.goals.add(1, horizon_client::mobs::goals::MeleeAttack::new(1.2, true));
@@ -213,7 +213,7 @@ impl Goal for RhinoCharge {
         // same interval instead of charging after an arbitrary short pause.
         self.windup = 42;
         self.charge = 0;
-        mob.extra.counter1 = 0;
+        mob.extra.ints[4] = 0;
         true
     }
 
@@ -225,7 +225,7 @@ impl Goal for RhinoCharge {
 
     fn stop(&mut self, mob: &mut Mob, _: &mut Cx) {
         mob.nav_stop();
-        mob.extra.counter1 = 0;
+        mob.extra.ints[4] = 0;
         self.target = None;
         self.windup = 0;
         self.charge = 0;
@@ -239,7 +239,7 @@ impl Goal for RhinoCharge {
         mob.look_at([target.position.x, target.eye_y, target.position.z]);
         if self.windup > 0 {
             mob.nav_stop();
-            mob.extra.counter1 = 0;
+            mob.extra.ints[4] = 0;
             self.windup -= 1;
             if self.windup == 0 { self.charge = 60; }
             return;
@@ -260,29 +260,29 @@ impl Goal for RhinoCharge {
                 }),
             }
             self.charge = 0;
-            mob.extra.counter1 = 0;
+            mob.extra.ints[4] = 0;
             mob.nav_stop();
             return;
         }
         mob.nav_move_to_entity(cx.w, [target.position.x, target.position.y, target.position.z], 0, 2.5);
         self.charge = self.charge.saturating_sub(1);
-        mob.extra.counter1 = i32::from(self.charge > 0);
+        mob.extra.ints[4] = i32::from(self.charge > 0);
     }
 }
 
-pub fn stun(game: &mut Game<'_>, id: u32) {
+pub fn stun(game: &mut crate::game::Game<'_>, id: u32) {
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     mob.extra.counter2 = 60;
-    mob.extra.counter1 = 0;
+    mob.extra.ints[4] = 0;
     mob.nav_stop();
     horizon_client::mobs::finalize::set_base(mob, horizon_client::mobs::finalize::Attr::MovementSpeed, 0.0);
     let raw = game.persist.raw.entry(id).or_insert_with(|| Tag::Compound(Default::default()));
     if let Tag::Compound(fields) = raw { fields.insert("StunTick".into(), Tag::Int(60)); }
 }
 
-pub fn tick(game: &mut Game<'_>, id: u32) {
+pub fn tick(game: &mut crate::game::Game<'_>, id: u32) {
     let Some(index) = game.mobs.iter().position(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
-    let stun = game.persist.raw.get(&id).and_then(|tag| tag.get(&"StunTick".into()))
+    let stun = game.persist.raw.get(&id).and_then(|tag| tag.get("StunTick"))
         .and_then(horizon_world::datafix::dynamic::as_number).map_or(0, |value| value.int_value());
     game.mobs[index].extra.counter2 = stun.saturating_sub(1).max(0);
     if stun > 1 {
@@ -296,10 +296,10 @@ pub fn tick(game: &mut Game<'_>, id: u32) {
     }
 }
 
-pub fn break_charge_blocks(game: &mut Game<'_>, index: usize) {
+pub fn break_charge_blocks(game: &mut crate::game::Game<'_>, index: usize) {
     use mod_api::BlockUpdateFlags;
 
-    if game.mobs[index].extra.counter1 == 0
+    if game.mobs[index].extra.ints[4] == 0
         || !game.ui.rules.bool_at(horizon_client::gamerules::vanilla::MOB_GRIEFING)
     {
         return;

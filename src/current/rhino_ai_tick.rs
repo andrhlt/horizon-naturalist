@@ -4,7 +4,7 @@ fn rhino_ai_tick(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
     use mod_api::Host;
     if matches!(kind, "naturalist:lion" | "naturalist:tiger") {
         let saved_cooldown = game.persist.raw.get(&entity)
-            .and_then(|raw| raw.get(&"HuntingCooldown".into()))
+            .and_then(|raw| raw.get("HuntingCooldown"))
             .and_then(horizon_world::datafix::dynamic::as_number)
             .map(|value| value.int_value().max(0));
         let next_cooldown = if let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == entity) {
