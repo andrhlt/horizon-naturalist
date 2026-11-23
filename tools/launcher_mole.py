@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 import subprocess
 import tempfile
+from launcher_managed import start as start_managed, stop as stop_managed
 
 
 def capture(version, reference):
@@ -47,11 +48,10 @@ def capture(version, reference):
                 step(1)
             raise AssertionError((target, wanted, number(target, "MoleState")))
 
+        managed = None
         try:
-            ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
-                "--world", "Naturalist Mole", "--creative", "--test-terrain",
-                "--render-distance", 4, "--wait")
+            managed = start_managed(version, home, socket, "Naturalist Mole",
+                                    ("--test-terrain", "--render-distance", "4"))
             cmd("gamerule minecraft:spawn_mobs false")
             cmd("gamerule minecraft:advance_time false")
             cmd("time set midnight")
@@ -140,6 +140,7 @@ def capture(version, reference):
         finally:
             if socket.exists():
                 ctl("quit")
+            stop_managed(managed)
 
 
 if __name__ == "__main__":

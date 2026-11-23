@@ -423,6 +423,30 @@ fn metadata(
             kind.food = apples.clone();
             kind.tempt = apples;
         }
+        if name == "naturalist:komodo_dragon" {
+            let food: Arc<[String]> = Arc::from([
+                "minecraft:beef", "minecraft:chicken", "minecraft:cooked_beef",
+                "minecraft:cooked_chicken", "minecraft:cooked_mutton", "minecraft:cooked_porkchop",
+                "minecraft:cooked_rabbit", "minecraft:mutton", "minecraft:porkchop", "minecraft:rabbit",
+                "naturalist:bushmeat", "naturalist:clam_meat", "naturalist:cooked_bushmeat",
+                "naturalist:cooked_clam_meat", "naturalist:cooked_crab_meat", "naturalist:cooked_drumstick",
+                "naturalist:cooked_duck", "naturalist:cooked_lizard_tail", "naturalist:cooked_mammoth_meat",
+                "naturalist:cooked_venison", "naturalist:crab_meat", "naturalist:drumstick",
+                "naturalist:duck", "naturalist:lizard_tail", "naturalist:mammoth_meat",
+                "naturalist:morsel", "naturalist:venison",
+            ].map(str::to_owned));
+            kind.food = food.clone();
+            kind.tempt = food;
+        }
+        if name == "naturalist:tortoise" {
+            kind.baby_scale = 0.5;
+            kind.max_head_y_rot = 75.0;
+            let food: Arc<[String]> = Arc::from([
+                "minecraft:bamboo", "minecraft:dandelion", "minecraft:brown_mushroom", "minecraft:cactus",
+            ].map(str::to_owned));
+            kind.food = food.clone();
+            kind.tempt = food;
+        }
         if name == "naturalist:caterpillar" {
             kind.baby_scale = 1.0;
         }
