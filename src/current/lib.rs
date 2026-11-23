@@ -20,6 +20,8 @@ pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
 mod blobfish_behavior;
+mod isopod_behavior;
+mod starfish_behavior;
 mod ocean_bucket_item;
 mod ocean_placements;
 mod ocean_renderer;
@@ -439,6 +441,18 @@ impl mod_api::Hooks for Naturalist {
     ) -> mod_api::Flow {
         // Species-specific vanilla goal parity. Shared spawn selection and
         // initialization remain in APP-2133; this only fills each mob's AI.
+        if matches!(event.kind, "naturalist:anglerfish" | "naturalist:blobfish" | "naturalist:giant_isopod" | "naturalist:great_white_shark" | "naturalist:jellyfish" | "naturalist:ray" | "naturalist:starfish" | "naturalist:whale") {
+            if let Some(entity) = host.entity(event.entity) { ocean_renderer::record_variant(host, entity); }
+        }
+        if event.kind == "naturalist:giant_isopod" {
+            isopod_behavior::joined(host, event.entity);
+        }
+        if event.kind == "naturalist:blobfish" {
+            if let Some(entity) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
+                let goal = mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(vec!["naturalist:crab".into()]), must_see: true, must_reach: false, interval: 10 };
+                if !entity.target_goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == "nearest_target")) { let _ = entity.add_target_goal(host, 2, &goal); }
+            }
+        }
         let add_goal = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
             let id = goal.id();
             if !mob.goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
@@ -854,6 +868,9 @@ impl mod_api::Hooks for Naturalist {
                 let _ = living.add_effect(host, &mod_api::ActiveEffect::new(poison, 100, 0, false, true, true));
             }
         }
+        if event.kind == "naturalist:giant_isopod" {
+            isopod_behavior::tick(host, event.entity);
+        }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
             let result = (|| {
@@ -867,7 +884,6 @@ impl mod_api::Hooks for Naturalist {
             }
         }
     }
-
     fn entity_leave_level(
         &self,
         _: &mut dyn mod_api::ServerHost,
@@ -899,6 +915,25 @@ impl mod_api::Hooks for Naturalist {
         mod_api::Flow::Continue
     }
 
+    fn living_damage_pre(
+        &self,
+        _: &mut dyn mod_api::LevelRandomHost,
+        event: &mut mod_api::LivingDamagePreEvent<'_>,
+    ) {
+        if event.kind == "naturalist:giant_isopod"
+            && event.container.reduction(mod_api::Reduction::Armor) > 0.0
+        {
+            isopod_behavior::cap_shell_damage(event.container);
+        }
+    }
+    fn living_drops(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::LivingDropsEvent<'_>,
+    ) -> mod_api::Flow {
+        starfish_behavior::drops(host, event);
+        mod_api::Flow::Continue
+    }
     fn item_picked_up_post(&self, _: &mut dyn mod_api::ServerHost, _: &mut mod_api::ItemPickedUpPostEvent<'_>) {}
     fn register_entity_renderers(
         &self,

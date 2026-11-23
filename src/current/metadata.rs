@@ -454,6 +454,11 @@ fn metadata(
             kind.food = food.clone();
             kind.tempt = food;
         }
+        if name == "naturalist:giant_isopod" {
+            let cod: Arc<[String]> = Arc::from(["minecraft:cod".to_owned()]);
+            kind.food = cod.clone();
+            kind.tempt = cod;
+        }
         if name == "naturalist:caterpillar" {
             kind.baby_scale = 1.0;
         }
