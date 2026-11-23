@@ -37,9 +37,17 @@ fn rat_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> std:
         .and_then(|uuid| game.player(uuid))
         .and_then(|player| game.player_announced_channels(player))
         .is_some_and(|channels| channels.iter().any(|c| c == "naturalist:rat_pet_atomic_v1"));
-    // Java Animal.mobInteract consumes an adult food interaction client-side even
-    // while positive breeding age makes the server's breeding action pass.
-    if food && game.mobs[index].extra.tame && game.mobs[index].extra.age > 0 {
+    // Animal.mobInteract puts an adult into love mode when its food is
+    // accepted.  The Rat's Java food tag resolves bread here; keep the
+    // interaction server-side so the shared Breed goal can find its mate.
+    if food && game.mobs[index].extra.tame {
+        if game.mobs[index].extra.age == 0 && game.mobs[index].extra.in_love <= 0 {
+            game.consume_held();
+            game.mobs[index].extra.in_love = 600;
+            let kind = game.mobs[index].kind.id.clone();
+            game.native_entity_enter_love_mode(id, &kind, game.lan_acting_uuid);
+            game.mob_event_particles(id, 18);
+        }
         return ControlFlow::Break(Ok(true));
     }
     if food && claimed && let Some(crate::game::GuestUse::Entity(Hand::Main, target)) = game.guest_use {
