@@ -18,5 +18,6 @@
   "waterlogged": true,
   "attached_down": true,
   "support_removed_block": "minecraft:air",
-  "support_drop": "naturalist:blue_starfish"
+  "support_drop": "naturalist:blue_starfish",
+  "support_drop_count": 1
 }
