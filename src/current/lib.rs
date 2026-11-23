@@ -9,6 +9,7 @@ mod duck_renderer;
 mod ant_queen;
 mod aquatic_spawn;
 pub mod anglerfish_behavior;
+mod anglerfish_bucket_item;
 pub mod bass_appearance;
 mod bass_bucket_item;
 pub mod bass_fx;
@@ -192,6 +193,7 @@ impl mod_api::Hooks for Naturalist {
             .expect("register deer spawn placement");
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
+        anglerfish_bucket_item::register(registrar);
         for (kind, limit) in [
             ("naturalist:anglerfish", 8),
             ("naturalist:blobfish", 8),

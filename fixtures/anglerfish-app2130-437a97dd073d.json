@@ -69,6 +69,54 @@
     "dispenser_release": "not measured; fixture dispenser coordinates were outside loaded chunks after player-position setup",
     "acceptance_status": "open"
   },
+  "source_matched_replay_2026_11_22": {
+    "source_package_sha256": "ac8782881f86d90886be285eccaf4f654888abc2e42d106306a1da8fab8b24a5",
+    "mac_candidate": "native-0a875da-fb00425ae9cf",
+    "pinned_horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "launcher_home": "/Users/andrewholt/Library/Application Support/horizon-launcher",
+    "account_route": "authenticated LightTheTorch through supported launcher instance app-2130-authenticated",
+    "headless": true,
+    "force_loaded_chunks": 9,
+    "combat_event": {
+      "fixture": "Game::mob_attacks_mob with Anglerfish attacker and 2-health Cod target",
+      "cod_health_after_attack": 0,
+      "cooldown_immediately_after_event": 2400,
+      "cooldown_after_one_tick": 2399,
+      "cooldown_after_two_ticks": 2398,
+      "result": "passed; cooldown is stored in the persisted entity tag and decremented by the existing tick hook"
+    },
+    "variant": {
+      "confirmed_before_capture": "naturalist:glow",
+      "bucket_entity_data": "naturalist:glow",
+      "bucket_custom_data": "naturalist:glow",
+      "player_released_entity_variant": "naturalist:glow",
+      "result": "variant preserved"
+    },
+    "player_release": {
+      "live_fish_spawned": true,
+      "filled_bucket_still_held": true,
+      "result": "failed item conservation; production assignment to empty bucket did not affect observed held stack"
+    },
+    "dispenser_release": {
+      "live_glow_anglerfish_spawned": true,
+      "empty_bucket_returned_to_dispenser": true,
+      "result": "passed after registering AnglerfishBucket as an EmptyContents item part and force-loading test chunks"
+    },
+    "acceptance_status": "open"
+  },
+  "integrated_candidate_2026_11_23": {
+    "candidate": "native-0a875da-13ed1009764c",
+    "pinned_horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "launcher_home": "/Users/andrewholt/Library/Application Support/horizon-launcher",
+    "build": "supported horizon-launcher native-build . --instance app-2130-authenticated --version nightly-2026-11-20-0a875da --profile optimized --trust-native-code; succeeded in 19 seconds",
+    "client_libnaturalist_sha256": "43d8178c83f67094d24367b89fe27679f6d08228447fc0c8182239ef27f86663",
+    "account_state": "retry; Could not open the account lock",
+    "headless_replay": "not started; supported play exited before world load and requested Minecraft sign-in",
+    "linux_export": "not rebuilt; transfer of the current source stage to the APP-2120 Linux host was rejected by automatic approval review",
+    "shared_observer": "now includes tags and FromBucket; resolver filters test tags, saved variant and bucket origin, and reports missing Variant without inventing naturalist:red",
+    "local_harness_checks": "Python compilation and tagged/missing-variant helper checks passed",
+    "acceptance_status": "open"
+  },
   "unchecked_visual_states": [
     "controlled Java pixel comparison",
     "all variant texture comparisons",
@@ -79,8 +127,8 @@
     "animation timing and interpolation"
   ],
   "remaining_species_behavior": [
-    "Anglerfish target acquisition and attack-triggered cooldown",
-    "Anglerfish player and dispenser bucket release",
+    "Anglerfish autonomous target acquisition and attack-triggered cooldown timing outside the deterministic event fixture",
+    "Anglerfish player bucket item conservation",
     "Blobfish depth appearance and live-prey behavior",
     "Giant Isopod hiding, shell defense, grouped ages, food, and bucket lifecycle",
     "Great White Shark multipart combat, hunt cooldown, dry damage, and wet targeting",

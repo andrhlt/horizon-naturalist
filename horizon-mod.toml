@@ -8,6 +8,17 @@ capabilities = ["registries"]
 game = "26.3"
 horizon = "0a875da91dbb0fdcb7ba8c42c11341aa229af51a"
 mixins = "e59da9094f0c2fdda6c627fe9eff22dec6a906f0"
+
+[[native.mixin]]
+id = "headless-entity-state-fixture"
+target = "horizon_client::game::commands::Game<'_>::run_command"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/headless_state_fixture.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "command", ty = "&str", value = "command"},
+]
 [[native.mixin]]
 id = "metadata"
 target = "horizon_client::game::resource_load::take_modified_attribute_rows"

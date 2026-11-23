@@ -4,6 +4,7 @@ fn anglerfish_bucket_release(
     original: impl FnOnce(&mut Game<'_>, mod_api::__private::UseItemCall<'_>) -> (),
 ) {
     use horizon_client::actions::Action as Mapping;
+    use horizon_client::items::ItemStack;
     use horizon_core::position::BlockPos;
     use horizon_world::level::BucketContent;
     use mod_api::InteractionResult;
@@ -71,5 +72,8 @@ fn anglerfish_bucket_release(
     game.post_block_game_event("minecraft:entity_place", target, game.sculk_actor(), None);
     game.trigger_block("minecraft:placed_block", target, &stack);
     game.bucket_emptied(&stack.item);
+    if !game.creative {
+        *game.held_mut() = Some(ItemStack::new("minecraft:bucket", 1));
+    }
     *call.result = Some(InteractionResult::SuccessServer);
 }
