@@ -2,7 +2,7 @@ fn duck_follow_tick(game: &mut Game<'_>, entity: u32, kind: &str) {
     use mod_api::{Host, Holder};
     use mod_api::prelude::ServicesServerHost;
     use crate::game::naturalist_duck_follow::{DuckFollow, DuckSit, OwnerView, OWNER_VIEW};
-    if kind != "naturalist:duck" { return; }
+    if !matches!(kind, "naturalist:duck" | "naturalist:capybara") { return; }
     let Some(duck_entity)=game.entity(entity) else { return; };
     let Some(handle)=game.mob(duck_entity) else { return; };
     let following=game.persist.raw.get(&entity).and_then(|raw|raw.get("FollowingOwner"))

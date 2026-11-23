@@ -1,7 +1,9 @@
 """Verify owner and non-owner Capybara interactions over headless LAN."""
 import argparse
 import json
+import os
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 
@@ -11,16 +13,21 @@ def capture(version):
         root = Path(work)
 
         def call(side, *args):
+            env = {**os.environ, "HORIZON_HOME": str(root / side)}
             reply = subprocess.run(
                 [version / "horizon-ctl", "--socket", root / f"{side}.sock", *map(str, args)],
-                check=True, capture_output=True, text=True, timeout=65)
+                check=True, capture_output=True, text=True, timeout=65, env=env)
             return json.loads(reply.stdout.splitlines()[-1])
 
         def launch(side, *options):
             home = root / side
             home.mkdir()
+            resources = Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3"
+            shared_jars = Path.home() / "Library/Application Support/horizon/jars"
+            if shared_jars.exists():
+                shutil.copytree(shared_jars, home / "jars", dirs_exist_ok=True)
             call(side, "launch", "--headless", "--game", version / "horizon-client",
-                 "--resources", version / ".local/horizon-client/26.3", "--home", home,
+                 "--resources", resources, "--home", home,
                  "--game-dir", home, "--render-distance", 4, *options)
 
         def command(text):

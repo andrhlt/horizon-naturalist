@@ -7,12 +7,14 @@ mod duck_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
+mod catfish_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
+mod wildlife_renderer;
 use mod_api::AttachmentQueries;
 use std::sync::Arc;
 mod net;
@@ -101,6 +103,12 @@ struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
     bass: Arc<bass_renderer::BassRenderer>,
     duck: Arc<duck_renderer::DuckRenderer>,
+    alligator: Arc<wildlife_renderer::WildlifeRenderer>,
+    capybara: Arc<wildlife_renderer::WildlifeRenderer>,
+    catfish: Arc<wildlife_renderer::WildlifeRenderer>,
+    clam: Arc<wildlife_renderer::WildlifeRenderer>,
+    hippo: Arc<wildlife_renderer::WildlifeRenderer>,
+    piranha: Arc<wildlife_renderer::WildlifeRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -108,6 +116,24 @@ impl Default for Naturalist {
             deer: Arc::new(renderer::DeerRenderer::new()),
             bass: Arc::new(bass_renderer::BassRenderer::new()),
             duck: Arc::new(duck_renderer::DuckRenderer::new()),
+            alligator: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Alligator,
+            )),
+            capybara: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Capybara,
+            )),
+            catfish: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Catfish,
+            )),
+            clam: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Clam,
+            )),
+            hippo: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Hippo,
+            )),
+            piranha: Arc::new(wildlife_renderer::WildlifeRenderer::new(
+                wildlife_renderer::Species::Piranha,
+            )),
         }
     }
 }
@@ -133,6 +159,7 @@ impl mod_api::Hooks for Naturalist {
             .expect("register deer spawn placement");
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
+        catfish_bucket_item::register(registrar);
         for &(id, template, attributes) in profiles::PROFILES {
             let values = attributes
                 .iter()
@@ -149,6 +176,61 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityJoinLevelEvent<'_>,
     ) -> mod_api::Flow {
+        // Species-specific vanilla goal parity. Shared spawn selection and
+        // initialization remain in APP-2133; this only fills each mob's AI.
+        if let Some(mob) = host
+            .entity(event.entity)
+            .and_then(|entity| host.mob(entity))
+        {
+            let add_goal = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_goal(host, priority, &goal);
+                }
+            };
+            let add_target = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.target_goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_target_goal(host, priority, &goal);
+                }
+            };
+            let fish_prey = || mod_api::MobFilter::Species(vec![
+                "minecraft:cod".into(), "minecraft:salmon".into(),
+                "minecraft:tropical_fish".into(), "minecraft:pufferfish".into(),
+            ]);
+            match event.kind {
+                "naturalist:alligator" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_goal(&mob, host, 6, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 7, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(vec!["minecraft:cow".into(), "minecraft:pig".into(), "minecraft:sheep".into(), "minecraft:chicken".into()]), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
+                }
+                "naturalist:capybara" => {
+                    add_goal(&mob, host, 2, mod_api::GoalSpec::Tempt { speed: 1.25, items: vec!["minecraft:melon".into()], can_scare: true });
+                    add_goal(&mob, host, 4, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 5, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                }
+                "naturalist:catfish" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(vec!["naturalist:bass".into(), "minecraft:cod".into(), "minecraft:salmon".into(), "minecraft:tropical_fish".into(), "minecraft:pufferfish".into()]), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: false });
+                }
+                "naturalist:hippo" => {
+                    add_goal(&mob, host, 2, mod_api::GoalSpec::Tempt { speed: 1.0, items: vec!["minecraft:melon".into()], can_scare: true });
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_goal(&mob, host, 6, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 7, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::HurtByTarget { alert: true });
+                }
+                "naturalist:piranha" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: fish_prey(), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
+                }
+                _ => {}
+            }
+        }
         if event.kind == "naturalist:bass" {
             if let Some(mob) = host
                 .entity(event.entity)
@@ -238,6 +320,12 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:bass".into(), self.bass.clone());
+        event.renderers.register("naturalist:alligator".into(), self.alligator.clone());
+        event.renderers.register("naturalist:capybara".into(), self.capybara.clone());
+        event.renderers.register("naturalist:catfish".into(), self.catfish.clone());
+        event.renderers.register("naturalist:clam".into(), self.clam.clone());
+        event.renderers.register("naturalist:hippo".into(), self.hippo.clone());
+        event.renderers.register("naturalist:piranha".into(), self.piranha.clone());
     }
 
     fn render_living_pre(

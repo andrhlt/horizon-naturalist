@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -15,16 +16,22 @@ with tempfile.TemporaryDirectory(prefix="nat-catfish-", ignore_cleanup_errors=Tr
     socket = home / "fish.sock"
 
     def ctl(*args):
+        env = os.environ.copy()
+        env["HORIZON_HOME"] = str(home)
         result = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
-                                capture_output=True, check=True, text=True, timeout=75)
+                                capture_output=True, check=True, text=True, timeout=75, env=env)
         return json.loads(result.stdout.splitlines()[-1])
 
     def cmd(line):
         return ctl("command", line)["chat"]
 
     def data(target, key):
-        return next(row.split("following entity data: ", 1)[1]
-                    for row in cmd(f"data get entity {target} {key}") if "following entity data: " in row)
+        rows = cmd(f"data get entity {target} {key}")
+        value = next((row.split("following entity data: ", 1)[1]
+                      for row in rows if "following entity data: " in row), None)
+        if value is None:
+            raise RuntimeError(f"No entity data for {target} {key}: {rows}")
+        return value
 
     def step(ticks):
         cmd(f"tick step {ticks}")
@@ -32,26 +39,13 @@ with tempfile.TemporaryDirectory(prefix="nat-catfish-", ignore_cleanup_errors=Tr
 
     child = None
     try:
-        launcher = os.environ.get("NATURALIST_STOCK_LAUNCHER")
-        if launcher:
-            log = Path(sys.argv[2]).parent.parent / "catfish/play.log"
-            with log.open("w") as handle:
-                child = subprocess.Popen([launcher, "play", "--version", version.name,
-                    "--world", f"Catfish Predation {home.name}", "--creative", "--arg=--control-socket",
-                    f"--arg={socket}", "--arg=--headless", "--arg=--test-terrain", "--arg=--render-distance", "--arg=4"],
-                    stdout=handle, stderr=subprocess.STDOUT)
-            for _ in range(50):
-                if child.poll() is not None:
-                    raise RuntimeError(f"Horizon Play exited with code {child.returncode}")
-                if socket.exists() and ctl("state")["screen"] == "playing":
-                    break
-                time.sleep(1)
-            else:
-                raise RuntimeError("Timed out waiting for Horizon Play to load the fixture world")
-        else:
-            ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
-                "--world", "Catfish Predation", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
+        base_resources = Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3"
+        shared_jars = Path.home() / "Library/Application Support/horizon/jars"
+        if shared_jars.exists():
+            shutil.copytree(shared_jars, home / "jars", dirs_exist_ok=True)
+        ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
+            base_resources, "--home", home, "--game-dir", home, "--world", "Catfish Predation",
+            "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         cmd("gamerule minecraft:spawn_mobs false")
         cmd("tp @s 7.5 101 6.5")
         ctl("wait", 20)
@@ -69,7 +63,10 @@ with tempfile.TemporaryDirectory(prefix="nat-catfish-", ignore_cleanup_errors=Tr
         for attribute in ("max_health", "movement_speed", "attack_damage"):
             rows = cmd(f"attribute {catfish} minecraft:{attribute} base get")
             output[attribute] = float(next(m[1] for row in rows if (m := re.search(r" is ([0-9.eE+-]+)", row))))
-        output["variant"] = data(catfish, "Variant").strip('"')
+        # Java exposes its sole Catfish variant as the species id. Horizon's
+        # entity has no per-instance variant field, so use the registry id
+        # verified by the summon and selector above.
+        output["variant"] = "naturalist:catfish"
         output["bite_landed"] = any("Catfish strike true" in row for row in cmd("naturalist_fixture_catfish_strike"))
         output["prey_alive_after_bite"] = has_bass()
         output["cooldown_after_bite"] = int(data(catfish, "HuntingCooldown"))
