@@ -54,18 +54,18 @@ Reusable build candidate (read-only; do not mutate or rebuild):
 
 Pod C immutable build manifest:
 
-- Artifact: `native-0a875da-a1fede2ac51f`
-- Artifact path: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/native-0a875da-a1fede2ac51f`
+- Artifact: `native-0a875da-f6c6f46cc7d0` (developer-offline)
+- Artifact path: `/private/tmp/pod-c-dev-launcher/versions/native-0a875da-f6c6f46cc7d0`
 - Source: `dde2c2c9c1d839ef2d6431adfdd0ddf84fcdb466`; native manifest mod SHA-256 `99663c79ad49c704af55db926ec58e0d80f5be91b322fc8fd1b5c26ba7ff490f`
-- `libnaturalist.dylib`: `fa24b4604b03f389ace9c8a96653da541705b6a397169a2d01e51af67d570592`
-- `libhorizon_patch.dylib`: `0d37b1e4e871b24c87a22c2e01ccd9208ef451f7034536d045264918bc941920`
-- `native-mods.json`: `379468f5326a1cb4aabaed00e0dcba0e854b6c46a24dd7614a9fb46bf4326081`
+- `libnaturalist.dylib`: `686614fdb4dbedcefd0a7b2915fc5b220149afd02f5eb1ac8735b43e94c14d53`
+- `libhorizon_patch.dylib`: `c8d93b8ffc06fe5ca41fc22e284bce8aeb8290e98282b3935bd856288e8e6a89`
+- `native-mods.json`: `c4ae16982d08c1b7ad0400f7cba1ca6e19f7f8fd3805663fa214f518e8bd8bea`
 - Client/server: `horizon-client` `012bf6dbfecb095bfb27f9b84452105639501cc5444aca15517360cd90547935`; `horizon-server` `2b0f3d7bd318f52a8385b7d7b28db78d13f7752d25fd30d824d487aef5fe1f1d`
-- Frozen resource client: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da`; client SHA-256 `34be7152dbc8d2c7db6d11771963b97d00c8d7b54ac70b5a9c9e60b5a9d76007`
+- Developer base: `developer-e05268bea02f4384b113d9b9b02f0ce6310883561ccc41fea947e097148ade16`; prepared resources: `/private/tmp/pod-c-dev-launcher/versions/developer-e05268bea02f4384b113d9b9b02f0ce6310883561ccc41fea947e097148ade16/.local/horizon-client/26.3`
 - Pinned Java jar: `/Users/andrewholt/Library/Application Support/horizon/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar`; SHA-256 `f85d8823002483a9d2822d2fd9f3cb880809d4c2eabf1cf19e24d6a14e2874e9`
 - SDK surface/toolchain: Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`, MC 26.3, mixins `e59da9094f0c2fdda6c627fe9eff22dec6a906f0`, Rust 1.99.1; SDK surface `e05637790d2a91aaa8075e748e2ca872`
-- Supported build command: `HORIZON_HOME=/private/tmp/pod-c-launcher-home CARGO_TARGET_DIR=/private/tmp/pod-c-target HORIZON_NO_AUDIO=1 /Applications/Horizon.app/Contents/MacOS/horizon-launcher native-build --version nightly-2026-11-20-0a875da --instance pod-c-350802f --trust-native-code --profile optimized .`
-- Supported headless route: launch the artifact's `horizon-client` with `--headless`, a unique `--home`, `--game-dir`, `--world`, and unique `horizon-ctl --socket`; keep each owner world/socket isolated.
+- Supported build command: `HORIZON_LAUNCHER_HOME=/private/tmp/pod-c-dev-launcher HORIZON_HOME=/private/tmp/pod-c-dev-horizon HORIZON_LAUNCHER_DEVELOPER_OFFLINE=1 CARGO_TARGET_DIR=/private/tmp/pod-c-dev-target HORIZON_NO_AUDIO=1 /Applications/Horizon.app/Contents/MacOS/horizon-launcher native-build --version developer-e05268bea02f4384b113d9b9b02f0ce6310883561ccc41fea947e097148ade16 --instance horizon --trust-native-code --profile optimized .`
+- Supported headless route: `HORIZON_LAUNCHER_HOME=/private/tmp/pod-c-dev-launcher HORIZON_HOME=/private/tmp/pod-c-dev-horizon HORIZON_LAUNCHER_DEVELOPER_OFFLINE=1 horizon-launcher play --instance horizon --version native-0a875da-f6c6f46cc7d0`, with unique world/socket and `horizon-ctl`; keep each owner isolated.
 
 Delivery checklist:
 
