@@ -2,6 +2,7 @@
 use horizon_core::{geometry::Vec3, nbt::Tag};
 use horizon_core::random::RandomSource;
 use horizon_client::mobs::{Damage, DamageKind, Mob, MobEvent, Who, goals::{Cx, Goal, LOOK, MOVE}};
+use super::Game;
 use std::collections::HashSet;
 
 #[derive(Clone, Debug, Default)]
