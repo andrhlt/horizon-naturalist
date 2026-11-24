@@ -14,7 +14,7 @@ LAUNCHER_HOME = Path.home() / "Library/Application Support/horizon-launcher"
 
 def launch_managed(version, socket, game_dir, world, *, creative=False,
                    test_terrain=False, render_distance=4, world_suffix=None,
-                   seed=None):
+                   seed=None, allow_jar_downloads=False):
     version = Path(version).resolve()
     socket = Path(socket).resolve()
     game_dir = Path(game_dir).resolve()
@@ -44,6 +44,8 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
                "--version", version.name, "--world", world, "--json"]
     if creative:
         command.append("--creative")
+    if allow_jar_downloads:
+        command.append("--allow-jar-downloads")
     for arg in ("--headless", "--control", "--control-socket", str(socket),
                 "--resources", str(resources)):
         command.extend(("--arg", arg))
