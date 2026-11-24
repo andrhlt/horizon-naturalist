@@ -6,7 +6,7 @@ side = "both"
 capabilities = ["registries"]
 [native]
 game = "26.3"
-horizon = "4a73697c944981fb3fdd066ebfcd926605e9fbc6"
+horizon = "0a875da91dbb0fdcb7ba8c42c11341aa229af51a"
 mixins = "e59da9094f0c2fdda6c627fe9eff22dec6a906f0"
 [[native.mixin]]
 id = "metadata"
@@ -41,6 +41,17 @@ id = "caterpillar-cocoon-tick"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
 kind = "HEAD"
 helper = "src/current/caterpillar_cocoon_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "lizard-ordered-sitting"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/lizard_ordered_sitting.rs"
 bindings = [
  {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
  {name = "entity", ty = "u32", value = "entity"},
