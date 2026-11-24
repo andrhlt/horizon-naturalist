@@ -121,18 +121,6 @@ name = "naturalist_deer_goals"
 source = "src/current/deer_goals_native.rs"
 
 [[native.module]]
-id = "shared_spawn_native"
-file = "crates/horizon-client/src/game.rs"
-name = "naturalist_shared_spawn"
-source = "src/current/shared_spawn.rs"
-
-[[native.module]]
-id = "whale-behavior"
-file = "crates/horizon-client/src/game.rs"
-name = "naturalist_whale_behavior"
-source = "src/current/whale_behavior.rs"
-
-[[native.module]]
 id = "zebra-breed-goal"
 file = "crates/horizon-client/src/game.rs"
 name = "naturalist_zebra_breed"
