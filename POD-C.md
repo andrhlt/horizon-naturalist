@@ -36,6 +36,11 @@ This batch additionally scopes the forest filter to `minecraft:forest`
 (`60dbde4`) and implements Bass bucket release with variant restoration
 (`d154478`).
 
+Developer-offline runtime result: Bass capture/release PASS on
+`native-0a875da-18ab1318b90b`; corrected runner `3d61f5c` confirmed preserved
+`naturalist:bass_large` variant/name, released health `2.0`, one live Bass at
+the water target, and post-release inventory `minecraft:bucket`.
+
 Build-scope note: the pinned manifest validator found stale registrations for
 unavailable, non-Pod-C Catfish, Clam, Capybara, Piranha, Alligator, and Hippo
 source files. Those native blocks were removed from this Pod C candidate only;
