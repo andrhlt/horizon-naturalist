@@ -218,9 +218,6 @@ impl mod_api::Hooks for Naturalist {
         registrar.entity_part("naturalist:desert_scorpion", scorpion::ScorpionPart);
         registrar.entity_part("naturalist:jungle_scorpion", scorpion::ScorpionPart);
     }
-    fn server_tick(&self, host: &mut dyn mod_api::ServerHost, _: &mut mod_api::ServerTickEvent<'_>) {
-        alligator_egg_part::hatch_tick(host);
-    }
     fn entity_join_level(
         &self,
         host: &mut dyn mod_api::ServerHost,
@@ -387,6 +384,7 @@ impl mod_api::Hooks for Naturalist {
         if !matches!(event.phase, mod_api::ServerTickPhase::ServerTickEnd { .. }) {
             return;
         }
+        alligator_egg_part::hatch_tick(host);
         let level = host.level("minecraft:overworld");
         if let Some(level) = level {
             let now = level.game_time(host).unwrap_or(i64::MIN);

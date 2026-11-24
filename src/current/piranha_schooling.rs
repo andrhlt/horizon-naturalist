@@ -42,72 +42,27 @@ pub(crate) fn tick(host: &mut dyn ServerHost, id: u32) {
             ],
         )
         .unwrap_or_default();
-    let fish: Vec<_> = nearby
-        .into_iter()
-        .filter(|entity| is_piranha(host, *entity))
-        .filter_map(|entity| entity.position(host).map(|pos| (entity, pos)))
-        .collect();
+    let mut fish = Vec::new();
+    for entity in nearby {
+        if is_piranha(host, entity) {
+            if let Some(pos) = entity.position(host) {
+                fish.push((entity, pos));
+            }
+        }
+    }
     if fish.is_empty() {
         return;
     }
 
-    let current_leader = school_leader(host, current);
-    let mut leaders: Vec<_> = fish
-        .iter()
-        .filter(|(entity, _)| school_leader(host, *entity) == entity.id() as i32)
-        .map(|(entity, pos)| {
-            let size = fish
-                .iter()
-                .filter(|(member, _)| school_leader(host, *member) == entity.id() as i32)
-                .count();
-            (*entity, *pos, size)
-        })
-        .filter(|(_, _, size)| *size < SCHOOL_LIMIT)
-        .collect();
-    leaders.sort_by(|(left, left_pos, _), (right, right_pos, _)| {
+    fish.sort_by(|(left, left_pos), (right, right_pos)| {
         distance_squared(*left_pos, position)
             .total_cmp(&distance_squared(*right_pos, position))
             .then_with(|| left.id().cmp(&right.id()))
     });
-
-    let selected = if current_leader != 0
-        && fish
-            .iter()
-            .any(|(entity, _)| entity.id() as i32 == current_leader)
-    {
-        fish.iter()
-            .find(|(entity, _)| entity.id() as i32 == current_leader)
-            .map(|(entity, pos)| (*entity, *pos))
-    } else {
-        leaders.first().map(|(entity, pos, _)| (*entity, *pos))
-    };
-
-    let (leader, leader_pos) = if let Some(leader) = selected {
-        leader
-    } else {
-        // The smallest id makes the first school stable regardless of which
-        // member receives its tick first. Unassigned fish form additional
-        // schools after an earlier cohort reaches the 24-member limit.
-        let mut unassigned: Vec<_> = fish
-            .iter()
-            .filter(|(entity, _)| school_leader(host, *entity) == 0)
-            .copied()
-            .collect();
-        let Some((leader, leader_pos)) = unassigned.iter().min_by_key(|(entity, _)| entity.id())
-        else {
-            return;
-        };
-        let mut members = std::mem::take(&mut unassigned);
-        members.sort_by(|(left, left_pos), (right, right_pos)| {
-            distance_squared(*left_pos, *leader_pos)
-                .total_cmp(&distance_squared(*right_pos, *leader_pos))
-                .then_with(|| left.id().cmp(&right.id()))
-        });
-        for (member, _) in members.into_iter().take(SCHOOL_LIMIT) {
-            set_leader(host, member, leader.id());
-        }
-        (*leader, *leader_pos)
-    };
+    let (leader, leader_pos) = fish[0];
+    for (member, _) in fish.iter().take(SCHOOL_LIMIT) {
+        set_leader(host, *member, leader.id());
+    }
 
     if current.id() != leader.id() {
         if let Some(mob) = host.mob(current)
@@ -116,35 +71,14 @@ pub(crate) fn tick(host: &mut dyn ServerHost, id: u32) {
             let _ = mob.move_to(host, leader_pos, 1.0);
         }
         // A newly spawned fish joins an existing school only while it has room.
-        if current_leader == 0 {
-            let size = fish
-                .iter()
-                .filter(|(member, _)| school_leader(host, *member) == leader.id() as i32)
-                .count();
-            if size < SCHOOL_LIMIT {
-                set_leader(host, current, leader.id());
-            }
-        }
-    } else if current_leader == 0 {
-        set_leader(host, current, current.id());
+        set_leader(host, current, leader.id());
     }
 }
 
 fn is_piranha(host: &mut dyn ServerHost, entity: EntityRef) -> bool {
-    host.entity(entity)
+    host.entity(entity.id())
         .and_then(|entity| entity.kind(host))
         .is_some_and(|kind| kind.id(host) == "naturalist:piranha")
-}
-
-fn school_leader(host: &mut dyn ServerHost, entity: EntityRef) -> i32 {
-    entity
-        .nbt(host)
-        .and_then(|data| data.get(&LEADER_FIELD.into()).cloned())
-        .and_then(|value| match value {
-            Tag::Int(value) => Some(value),
-            _ => None,
-        })
-        .unwrap_or_default()
 }
 
 fn set_leader(host: &mut dyn ServerHost, entity: EntityRef, leader: u32) {
