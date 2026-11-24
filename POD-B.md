@@ -35,5 +35,4 @@ All source inputs are based on reviewed `main` ancestry; owner handoffs must con
 - [ ] Tortoise egg `stepOn` callback gap remains explicitly blocked; `fallOn` is separate and must be tested where applicable.
 - [ ] No auth/lease bypass, stale ABI mixing, visible-window interaction, force-push, or unrelated source is admitted.
 - [ ] Cross-feature loading and conservation smoke reviewed centrally; Pod B does not claim sole full-package acceptance.
-- [ ] One combined Pod B PR only after all four member scopes pass their real acceptance gates; existing PRs remain preserved until safely superseded.
-
+- [ ] One combined Pod B PR for the accepted three-issue scope; APP-2132 remains separately owned.
