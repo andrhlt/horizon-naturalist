@@ -1,0 +1,26 @@
+{
+  "source": {
+    "integration_commit": "4d14884",
+    "ant_worldgen_commits": ["abfc8fc", "c2521a8", "1e13328"],
+    "java_jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd"
+  },
+  "runtime": {
+    "horizon_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "minecraft": "26.3",
+    "candidate": "native-0a875da-5e28db547bcd",
+    "naturalist_dylib_sha256": "f64a71294307c0f7a6ef4f3d195ca06afebbacef696431650064499a94e6e5e4",
+    "mode": "headless"
+  },
+  "command": "python3 tools/launcher_ant_worldgen_playability.py '/Users/andrewholt/Library/Application Support/horizon-launcher/versions/native-0a875da-5e28db547bcd' --jar '/private/tmp/naturalist-app2124-reference.jar'",
+  "result": {
+    "seed": 42,
+    "fresh_world": true,
+    "small_cells": 10,
+    "big_cells": 15,
+    "queen_and_entrances": true,
+    "wild_ant_entry": true,
+    "block_entity_storage": true,
+    "save_reopen_identical": true
+  },
+  "scope": "Selected seed-42 runtime acceptance; fixed-seed Java layout/RNG parity is not claimed. Template rotation is constrained to none to preserve custom block state properties."
+}
