@@ -69,7 +69,7 @@ fn hand_item(kind: &str) -> Option<&'static str> {
 /// retaining the complete hedgehog item until the landing hook resolves it.
 pub(super) fn throw_hedgehog(game: &mut Game<'_>) -> bool {
     let Some(stack) = game.held().cloned() else { return false };
-    if stack.item.as_ref() != "naturalist:hedgehog" || game.remote.is_some() { return false; }
+    if stack.item.as_ref() != "naturalist:hedgehog" { return false; }
     let fake = ItemStack::new("minecraft:snowball", 1);
     let Ok(true) = game.throw_item(&fake) else { return false; };
     if let Some(id) = game.creatures.projectiles.last().map(|p| p.id) {
