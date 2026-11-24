@@ -29,7 +29,6 @@ def capture(version: Path, jar: Path) -> dict:
         socket = home / "ant-worldgen.sock"
         world_suffix = uuid.uuid4().hex[:8]
         os.environ.setdefault("NATURALIST_TEST_LAUNCHER_HOME", str(version.parent.parent))
-        os.environ.setdefault("NATURALIST_TEST_INSTANCE", f"app-2124-ant-{world_suffix}")
         process = None
 
         def ctl(*args):
