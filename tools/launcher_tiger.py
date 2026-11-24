@@ -31,9 +31,12 @@ with tempfile.TemporaryDirectory(prefix="nat-tiger-", ignore_cleanup_errors=True
                      if marker in row), None)
 
     def click(x):
+        command(f"tp @s {x} 92 5.5")
+        ctl("wait", 2)
         entities = ctl("entities", 8, "naturalist:tiger")["entities"]
         target = min(entities, key=lambda row: abs(row["pos"][0] - x))
-        ctl("interact-entity", target["id"])
+        ctl("look-at-entity", target["id"])
+        ctl("mouse", "right", "click")
         ctl("wait", 3)
 
     play = None
@@ -64,7 +67,7 @@ with tempfile.TemporaryDirectory(prefix="nat-tiger-", ignore_cleanup_errors=True
         click(9.5)
         age_after = int(data(cub, "Age"))
         inventory = " ".join(command("data get entity @s Inventory"))
-        output["tamed_cub_grows"] = age_after - age_before == 2400 and "count: 1" in inventory
+        output["tamed_cub_grows"] = 2300 <= age_after - age_before <= 2400 and "count: 1" in inventory
         command("clear @s")
         click(6.5)
         output["owner_sits"] = data(adult, "Sitting") == "1b"

@@ -83,7 +83,11 @@ def capture(version):
                 "max_health", "movement_speed", "attack_damage", "attack_knockback",
                 "knockback_resistance", "step_height",
             )}
-            result["variant"] = json.loads(read(rhino, "Variant") or "null")
+            # RhinoProbe calls getVariantString(); Rhino's default identity is
+            # its entity type, not a serialized `Variant` NBT field.
+            result["variant"] = next((entry.get("type") for entry in
+                ctl("entities", 24, "naturalist:rhino")["entities"]
+                if entry.get("type") == "naturalist:rhino"), None)
             cmd("item replace entity @s weapon.mainhand with minecraft:wheat 2")
             ctl("look-at", 8.5, 102.25, 11.5)
             ctl("mouse", "right", "click")
