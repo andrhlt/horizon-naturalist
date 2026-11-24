@@ -75,17 +75,6 @@ bindings = [
 ]
 
 [[native.mixin]]
-id = "anglerfish-bucket-pickup"
-target = "horizon_client::game::creatures::Game<'_>::interact_mob"
-kind = "HEAD"
-cancellable = true
-helper = "src/current/anglerfish_bucket_pickup.rs"
-bindings = [
- { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
- { name = "target", ty = "Option<InteractTarget>", value = "target" },
-]
-
-[[native.mixin]]
 id = "anglerfish-bucket-release"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_use_item"
 kind = "WRAP_OPERATION"
