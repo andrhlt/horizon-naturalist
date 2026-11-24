@@ -19,6 +19,7 @@ mod catfish_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
+mod aquatic_placements;
 mod blobfish_behavior;
 mod isopod_behavior;
 mod jellyfish_behavior;
@@ -29,6 +30,7 @@ mod ocean_bucket_item;
 mod ocean_placements;
 mod ocean_renderer;
 mod aquatic_spawn;
+mod forest_config;
 mod land_placements;
 mod profiles;
 mod renderer;
@@ -241,6 +243,59 @@ impl Default for Naturalist {
 
 #[mod_api::horizon_mod]
 impl mod_api::Hooks for Naturalist {
+    fn register_configs(
+        &self,
+        _: mod_api::HostSide<'_>,
+        event: &mut mod_api::RegisterConfigsEvent<'_>,
+    ) {
+        event.configs.push(mod_api::Config::new(
+            "naturalist",
+            mod_api::ConfigKind::Server,
+            forest_config::default_config(),
+        ));
+    }
+
+    fn config_loading(
+        &self,
+        _: mod_api::HostSide<'_>,
+        event: &mut mod_api::ConfigLoadingEvent<'_>,
+    ) {
+        if event.config.mod_id == "naturalist"
+            && event.config.kind == mod_api::ConfigKind::Server
+        {
+            forest_config::update(&event.config.text);
+        }
+    }
+
+    fn config_reloading(
+        &self,
+        _: mod_api::HostSide<'_>,
+        event: &mut mod_api::ConfigReloadingEvent<'_>,
+    ) {
+        if event.config.mod_id == "naturalist"
+            && event.config.kind == mod_api::ConfigKind::Server
+        {
+            forest_config::update(&event.config.text);
+        }
+    }
+
+    fn potential_spawns(
+        &self,
+        host: &dyn mod_api::Host,
+        event: &mut mod_api::PotentialSpawnsEvent<'_>,
+    ) -> mod_api::Flow {
+        use mod_api::Host;
+        let forest = host
+            .level(event.dimension)
+            .and_then(|level| level.biome_at(host, event.pos))
+            .as_deref()
+            == Some("minecraft:forest");
+        if event.category == "creature" {
+            forest_config::filter(event.entries, forest);
+        }
+        mod_api::Flow::Continue
+    }
+
     fn entity_size(&self, host: &dyn mod_api::Host, event: &mut mod_api::EntitySizeEvent<'_>) {
         let kind = event.entity.kind(host).map(|kind| kind.id(host).to_owned());
         let is_baby = self.tortoise_babies.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
@@ -266,6 +321,7 @@ impl mod_api::Hooks for Naturalist {
         tortoise_egg_part::register(registrar);
         ant_queen::register(registrar);
         land_placements::register(registrar);
+        aquatic_placements::register(registrar);
         ocean_placements::register(registrar);
         registrar
             .declare_spawn_placement(

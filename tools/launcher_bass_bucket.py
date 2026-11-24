@@ -64,6 +64,7 @@ with tempfile.TemporaryDirectory(prefix="nat-bass-bucket-", ignore_cleanup_error
         cmd("fill 4 101 8 12 104 14 minecraft:water")
         cmd("tp @s 7.5 101 6.5")
         cmd("gamemode survival @s")
+        cmd("effect give @s minecraft:resistance 1000 255 true")
         cmd("item replace entity @s weapon.mainhand with minecraft:water_bucket")
         cmd('summon naturalist:bass 7.5 102.25 8.5 {Variant:"naturalist:bass_large",'
             'Health:2f,CustomName:"Big Bass",NoAI:1b,PersistenceRequired:1b}')
@@ -78,7 +79,8 @@ with tempfile.TemporaryDirectory(prefix="nat-bass-bucket-", ignore_cleanup_error
             output[key] = match[1]
         assert '"minecraft:custom_name": "Big Bass"' in inventory, inventory
         output["bucket_name"] = "Big Bass"
-        click(0, 6)
+        cmd("tp @s 7.5 101 7.5")
+        click(0, 30)
         fish = "@e[type=naturalist:bass,limit=1]"
         output["released_variant"] = data(fish, "Variant").strip('"')
         output["released_health"] = float(data(fish, "Health").rstrip("f"))
