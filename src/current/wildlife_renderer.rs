@@ -1,93 +1,153 @@
-//! Current-runtime renderers for the terrestrial wildlife covered by APP-2126.
+//! Naturalist 2.0.7 models and basic movement poses for freshwater species.
 use mod_api::{BlockEntityDrawContext, EntityRenderState, EntityRenderer, ModelPart};
 
-#[path = "../bear_models.rs"] mod bear_models;
-#[path = "../black_bear_models.rs"] mod black_bear_models;
-#[path = "../boar_models.rs"] mod boar_models;
-#[path = "../snake_models.rs"] mod snake_models;
+#[path = "alligator_models.rs"]
+mod alligator_models;
+#[path = "capybara_models.rs"]
+mod capybara_models;
+#[path = "catfish_models.rs"]
+mod catfish_models;
+#[path = "clam_models.rs"]
+mod clam_models;
+#[path = "hippo_models.rs"]
+mod hippo_models;
+#[path = "piranha_models.rs"]
+mod piranha_models;
 
 #[derive(Clone, Copy, Debug)]
-pub(crate) enum Kind { Bear, BlackBear, Boar, Snake }
+pub(crate) enum Species {
+    Alligator,
+    Capybara,
+    Catfish,
+    Clam,
+    Hippo,
+    Piranha,
+}
 
-pub(crate) struct WildlifeRenderer { kind: Kind, adult: ModelPart, baby: Option<ModelPart> }
+pub(crate) struct WildlifeRenderer {
+    species: Species,
+    adult: ModelPart,
+    baby: Option<ModelPart>,
+}
+
+impl WildlifeRenderer {
+    pub(crate) fn new(species: Species) -> Self {
+        let (adult, baby) = match species {
+            Species::Alligator => (alligator_models::adult(), Some(alligator_models::baby())),
+            Species::Capybara => (capybara_models::adult(), Some(capybara_models::baby())),
+            Species::Catfish => (catfish_models::adult(), None),
+            Species::Clam => (clam_models::adult(), None),
+            Species::Hippo => (hippo_models::adult(), Some(hippo_models::baby())),
+            Species::Piranha => (piranha_models::adult(), None),
+        };
+        Self { species, adult, baby }
+    }
+
+    fn texture(&self, baby: bool) -> &'static str {
+        match (self.species, baby) {
+            (Species::Alligator, true) => "naturalist:entity/alligator/alligator_baby",
+            (Species::Alligator, false) => "naturalist:entity/alligator/alligator",
+            (Species::Capybara, true) => "naturalist:entity/capybara/capybara_baby",
+            (Species::Capybara, false) => "naturalist:entity/capybara/capybara",
+            (Species::Catfish, _) => "naturalist:entity/catfish",
+            (Species::Clam, _) => "naturalist:entity/clam/brown_clam",
+            (Species::Hippo, true) => "naturalist:entity/hippo/hippo_baby",
+            (Species::Hippo, false) => "naturalist:entity/hippo/hippo",
+            (Species::Piranha, _) => "naturalist:entity/piranha",
+        }
+    }
+}
 
 fn bone<'a>(part: &'a mut ModelPart, name: &str) -> Option<&'a mut ModelPart> {
     for (child_name, child) in part.children_mut() {
-        if child_name == name { return Some(child); }
-        if let Some(found) = bone(child, name) { return Some(found); }
+        if child_name == name {
+            return Some(child);
+        }
+        if let Some(found) = bone(child, name) {
+            return Some(found);
+        }
     }
     None
 }
 
-/// Apply the source animals' locomotion cue to the current living render state.
-/// The current API does not expose Naturalist's animation controller, but it
-/// does provide the same interpolated walk position/speed used by vanilla
-/// living renderers.  Keep this adapter deterministic and model-local.
-fn animate(model: &mut ModelPart, kind: Kind, position: f32, speed: f32) {
-    let swing = position.sin() * speed.clamp(0.0, 1.0) * 0.65;
-    let names: &[(&str, f32)] = match kind {
-        Kind::Bear | Kind::BlackBear => &[("leftArm", 1.0), ("rightArm", -1.0), ("leftLeg", -1.0), ("rightLeg", 1.0)],
-        Kind::Boar => &[("leftArm", 1.0), ("rightArm", -1.0), ("leftLeg", -1.0), ("rightLeg", 1.0)],
-        Kind::Snake => &[("tail", 0.35), ("tail2", 0.55), ("tail3", 0.8), ("tail4", 1.0)],
-    };
-    for &(name, phase) in names {
-        if let Some(part) = bone(model, name) {
-            part.offset_rotation([swing * phase, 0.0, 0.0]);
-        }
-    }
-}
-
-impl WildlifeRenderer {
-    fn new(kind: Kind, adult: ModelPart, baby: Option<ModelPart>) -> Self { Self { kind, adult, baby } }
-    pub(crate) fn bear() -> Self { Self::new(Kind::Bear, bear_models::adult(), Some(bear_models::baby())) }
-    pub(crate) fn black_bear() -> Self { Self::new(Kind::BlackBear, black_bear_models::adult(), Some(black_bear_models::baby())) }
-    pub(crate) fn boar() -> Self { Self::new(Kind::Boar, boar_models::adult(), Some(boar_models::baby())) }
-    pub(crate) fn snake() -> Self { Self::new(Kind::Snake, snake_models::adult(), None) }
-    fn texture(&self, baby: bool) -> &'static str {
-        match (self.kind, baby) {
-            (Kind::Bear, false) => "naturalist:entity/bear/bear",
-            (Kind::Bear, true) => "naturalist:entity/bear/bear_baby",
-            (Kind::BlackBear, false) => "naturalist:entity/black_bear/black_bear",
-            (Kind::BlackBear, true) => "naturalist:entity/black_bear/black_bear_baby",
-            (Kind::Boar, false) => "naturalist:entity/boar/boar",
-            (Kind::Boar, true) => "naturalist:entity/boar/boar_baby",
-            (Kind::Snake, _) => "naturalist:entity/snake/snake",
-        }
-    }
-}
-
 impl EntityRenderer for WildlifeRenderer {
-    fn submit(&self, entity: &EntityRenderState, draw: &mut dyn BlockEntityDrawContext) -> Result<(), String> {
-        let Some(living) = entity.living else { return Ok(()) };
-        let mut model = if living.is_baby { self.baby.as_ref().unwrap_or(&self.adult).clone() } else { self.adult.clone() };
-        animate(&mut model, self.kind, living.walk_animation_pos, living.walk_animation_speed);
-        draw.rotate_about([0.0, 1.0, 0.0], entity.yaw, [0.0; 3]);
-        draw.rotate_about([1.0, 0.0, 0.0], entity.pitch, [0.0; 3]);
-        draw.scale([living.scale, -living.scale, -living.scale]);
-        draw.translate([0.0, -1.501 * living.age_scale, 0.0]);
+    fn submit(
+        &self,
+        entity: &EntityRenderState,
+        draw: &mut dyn BlockEntityDrawContext,
+    ) -> Result<(), String> {
+        let Some(living) = entity.living else {
+            return Ok(());
+        };
+        let baby_model = living.is_baby && self.baby.is_some();
+        let mut model = if baby_model {
+            self.baby.as_ref().expect("baby model checked").clone()
+        } else {
+            self.adult.clone()
+        };
+        model.reset_all_poses();
+
+        let phase = entity.age * 0.5;
+        let stride = living.walk_animation_speed.clamp(0.0, 1.0);
+        match self.species {
+            Species::Alligator => {
+                if let Some(tail) = bone(&mut model, "tail") {
+                    tail.offset_rotation([0.0, phase.sin() * (0.08 + stride * 0.18), 0.0]);
+                }
+                if let Some(tail) = bone(&mut model, if baby_model { "tailTip" } else { "tail2" }) {
+                    tail.offset_rotation([0.0, (phase - 0.5).sin() * (0.12 + stride * 0.24), 0.0]);
+                }
+                for (name, sign) in [("left_leg", 1.0), ("right_leg", -1.0)] {
+                    if let Some(leg) = bone(&mut model, name) {
+                        leg.offset_rotation([phase.sin() * stride * 0.25 * sign, 0.0, 0.0]);
+                    }
+                }
+            }
+            Species::Capybara | Species::Hippo => {
+                for (name, sign) in [
+                    ("leftLeg", 1.0),
+                    ("rightLeg", -1.0),
+                    ("left_leg", 1.0),
+                    ("right_leg", -1.0),
+                ] {
+                    if let Some(leg) = bone(&mut model, name) {
+                        leg.offset_rotation([phase.sin() * stride * 0.45 * sign, 0.0, 0.0]);
+                    }
+                }
+                if let Some(skull) = bone(&mut model, "skull") {
+                    skull.offset_rotation([living.x_rot.to_radians(), living.y_rot.to_radians(), 0.0]);
+                }
+            }
+            Species::Catfish | Species::Piranha => {
+                if let Some(tail) = bone(&mut model, "tail") {
+                    tail.offset_rotation([0.0, phase.sin() * (0.12 + stride * 0.32), 0.0]);
+                }
+                if let Some(body) = bone(&mut model, "body") {
+                    body.offset_rotation([living.x_rot.to_radians() * 0.35, 0.0, 0.0]);
+                }
+            }
+            Species::Clam => {
+                if let Some(top) = bone(&mut model, "top") {
+                    top.offset_rotation([0.04 * phase.sin(), 0.0, 0.0]);
+                }
+            }
+        }
+
+        let age_scale = if baby_model { 1.0 } else { living.age_scale };
+        draw.scale([living.scale * age_scale; 3]);
+        draw.rotate_about([0.0, 1.0, 0.0], 180.0 - living.body_rot, [0.0; 3]);
+        if living.death_time > 0.0 {
+            let progress = (((living.death_time - 1.0) / 20.0 * 1.6).max(0.0))
+                .sqrt()
+                .min(1.0);
+            draw.rotate_about([0.0, 0.0, 1.0], progress * 90.0, [0.0; 3]);
+        }
+        draw.scale([1.0, -1.0, -1.0]);
+        draw.translate([0.0, -1.501, 0.0]);
         let tint = if living.has_red_overlay { 0xFF7070 } else { 0xFFFFFF };
-        if !draw.model_part(&model, self.texture(living.is_baby), tint) {
-            return Err(format!("missing Naturalist {:?} texture", self.kind));
+        if !draw.model_part(&model, self.texture(baby_model), tint) {
+            return Err(format!("missing Naturalist {:?} texture", self.species));
         }
         Ok(())
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn constructors_cover_app_2126_models() {
-        let _ = [WildlifeRenderer::bear(), WildlifeRenderer::black_bear(), WildlifeRenderer::boar(), WildlifeRenderer::snake()];
-    }
-    #[test]
-    fn locomotion_animation_handles_all_source_bone_sets() {
-        let models = [
-            (Kind::Bear, bear_models::adult()),
-            (Kind::BlackBear, black_bear_models::adult()),
-            (Kind::Boar, boar_models::adult()),
-            (Kind::Snake, snake_models::adult()),
-        ];
-        for (kind, mut model) in models { animate(&mut model, kind, 1.25, 0.8); }
     }
 }

@@ -50,27 +50,65 @@ def capture(version, reference, jar=None):
             cmd("tp @s 8.5 110 8.5")
             ctl("wait", 20)
             cmd("tick freeze")
+            cmd("kill @e[type=naturalist:butterfly]")
+            step(2)  # drain the killed cohort before measuring live entities
+            empty_butterfly_cohort = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            assert not empty_butterfly_cohort, empty_butterfly_cohort
             cmd("fill 0 99 0 15 99 15 minecraft:stone")
             cmd("fill 0 100 0 15 107 15 minecraft:air")
+            shell = "block 9 100 8 naturalist:chrysalis[age=0,facing=east]"
             cmd("setblock 10 100 8 minecraft:oak_log")
             cmd("setblock 10 99 8 minecraft:oak_log")
-            shell = "block 9 100 8 naturalist:chrysalis[age=0,facing=east]"
-            summon("naturalist:caterpillar 9.5 100 8.5 {Age:-24000,NoGravity:1b,Tags:[fixture_baby]}")
+            assert observed("block 10 100 8 minecraft:oak_log")
+            assert observed("block 10 99 8 minecraft:oak_log")
+            # Caterpillar is a mod-added AgeableMob. The pinned engine's generic
+            # entity NBT Age merge only deserializes age for vanilla Species;
+            # create a real offspring so its internal age is set by the normal
+            # Butterfly breeding path instead of writing an ineffective tag.
+            summon("naturalist:butterfly 8.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
+            summon("naturalist:butterfly 9.5 100 8.5 {NoGravity:1b,InLove:600,PersistenceRequired:1b,Tags:[fixture_parent]}")
+            step(100)
+            cmd("tag @e[type=naturalist:caterpillar,x=9,y=100,z=8,distance=..4,limit=1] add fixture_baby")
+            assert observed("entity @e[tag=fixture_baby]")
             step(16)
             baby_makes_cocoon = observed(shell)
             assert observed("entity @e[tag=fixture_baby]")
+            cmd("kill @e[tag=fixture_parent]")
             cmd("kill @e[tag=fixture_baby]")
-            summon("naturalist:caterpillar 9.5 100 8.5 {Age:0,NoGravity:1b,Tags:[fixture_adult]}")
+            cmd("setblock 9 100 8 minecraft:air")
+            cmd("setblock 10 100 8 minecraft:air")
+            cmd("setblock 10 99 8 minecraft:air")
+            summon("naturalist:caterpillar 9.5 100 8.5 {NoGravity:1b,Tags:[fixture_adult]}")
+            cmd("setblock 10 100 8 minecraft:oak_log")
+            cmd("setblock 10 99 8 minecraft:oak_log")
+            assert observed("block 10 100 8 minecraft:oak_log")
+            assert observed("block 10 99 8 minecraft:oak_log")
             step(16)
             adult_makes_cocoon = observed(shell)
             caterpillar_discarded = not observed("entity @e[tag=fixture_adult]")
+            cmd("kill @e[type=naturalist:butterfly,distance=..128]")
+            step(2)  # let killed breeding parents leave the entity query
+            empty_butterfly_cohort_before_hatch = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            assert not empty_butterfly_cohort_before_hatch, empty_butterfly_cohort_before_hatch
             cmd("setblock 9 100 8 naturalist:chrysalis[age=3,facing=east]")
             cmd("gamerule minecraft:random_tick_speed 4096")
             for _ in range(8):
                 step(2)
                 if observed("block 9 100 8 minecraft:air"):
                     break
-            butterfly_hatches = observed("entity @e[type=naturalist:butterfly,x=9,y=100,z=8,distance=..2]")
+            chrysalis_removed = observed("block 9 100 8 minecraft:air")
+            hatched = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            butterfly_count = len(hatched)
+            butterfly_hatches = butterfly_count > 0
+            print("Butterflies after hatch:", json.dumps(
+                [{"id": entity.get("id"), "pos": entity.get("pos")} for entity in hatched]
+            ), flush=True)
+            step(20)
+            after_hatch_window = ctl("entities", 48, "naturalist:butterfly")["entities"]
+            butterfly_count_after_window = len(after_hatch_window)
+            print("Butterflies after duplicate window:", json.dumps(
+                [{"id": entity.get("id"), "pos": entity.get("pos")} for entity in after_hatch_window]
+            ), flush=True)
             cmd("kill @e[type=naturalist:butterfly]")
             cmd("gamerule minecraft:random_tick_speed 0")
 
@@ -91,13 +129,19 @@ def capture(version, reference, jar=None):
                 "adult_makes_cocoon": adult_makes_cocoon,
                 "caterpillar_discarded": caterpillar_discarded,
                 "chrysalis_faces_log": adult_makes_cocoon,
+                "chrysalis_removed": chrysalis_removed,
                 "butterfly_hatches": butterfly_hatches,
+                "butterfly_count": butterfly_count,
+                "butterfly_count_after_window": butterfly_count_after_window,
                 "grew_crop": grew_crop,
                 "breeds_caterpillar": breeds_caterpillar,
             }
             expected = {
                 **{name: reference[name] for name in result.keys() & reference.keys()},
+                "chrysalis_removed": True,
                 "butterfly_hatches": True,
+                "butterfly_count": 1,
+                "butterfly_count_after_window": 1,
                 "grew_crop": True,
             }
             print(json.dumps(result, indent=2), flush=True)

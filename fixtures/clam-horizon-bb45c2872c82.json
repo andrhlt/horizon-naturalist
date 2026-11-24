@@ -1,0 +1,29 @@
+{
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "artifact": "native-0a875da-bb45c2872c82",
+  "java_fixture": "fixtures/clam-java.json",
+  "replay": "tools/launcher_clam.py",
+  "matching_artifact": true,
+  "initial_state": {
+    "health": 30.0,
+    "knockback_resistance": 1.0,
+    "speed": 0.0,
+    "variant": "naturalist:brown",
+    "pushable": true,
+    "initial_closed": true,
+    "initial_no_treasure": true
+  },
+  "replay": {
+    "result": "fail",
+    "first_failed_check": "player launched after open delay",
+    "expected": "shell opens near player, then launches player upward after four ticks",
+    "observed": "player remained at y=92.0 with downward velocity; shell did not launch"
+  },
+  "unverified": [
+    "closed shell rejects generic damage",
+    "shell accepts drowning damage",
+    "treasure insertion and return",
+    "timer and cooldown ranges",
+    "approach slam"
+  ]
+}

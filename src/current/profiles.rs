@@ -308,7 +308,7 @@ pub const PROFILES: &[(&str, &str, &[(&str, f64)])] = &[
     ),
     (
         "naturalist:giraffe",
-        "minecraft:cow",
+        "minecraft:horse",
         &[
             ("minecraft:attack_knockback", 0.0),
             ("minecraft:follow_range", 16.0),
@@ -655,6 +655,7 @@ pub const PROFILES: &[(&str, &str, &[(&str, f64)])] = &[
         &[
             ("minecraft:attack_knockback", 0.0),
             ("minecraft:follow_range", 16.0),
+            ("minecraft:jump_strength", 0.7),
             ("minecraft:knockback_resistance", 0.0),
             ("minecraft:max_health", 53.0),
             ("minecraft:movement_speed", 0.22499999403953552),

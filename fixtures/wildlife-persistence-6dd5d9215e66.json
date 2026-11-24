@@ -1,0 +1,18 @@
+{
+  "artifact": "native-0a875da-6dd5d9215e66",
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "world": "APP2129 matching UUID 6dd5",
+  "dimension": "minecraft:overworld",
+  "entity_region": "dimensions/minecraft/overworld/entities/r.0.0.mca",
+  "force_loaded_chunks": [[0, 0], [1, 0]],
+  "records": {
+    "alligator": {"uuid": [354209176, -2009249457, -1739800901, 937871567], "chunk": [0, 0]},
+    "capybara": {"uuid": [-321809717, -736802939, -1208722512, 1889952845], "chunk": [0, 0]},
+    "catfish": {"uuid": [12884678, -735164157, -1125746498, -506552094], "chunk": [0, 0]},
+    "clam": {"uuid": [183373093, -859549746, -2106430493, 542392956], "chunk": [0, 0]},
+    "hippo": {"uuid": [984481886, 1404324960, -1951903973, 1003235211], "chunk": [0, 0]},
+    "piranha": {"uuid": [1060400254, 412893326, -1846754233, -1487674721], "chunk": [1, 0]}
+  },
+  "all_six_post_reopen_uuid_matches": true,
+  "query": "execute in minecraft:overworld run data get entity @e[type=naturalist:<species>,tag=app2129_<species>,limit=1] UUID"
+}

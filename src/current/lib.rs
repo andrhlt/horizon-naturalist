@@ -1,55 +1,34 @@
 //! Naturalist current-nightly development port.
 mod ant_hill;
+mod alligator_egg_part;
 mod chrysalis_part;
 mod snail_eggs_part;
+mod scorpion;
+mod capybara_interact;
+mod piranha_schooling;
 pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
 mod duck_renderer;
+mod large_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
+mod catfish_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
 mod land_placements;
 mod profiles;
 mod renderer;
-use mod_api::AttachmentQueries;
+mod wildlife_renderer;
+use mod_api::{AttachmentQueries, RandomSource};
 use std::sync::Arc;
 mod net;
+mod elephant_melon;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
 };
-
-fn scorpion_poison(host: &mut dyn mod_api::ServerHost, id: u32) -> Result<(), ()> {
-    let entity = host.entity(id).ok_or(())?;
-    let level = entity.level(host).ok_or(())?;
-    let origin = entity.position(host).ok_or(())?;
-    let jungle = entity.kind(host).is_some_and(|kind| kind.id(host) == "naturalist:jungle_scorpion");
-    let poison = host.effect_key("minecraft:poison").ok_or(())?;
-    for target in level.entities_in(host, [origin[0] - 2.5, origin[1] - 1.5, origin[2] - 2.5], [origin[0] + 2.5, origin[1] + 1.5, origin[2] + 2.5]).unwrap_or_default() {
-        if target == entity || target.kind(host).is_none_or(|kind| kind.id(host) != "minecraft:player") {
-            continue;
-        }
-        let Some(living) = host.living(target) else { continue; };
-        let _ = living.add_effect(host, &mod_api::ActiveEffect::new(poison, 120, 0, false, true, true));
-        let hit = if jungle { &SCORPION_JUNGLE_HIT } else { &SCORPION_DESERT_HIT };
-        if hit.get(host, Holder::Entity(id)).unwrap_or(false) { continue; }
-        if let Some(health) = living.health(host) {
-            let next = (health - 0.5).max(0.0);
-            let _ = living.set_health(host, next);
-            let _ = target.merge_nbt(host, mod_api::Compound::from([("Health".into(), mod_api::Tag::Float(next.to_bits()))]));
-        } else if let Some(data) = target.nbt(host)
-            && let Some(Tag::Float(bits)) = data.get(&"Health".into())
-        {
-            let next = (f32::from_bits(*bits) - 0.5).max(0.0);
-            let _ = target.merge_nbt(host, mod_api::Compound::from([("Health".into(), Tag::Float(next.to_bits()))]));
-        }
-        let _ = hit.set(host, Holder::Entity(id), true);
-    }
-    Ok(())
-}
 
 static COOLDOWN: AttachmentType<i32> = AttachmentType {
     namespace: "naturalist",
@@ -59,13 +38,22 @@ static COOLDOWN: AttachmentType<i32> = AttachmentType {
     copy_on_death: false,
     sync: false,
 };
-static SCORPION_DESERT_HIT: AttachmentType<bool> = AttachmentType { namespace: "naturalist", name: "scorpion_desert_hit", default: || false, codec: None, copy_on_death: false, sync: false };
-static SCORPION_JUNGLE_HIT: AttachmentType<bool> = AttachmentType { namespace: "naturalist", name: "scorpion_jungle_hit", default: || false, codec: None, copy_on_death: false, sync: false };
 static FIREFLY_AGE: AttachmentType<i32> = AttachmentType {
     namespace: "naturalist",
     name: "firefly_age",
     default: || 0,
     codec: None,
+    copy_on_death: false,
+    sync: false,
+};
+static POISON_TARGETS: AttachmentType<Vec<[i32; 2]>> = AttachmentType {
+    namespace: "naturalist",
+    name: "pending_scorpion_poison_targets",
+    default: Vec::new,
+    codec: Some(AttachmentCodec {
+        encode: encode_poison_targets,
+        decode: decode_poison_targets,
+    }),
     copy_on_death: false,
     sync: false,
 };
@@ -77,6 +65,19 @@ fn decode(data: &Compound) -> Result<i32, AttachmentError> {
         Some(Tag::Int(value)) => Ok(*value),
         _ => Err(AttachmentError::Decode),
     }
+}
+fn encode_poison_targets(rows: &Vec<[i32; 2]>) -> Result<Compound, AttachmentError> {
+    let flat: Vec<i32> = rows.iter().flat_map(|row| row.iter().copied()).collect();
+    Ok(Compound::from([("rows".into(), Tag::IntArray(flat))]))
+}
+fn decode_poison_targets(data: &Compound) -> Result<Vec<[i32; 2]>, AttachmentError> {
+    let Some(Tag::IntArray(flat)) = data.get(&"rows".into()) else {
+        return Err(AttachmentError::Decode);
+    };
+    if flat.len() % 2 != 0 {
+        return Err(AttachmentError::Decode);
+    }
+    Ok(flat.chunks_exact(2).map(|row| [row[0], row[1]]).collect())
 }
 
 /// Access the authoritative attachment map for this entity, even while the
@@ -106,7 +107,6 @@ pub fn meal_cooldown(deferred: bool, attacker_ticked: bool) -> i32 {
 
 /// Snapshot the resident entity's cooldown without mutating its attachment map.
 pub fn saved_cooldown(host: &dyn mod_api::Host, id: u32) -> Option<i32> {
-    use mod_api::AttachmentQueries;
     let entity = host.entity(id)?;
     host.query(&COOLDOWN)
         .ok()?
@@ -142,6 +142,19 @@ struct Naturalist {
     deer: Arc<renderer::DeerRenderer>,
     bass: Arc<bass_renderer::BassRenderer>,
     duck: Arc<duck_renderer::DuckRenderer>,
+    elephant: Arc<large_renderer::LargeRenderer>,
+    mammoth: Arc<large_renderer::LargeRenderer>,
+    giraffe: Arc<large_renderer::LargeRenderer>,
+    lion: Arc<large_renderer::LargeRenderer>,
+    rhino: Arc<large_renderer::LargeRenderer>,
+    tiger: Arc<large_renderer::LargeRenderer>,
+    zebra: Arc<large_renderer::LargeRenderer>,
+    alligator: Arc<wildlife_renderer::WildlifeRenderer>,
+    capybara: Arc<wildlife_renderer::WildlifeRenderer>,
+    catfish: Arc<wildlife_renderer::WildlifeRenderer>,
+    clam: Arc<wildlife_renderer::WildlifeRenderer>,
+    hippo: Arc<wildlife_renderer::WildlifeRenderer>,
+    piranha: Arc<wildlife_renderer::WildlifeRenderer>,
 }
 impl Default for Naturalist {
     fn default() -> Self {
@@ -149,6 +162,19 @@ impl Default for Naturalist {
             deer: Arc::new(renderer::DeerRenderer::new()),
             bass: Arc::new(bass_renderer::BassRenderer::new()),
             duck: Arc::new(duck_renderer::DuckRenderer::new()),
+            elephant: Arc::new(large_renderer::LargeRenderer::elephant()),
+            mammoth: Arc::new(large_renderer::LargeRenderer::mammoth()),
+            giraffe: Arc::new(large_renderer::LargeRenderer::giraffe()),
+            lion: Arc::new(large_renderer::LargeRenderer::lion()),
+            rhino: Arc::new(large_renderer::LargeRenderer::rhino()),
+            tiger: Arc::new(large_renderer::LargeRenderer::tiger()),
+            zebra: Arc::new(large_renderer::LargeRenderer::zebra()),
+            alligator: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Alligator)),
+            capybara: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Capybara)),
+            catfish: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Catfish)),
+            clam: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Clam)),
+            hippo: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Hippo)),
+            piranha: Arc::new(wildlife_renderer::WildlifeRenderer::new(wildlife_renderer::Species::Piranha)),
         }
     }
 }
@@ -157,6 +183,8 @@ impl Default for Naturalist {
 impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
+        alligator_egg_part::register(registrar);
+        elephant_melon::register(registrar);
         ant_hill::register(registrar);
         chrysalis_part::register(registrar);
         snail_eggs_part::register(registrar);
@@ -176,6 +204,7 @@ impl mod_api::Hooks for Naturalist {
             .expect("register deer spawn placement");
         bass_fx::register(registrar);
         bass_bucket_item::register(registrar);
+        catfish_bucket_item::register(registrar);
         for &(id, template, attributes) in profiles::PROFILES {
             let values = attributes
                 .iter()
@@ -186,12 +215,45 @@ impl mod_api::Hooks for Naturalist {
                 .expect("register Naturalist entity attributes");
         }
         registrar.entity_part("naturalist:bass", bass_hunt::BassPart);
+        registrar.entity_part("naturalist:desert_scorpion", scorpion::ScorpionPart);
+        registrar.entity_part("naturalist:jungle_scorpion", scorpion::ScorpionPart);
     }
     fn entity_join_level(
         &self,
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityJoinLevelEvent<'_>,
     ) -> mod_api::Flow {
+        if let Some(mob) = host
+            .entity(event.entity)
+            .and_then(|entity| host.mob(entity))
+        {
+            let add_goal = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_goal(host, priority, &goal);
+                }
+            };
+            let add_target = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.target_goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_target_goal(host, priority, &goal);
+                }
+            };
+            match event.kind {
+                "naturalist:capybara" => {
+                    add_goal(&mob, host, 2, mod_api::GoalSpec::Tempt { speed: 1.25, items: vec!["minecraft:melon".into()], can_scare: true });
+                    add_goal(&mob, host, 4, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 5, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                }
+                "naturalist:piranha" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(vec!["minecraft:cod".into(), "minecraft:salmon".into(), "minecraft:tropical_fish".into(), "minecraft:pufferfish".into()]), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
+                    piranha_schooling::reset(host, event.entity);
+                }
+                _ => {}
+            }
+        }
         if event.kind == "naturalist:firefly" {
             if let Some(entity) = host.entity(event.entity) {
                 let age = entity.nbt(host).and_then(|data| match data.get(&"Age".into()) {
@@ -211,16 +273,13 @@ impl mod_api::Hooks for Naturalist {
             {
                 let _ = entity.merge_nbt(host, mod_api::Compound::from([("Variant".into(), mod_api::Tag::String(variant.into()))]));
             }
+            let from_hand = host.entity(event.entity).and_then(|entity| entity.nbt(host)).is_some_and(|data| {
+                matches!(data.get(&"FromHand".into()), Some(mod_api::Tag::Byte(value)) if *value != 0)
+            });
+            scorpion::set_from_hand(host, event.entity, from_hand);
             if let Some(mob) = host.entity(event.entity).and_then(|entity| host.mob(entity)) {
-                let target = mod_api::GoalSpec::NearestTarget {
-                    prey: mod_api::MobFilter::Player,
-                    must_see: true,
-                    must_reach: false,
-                    interval: 10,
-                };
-                if !mob.add_target_goal(host, 1, &target) {
-                    eprintln!("Naturalist: failed to add scorpion player target goal");
-                }
+                let retaliation = mod_api::GoalSpec::HurtByTarget { alert: false };
+                let _ = mob.add_target_goal(host, 0, &retaliation);
                 let attack = mod_api::GoalSpec::MeleeAttack { speed: 1.0, follow_unseen: true };
                 if !mob.add_goal(host, 2, &attack) {
                     eprintln!("Naturalist: failed to add scorpion melee goal");
@@ -259,13 +318,137 @@ impl mod_api::Hooks for Naturalist {
         event.listened = true;
     }
 
-    fn server_tick(&self, host: &mut dyn mod_api::ServerHost, _: &mut mod_api::ServerTickEvent<'_>) {
-        let Ok(mut pending) = chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level) else { return; };
-        let Some(pos) = pending.first().copied() else { return; };
-        let Some(level) = host.level("minecraft:overworld") else { return; };
-        if level.spawn_mob(host, "naturalist:butterfly", [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5], mod_api::SpawnReason::Command).is_some() {
+    fn entity_interact(
+        &self,
+        side: mod_api::HostSide<'_>,
+        event: &mut mod_api::EntityInteractEvent<'_>,
+    ) -> Option<mod_api::InteractionResult> {
+        capybara_interact::interact(side, event)
+    }
+
+    fn living_damage_post(
+        &self,
+        host: &mut dyn mod_api::LevelRandomHost,
+        event: &mut mod_api::LivingDamagePostEvent<'_>,
+    ) {
+        if event.container.health_damage() <= 0.0 || event.source.causing <= 0 {
+            return;
+        }
+        let mut targets = POISON_TARGETS.get(host, Holder::Level).unwrap_or_default();
+        targets.push([event.entity as i32, event.source.causing]);
+        let _ = POISON_TARGETS.set(host, Holder::Level, targets);
+    }
+
+    fn entity_place(
+        &self,
+        host: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::EntityPlaceEvent,
+    ) -> mod_api::Flow {
+        let is_snail_egg = host
+            .block_state_string(event.state)
+            .is_some_and(|name| name.starts_with("naturalist:snail_eggs"));
+        if !is_snail_egg {
+            return mod_api::Flow::Continue;
+        }
+        let Some(level) = event.placer.and_then(|placer| placer.level(host)) else {
+            return mod_api::Flow::Continue;
+        };
+        let support = [event.pos.x, event.pos.y - 1, event.pos.z];
+        if level.block_face_sturdy(
+            host,
+            support,
+            mod_api::BlockFace::Up,
+            mod_api::SupportType::Full,
+        ) != Some(true)
+        {
+            return mod_api::Flow::Cancel;
+        }
+        let Some(now) = level.game_time(host) else {
+            return mod_api::Flow::Continue;
+        };
+        let Some(delay) = level.with_random(host, |random| {
+            random.next_int_bound(1800).unwrap_or(0) + 600
+        }) else {
+            return mod_api::Flow::Continue;
+        };
+        snail_eggs_part::schedule_hatch(
+            host,
+            [event.pos.x, event.pos.y, event.pos.z],
+            now + i64::from(delay),
+        );
+        mod_api::Flow::Continue
+    }
+
+
+    fn server_tick(&self, host: &mut dyn mod_api::ServerHost, event: &mut mod_api::ServerTickEvent<'_>) {
+        if !matches!(event.phase, mod_api::ServerTickPhase::ServerTickEnd { .. }) {
+            return;
+        }
+        alligator_egg_part::hatch_tick(host);
+        let level = host.level("minecraft:overworld");
+        if let Some(level) = level {
+            let now = level.game_time(host).unwrap_or(i64::MIN);
+            let mut future = Vec::new();
+            for row in snail_eggs_part::hatch_queue(host) {
+                if row[3] > now {
+                    future.push(row);
+                    continue;
+                }
+                let pos = [row[0] as i32, row[1] as i32, row[2] as i32];
+                let still_eggs = level
+                    .block_state(host, pos)
+                    .and_then(|state| host.block_state_string(state))
+                    .is_some_and(|name| name.starts_with("naturalist:snail_eggs"));
+                if !still_eggs {
+                    continue;
+                }
+                let count = level
+                    .with_random(host, |random| random.next_int_bound(4).unwrap_or(0) + 2)
+                    .unwrap_or(2)
+                    .clamp(2, 5);
+                if !level.remove_block(host, pos, false) {
+                    continue;
+                }
+                for _ in 0..count {
+                    if let Some(child) = level.spawn_mob(
+                        host,
+                        "naturalist:snail",
+                        [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5],
+                        mod_api::SpawnReason::Breeding,
+                    ) {
+                        if let Some(mob) = host.mob(child) {
+                            let _ = mob.set_baby(host, true);
+                        }
+                        let _ = child.merge_nbt(host, Compound::from([("Age".into(), Tag::Int(-6000))]));
+                    }
+                }
+            }
+            snail_eggs_part::save_hatch_queue(host, future);
+        }
+        if let (Some(level), Ok(mut pending)) = (level, chrysalis_part::PENDING.get(&mut *host, mod_api::Holder::Level))
+            && let Some(pos) = pending.first().copied()
+            && level.spawn_mob(host, "naturalist:butterfly", [pos[0] as f64 + 0.5, pos[1] as f64 + 0.5, pos[2] as f64 + 0.5], mod_api::SpawnReason::Command).is_some()
+        {
             pending.remove(0);
             let _ = chrysalis_part::PENDING.set(host, mod_api::Holder::Level, pending);
+        }
+        let poison_targets = POISON_TARGETS.get(host, Holder::Level).unwrap_or_default();
+        let _ = POISON_TARGETS.set(host, Holder::Level, Vec::new());
+        if let Some(poison) = host.effect_key("minecraft:poison") {
+            for [target_id, attacker_id] in poison_targets {
+                let is_scorpion = u32::try_from(attacker_id)
+                    .ok()
+                    .and_then(|id| host.entity(id))
+                    .and_then(|entity| entity.kind(host))
+                    .is_some_and(|kind| matches!(kind.id(host).as_str(), "naturalist:desert_scorpion" | "naturalist:jungle_scorpion"));
+                if is_scorpion
+                    && let Ok(target_id) = u32::try_from(target_id)
+                    && let Some(living) = host.entity(target_id).and_then(|entity| host.living(entity))
+                {
+                    let effect = mod_api::ActiveEffect::new(poison, 120, 0, false, true, true);
+                    let _ = living.add_effect(host, &effect);
+                }
+            }
         }
     }
 
@@ -274,8 +457,8 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPreEvent<'_>,
     ) -> mod_api::Flow {
-        if matches!(event.kind, "naturalist:desert_scorpion" | "naturalist:jungle_scorpion") {
-            let _ = scorpion_poison(host, event.entity);
+        if event.kind == "naturalist:piranha" {
+            piranha_schooling::tick(host, event.entity);
         }
         if event.kind == "naturalist:firefly" {
             if let Ok(age) = FIREFLY_AGE.get(host, Holder::Entity(event.entity)) {
@@ -340,6 +523,27 @@ impl mod_api::Hooks for Naturalist {
         event
             .renderers
             .register("naturalist:bass".into(), self.bass.clone());
+        for (id, renderer) in [
+            ("naturalist:elephant", self.elephant.clone()),
+            ("naturalist:mammoth", self.mammoth.clone()),
+            ("naturalist:giraffe", self.giraffe.clone()),
+            ("naturalist:lion", self.lion.clone()),
+            ("naturalist:rhino", self.rhino.clone()),
+            ("naturalist:tiger", self.tiger.clone()),
+            ("naturalist:zebra", self.zebra.clone()),
+        ] {
+            event.renderers.register(id.into(), renderer);
+        }
+        for (id, renderer) in [
+            ("naturalist:alligator", self.alligator.clone()),
+            ("naturalist:capybara", self.capybara.clone()),
+            ("naturalist:catfish", self.catfish.clone()),
+            ("naturalist:clam", self.clam.clone()),
+            ("naturalist:hippo", self.hippo.clone()),
+            ("naturalist:piranha", self.piranha.clone()),
+        ] {
+            event.renderers.register(id.into(), renderer);
+        }
     }
 
     fn render_living_pre(

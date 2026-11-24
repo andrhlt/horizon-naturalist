@@ -8,7 +8,7 @@ import tempfile
 from launcher_setup import prepare_home
 
 
-def capture(version, jar, *, targeting=False):
+def capture(version, jar, *, targeting=False, resources=None):
     with tempfile.TemporaryDirectory(prefix="nat-scorpion-", ignore_cleanup_errors=True) as path:
         home = Path(path)
         socket = home / "scorpion.sock"
@@ -16,7 +16,9 @@ def capture(version, jar, *, targeting=False):
 
         def ctl(*args):
             process = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
-                                     check=True, capture_output=True, text=True, timeout=75)
+                                     capture_output=True, text=True, timeout=75)
+            if process.returncode:
+                raise RuntimeError((args, process.returncode, process.stdout, process.stderr))
             return json.loads(process.stdout.splitlines()[-1])
 
         def cmd(line):
@@ -32,7 +34,7 @@ def capture(version, jar, *, targeting=False):
 
         try:
             ctl("launch", "--headless", "--game", version / "horizon-client",
-                "--resources", version / ".local/horizon-client/26.3", "--home", home,
+                "--resources", resources or version / ".local/horizon-client/26.3", "--home", home,
                 "--game-dir", home, "--world", "Naturalist Scorpion Fixture", "--creative",
                 "--test-terrain", "--render-distance", 4, "--wait")
             cmd("gamerule minecraft:spawn_mobs false")
@@ -181,8 +183,9 @@ if __name__ == "__main__":
     parser.add_argument("version", type=Path)
     parser.add_argument("fixture", type=Path)
     parser.add_argument("--jar", type=Path, required=True)
+    parser.add_argument("--resources", type=Path)
     parser.add_argument("--targeting", action="store_true")
     options = parser.parse_args()
-    result = capture(options.version, options.jar, targeting=options.targeting)
+    result = capture(options.version, options.jar, targeting=options.targeting, resources=options.resources)
     print(json.dumps(result, indent=2), flush=True)
     compare(result, json.loads(options.fixture.read_text()))

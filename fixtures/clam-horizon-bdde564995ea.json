@@ -1,0 +1,409 @@
+{
+  "health": 30.0,
+  "knockback_resistance": 1.0,
+  "speed": 0.0,
+  "variant": "naturalist:brown",
+  "pushable": true,
+  "initial_closed": true,
+  "initial_no_treasure": true,
+  "closed_rejects_hit": false,
+  "closed_accepts_drowning": true,
+  "sneak_stays_closed": true,
+  "near_opens": true,
+  "launch_delay": 4,
+  "launch_cooldown": 60,
+  "opens_timer_range": true,
+  "before_launch": 0.0,
+  "player_launch_delta_y": 8.075201113325875,
+  "player_velocity_after_launch_tick": 1.7248595023231434,
+  "open_accepts_hit": true,
+  "stored_treasure_runtime": true,
+  "stored_treasure_hand_data": "{count: 1, id: \"minecraft:ender_pearl\"}",
+  "pearls_after_insert": 1,
+  "pearls_total_after_insert": 2,
+  "inventory_snapshot_after_insert": {
+    "armor": [
+      {
+        "item": null,
+        "part": "head",
+        "slot": 500
+      },
+      {
+        "item": null,
+        "part": "chest",
+        "slot": 501
+      },
+      {
+        "item": null,
+        "part": "legs",
+        "slot": 502
+      },
+      {
+        "item": null,
+        "part": "feet",
+        "slot": 503
+      }
+    ],
+    "carried": null,
+    "counts": {
+      "minecraft:ender_pearl": 1
+    },
+    "held": {
+      "count": 1,
+      "item": "minecraft:ender_pearl"
+    },
+    "hotbar": [
+      {
+        "count": 1,
+        "item": "minecraft:ender_pearl",
+        "slot": 0
+      },
+      {
+        "item": null,
+        "slot": 1
+      },
+      {
+        "item": null,
+        "slot": 2
+      },
+      {
+        "item": null,
+        "slot": 3
+      },
+      {
+        "item": null,
+        "slot": 4
+      },
+      {
+        "item": null,
+        "slot": 5
+      },
+      {
+        "item": null,
+        "slot": 6
+      },
+      {
+        "item": null,
+        "slot": 7
+      },
+      {
+        "item": null,
+        "slot": 8
+      }
+    ],
+    "main": [
+      {
+        "item": null,
+        "slot": 9
+      },
+      {
+        "item": null,
+        "slot": 10
+      },
+      {
+        "item": null,
+        "slot": 11
+      },
+      {
+        "item": null,
+        "slot": 12
+      },
+      {
+        "item": null,
+        "slot": 13
+      },
+      {
+        "item": null,
+        "slot": 14
+      },
+      {
+        "item": null,
+        "slot": 15
+      },
+      {
+        "item": null,
+        "slot": 16
+      },
+      {
+        "item": null,
+        "slot": 17
+      },
+      {
+        "item": null,
+        "slot": 18
+      },
+      {
+        "item": null,
+        "slot": 19
+      },
+      {
+        "item": null,
+        "slot": 20
+      },
+      {
+        "item": null,
+        "slot": 21
+      },
+      {
+        "item": null,
+        "slot": 22
+      },
+      {
+        "item": null,
+        "slot": 23
+      },
+      {
+        "item": null,
+        "slot": 24
+      },
+      {
+        "item": null,
+        "slot": 25
+      },
+      {
+        "item": null,
+        "slot": 26
+      },
+      {
+        "item": null,
+        "slot": 27
+      },
+      {
+        "item": null,
+        "slot": 28
+      },
+      {
+        "item": null,
+        "slot": 29
+      },
+      {
+        "item": null,
+        "slot": 30
+      },
+      {
+        "item": null,
+        "slot": 31
+      },
+      {
+        "item": null,
+        "slot": 32
+      },
+      {
+        "item": null,
+        "slot": 33
+      },
+      {
+        "item": null,
+        "slot": 34
+      },
+      {
+        "item": null,
+        "slot": 35
+      }
+    ],
+    "offhand": {
+      "item": null,
+      "slot": 504
+    },
+    "selected": 1
+  },
+  "inserted": true,
+  "stored_persistent": true,
+  "inventory_snapshot_after_return": {
+    "armor": [
+      {
+        "item": null,
+        "part": "head",
+        "slot": 500
+      },
+      {
+        "item": null,
+        "part": "chest",
+        "slot": 501
+      },
+      {
+        "item": null,
+        "part": "legs",
+        "slot": 502
+      },
+      {
+        "item": null,
+        "part": "feet",
+        "slot": 503
+      }
+    ],
+    "carried": null,
+    "counts": {
+      "minecraft:ender_pearl": 2
+    },
+    "held": {
+      "count": 1,
+      "item": "minecraft:ender_pearl"
+    },
+    "hotbar": [
+      {
+        "count": 1,
+        "item": "minecraft:ender_pearl",
+        "slot": 0
+      },
+      {
+        "count": 1,
+        "item": "minecraft:ender_pearl",
+        "slot": 1
+      },
+      {
+        "item": null,
+        "slot": 2
+      },
+      {
+        "item": null,
+        "slot": 3
+      },
+      {
+        "item": null,
+        "slot": 4
+      },
+      {
+        "item": null,
+        "slot": 5
+      },
+      {
+        "item": null,
+        "slot": 6
+      },
+      {
+        "item": null,
+        "slot": 7
+      },
+      {
+        "item": null,
+        "slot": 8
+      }
+    ],
+    "main": [
+      {
+        "item": null,
+        "slot": 9
+      },
+      {
+        "item": null,
+        "slot": 10
+      },
+      {
+        "item": null,
+        "slot": 11
+      },
+      {
+        "item": null,
+        "slot": 12
+      },
+      {
+        "item": null,
+        "slot": 13
+      },
+      {
+        "item": null,
+        "slot": 14
+      },
+      {
+        "item": null,
+        "slot": 15
+      },
+      {
+        "item": null,
+        "slot": 16
+      },
+      {
+        "item": null,
+        "slot": 17
+      },
+      {
+        "item": null,
+        "slot": 18
+      },
+      {
+        "item": null,
+        "slot": 19
+      },
+      {
+        "item": null,
+        "slot": 20
+      },
+      {
+        "item": null,
+        "slot": 21
+      },
+      {
+        "item": null,
+        "slot": 22
+      },
+      {
+        "item": null,
+        "slot": 23
+      },
+      {
+        "item": null,
+        "slot": 24
+      },
+      {
+        "item": null,
+        "slot": 25
+      },
+      {
+        "item": null,
+        "slot": 26
+      },
+      {
+        "item": null,
+        "slot": 27
+      },
+      {
+        "item": null,
+        "slot": 28
+      },
+      {
+        "item": null,
+        "slot": 29
+      },
+      {
+        "item": null,
+        "slot": 30
+      },
+      {
+        "item": null,
+        "slot": 31
+      },
+      {
+        "item": null,
+        "slot": 32
+      },
+      {
+        "item": null,
+        "slot": 33
+      },
+      {
+        "item": null,
+        "slot": 34
+      },
+      {
+        "item": null,
+        "slot": 35
+      }
+    ],
+    "offhand": {
+      "item": null,
+      "slot": 504
+    },
+    "selected": 1
+  },
+  "pearls_total_after_return": 3,
+  "returned": true,
+  "withdraw_closes": true,
+  "closed_timer_range": true,
+  "creative_debug_opens": true,
+  "creative_debug_timer": 200,
+  "creative_debug_cooldown": 200,
+  "approach_slams_treasure": true,
+  "slam_no_launch": true,
+  "candidate": "native-0a875da-bdde564995ea"
+}
