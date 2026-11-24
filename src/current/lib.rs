@@ -30,6 +30,7 @@ mod ocean_placements;
 mod forest_config;
 mod land_placements;
 mod profiles;
+mod ray_retaliation;
 mod renderer;
 use mod_api::{AttachmentQueries, BlockMetadata, HostBlockStates};
 use std::sync::Arc;
@@ -728,6 +729,9 @@ impl mod_api::Hooks for Naturalist {
         }
         if event.kind == "naturalist:jellyfish" {
             jellyfish_behavior::tick(host, event.entity);
+        }
+        if event.kind == "naturalist:ray" {
+            ray_retaliation::tick(host, event.entity);
         }
         if event.kind == "naturalist:great_white_shark" {
             shark_behavior::tick_air(host, event.entity);
