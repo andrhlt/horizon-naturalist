@@ -54,12 +54,12 @@ Reusable build candidate (read-only; do not mutate or rebuild):
 
 Pod C immutable build manifest:
 
-- Artifact: `native-0a875da-a7441f591a20`
-- Artifact path: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/native-0a875da-a7441f591a20`
+- Artifact: `native-0a875da-a1fede2ac51f`
+- Artifact path: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/native-0a875da-a1fede2ac51f`
 - Source: `dde2c2c9c1d839ef2d6431adfdd0ddf84fcdb466`; native manifest mod SHA-256 `99663c79ad49c704af55db926ec58e0d80f5be91b322fc8fd1b5c26ba7ff490f`
-- `libnaturalist.dylib`: `4c50c3833617672d989a6616381424ac152c6b64ff260a0c03b29efb15a8229d`
-- `libhorizon_patch.dylib`: `d94eb9447e8f0490150a7106a751c32a68526b2f1cca778c6148ac46c45dc114`
-- `native-mods.json`: `5e124281c37da1a30d3739bded507ae886a07a2ad8511a3b0b3fcf6f3f324dbb`
+- `libnaturalist.dylib`: `fa24b4604b03f389ace9c8a96653da541705b6a397169a2d01e51af67d570592`
+- `libhorizon_patch.dylib`: `0d37b1e4e871b24c87a22c2e01ccd9208ef451f7034536d045264918bc941920`
+- `native-mods.json`: `379468f5326a1cb4aabaed00e0dcba0e854b6c46a24dd7614a9fb46bf4326081`
 - Client/server: `horizon-client` `012bf6dbfecb095bfb27f9b84452105639501cc5444aca15517360cd90547935`; `horizon-server` `2b0f3d7bd318f52a8385b7d7b28db78d13f7752d25fd30d824d487aef5fe1f1d`
 - Frozen resource client: `/Users/andrewholt/Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da`; client SHA-256 `34be7152dbc8d2c7db6d11771963b97d00c8d7b54ac70b5a9c9e60b5a9d76007`
 - Pinned Java jar: `/Users/andrewholt/Library/Application Support/horizon/jars/b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd.jar`; SHA-256 `f85d8823002483a9d2822d2fd9f3cb880809d4c2eabf1cf19e24d6a14e2874e9`
