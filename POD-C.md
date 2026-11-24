@@ -1,7 +1,7 @@
 # Pod C iteration manifest
 
 Frozen source branch: `codex/naturalist-pod-c`
-Frozen source commit: `6df1e8c73c7fc6bb0c433415efd49ddaf0ebdfd4`
+Frozen source commit: `c18db69f93e755a92a798dcf45ad321b7cd9044b`
 Base: `origin/main` / `3d03fb7107f9c93f5bc96d5e18602c0921d7d752`
 
 Included reviewed heads:
@@ -18,13 +18,19 @@ Fast checks:
 
 - PASS: `git diff --check`
 - PASS: `python3 -B tools/test_aquatic_spawn_placements.py`
-- PASS: `CARGO_NET_OFFLINE=true cargo test --lib --quiet` (46 tests)
+- PASS: `CARGO_NET_OFFLINE=true cargo test --lib --quiet` (48 tests)
 - BLOCKED: natural-group and seam source checks require Horizon engine source files, which are not included in the pinned SDK API package.
 
 Integration correction: owner runtime startup identified duplicate Anglerfish,
 Blobfish, Jellyfish, and Ray placement IDs. Reviewed fix `3cb4303` leaves
 those IDs with `ocean_placements` and keeps Bass, Catfish, and Piranha in
 `aquatic_placements`; the source check now covers both registrars.
+
+Next frozen batch includes focused owner fixes: APP-2158 Fox/Rabbit server
+config registration/reload filtering (`16e569f`) and APP-2130 transactional
+aquatic bucket capture with rollback on discard failure (`2c6081b`). The prior
+runtime artifact remains preserved and is not acceptance evidence for these
+changes.
 
 Build-scope note: the pinned manifest validator found stale registrations for
 unavailable, non-Pod-C Catfish, Clam, Capybara, Piranha, Alligator, and Hippo
