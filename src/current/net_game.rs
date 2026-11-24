@@ -213,6 +213,11 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
 
 /// CaughtEntityItem release preserves complete saves or constructs a fresh mob from hand traits.
 pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api::InteractionResult> {
+    let pos = game.pick()?.pos;
+    release_at(game, stack, pos)
+}
+
+pub(super) fn release_at(game: &mut Game<'_>, stack: &ItemStack, pos: [i32; 3]) -> Option<mod_api::InteractionResult> {
     use mod_api::InteractionResult as Result;
     let kind = match stack.item.as_ref() {
         "naturalist:bee" => "minecraft:bee",
@@ -230,8 +235,6 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
         "naturalist:hedgehog" => "naturalist:hedgehog",
         _ => return None,
     };
-    let Some(hit) = game.pick() else { return Some(Result::Pass) };
-    let pos = hit.pos;
     if !game.may_interact_at(horizon_core::position::BlockPos::new(pos[0], pos[1], pos[2])) || !game.may_use_on(pos) { return Some(Result::Fail) }
     if game.remote.is_some() { return Some(Result::Success) }
     let mut fields = stack.custom_data().cloned().unwrap_or_default();

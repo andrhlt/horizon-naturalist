@@ -7,7 +7,7 @@ fn capture_net_block(
 ) {
     if phase != UsePhase::ItemBeforeBlock { return; }
     let Some(stack) = game.held().cloned() else { return };
-    if let Some(answer) = crate::game::naturalist_capture_net::release(game, &stack) {
+    if let Some(answer) = crate::game::naturalist_capture_net::release_at(game, &stack, click.pos) {
         *result = answer;
         *canceled = answer != mod_api::InteractionResult::Pass;
     }
