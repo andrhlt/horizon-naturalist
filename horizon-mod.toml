@@ -689,7 +689,7 @@ kind = "HEAD"
 cancellable = true
 helper = "src/current/large_cat_interact.rs"
 bindings = [
- {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "game", ty = "&mut horizon_client::game::Game<'_>", value = "&mut *self"},
  {name = "target", ty = "Option<InteractTarget>", value = "target"},
 ]
 
