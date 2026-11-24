@@ -7,6 +7,24 @@ session. For this mod-port and compatibility-fork work, this section supersedes
 older instructions that require exhaustive Java parity or lengthy evidence
 before delivery. It does not change the upstream project's long-term parity goal.
 
+### Personal fork only: no upstream Horizon writes
+
+- All Horizon engine, API, SDK and launcher changes belong in
+  `https://github.com/andrhlt/horizon`. Open Horizon PRs only against that fork.
+  Mod changes belong in their corresponding `andrhlt/horizon-*` repository.
+- `horizon-rust/horizon` is a read-only reference. Do not push branches, open
+  issues or PRs, or post comments/reviews there unless Andrew explicitly
+  authorizes that specific upstream action. A missing mod API is not permission
+  to contribute upstream.
+- Before any GitHub mutation, verify the full owner/repository and base. Pass
+  `--repo andrhlt/horizon` explicitly for Horizon `gh` commands; do not rely on
+  an upstream remote or GitHub's default PR destination. For connectors, set
+  owner `andrhlt` and the intended personal repository explicitly.
+- Coordinate strictly required Horizon-side integration changes with the existing
+  fork worker, who owns their validation and normal merge. Mod owners retain
+  their mod integration and gameplay acceptance. Preserve source branches and
+  uncommitted work; do not move a blocked integration upstream.
+
 ### Horizon development is offline-only
 
 - All Horizon development launches and gameplay verification use offline developer
