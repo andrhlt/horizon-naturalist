@@ -4,6 +4,8 @@ mod alligator_egg_part;
 mod chrysalis_part;
 mod snail_eggs_part;
 mod scorpion;
+mod capybara_interact;
+mod piranha_schooling;
 pub mod ant_worker;
 mod appearance;
 mod duck_appearance;
@@ -224,6 +226,37 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityJoinLevelEvent<'_>,
     ) -> mod_api::Flow {
+        if let Some(mob) = host
+            .entity(event.entity)
+            .and_then(|entity| host.mob(entity))
+        {
+            let add_goal = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_goal(host, priority, &goal);
+                }
+            };
+            let add_target = |mob: &mod_api::MobRef, host: &mut dyn mod_api::ServerHost, priority, goal: mod_api::GoalSpec| {
+                let id = goal.id();
+                if !mob.target_goals(host).is_some_and(|goals| goals.iter().any(|entry| entry.id == id)) {
+                    let _ = mob.add_target_goal(host, priority, &goal);
+                }
+            };
+            match event.kind {
+                "naturalist:capybara" => {
+                    add_goal(&mob, host, 2, mod_api::GoalSpec::Tempt { speed: 1.25, items: vec!["minecraft:melon".into()], can_scare: true });
+                    add_goal(&mob, host, 4, mod_api::GoalSpec::Breed { speed: 1.0 });
+                    add_goal(&mob, host, 5, mod_api::GoalSpec::FollowParent { speed: 1.1 });
+                }
+                "naturalist:piranha" => {
+                    add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
+                    add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: mod_api::MobFilter::Species(vec!["minecraft:cod".into(), "minecraft:salmon".into(), "minecraft:tropical_fish".into(), "minecraft:pufferfish".into()]), must_see: false, must_reach: false, interval: 10 });
+                    add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
+                    piranha_schooling::reset(host, event.entity);
+                }
+                _ => {}
+            }
+        }
         if event.kind == "naturalist:firefly" {
             if let Some(entity) = host.entity(event.entity) {
                 let age = entity.nbt(host).and_then(|data| match data.get(&"Age".into()) {
@@ -286,6 +319,14 @@ impl mod_api::Hooks for Naturalist {
         event: &mut mod_api::EntityTickListenedEvent,
     ) {
         event.listened = true;
+    }
+
+    fn entity_interact(
+        &self,
+        side: mod_api::HostSide<'_>,
+        event: &mut mod_api::EntityInteractEvent<'_>,
+    ) -> Option<mod_api::InteractionResult> {
+        capybara_interact::interact(side, event)
     }
 
     fn living_damage_post(
@@ -418,6 +459,9 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPreEvent<'_>,
     ) -> mod_api::Flow {
+        if event.kind == "naturalist:piranha" {
+            piranha_schooling::tick(host, event.entity);
+        }
         if event.kind == "naturalist:firefly" {
             if let Ok(age) = FIREFLY_AGE.get(host, Holder::Entity(event.entity)) {
                 let next = (age + 1).min(0);
