@@ -79,6 +79,20 @@ fn ant_hill_player_break(
         };
         ant.extra.owner = owner;
         ant.extra.tame = owner.is_some();
+        // Java releases each worker with a fresh yaw. When a stranger breaks
+        // the hill, face the breaker immediately; the anger goal then keeps
+        // the target rather than waiting for the next navigation update.
+        let mut yaw = ant.random.next_float() * 360.0;
+        if owner != Some(actor)
+            && let Some(player) = game.player.as_ref()
+        {
+            let dx = player.position.x - ant.position.x;
+            let dz = player.position.z - ant.position.z;
+            yaw = (dz.atan2(dx).to_degrees() - 90.0) as f32;
+        }
+        ant.yaw = yaw;
+        ant.head_yaw = yaw;
+        ant.body_yaw = yaw;
         let cooldown = 400 + ant.random.next_int_bound(800).unwrap_or(0);
         if owner != Some(actor) {
             ant.ai.target = Some(Who::Player);

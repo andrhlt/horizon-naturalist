@@ -11,6 +11,20 @@ fn ant_food_taken(game: &mut Game<'_>, player: u128, item: mod_api::ItemEntityRe
     let Some(ant_id) = game.mob_by_uuid(carrier) else {
         return;
     };
+    let item_uuid = game.persist.uuids.get(&id).copied();
+    let linked = game
+        .persist
+        .raw
+        .get(&ant_id)
+        .and_then(|raw| raw.get("CarriedFood"))
+        .and_then(|tag| match tag {
+            Tag::IntArray(value) => <[i32; 4]>::try_from(value.as_slice()).ok(),
+            _ => None,
+        })
+        == item_uuid;
+    if !linked {
+        return;
+    }
     let bytes = player.to_be_bytes();
     let actor: [i32; 4] =
         std::array::from_fn(|i| i32::from_be_bytes(bytes[4 * i..4 * i + 4].try_into().unwrap()));

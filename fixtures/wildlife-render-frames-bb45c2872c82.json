@@ -1,0 +1,23 @@
+{
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "artifact": "native-0a875da-bb45c2872c82",
+  "mode": "headless offscreen rendering",
+  "adult_species": [
+    "naturalist:alligator",
+    "naturalist:capybara",
+    "naturalist:catfish",
+    "naturalist:clam",
+    "naturalist:hippo",
+    "naturalist:piranha"
+  ],
+  "visually_inspected": true,
+  "frames": {
+    "alligator": "/private/tmp/app2129-render-qa/alligator.png",
+    "capybara": "/private/tmp/app2129-render-qa/capybara-fixed.png",
+    "catfish": "/private/tmp/app2129-render-qa/catfish.png",
+    "clam": "/private/tmp/app2129-render-qa/clam-fixed.png",
+    "hippo": "/private/tmp/app2129-render-qa/hippo.png",
+    "piranha": "/private/tmp/app2129-render-qa/piranha.png"
+  },
+  "juvenile_frames": "not captured"
+}

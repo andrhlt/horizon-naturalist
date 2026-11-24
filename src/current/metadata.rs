@@ -190,7 +190,7 @@ fn metadata(
         ),
         (
             "naturalist:giraffe",
-            "minecraft:cow",
+            "minecraft:horse",
             "creature",
             1.9,
             5.4,
@@ -415,6 +415,13 @@ fn metadata(
         kind.width = width;
         kind.height = height;
         kind.eye_height = eyes;
+        if name == "naturalist:zebra" {
+            // Keep Zebras in the native equine family while giving them a
+            // distinct breeding identity from Donkeys. Java Zebra.canMate
+            // accepts only another Zebra; sharing Species::Donkey lets the
+            // generic native mate selector produce an invalid Zebra×Donkey foal.
+            kind.species = horizon_client::mobs::Species::Mule;
+        }
         if let Some(row) = catalog.entity_row(name) {
             kind.take_attribute_row(Arc::new(row), catalog);
         }
@@ -423,12 +430,38 @@ fn metadata(
             kind.food = apples.clone();
             kind.tempt = apples;
         }
+        if name == "naturalist:giant_isopod" {
+            let cod: Arc<[String]> = Arc::from(["minecraft:cod".to_owned()]);
+            kind.food = cod.clone();
+            kind.tempt = cod;
+        }
+        if name == "naturalist:whale" {
+            let food: Arc<[String]> = naturalist_whale_behavior::FOOD_ITEMS
+                .iter()
+                .map(|item| (*item).to_owned())
+                .collect::<Vec<_>>()
+                .into();
+            kind.food = food.clone();
+            kind.tempt = food;
+        }
         if name == "naturalist:caterpillar" {
             kind.baby_scale = 1.0;
         }
         match name {
-            "naturalist:giraffe" => kind.max_head_y_rot = 45.0,
-            "naturalist:elephant" | "naturalist:mammoth" => kind.max_head_y_rot = 35.0,
+            "naturalist:giraffe" => {
+                kind.max_head_y_rot = 45.0;
+                // Java Giraffe.getPassengerAttachmentPoint(…, …) at 60% height.
+                kind.passenger_attachments = vec![[0.0, 3.84, -0.1]];
+            }
+            "naturalist:elephant" => {
+                kind.max_head_y_rot = 35.0;
+                // Java getPassengerRidingPosition, including the rider offset.
+                kind.passenger_attachments = vec![[0.0, 3.82, -0.1]];
+            }
+            "naturalist:mammoth" => {
+                kind.max_head_y_rot = 35.0;
+                kind.passenger_attachments = vec![[0.0, 4.8, -0.1]];
+            }
             _ => (),
         }
         types.insert(name.to_owned(), kind);
