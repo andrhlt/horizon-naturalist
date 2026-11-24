@@ -123,11 +123,19 @@ pub(crate) fn interact(
     }
 
     if empty_hand {
+        // The same physical interaction can arrive through more than one
+        // input path. Match the client helper's short sit debounce so a
+        // duplicate server event cannot toggle the order straight back.
+        const SIT_ACTION: &str = "naturalist:capybara_sit";
+        if player.has_item_cooldown(host, SIT_ACTION).unwrap_or(false) {
+            return Some(InteractionResult::SuccessServer);
+        }
         let sitting = matches!(data.get(&"Sitting".into()), Some(Tag::Byte(value)) if *value != 0);
         let _ = entity.merge_nbt(
             host,
             [("Sitting".into(), Tag::Byte(i8::from(!sitting)))].into(),
         );
+        let _ = player.set_item_cooldown(host, SIT_ACTION, 5);
         return Some(InteractionResult::SuccessServer);
     }
 
