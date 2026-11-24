@@ -1,0 +1,113 @@
+{
+  "type": "minecraft:template",
+  "templates": [
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_0",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_1",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_2",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_3",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_4",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_5",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_6",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_7",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_8",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_9",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_10",
+        "rotations": [
+          "none"
+        ]
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_11",
+        "rotations": [
+          "none"
+        ]
+      }
+    }
+  ]
+}
