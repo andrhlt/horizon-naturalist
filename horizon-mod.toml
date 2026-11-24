@@ -291,7 +291,8 @@ helper = "src/current/deer_finalize_variant.rs"
 bindings = [
   { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
   { name = "mob", ty = "&horizon_client::mobs::Mob", value = "&*mob" },
-  { name = "group", ty = "&mut Option<horizon_client::mobs::finalize::Group>", value = "group" },
+  { name = "group", ty = "&mut Option<horizon_client::mobs::finalize::Group>", value = "$local_mut:group:0" },
+  { name = "reason", ty = "horizon_client::mobs::spawn_rules::Reason", value = "reason" },
 ]
 
 [[native.mixin]]
