@@ -1,9 +1,8 @@
 //! Shared Naturalist natural-spawn initialization.
 //!
-//! Naturalist's Bird is backed by Horizon's Parrot implementation for flight,
-//! but its Java finalizer owns the variant pool and never creates a baby in a
-//! natural group.  The generic Parrot finalizer otherwise draws a vanilla
-//! variant and a baby roll, shifting every later draw in a fixed seed.
+//! Shared finalizer setup reached by the existing `finalize_with` mixin.
+//! Natural spawning uses its separate `finalize_spawn` event path; the public
+//! listener handles group age there, but cannot edit Bird's Variant field.
 
 use horizon_client::mobs::finalize::{Ageable, Group};
 use horizon_core::random::RandomSource;
@@ -102,12 +101,9 @@ fn choose_bass_variant(game: &mut crate::game::Game<'_>, mob: &horizon_client::m
     }
 }
 
-// Naturalist's common AgeableMobGroupData probabilities are observable in the
-// pinned 128-trial Java fixture. The remaining five species use class-specific
-// group logic and are intentionally left to their native finalizer until an
-// equivalent Horizon group type exists.
+// Naturalist's 32 common AgeableMobGroupData probabilities are mapped here;
+// Elephant, Mammoth, Lion, and Zebra use the member-indexed overrides below.
 fn natural_age_group(kind: &str) -> Option<Ageable> {
-    const NEVER_BABY: &[&str] = &["naturalist:bird", "naturalist:butterfly"];
     const ALWAYS_BABY: &[&str] = &[
         "naturalist:bear",
         "naturalist:black_bear",
@@ -123,7 +119,7 @@ fn natural_age_group(kind: &str) -> Option<Ageable> {
         "naturalist:mole", "naturalist:ostrich", "naturalist:rat", "naturalist:snail",
         "naturalist:snake", "naturalist:tiger", "naturalist:tortoise", "naturalist:turkey",
     ];
-    if NEVER_BABY.contains(&kind) { Some(Ageable::chance(0.0)) }
+    if kind == "naturalist:bird" || kind == "naturalist:butterfly" { Some(Ageable::new(false, 0.0)) }
     else if ALWAYS_BABY.contains(&kind) { Some(Ageable::chance(1.0)) }
     else if FIVE_PERCENT.contains(&kind) { Some(Ageable::chance(0.05)) }
     else { None }
@@ -152,14 +148,13 @@ fn apply_natural_age_group(kind: &str, group: &mut Option<Group>) {
         match kind {
             "naturalist:elephant" | "naturalist:mammoth" => {
                 // Java's first two members are adults, then every member is a
-                // baby. Resetting size once preserves that group transition.
-                if existing.size == 1 { existing.size = 0; }
-                existing.should_spawn_baby = true;
+                // baby. The group index is the number finalized before this mob.
+                existing.should_spawn_baby = existing.size >= 2;
                 existing.baby_chance = 1.0;
             }
             "naturalist:lion" => {
                 existing.should_spawn_baby = true;
-                existing.baby_chance = if existing.size == 0 { 0.05 } else { 0.75 };
+                existing.baby_chance = if existing.size <= 1 { 0.05 } else { 0.75 };
             }
             "naturalist:rhino" => {
                 existing.should_spawn_baby = true;
