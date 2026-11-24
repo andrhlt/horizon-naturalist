@@ -1,0 +1,77 @@
+{
+  "type": "minecraft:template",
+  "templates": [
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_0"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_1"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_2"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_3"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_4"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_5"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_6"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_7"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_8"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_9"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_10"
+      }
+    },
+    {
+      "weight": 1,
+      "data": {
+        "id": "naturalist:ant_hill_small_11"
+      }
+    }
+  ]
+}
