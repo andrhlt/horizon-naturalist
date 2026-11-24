@@ -16,6 +16,7 @@ mod large_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
+mod ocean_bucket_item;
 mod catfish_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
