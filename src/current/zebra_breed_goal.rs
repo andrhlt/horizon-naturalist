@@ -59,7 +59,7 @@ impl Goal for SameZebraBreed {
     }
 }
 
-pub fn install(game: &mut Game<'_>, entity: u32, kind: &str) {
+pub fn install(game: &mut horizon_client::game::Game<'_>, entity: u32, kind: &str) {
     if kind != "naturalist:zebra" { return; }
     let Some(index) = game.mobs.iter().position(|mob| mob.id == entity) else { return; };
     if game.mobs[index].ai.goals.has("NaturalistZebraBreed") { return; }
