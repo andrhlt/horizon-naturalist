@@ -25,7 +25,6 @@ pub fn register_goals(host: &mut dyn mod_api::ServerHost, entity: mod_api::Entit
         }
         "naturalist:lizard" => {
             add(1, GoalSpec::Panic { speed: 1.2, water_range: None });
-            add(2, GoalSpec::SitWhenOrdered);
             add(3, GoalSpec::Tempt { speed: 1.0, items: vec!["minecraft:spider_eye".into()], can_scare: true });
             add(4, GoalSpec::Stroll { speed: 1.0, interval: 120, water_avoiding: None, swim: false, flying: false });
         }

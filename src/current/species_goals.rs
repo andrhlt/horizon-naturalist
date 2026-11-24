@@ -47,11 +47,6 @@ pub(crate) fn sync_pet_goal_state(host: &mut dyn mod_api::ServerHost, id: u32) {
         },
     };
     let _ = PET_GOAL_STATE.set(host, mod_api::Holder::Entity(id), state);
-    if is_lizard && state.tamed {
-        if let Some(mob) = host.mob(entity) {
-            let _ = mob.set_ordered_sitting(host, nbt_sitting);
-        }
-    }
 }
 
 /// Apply an owner interaction's ordered sitting state to both the goal snapshot
@@ -64,9 +59,6 @@ pub(crate) fn set_pet_sitting(host: &mut dyn mod_api::ServerHost, id: u32, sitti
         return;
     };
     let is_lizard = entity.kind(host).is_some_and(|kind| kind.id(host) == "naturalist:lizard");
-    if let Some(mob) = host.mob(entity) {
-        let _ = mob.set_ordered_sitting(host, sitting);
-    }
     let mut state = PET_GOAL_STATE.get(host, holder).unwrap_or_default();
     state.sitting = sitting;
     let _ = PET_GOAL_STATE.set(host, holder, state);
@@ -106,9 +98,6 @@ pub(crate) fn persist_pet_sitting(host: &mut dyn mod_api::ServerHost, id: u32) {
         return;
     }
     let sitting = state.sitting;
-    if let Some(mob) = host.mob(entity) {
-        let _ = mob.set_ordered_sitting(host, sitting);
-    }
     let _ = entity.merge_nbt(
         host,
         [
@@ -222,10 +211,31 @@ pub struct PetPart;
 impl mod_api::EntityPart for PetPart {
     fn register_goals(&self, goals: &mut mod_api::GoalRegistrar<'_>) {
         match goals.mob().id() {
-            "naturalist:lizard" => goals.add_goal(2, PetFollow::default()),
+            "naturalist:lizard" => {
+                goals.add_goal(2, PetSit);
+                goals.add_goal(3, PetFollow::default());
+            }
             "naturalist:tortoise" => goals.add_goal(3, PetFollow::default()),
             _ => {}
         }
+    }
+}
+
+/// 0a875 has no vanilla SitWhenOrdered goal. Keep ordered lizards stationary
+/// through the same attachment-backed state used by their follow goal.
+struct PetSit;
+impl mod_api::Goal for PetSit {
+    fn flags(&self) -> mod_api::GoalFlags {
+        mod_api::GoalFlags::MOVE
+    }
+    fn can_use(&mut self, cx: &mut mod_api::GoalContext<'_>) -> bool {
+        pet_goal_state(cx, cx.mob().entity()).is_some_and(|state| state.tamed && state.sitting)
+    }
+    fn can_continue(&mut self, cx: &mut mod_api::GoalContext<'_>) -> bool {
+        self.can_use(cx)
+    }
+    fn tick(&mut self, cx: &mut mod_api::GoalContext<'_>) {
+        cx.stop_navigation();
     }
 }
 
