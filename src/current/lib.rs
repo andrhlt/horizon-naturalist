@@ -9,6 +9,8 @@ mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
 mod catfish_bucket_item;
+mod capybara_interact;
+mod piranha_schooling;
 pub mod bass_fx;
 pub mod bass_hunt;
 mod bass_renderer;
@@ -236,6 +238,7 @@ impl mod_api::Hooks for Naturalist {
                     add_goal(&mob, host, 3, mod_api::GoalSpec::MeleeAttack { speed: 1.2, follow_unseen: true });
                     add_target(&mob, host, 1, mod_api::GoalSpec::NearestTarget { prey: fish_prey(), must_see: false, must_reach: false, interval: 10 });
                     add_target(&mob, host, 2, mod_api::GoalSpec::HurtByTarget { alert: true });
+                    piranha_schooling::reset(host, event.entity);
                 }
                 _ => {}
             }
@@ -265,6 +268,14 @@ impl mod_api::Hooks for Naturalist {
         mod_api::Flow::Continue
     }
 
+    fn entity_interact(
+        &self,
+        side: mod_api::HostSide<'_>,
+        event: &mut mod_api::EntityInteractEvent<'_>,
+    ) -> Option<mod_api::InteractionResult> {
+        capybara_interact::interact(side, event)
+    }
+
     fn entity_tick_listened(
         &self,
         _: &mut dyn mod_api::ServerHost,
@@ -278,6 +289,9 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPreEvent<'_>,
     ) -> mod_api::Flow {
+        if event.kind == "naturalist:piranha" {
+            piranha_schooling::tick(host, event.entity);
+        }
         if event.kind == "naturalist:bass" {
             let holder = Holder::Entity(event.entity);
             let result = (|| {
