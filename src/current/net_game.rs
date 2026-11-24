@@ -1,7 +1,12 @@
 use super::{Game, pick_view_vector};
-use horizon_client::{crafting::Ingredient, items::ItemStack};
+use horizon_client::{crafting::Ingredient, items::ItemStack, mobs::Who, projectiles::{Hit, Projectile}};
 use horizon_core::nbt::Tag;
 use mod_api::{Host, SoundSource};
+use std::collections::HashMap;
+use std::sync::{LazyLock, Mutex};
+
+static HEDGEHOG_THROW_ITEMS: LazyLock<Mutex<HashMap<u32, ItemStack>>> =
+    LazyLock::new(|| Mutex::new(HashMap::new()));
 
 /// Java searches Inventory in index order, including armor before the off hand.
 fn ingredient_slot(game: &Game<'_>, ingredient: &Ingredient) -> Option<usize> {
@@ -54,7 +59,52 @@ fn hand_item(kind: &str) -> Option<&'static str> {
         "naturalist:caterpillar" => Some("naturalist:caterpillar"),
         "naturalist:desert_scorpion" => Some("naturalist:scorpion"),
         "naturalist:snail" => Some("naturalist:snail"),
+        "naturalist:hedgehog" => Some("naturalist:hedgehog"),
         _ => None,
+    }
+}
+
+/// Hedgehogs are living mobs and cannot also be registered as a second
+/// Horizon thrown entity type. Reuse the pinned snowball flight path while
+/// retaining the complete hedgehog item until the landing hook resolves it.
+pub(super) fn throw_hedgehog(game: &mut Game<'_>) -> bool {
+    let Some(stack) = game.held().cloned() else { return false };
+    if stack.item.as_ref() != "naturalist:hedgehog" { return false; }
+    let fake = ItemStack::new("minecraft:snowball", 1);
+    let Ok(true) = game.throw_item(&fake) else { return false; };
+    if let Some(id) = game.creatures.projectiles.last().map(|p| p.id) {
+        HEDGEHOG_THROW_ITEMS.lock().unwrap().insert(id, stack);
+        true
+    } else {
+        false
+    }
+}
+
+pub(super) fn hedgehog_hit(game: &mut Game<'_>, projectile: &Projectile, hit: Hit) {
+    let Some(stack) = HEDGEHOG_THROW_ITEMS.lock().unwrap().remove(&projectile.id) else { return; };
+    let aim = game.attacker_aim(projectile.owner);
+    if let Hit::Entity { who: Who::Mob(id), .. } = hit
+        && let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id)
+    {
+        let source = horizon_client::mobs::Damage {
+            kind: horizon_client::mobs::DamageKind::Thrown,
+            attacker: projectile.owner,
+            from: Some([projectile.previous.x, projectile.previous.y, projectile.previous.z]),
+            attacker_species: None,
+        };
+        let _ = mob.damage_projectile(
+            crate::game::entity::damage_level_of!(game),
+            6.0,
+            source,
+            aim,
+            [projectile.velocity.x, projectile.velocity.z],
+        );
+    }
+    if projectile.owner == Some(Who::Player)
+        && let Some(leftover) = game.add_stack_to_inventory(stack)
+        && let Some([x, y, z]) = game.eye_position()
+    {
+        game.spawn_item(leftover, [x, y - 0.3, z], [0.0, 0.15, 0.0], 40);
     }
 }
 
@@ -64,6 +114,7 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
     let mounted = mob.extra.mount.is_some() || mob.extra.rider.is_some() || mob.rider.is_some();
     let kind = mob.kind.id.clone();
     if kind == "naturalist:rat" && !mob.extra.tame { return false; }
+    if kind == "naturalist:hedgehog" && !mob.extra.tame { return false; }
     let tamed_with_owner = mob.extra.tame && mob.extra.owner.is_some();
     let crab_held = (kind == "naturalist:crab").then(|| horizon_client::mobs::finalize::item_stack(mob, 0)).flatten();
     let crab_sitting = mob.extra.sitting;
@@ -79,18 +130,23 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
             caught.data_mut().set_other("minecraft:custom_name", name);
             fields.retain(|key, value| match key.to_string_lossy().as_str() {
                 "Health" | "Variant" => true,
-                "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat") && tamed_with_owner,
+                "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat" | "naturalist:hedgehog") && tamed_with_owner,
                 "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab" | "naturalist:rat" | "naturalist:firefly"),
-                "FollowingOwner" | "Sitting" => kind == "naturalist:rat" && tamed_with_owner,
+                "FollowingOwner" | "Sitting" => matches!(kind.as_str(), "naturalist:rat" | "naturalist:hedgehog") && tamed_with_owner,
+                "DyeColor" => kind == "naturalist:hedgehog",
                 "Color" => kind == "naturalist:snail",
                 "NoAI" | "Silent" | "NoGravity" | "Glowing" | "Invulnerable" => !matches!(value, Tag::Byte(0)),
                 _ => false,
             });
-            if matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat") && tamed_with_owner {
+            if matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat" | "naturalist:hedgehog") && tamed_with_owner {
                 fields.insert("Tame".into(), Tag::Byte(1));
             }
             if kind == "naturalist:rat" && tamed_with_owner {
-                fields.insert("FollowingOwner".into(), rat_following);
+                fields.insert("FollowingOwner".into(), rat_following.clone());
+                fields.insert("Sitting".into(), Tag::Byte(i8::from(rat_sitting)));
+            }
+            if kind == "naturalist:hedgehog" && tamed_with_owner {
+                fields.insert("FollowingOwner".into(), rat_following.clone());
                 fields.insert("Sitting".into(), Tag::Byte(i8::from(rat_sitting)));
             }
             if kind == "naturalist:crab" {
@@ -158,6 +214,11 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
 
 /// CaughtEntityItem release preserves complete saves or constructs a fresh mob from hand traits.
 pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api::InteractionResult> {
+    let pos = game.pick()?.pos;
+    release_at(game, stack, pos)
+}
+
+pub(super) fn release_at(game: &mut Game<'_>, stack: &ItemStack, pos: [i32; 3]) -> Option<mod_api::InteractionResult> {
     use mod_api::InteractionResult as Result;
     let kind = match stack.item.as_ref() {
         "naturalist:bee" => "minecraft:bee",
@@ -172,10 +233,9 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
         "naturalist:caterpillar" => "naturalist:caterpillar",
         "naturalist:scorpion" => "naturalist:desert_scorpion",
         "naturalist:snail" => "naturalist:snail",
+        "naturalist:hedgehog" => "naturalist:hedgehog",
         _ => return None,
     };
-    let Some(hit) = game.pick() else { return Some(Result::Pass) };
-    let pos = hit.pos;
     if !game.may_interact_at(horizon_core::position::BlockPos::new(pos[0], pos[1], pos[2])) || !game.may_use_on(pos) { return Some(Result::Fail) }
     if game.remote.is_some() { return Some(Result::Success) }
     let mut fields = stack.custom_data().cloned().unwrap_or_default();
@@ -209,7 +269,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                 configured.data_mut().set_other("minecraft:bucket_entity_data", Some(Tag::Compound(fields.clone())));
                 horizon_client::entity_nbt::apply_item_components(mob, &configured);
                 mob.persistent = true;
-                if matches!(kind, "naturalist:ant" | "naturalist:crab" | "naturalist:rat") {
+                if matches!(kind, "naturalist:ant" | "naturalist:crab" | "naturalist:rat" | "naturalist:hedgehog") {
                     let saved = Tag::Compound(fields.clone());
                     let tame = saved.get("Tame").and_then(horizon_world::datafix::dynamic::as_number)
                         .is_some_and(|n| n.int_value() != 0);
@@ -217,7 +277,7 @@ pub(super) fn release(game: &mut Game<'_>, stack: &ItemStack) -> Option<mod_api:
                         // Naturalist pets do not inherit the Wolf template's taming health side effects.
                         mob.extra.owner = Some(owner);
                         mob.extra.tame = true;
-                        if matches!(kind, "naturalist:crab" | "naturalist:rat") {
+                        if matches!(kind, "naturalist:crab" | "naturalist:rat" | "naturalist:hedgehog") {
                             let sitting = saved.get("Sitting").and_then(horizon_world::datafix::dynamic::as_number).is_some_and(|n| n.int_value() != 0);
                             horizon_client::mobs::tame::restore_sitting(mob, sitting);
                         }

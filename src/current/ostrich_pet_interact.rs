@@ -33,11 +33,11 @@ fn ostrich_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> 
             let saddle = ItemPlace::Equipment { entity: id, slot: EquipmentSlot::Saddle };
             if saddle.stack(game).is_none() {
                 if let Some(stack) = game.held().cloned() {
+                    let Ok(api_stack) = stack.try_into_api() else {
+                        return ControlFlow::Break(Ok(true));
+                    };
                     let moved = game.transaction(|host, tx| {
-                        let id = mod_api::Identifier::parse("minecraft:saddle").map_err(|_| ())?;
-                        let key = host.item_key(&id).ok_or(())?;
-                        let resource = mod_api::ItemStack::new(key, 1).ok_or(())?;
-                        Ok::<u32, ()>(saddle.insert(host, tx, &ItemResource::of(&resource), 1))
+                        Ok::<u32, ()>(saddle.insert(host, tx, &ItemResource::of(&api_stack), 1))
                     }).unwrap_or(0);
                     if moved == 1 {
                         game.consume_held();

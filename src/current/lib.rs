@@ -13,7 +13,6 @@ mod anglerfish_bucket_pickup;
 mod blobfish_behavior;
 mod isopod_behavior;
 mod jellyfish_behavior;
-mod ocean_bucket_item;
 mod ocean_feeding;
 mod ocean_placements;
 mod ocean_renderer;
@@ -32,6 +31,7 @@ mod large_renderer;
 mod ant_queen;
 pub mod bass_appearance;
 mod bass_bucket_item;
+mod ocean_bucket_item;
 mod catfish_bucket_item;
 pub mod bass_fx;
 pub mod bass_hunt;
@@ -43,6 +43,7 @@ mod wildlife_renderer;
 use mod_api::{AttachmentQueries, BlockMetadata, HostBlockStates, RandomSource};
 use std::sync::Arc;
 mod net;
+mod rat_cargo_drops;
 mod elephant_melon;
 use mod_api::{
     AttachmentCodec, AttachmentError, AttachmentStore, AttachmentType, Compound, Holder, Tag,
@@ -465,6 +466,7 @@ impl mod_api::Hooks for Naturalist {
         event: &mut mod_api::LivingDropsEvent<'_>,
     ) -> mod_api::Flow {
         starfish_behavior::drops(host, event);
+        rat_cargo_drops::drops(host, event);
         mod_api::Flow::Continue
     }
 
@@ -848,6 +850,7 @@ impl mod_api::Hooks for Naturalist {
         self.duck.clear();
         for renderer in &self.ocean { renderer.clear(); }
     }
+
 }
 
 #[cfg(test)]

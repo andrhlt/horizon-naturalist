@@ -875,7 +875,6 @@
   },
   "naturalist:vulture": {
     "attributes": {
-      "attack_damage": 4.0,
       "attack_knockback": 0.0,
       "flying_speed": 0.6000000238418579,
       "follow_range": 16.0,

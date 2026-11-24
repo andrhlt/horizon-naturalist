@@ -44,6 +44,19 @@ The source-only registry gate also passes on the current tree: `python3 -B tools
 
 ## Open parity work
 
+## APP-2125 source checkpoint
+
+The current source now completes Hedgehog's ordinary capture-net path: wild
+Hedgehogs reject the net, tamed Hedgehogs preserve owner, health, dye and sit
+state in the caught item, and ground release restores those fields. Throwing a
+Hedgehog reuses the pinned snowball flight/collision lifecycle while retaining
+the complete item, applies the Java fixture's six damage on mob impact, and
+returns the item to the owner on landing. This is source-level work pending the
+shared APP-2135 native build and headless reruns of
+`tools/launcher_hedgehog_capture.py` and `tools/launcher_hedgehog_throw.py`.
+The snowball-backed bridge intentionally does not claim exact projectile model,
+enchantment side effects, or mixed-artifact LAN parity.
+
 - [x] Duck bucket capture/release: matching-client LAN wild/owned/adult/foreign behavior, first-visible foreign Duck click, water fallback, intentional next use, offhand/creative, dispenser, save/reload, and dimension reload. Delayed baby-age metadata is tested on the exact candidate by holding its entity-data packet for 1.5 seconds; a client that still saw an adult Duck captured it once with Java's baby age preserved. Matching clients must use the same artifact; mixed-artifact operation is outside the supported contract.
 - [ ] Duck pet/AI: matching-candidate fixtures verify owner-follow, stop after owner disconnect/dimension change, tame/heal/sit save/reopen, delayed baby-age capture, and adult bucket fallback. Water and short-wall follow controls pass; the Java sit-goal attack condition also matches pinned bytecode. Long-wall navigation varied on both Java and Horizon (1/2 vs 1/3 crossings), so it remains unresolved without a demonstrated mismatch. See `fixtures/duck-ai-3d513df20090.json`. Matching-candidate breeding now verifies the resolved raw-fish tag, wheat-seed rejection, same-species births, cross-species rejection, and child variant inheritance; see `fixtures/naturalist-combined-964e6c9e015d.json`. Owner dye interactions (owner inventory, same-color reuse, main/offhand shears, reuse and save/reopen) pass on exact f68. The corrected `DuckFollowParent` goal and registration from verified scratch candidate 5ac are restored in source and present in the integrated APP-2120 candidate; the parent-follow movement fixture has not yet been rerun on that candidate. Actual offscreen Metal frames cover sit/stand transitions and dyed/baby appearances; natural walking/flapping, Java-frame comparison, invisibility and remaining goals are open. Mixed-artifact operation is outside the supported contract.
 - [x] Ant selected worker behavior: gather parity, hill entry, owner controls, queen ownership, owned/wild hill delivery, carried-food UUID/backlink/stack/offset save-reopen, owner defense, and sound checks passed on exact candidates. Candidate 34ef adds owner/stranger hill-break worker release. Ant relative position follows tick-by-tick and standard item appearance is retained. Java additionally applies per-frame interpolated offsets and disables the carried item shadow; Horizon has no per-item render hook to reproduce those details without changing all item drops. This small visual gap remains unverified by runtime screenshot.
