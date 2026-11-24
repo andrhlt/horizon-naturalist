@@ -119,7 +119,13 @@ def _pack_hill_feature(size, layout, pack, dump):
         path = pack / f"data/naturalist/structure/{template_id}.nbt"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(nbt)
-        choices.append({"weight": 1, "data": {"id": f"naturalist:{template_id}"}})
+        # Custom block state properties are gameplay data. The pinned template
+        # state transform table can map a modded state back to its default when
+        # rotating a structure, so keep the state intact at placement.
+        choices.append({
+            "weight": 1,
+            "data": {"id": f"naturalist:{template_id}", "rotations": ["none"]},
+        })
     dump(pack, f"data/naturalist/worldgen/feature/{feature_id.split(':')[1]}.json", {
         "type": "minecraft:template",
         "templates": choices,
