@@ -610,19 +610,17 @@ impl mod_api::Hooks for Naturalist {
                 {
                     eprintln!("Naturalist: failed to add Ray retaliation goal");
                 }
-                let has_melee = mob
-                    .goals(host)
-                    .is_some_and(|goals| goals.iter().any(|goal| goal.id == "melee_attack"));
-                if !has_melee
-                    && !mob.add_goal(
-                        host,
-                        3,
-                        &mod_api::GoalSpec::MeleeAttack {
-                            speed: 1.0,
-                            follow_unseen: true,
-                        },
-                    )
-                {
+                // Ray inherits Wandering Trader data; replace any inherited
+                // melee goal with the one that pursues its hurt-by target.
+                let _ = mob.remove_goal(host, "melee_attack");
+                if !mob.add_goal(
+                    host,
+                    3,
+                    &mod_api::GoalSpec::MeleeAttack {
+                        speed: 1.0,
+                        follow_unseen: true,
+                    },
+                ) {
                     eprintln!("Naturalist: failed to add Ray melee goal");
                 }
             }
