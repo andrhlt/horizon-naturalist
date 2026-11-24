@@ -7,6 +7,26 @@ session. For this mod-port and compatibility-fork work, this section supersedes
 older instructions that require exhaustive Java parity or lengthy evidence
 before delivery. It does not change the upstream project's long-term parity goal.
 
+### Horizon development is offline-only
+
+- All Horizon development launches and gameplay verification use offline developer
+  identities only, never a logged-in or authenticated Microsoft/Minecraft account.
+- Use a supported unsigned Horizon developer build and managed Play with
+  `HORIZON_LAUNCHER_DEVELOPER_OFFLINE=1`. Use locally prepared matching resources
+  and the documented developer SDK/toolchain route; preserve source/runtime pins.
+- Use isolated launcher/game homes, worlds and control sockets. Do not sign in,
+  start device-code or credential flows, select an authenticated account, pass
+  account credentials/tokens, or copy account/session/lease state into test homes.
+- Multiplayer verification uses the supported local offline route with distinct
+  authoritative UUIDs. Keep development servers loopback-only and whitelisted;
+  do not weaken production authentication, trust, provider or lease checks.
+- An authentication or entitlement prompt means the wrong development route was
+  selected: correct the build/instance/launch setup instead of signing in. If a
+  required offline input or capability is unavailable, report the exact gap and
+  continue independent work; do not claim the blocked check passed.
+- Automated runs remain headless; actual frame checks use genuine offscreen
+  rendering without visible windows, focus changes or pointer capture.
+
 ### Completion threshold
 
 - Build and load the intended package successfully.
@@ -18,8 +38,8 @@ before delivery. It does not change the upstream project's long-term parity goal
   settings and meaningful progress.
 - Check representative offline host/guest behavior when ownership, interaction
   or synchronization depends on multiple players. Use distinct authoritative
-  player identities, not two aliases for one UUID. No Microsoft sign-ins or
-  device-code flows are required for this verification target.
+  player identities, not two aliases for one UUID. Use offline identities only;
+  do not use Microsoft sign-ins, authenticated accounts or device-code flows.
 - Fix reproducible crashes, duplication, item/entity loss, save corruption and
   broken main gameplay mechanics. Missing ordinary functionality stays open;
   do not hide it as a cosmetic follow-up or claim the full feature works.
