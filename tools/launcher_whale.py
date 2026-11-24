@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from headless_fixture import HeadlessCommands
 
 
 def replay(version, java):
@@ -22,10 +23,16 @@ def replay(version, java):
             )
             return json.loads(result.stdout.splitlines()[-1])
 
+        command_channel = [None]
+
         def cmd(command):
-            return ctl("command", command)["chat"]
+            if command_channel[0] is None:
+                command_channel[0] = HeadlessCommands(ctl)
+            return command_channel[0](command)
 
         def data(target, name):
+            if target.startswith("@e["):
+                return command_channel[0].entity_data(target, name)
             marker = "following entity data: "
             return next(row.split(marker, 1)[1] for row in cmd(f"data get entity {target} {name}") if marker in row)
 
@@ -80,6 +87,8 @@ def replay(version, java):
             cmd("tp @s 8.5 92 8.5")
             ctl("wait", 20)
             cmd("tick freeze")
+            loaded = cmd("forceload add 0 0 47 47")
+            assert any("Marked 9 chunks" in row for row in loaded), loaded
             assure("fill 1 91 1 18 91 32 minecraft:stone", "block(s)")
             cmd("fill 1 92 1 18 104 32 minecraft:air")
             cmd("fill 3 92 20 16 99 30 minecraft:water")

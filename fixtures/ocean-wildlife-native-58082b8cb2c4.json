@@ -1,0 +1,94 @@
+{
+  "issue": "APP-2130",
+  "scope": [
+    "naturalist:anglerfish",
+    "naturalist:blobfish",
+    "naturalist:giant_isopod",
+    "naturalist:great_white_shark",
+    "naturalist:jellyfish",
+    "naturalist:ray",
+    "naturalist:starfish",
+    "naturalist:whale"
+  ],
+  "java_reference": {
+    "version": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+    "source_commit": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+    "jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd"
+  },
+  "horizon": {
+    "version": "26.3",
+    "source_commit": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "candidate": "native-0a875da-58082b8cb2c4",
+    "mod_library_sha256": "58be55bfd10c27b87dbcb98e2dcbb82acd1a04ded74c1f03d0d45b3ebedc0c33",
+    "native_mods_sha256": "8a0e2ffecc924c43c28d2b078dd06e3b893a5797530e2d043c7399e1f473a46b",
+    "platform": "macOS aarch64 client, Apple M4 Max Metal",
+    "server_package_available_on_host": false
+  },
+  "runtime": {
+    "world": "APP2130Runtime",
+    "seed": 2130,
+    "result": "final candidate launched; content and registries loaded, world reached playing, and target ocean species were present in the saved underwater test world",
+    "natural_spawns_observed": [
+      "naturalist:anglerfish",
+      "naturalist:blobfish",
+      "naturalist:great_white_shark",
+      "naturalist:jellyfish",
+      "naturalist:ray",
+      "naturalist:starfish",
+      "naturalist:whale"
+    ],
+    "explicit_underwater_spawns": [
+      "naturalist:anglerfish",
+      "naturalist:blobfish",
+      "naturalist:giant_isopod",
+      "naturalist:great_white_shark",
+      "naturalist:jellyfish",
+      "naturalist:ray",
+      "naturalist:starfish",
+      "naturalist:whale"
+    ],
+    "render_capture": {
+      "species": "naturalist:jellyfish",
+      "result": "model and tentacles visible in the final candidate's first captured underwater frame",
+      "screenshot": "/private/tmp/app2130-final.png"
+    },
+    "java_behavior_comparison": "not run",
+    "matching_server_or_lan": "not run; this Mac SDK has no server game package"
+  },
+  "runtime_artifact_exact_match": true,
+  "final_artifact_runtime_check": "passed startup, content load, world load and rendered-frame capture",
+  "current_source_verification": {
+    "source_commit": "8994e6fd5900ddd24a788eaee142ba0eb23caa7f",
+    "optimized_client_build": "passed with installed Horizon launcher",
+    "libnaturalist_dylib_sha256": "17553162bf0e4e1f22d2ed6cba1812a667f4253c613abea2fdff9375066051c9",
+    "dedicated_server_build": "blocked on Mac host: Horizon has no game package for its system yet",
+    "linux_matching_artifact": {
+      "client_candidate": "native-0a875da-284a88c025ea",
+      "client_libnaturalist_sha256": "7a1bd12a7e4195caf58c518cc6a4c408c7c171ec7858646cbc534f51e2a8a5ea",
+      "server_libnaturalist_sha256": "7b07d793219c12e29b55cb4e258f6b7e80219341cc9a273779642867f9e9a71f",
+      "source_commit": "e3860f99f27b722cccc91a092287d95b676d4f71",
+      "server_export": "/root/dev/app2130-server-export-current/horizon-engine",
+      "result": "matching client connected through SSH tunnel and reached playing in minecraft:overworld",
+      "first_attempt": "failed because generated data was omitted and ant_hill block entity was missing; corrected full stage passed"
+    }
+  },
+  "parity_status": "open",
+    "placement_owner": {
+      "result": "shared InWater/OceanFloor placement registered for all eight entities",
+      "cluster_limits": {"anglerfish": 8, "blobfish": 8, "giant_isopod": 4, "great_white_shark": 4, "jellyfish": 8, "ray": 8, "starfish": 4, "whale": 4},
+      "species_predicates": "not implemented: depth, substrate, group, light and variant initialization remain open"
+    },
+    "rendered_frame_evidence": {
+      "screenshot": "/private/tmp/app2130-final.png",
+      "visible_species": ["naturalist:jellyfish", "naturalist:giant_isopod", "naturalist:great_white_shark", "naturalist:ray", "naturalist:whale"],
+      "unchecked_states": ["controlled Java pixel comparison", "all variant textures", "baby meshes except Whale", "hurt/death overlays", "bucket/attachment poses", "multipart Shark and Whale", "animation timing/interpolation"]
+    },
+    "remaining": [
+    "Java behavior scenarios and save/reload",
+    "matching client/server and LAN checks",
+    "Java frame and texture-variant comparisons",
+    "aquatic lifecycle and species-specific placement predicates with shared spawning owner",
+    "Anglerfish, Blobfish, Giant Isopod, Shark, Jellyfish, Ray, Starfish, and Whale behavior ports",
+    "multipart Shark and Whale render behavior"
+  ]
+}
