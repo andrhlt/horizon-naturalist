@@ -88,7 +88,7 @@ fn ant_hill_player_break(
         {
             let dx = player.position.x - ant.position.x;
             let dz = player.position.z - ant.position.z;
-            yaw = dz.atan2(dx).to_degrees() - 90.0;
+            yaw = (dz.atan2(dx).to_degrees() - 90.0) as f32;
         }
         ant.yaw = yaw;
         ant.head_yaw = yaw;
