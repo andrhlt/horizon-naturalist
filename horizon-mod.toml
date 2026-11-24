@@ -213,6 +213,18 @@ bindings = [
 ]
 
 [[native.mixin]]
+id = "capture-net-right-click"
+target = "horizon_client::game::native_hooks::right_click_item::Game<'_>::native_right_click_item"
+kind = "HEAD"
+helper = "src/current/net_right_click.rs"
+bindings = [
+ {name="game", ty="&mut Game<'_>", value="&mut *self"},
+ {name="click", ty="&ItemClick<'_>", value="click"},
+ {name="result", ty="&mut mod_api::InteractionResult", value="&mut *cancellation_result"},
+ {name="canceled", ty="&mut bool", value="&mut *canceled"},
+]
+
+[[native.mixin]]
 id = "deer_breed_overwrite"
 target = "horizon_client::game::creatures::Game<'_>::breed"
 kind = "OVERWRITE"
