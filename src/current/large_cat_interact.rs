@@ -1,3 +1,5 @@
+use horizon_client::game::Game;
+
 fn large_cat_interact(
     game: &mut Game<'_>,
     target: Option<InteractTarget>,
