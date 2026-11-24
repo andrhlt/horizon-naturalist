@@ -50,8 +50,10 @@ def _state_nbt(open_, workers, queen):
         for key, value in zip(("open", "workers", "has_queen"), values)
     ])
     return _nbt_compound([
-        (8, "Name", struct.pack(">H", len(b"naturalist:ant_hill")) + b"naturalist:ant_hill"),
-        (10, "Properties", properties),
+        # Horizon 26.3 reads the current id/properties fields and retains the
+        # legacy Name/Properties aliases only for older saved templates.
+        (8, "id", struct.pack(">H", len(b"naturalist:ant_hill")) + b"naturalist:ant_hill"),
+        (10, "properties", properties),
     ])
 
 
