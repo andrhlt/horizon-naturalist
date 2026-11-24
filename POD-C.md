@@ -1,7 +1,7 @@
 # Pod C iteration manifest
 
 Frozen source branch: `codex/naturalist-pod-c`
-Frozen source commit: `a922d00a1687b5b398ab16eb0f22090458f67e02`
+Frozen source commit: `223d32f6114b221ad52481f5a4123296365ed546`
 Base: `origin/main` / `3d03fb7107f9c93f5bc96d5e18602c0921d7d752`
 
 Included reviewed heads:
@@ -31,6 +31,10 @@ config registration/reload filtering (`16e569f`) and APP-2130 transactional
 aquatic bucket capture with rollback on discard failure (`2c6081b`). The prior
 runtime artifact remains preserved and is not acceptance evidence for these
 changes.
+
+This batch additionally scopes the forest filter to `minecraft:forest`
+(`60dbde4`) and implements Bass bucket release with variant restoration
+(`d154478`).
 
 Build-scope note: the pinned manifest validator found stale registrations for
 unavailable, non-Pod-C Catfish, Clam, Capybara, Piranha, Alligator, and Hippo
