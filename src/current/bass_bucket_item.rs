@@ -1,13 +1,80 @@
-//! Marks the bass bucket as an item with a server-handled use.
+//! Handles player release for the Bass bucket; dispenser release remains on the
+//! generic bucket path.
 pub struct BassBucket;
 #[mod_api::horizon_part]
 impl mod_api::ItemPart for BassBucket {
     fn empty_contents(
         &self,
-        _: &mut dyn mod_api::ServerHost,
-        _: &mut mod_api::EmptyContentsEvent<'_>,
+        host: &mut dyn mod_api::ServerHost,
+        event: &mut mod_api::EmptyContentsEvent<'_>,
     ) -> Option<bool> {
-        None
+        let Some(player) = event.player else {
+            return None;
+        };
+        let Some(level) = player.entity().level(host) else {
+            return Some(false);
+        };
+        let pos = event.pos;
+        let target = [pos.x, pos.y, pos.z];
+        let Some(water) = host.block_state_id("minecraft:water") else {
+            return Some(false);
+        };
+        let Some(current) = level.block(host, target) else {
+            return Some(false);
+        };
+        let Some(current_id) = mod_api::__private::block_key_id(current) else {
+            return Some(false);
+        };
+        if current_id != "minecraft:water" && current_id != "minecraft:air" {
+            return Some(false);
+        }
+        if current_id == "minecraft:air"
+            && !matches!(
+                level.set_block(host, target, water, mod_api::BlockUpdateFlags::NEIGHBORS),
+                Ok(true)
+            )
+        {
+            return Some(false);
+        }
+
+        let position = [pos.x as f64 + 0.5, pos.y as f64, pos.z as f64 + 0.5];
+        let Some(fish) = level.spawn_mob(
+            host,
+            "naturalist:bass",
+            position,
+            mod_api::SpawnReason::Bucket,
+        ) else {
+            return Some(false);
+        };
+        let variant = event
+            .stack
+            .components()
+            .map(|components| components.as_nbt())
+            .and_then(|components| components.get(&"minecraft:bucket_entity_data".into()))
+            .and_then(|tag| match tag {
+                mod_api::Tag::Compound(data) => data.get(&"Variant".into()),
+                _ => None,
+            })
+            .cloned()
+            .or_else(|| {
+                event
+                    .stack
+                    .components()
+                    .map(|components| components.as_nbt())
+                    .and_then(|components| components.get(&"minecraft:custom_data".into()))
+                    .and_then(|tag| match tag {
+                        mod_api::Tag::Compound(data) => data.get(&"Variant".into()),
+                        _ => None,
+                    })
+                    .cloned()
+            });
+        if let Some(variant) = variant {
+            let nbt: mod_api::Compound = [("Variant".into(), variant)].into();
+            if !fish.merge_nbt(host, nbt) {
+                return Some(false);
+            }
+        }
+        Some(true)
     }
 
     fn use_item(
