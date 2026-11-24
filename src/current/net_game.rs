@@ -93,6 +93,7 @@ pub(super) fn hedgehog_hit(game: &mut Game<'_>, projectile: &Projectile, hit: Hi
             attacker_species: None,
         };
         let _ = mob.damage_projectile(
+            crate::game::entity::damage_level_of!(game),
             6.0,
             source,
             aim,
@@ -141,11 +142,11 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
                 fields.insert("Tame".into(), Tag::Byte(1));
             }
             if kind == "naturalist:rat" && tamed_with_owner {
-                fields.insert("FollowingOwner".into(), rat_following);
+                fields.insert("FollowingOwner".into(), rat_following.clone());
                 fields.insert("Sitting".into(), Tag::Byte(i8::from(rat_sitting)));
             }
             if kind == "naturalist:hedgehog" && tamed_with_owner {
-                fields.insert("FollowingOwner".into(), rat_following);
+                fields.insert("FollowingOwner".into(), rat_following.clone());
                 fields.insert("Sitting".into(), Tag::Byte(i8::from(rat_sitting)));
             }
             if kind == "naturalist:crab" {

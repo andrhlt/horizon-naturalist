@@ -1,5 +1,6 @@
 use horizon_client::mobs::{breeding_experience, BreedExperience, Mob, MobEvent};
 use horizon_client::mobs::goals::{self, Cx, Goal, LOOK, MOVE};
+use horizon_core::random::RandomSource;
 
 #[derive(Clone, Debug, Default)]
 struct SameKindBreed {

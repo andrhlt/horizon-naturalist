@@ -1,18 +1,15 @@
 fn capture_net_right_click_block(
     game: &mut Game<'_>,
     click: &BlockClick<'_>,
-    _: &mut mod_api::TriState,
-    _: &mut mod_api::TriState,
-    result: &mut mod_api::InteractionResult,
+    use_block: &mut mod_api::TriState,
+    use_item: &mut mod_api::TriState,
+    cancellation_result: &mut mod_api::InteractionResult,
     canceled: &mut bool,
 ) {
-    // Let the client predict/pass the click; release_at intentionally returns
-    // success without spawning on a remote game. Only the authoritative local
-    // side may create the mob and consume the held item.
-    if game.remote.is_some() { return; }
-    let Some(stack) = game.held().cloned() else { return };
+    let _ = (use_block, use_item);
+    let Some(stack) = game.stack_in(game.selected).cloned() else { return };
     if let Some(answer) = crate::game::naturalist_capture_net::release_at(game, &stack, click.pos) {
-        *result = answer;
+        *cancellation_result = answer;
         *canceled = answer != mod_api::InteractionResult::Pass;
     }
 }

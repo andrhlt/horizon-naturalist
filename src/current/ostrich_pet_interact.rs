@@ -5,8 +5,8 @@ fn ostrich_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> 
     let Some(index) = game.mob_interaction_target(target) else {
         return ControlFlow::Continue(());
     };
-    let kind = game.mobs[index].kind.id.as_str();
-    if !matches!(kind, "naturalist:ostrich" | "naturalist:turkey")
+    let kind = game.mobs[index].kind.id.to_string();
+    if !matches!(kind.as_str(), "naturalist:ostrich" | "naturalist:turkey")
         || !game.mobs[index].alive()
     {
         return ControlFlow::Continue(());
@@ -33,8 +33,11 @@ fn ostrich_pet_interact(game: &mut Game<'_>, target: Option<InteractTarget>) -> 
             let saddle = ItemPlace::Equipment { entity: id, slot: EquipmentSlot::Saddle };
             if saddle.stack(game).is_none() {
                 if let Some(stack) = game.held().cloned() {
+                    let Ok(api_stack) = stack.try_into_api() else {
+                        return ControlFlow::Break(Ok(true));
+                    };
                     let moved = game.transaction(|host, tx| {
-                        Ok::<u32, ()>(saddle.insert(host, tx, &ItemResource::of(&stack), 1))
+                        Ok::<u32, ()>(saddle.insert(host, tx, &ItemResource::of(&api_stack), 1))
                     }).unwrap_or(0);
                     if moved == 1 {
                         game.consume_held();
