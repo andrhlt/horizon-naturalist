@@ -13,7 +13,8 @@ LAUNCHER_HOME = Path.home() / "Library/Application Support/horizon-launcher"
 
 
 def launch_managed(version, socket, game_dir, world, *, creative=False,
-                   test_terrain=False, render_distance=4):
+                   test_terrain=False, render_distance=4, world_suffix=None,
+                   seed=None):
     version = Path(version).resolve()
     socket = Path(socket).resolve()
     game_dir = Path(game_dir).resolve()
@@ -38,7 +39,7 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
         raise RuntimeError(f"Prepared 26.3 resources are absent: {resources}")
 
     game_dir.mkdir(parents=True, exist_ok=True)
-    world = f"{world} {uuid.uuid4().hex[:8]}"
+    world = f"{world} {world_suffix or uuid.uuid4().hex[:8]}"
     command = [str(LAUNCHER), "play", "--instance", instance,
                "--version", version.name, "--world", world, "--json"]
     if creative:
@@ -48,6 +49,8 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
         command.extend(("--arg", arg))
     if test_terrain:
         command.extend(("--arg", "--test-terrain"))
+    if seed is not None:
+        command.extend(("--arg", "--seed", "--arg", str(seed)))
     command.extend(("--arg", "--render-distance", "--arg", str(render_distance)))
 
     env = os.environ.copy()
