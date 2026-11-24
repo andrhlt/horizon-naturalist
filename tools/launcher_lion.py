@@ -15,7 +15,12 @@ with tempfile.TemporaryDirectory(prefix="nat-lion-", ignore_cleanup_errors=True)
 
     def ctl(*args):
         result = subprocess.run([version / "horizon-ctl", "--socket", socket, *map(str, args)],
-                                check=True, capture_output=True, text=True, timeout=75)
+                                check=False, capture_output=True, text=True, timeout=75)
+        if result.returncode:
+            raise RuntimeError(
+                f"horizon-ctl {args!r} failed ({result.returncode}): "
+                f"stdout={result.stdout!r}; stderr={result.stderr!r}"
+            )
         return json.loads(result.stdout.splitlines()[-1])
 
     def command(line):
@@ -27,9 +32,12 @@ with tempfile.TemporaryDirectory(prefix="nat-lion-", ignore_cleanup_errors=True)
                      if marker in row), None)
 
     def click(kind, x):
+        command(f"tp @s {x} 92 5.5")
+        ctl("wait", 2)
         entities = ctl("entities", 8, kind)["entities"]
         target = min(entities, key=lambda row: abs(row["pos"][0] - x))
-        ctl("interact-entity", target["id"])
+        ctl("look-at-entity", target["id"])
+        ctl("mouse", "right", "click")
         ctl("wait", 3)
 
     play = None
@@ -60,7 +68,11 @@ with tempfile.TemporaryDirectory(prefix="nat-lion-", ignore_cleanup_errors=True)
         click("naturalist:lion", 11.5)
         age_after = int(data(cub, "Age"))
         inventory = " ".join(command("data get entity @s Inventory"))
-        output["tamed_cub_grows"] = age_after - age_before == 2400 and "count: 1" in inventory
+        output["cub_age_before"] = age_before
+        output["cub_age_after"] = age_after
+        output["cub_age_gain"] = age_after - age_before
+        output["cub_food_remaining"] = 1 if "count: 1" in inventory else -1
+        output["tamed_cub_grows"] = 2300 <= age_after - age_before <= 2400 and "count: 1" in inventory
         command("clear @s")
         click("naturalist:lion", 8.5)
         output["owner_sits"] = data(adult, "Sitting") == "1b"

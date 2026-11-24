@@ -683,6 +683,17 @@ bindings = [
 ]
 
 [[native.mixin]]
+id = "giraffe-mounted-control-cleanup"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/giraffe_control_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
 id = "lion-tiger-interact"
 target = "horizon_client::game::creatures::Game<'_>::interact_mob"
 kind = "HEAD"

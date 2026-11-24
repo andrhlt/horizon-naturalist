@@ -17,6 +17,10 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
     version = Path(version).resolve()
     socket = Path(socket).resolve()
     game_dir = Path(game_dir).resolve()
+    launcher_home = Path(os.environ.get(
+        "NATURALIST_TEST_LAUNCHER_HOME", str(LAUNCHER_HOME)
+    )).expanduser().resolve()
+    instance = os.environ.get("NATURALIST_TEST_INSTANCE", "app-2131-verify")
     if not (version / ".installed").is_file():
         raise RuntimeError(f"Not an installed managed candidate: {version}")
     manifest_path = version / "native-mods.json"
@@ -26,7 +30,7 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
     base = manifest.get("base")
     if not base:
         raise RuntimeError(f"{version.name} does not declare a launcher base")
-    base_dir = LAUNCHER_HOME / "versions" / base
+    base_dir = launcher_home / "versions" / base
     if not (base_dir / ".installed").is_file():
         raise RuntimeError(f"Candidate launcher base is not installed: {base_dir}")
     resources = base_dir / ".local/horizon-client/26.3"
@@ -35,7 +39,7 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
 
     game_dir.mkdir(parents=True, exist_ok=True)
     world = f"{world} {uuid.uuid4().hex[:8]}"
-    command = [str(LAUNCHER), "play", "--instance", "app-2131-verify",
+    command = [str(LAUNCHER), "play", "--instance", instance,
                "--version", version.name, "--world", world, "--json"]
     if creative:
         command.append("--creative")
@@ -48,7 +52,7 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
 
     env = os.environ.copy()
     env.update({
-        "HORIZON_LAUNCHER_HOME": str(LAUNCHER_HOME),
+        "HORIZON_LAUNCHER_HOME": str(launcher_home),
         "HORIZON_LAUNCHER_DEVELOPER_OFFLINE": "1",
         "HORIZON_NO_AUDIO": "1",
         "HORIZON_CONTROL": str(socket),
