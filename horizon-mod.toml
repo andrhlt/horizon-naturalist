@@ -200,6 +200,19 @@ bindings = [
 ]
 
 [[native.mixin]]
+id = "capture-net-block"
+target = "horizon_client::game::native_hooks::use_item_on_block::Game<'_>::native_use_item_on_block"
+kind = "HEAD"
+helper = "src/current/net_block.rs"
+bindings = [
+ {name="game", ty="&mut Game<'_>", value="&mut *self"},
+ {name="click", ty="&BlockClick<'_>", value="click"},
+ {name="phase", ty="UsePhase", value="phase"},
+ {name="result", ty="&mut mod_api::InteractionResult", value="&mut *cancellation_result"},
+ {name="canceled", ty="&mut bool", value="&mut *canceled"},
+]
+
+[[native.mixin]]
 id = "deer_breed_overwrite"
 target = "horizon_client::game::creatures::Game<'_>::breed"
 kind = "OVERWRITE"
