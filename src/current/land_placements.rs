@@ -34,7 +34,10 @@ pub fn register(registrar: &mut dyn mod_api::Registrar) {
             )
             .expect("register Naturalist ground spawn placement");
     }
-    for (id, tag, light) in [
+
+    // These mobs fly, but Java registers them through the ground placement
+    // path with species-specific substrate tags and light modes.
+    for (id, substrate, light) in [
         (
             "butterfly",
             "naturalist:butterflies_spawnable_on",
@@ -57,7 +60,7 @@ pub fn register(registrar: &mut dyn mod_api::Registrar) {
                 mod_api::SpawnPlacementRule {
                     placement: mod_api::SpawnPlacementType::OnGround,
                     heightmap: mod_api::Heightmap::MotionBlockingNoLeaves,
-                    spawnable_on: Some(tag.to_owned()),
+                    spawnable_on: Some(substrate.to_owned()),
                     light,
                     biome_tag: None,
                 },

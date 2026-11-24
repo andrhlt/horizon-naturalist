@@ -1,6 +1,8 @@
 """Replay Hippo taming and commands from a connected guest."""
 import json
+import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -9,12 +11,15 @@ import time
 version = Path(sys.argv[1])
 ctl = version / "horizon-ctl"
 game = version / "horizon-client"
-resources = version / ".local/horizon-client/26.3"
+resources = Path.home() / "Library/Application Support/horizon-launcher/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3"
+shared_jars = Path.home() / "Library/Application Support/horizon/jars"
 
 
 def command(socket, *args):
+    home = socket.parent / socket.stem
     call = subprocess.run([ctl, "--socket", socket, *map(str, args)], capture_output=True,
-                          check=True, text=True, timeout=60)
+                          check=True, text=True, timeout=60,
+                          env={**os.environ, "HORIZON_HOME": str(home)})
     return json.loads(call.stdout.splitlines()[-1])
 
 
@@ -27,6 +32,7 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-hippo-", ignore_cleanup_errors=
     try:
         home = root / "host"
         home.mkdir()
+        shutil.copytree(shared_jars, home / "jars", dirs_exist_ok=True)
         host("launch", "--headless", "--game", game, "--resources", resources, "--home", home,
              "--game-dir", home, "--name", "NatHost", "--world", "Naturalist Hippo LAN", "--creative",
              "--test-terrain", "--render-distance", 4, "--wait")
@@ -42,10 +48,14 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-hippo-", ignore_cleanup_errors=
         address = f"127.0.0.1:{lan['port']}"
         guest_home = root / "guest"
         guest_home.mkdir()
+        shutil.copytree(shared_jars, guest_home / "jars", dirs_exist_ok=True)
         guest("launch", "--headless", "--game", game, "--resources", resources, "--home", guest_home,
               "--game-dir", guest_home, "--name", "NatGuest", "--server", address, "--render-distance", 4)
         for _ in range(60):
-            if g.exists() and guest("state")["screen"] == "playing":
+            if g.exists() and guest("state")["screen"] == "playing" and any(
+                player["name"] == "NatGuest" and player["loaded"]
+                for player in host("lan", "status")["guests"]
+            ):
                 break
             time.sleep(0.5)
         else:
@@ -77,7 +87,10 @@ with tempfile.TemporaryDirectory(prefix="nat-lan-hippo-", ignore_cleanup_errors=
 
         run("item replace entity NatGuest weapon.mainhand with minecraft:melon 8")
         step(4)
-        click()
+        for _ in range(12):
+            click()
+            if field(actor, "Owner") == field("NatGuest", "UUID"):
+                break
         assert field(actor, "Owner") == field("NatGuest", "UUID")
         assert field(actor, "Sitting") == "1b"
         run(f"damage {actor} 7 minecraft:generic")

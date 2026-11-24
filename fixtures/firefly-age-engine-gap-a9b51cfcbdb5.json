@@ -1,0 +1,32 @@
+{
+  "candidate": "native-0a875da-a9b51cfcbdb5",
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+  "java_source": {
+    "entity": "/private/tmp/crab-java-source/common/src/main/java/com/crispytwig/naturalist/world/entity/animal/firefly/Firefly.java:156-165,321-325",
+    "renderer": "/private/tmp/crab-java-source/common/src/main/java/com/crispytwig/naturalist/client/renderer/entity/NaturalistMobRenderer.java:45-47,83-88",
+    "baby_renderer": "/private/tmp/crab-java-source/common/src/main/java/com/crispytwig/naturalist/client/renderer/entity/FireflyRenderer.java:11-14",
+    "baby_model": "/private/tmp/crab-java-source/common/src/main/java/com/crispytwig/naturalist/client/model/animal/firefly/FireflyBabyModel.java:17-24"
+  },
+  "java_reachability": "Firefly extends NaturalistAnimal -> Animal/AgeableMob. Normal breeding creates a juvenile with negative Age; Animal.isBaby() selects FireflyRenderer's dedicated FireflyBabyModel and baby texture, and Firefly.tick also branches on isBaby for juvenile animation.",
+  "reproduction": {
+    "commands": [
+      "gamerule minecraft:spawn_mobs false",
+      "tick freeze",
+      "kill @e[type=naturalist:firefly]",
+      "summon naturalist:firefly 8.5 100 8.5 {Age:-2,NoAI:1b,PersistenceRequired:1b,Tags:[ff]}",
+      "data get entity @e[tag=ff,limit=1] Age",
+      "tick step 1",
+      "tick step 2",
+      "tick step 40",
+      "data get entity @e[tag=ff,limit=1] Age"
+    ]
+  },
+  "diagnosis": {
+    "stored_age": "The earlier capture labeled states with the requested -2/-1/0 argument; it did not read the entity's stored Age. Its reported zero values are withdrawn as evidence of normalization.",
+    "baby_state": "The corrected headless runner reads stored Age with data get entity and reads the independent entity baby flag from horizon-ctl entities. fixtures/firefly-age-java.json records the pinned Java baby-state expectation.",
+    "rendering": "Java selects FireflyBabyModel and the baby texture from isBaby(). This is a separate rendered-output check; the previous age capture did not establish what the renderer displayed.",
+    "remaining_limitation": "Juvenile Firefly behavior and baby rendering remain an open parity gap tracked by APP-2159 until the corrected matching-artifact capture passes. The earlier explanation that Horizon normalized Age before EntityJoinLevelEvent is disproven and removed."
+  },
+  "status": "open_engine_follow_up"
+}

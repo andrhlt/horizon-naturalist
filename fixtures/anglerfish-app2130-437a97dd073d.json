@@ -1,0 +1,142 @@
+{
+  "issue": "APP-2130",
+  "source_commit": "2c3dfcd6c87ac5a6146c1caccfb00229305dbd52",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "source_stage_sha256": "3c476a121151d3c2587053a6419d1d42e3724d48121957d4cb09bd25a1ec8b30",
+  "source_package_sha256": "49ec853bd7d5d056ef3c2aca0c9fd81fbfab55cb2daac1a2033f4d49d65e9a9b",
+  "client_candidate": "native-0a875da-437a97dd073d",
+  "client_libnaturalist_sha256": "fe39afdcf322462759e65a8eb3ca64ec964d20cede4bb452e2729884b9dba7e7",
+  "server_libnaturalist_sha256": "772883b3d2eb5a3ca97502925019efb881d2bd59c048fd1848cfbce1a8d13c27",
+  "server_export": "root@152.53.38.147:/root/dev/app2130-server-export-final/horizon-engine",
+  "build_and_integration": {
+    "optimized_client_build": true,
+    "optimized_linux_server_build": true,
+    "identical_source_package": true,
+    "client_connected": true,
+    "entered_playing": true,
+    "loaded_overworld": true,
+    "cross_platform_test": "python3 tools/launcher_cross_platform.py --version /private/tmp/app2130-launcher-data/versions/native-0a875da-437a97dd073d --resources '<prepared pinned 26.3 resources>' --jar '<verified pinned Naturalist jar>' --server 127.0.0.1:25582 --name App2130Final",
+    "generated_data_refresh": "282/282 files match",
+    "cargo_test": "25 passed, 0 failed"
+  },
+  "anglerfish_live_check": {
+    "attributes": {
+      "max_health": 8.0,
+      "movement_speed": 1.2,
+      "attack_damage": 2.0,
+      "default_variant": "naturalist:red"
+    },
+    "retaliation": {
+      "damage_command_applied": true,
+      "cod_health_after_40_ticks": 2.0,
+      "result": "fail: Anglerfish did not acquire and damage the nearby Cod"
+    },
+    "cooldown": {
+      "combat_started_cooldown": false,
+      "explicitly_loaded_java_tag": 2400,
+      "after_one_tick": 2399,
+      "result": "tick decrement matches Java; attack-triggered start remains unverified"
+    },
+    "bucket_capture": {
+      "captured_item": "naturalist:anglerfish_bucket",
+      "bucket_variant": "naturalist:glow",
+      "custom_variant": "naturalist:glow",
+      "result": "passed"
+    },
+    "bucket_release": {
+      "player_use": "failed: bucket remained in inventory and no Anglerfish spawned",
+      "dispenser": "failed: bucket was consumed and no Anglerfish spawned"
+    }
+  },
+  "rendered_frame_reuse": {
+    "screenshot": "/private/tmp/app2130-final.png",
+    "visible_species": ["naturalist:jellyfish", "naturalist:giant_isopod", "naturalist:great_white_shark", "naturalist:ray", "naturalist:whale"],
+    "scope": "Earlier renderer candidate only; reusable for presence/model visibility, not current behavior or Java pixel parity."
+  },
+  "latest_headless_replay": {
+    "source_commit": "b413c33d49c5818499a22851f644f7640d90db37",
+    "client_candidate": "native-0a875da-c5f09af2e30f",
+    "launcher_home": "/Users/andrewholt/Library/Application Support/horizon-launcher",
+    "account_configuration": "selected account reports ready for online play; replay ran through supported Play with --instance and --account",
+    "headless": true,
+    "attributes_and_default_variant": "matched Java: 8 health, 1.2 speed, 2.0 damage, naturalist:red",
+    "retaliation": "the live Anglerfish killed the 2-health nearby Cod within 40 ticks",
+    "attack_triggered_cooldown": "failed; HuntingCooldown remained 0 after combat",
+    "seeded_cooldown_tick": "2400 decremented to 2399",
+    "bucket_capture": "captured an Anglerfish bucket, but both bucket_entity_data and custom_data held naturalist:red despite fixture setup requesting naturalist:glow",
+    "player_release": "failed; held item remained naturalist:anglerfish_bucket and no live Anglerfish was found",
+    "dispenser_release": "not measured; fixture dispenser coordinates were outside loaded chunks after player-position setup",
+    "acceptance_status": "open"
+  },
+  "source_matched_replay_2026_11_22": {
+    "source_package_sha256": "ac8782881f86d90886be285eccaf4f654888abc2e42d106306a1da8fab8b24a5",
+    "mac_candidate": "native-0a875da-fb00425ae9cf",
+    "pinned_horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "launcher_home": "/Users/andrewholt/Library/Application Support/horizon-launcher",
+    "account_route": "authenticated LightTheTorch through supported launcher instance app-2130-authenticated",
+    "headless": true,
+    "force_loaded_chunks": 9,
+    "combat_event": {
+      "fixture": "Game::mob_attacks_mob with Anglerfish attacker and 2-health Cod target",
+      "cod_health_after_attack": 0,
+      "cooldown_immediately_after_event": 2400,
+      "cooldown_after_one_tick": 2399,
+      "cooldown_after_two_ticks": 2398,
+      "result": "passed; cooldown is stored in the persisted entity tag and decremented by the existing tick hook"
+    },
+    "variant": {
+      "confirmed_before_capture": "naturalist:glow",
+      "bucket_entity_data": "naturalist:glow",
+      "bucket_custom_data": "naturalist:glow",
+      "player_released_entity_variant": "naturalist:glow",
+      "result": "variant preserved"
+    },
+    "player_release": {
+      "live_fish_spawned": true,
+      "filled_bucket_still_held": true,
+      "result": "failed item conservation; production assignment to empty bucket did not affect observed held stack"
+    },
+    "dispenser_release": {
+      "live_glow_anglerfish_spawned": true,
+      "empty_bucket_returned_to_dispenser": true,
+      "result": "passed after registering AnglerfishBucket as an EmptyContents item part and force-loading test chunks"
+    },
+    "acceptance_status": "open"
+  },
+  "integrated_candidate_2026_11_23": {
+    "candidate": "native-0a875da-13ed1009764c",
+    "pinned_horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+    "launcher_home": "/Users/andrewholt/Library/Application Support/horizon-launcher",
+    "build": "supported horizon-launcher native-build . --instance app-2130-authenticated --version nightly-2026-11-20-0a875da --profile optimized --trust-native-code; succeeded in 19 seconds",
+    "client_libnaturalist_sha256": "43d8178c83f67094d24367b89fe27679f6d08228447fc0c8182239ef27f86663",
+    "account_state": "retry; Could not open the account lock",
+    "headless_replay": "not started; supported play exited before world load and requested Minecraft sign-in",
+    "linux_export": "not rebuilt; transfer of the current source stage to the APP-2120 Linux host was rejected by automatic approval review",
+    "shared_observer": "now includes tags and FromBucket; resolver filters test tags, saved variant and bucket origin, and reports missing Variant without inventing naturalist:red",
+    "local_harness_checks": "Python compilation and tagged/missing-variant helper checks passed",
+    "acceptance_status": "open"
+  },
+  "unchecked_visual_states": [
+    "controlled Java pixel comparison",
+    "all variant texture comparisons",
+    "baby meshes except Whale",
+    "hurt and death overlays",
+    "bucket and attachment poses",
+    "multipart Shark and Whale rendering",
+    "animation timing and interpolation"
+  ],
+  "remaining_species_behavior": [
+    "Anglerfish autonomous target acquisition and attack-triggered cooldown timing outside the deterministic event fixture",
+    "Anglerfish player bucket item conservation",
+    "Blobfish depth appearance and live-prey behavior",
+    "Giant Isopod hiding, shell defense, grouped ages, food, and bucket lifecycle",
+    "Great White Shark multipart combat, hunt cooldown, dry damage, and wet targeting",
+    "Jellyfish pulse, contact effects, and bucket lifecycle",
+    "Ray retaliation, poison, protected-target behavior, and bucket lifecycle",
+    "Starfish attachment, placement, death drops, and bucket lifecycle",
+    "Whale multipart behavior, growth, breathing, mating, feeding, and surface movement",
+    "Java-matched species-specific spawn predicates and save/reload of remaining species state"
+  ],
+  "parity_status": "open"
+}

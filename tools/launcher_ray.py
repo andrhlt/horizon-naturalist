@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from headless_fixture import HeadlessCommands
 
 version = Path(sys.argv[1])
 reference = json.loads(Path(sys.argv[2]).read_text())
@@ -19,10 +20,16 @@ with tempfile.TemporaryDirectory(prefix="nat-ray-", ignore_cleanup_errors=True) 
                                 capture_output=True, check=True, text=True, timeout=75)
         return json.loads(result.stdout.splitlines()[-1])
 
+    command_channel = [None]
+
     def cmd(line):
-        return ctl("command", line)["chat"]
+        if command_channel[0] is None:
+            command_channel[0] = HeadlessCommands(ctl)
+        return command_channel[0](line)
 
     def data(target, key):
+        if target.startswith("@e["):
+            return command_channel[0].entity_data(target, key)
         return next(row.split("following entity data: ", 1)[1]
                     for row in cmd(f"data get entity {target} {key}") if "following entity data: " in row)
 
@@ -53,6 +60,7 @@ with tempfile.TemporaryDirectory(prefix="nat-ray-", ignore_cleanup_errors=True) 
                 version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
                 "--world", "Ray Combat", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         cmd("gamerule minecraft:spawn_mobs false")
+        cmd("forceload add 0 0 47 47")
         cmd("difficulty normal")
         cmd("tp @s 8.5 92 6.5")
         ctl("wait", 20)

@@ -131,7 +131,7 @@ pub(super) fn capture(game: &mut Game<'_>, id: i32) -> bool {
             fields.retain(|key, value| match key.to_string_lossy().as_str() {
                 "Health" | "Variant" => true,
                 "Owner" => matches!(kind.as_str(), "naturalist:ant" | "naturalist:crab" | "naturalist:rat" | "naturalist:hedgehog") && tamed_with_owner,
-                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab" | "naturalist:rat"),
+                "Age" => matches!(kind.as_str(), "naturalist:butterfly" | "naturalist:caterpillar" | "naturalist:crab" | "naturalist:rat" | "naturalist:firefly"),
                 "FollowingOwner" | "Sitting" => matches!(kind.as_str(), "naturalist:rat" | "naturalist:hedgehog") && tamed_with_owner,
                 "DyeColor" => kind == "naturalist:hedgehog",
                 "Color" => kind == "naturalist:snail",
@@ -245,7 +245,21 @@ pub(super) fn release_at(game: &mut Game<'_>, stack: &ItemStack, pos: [i32; 3]) 
         fields.insert("Pos".into(), Tag::List(at.into_iter().map(|v| Tag::Double(v.to_bits())).collect()));
         fields.insert("PersistenceRequired".into(), Tag::Byte(1));
         // Java ignores a rejected spawn but still plays the release effects and consumes the item.
-        let _ = game.spawn_entity_from_nbt(Tag::Compound(fields));
+        let saved_age = fields
+            .get(&"Age".into())
+            .and_then(horizon_world::datafix::dynamic::as_number)
+            .map(|number| number.int_value());
+        if let Some(crate::game::commands::Target::Mob(id)) =
+            game.spawn_entity_from_nbt(Tag::Compound(fields))
+            && let Some(age) = saved_age
+            && let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id)
+        {
+            // Some Naturalist species are initialized as adults during the
+            // generic entity load even when the captured NBT carries Age.
+            // Restore the Java-owned age after that initialization so release
+            // and the subsequent world save preserve the captured value.
+            mob.extra.age = age;
+        }
         at
     } else {
         // A newly given item has no saved id. Use its declared type and ordinary stack configuration.

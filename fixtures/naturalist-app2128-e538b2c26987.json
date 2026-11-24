@@ -1,0 +1,65 @@
+{
+  "issue": "APP-2128",
+  "candidate": "native-0a875da-e538b2c26987",
+  "horizon_revision": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "java_reference": "Naturalist 2.0.7 NeoForge 26.3.0.95",
+  "java_source_revision": "1471124ae26bcbf90a2106a1f68080d1dd03a53a",
+  "java_jar_sha512": "b1a220dc6bcb6101911226a57d75d62f2797461c3e529e8cf7110673b69632538c4a129b135f9572411cbc60336c096e056488fbe1528638196c247eef6492cd",
+  "build_profile": "optimized",
+  "mod_source_sha256": "c0b7deeb9afb47806de30c62d0ee17115ba63f7333a3b4448dd6abe34e75357f",
+  "libnaturalist_sha256": "17553162bf0e4e1f22d2ed6cba1812a667f4253c613abea2fdff9375066051c9",
+  "libhorizon_patch_sha256": "24128d951265cb4c5726525ad01c2a192c357658512df0d49a0f4b407def07c0",
+  "checks": {
+    "butterfly_caterpillar_lifecycle": {
+      "command": "python3 tools/launcher_insect_lifecycle.py <candidate-runtime> fixtures/insect-lifecycle-java.json --jar <pinned-naturalist-2.0.7.jar>",
+      "expected": {
+        "baby_makes_cocoon": false,
+        "adult_makes_cocoon": true,
+        "caterpillar_discarded": true,
+        "chrysalis_faces_log": true,
+        "butterfly_hatches": true,
+        "grew_crop": true,
+        "breeds_caterpillar": true
+      },
+      "observed": {
+        "baby_makes_cocoon": false,
+        "adult_makes_cocoon": true,
+        "caterpillar_discarded": true,
+        "chrysalis_faces_log": true,
+        "butterfly_hatches": false,
+        "grew_crop": true,
+        "breeds_caterpillar": true
+      },
+      "passed": false
+    },
+    "insect_capture": {
+      "command": "python3 tools/launcher_insect_capture_click.py <candidate-runtime> fixtures/insect-capture-click-java.json --jar <pinned-naturalist-2.0.7.jar>",
+      "passed": true,
+      "observed": {
+        "butterfly_saves_id": false,
+        "butterfly_saves_uuid": false,
+        "butterfly_saves_variant": true,
+        "butterfly_saves_no_ai": true,
+        "butterfly_saves_health": true,
+        "butterfly_saves_name_component": true,
+        "dragonfly_saves_id": true,
+        "caterpillar_saves_id": false,
+        "caterpillar_saves_age": true,
+        "scorpion_saves_id": false,
+        "firefly_saves_id": true,
+        "all_removed": true,
+        "damage_each": true
+      }
+    },
+    "butterfly_packet_rotation": "not run",
+    "baby_spawn_cancellation_and_breeding_credit": "not run",
+    "rendered_output": "not run",
+    "matching_client_server_artifacts": "not run",
+    "dragonfly_behavior": "not run",
+    "firefly_behavior": "not run",
+    "desert_and_jungle_scorpion_behavior": "not run",
+    "snail_behavior": "not run"
+  },
+  "result": "incomplete",
+  "scope_note": "The adult Caterpillar cocoon goal and Butterfly crop growth are implemented. Chrysalis hatching and the listed unrun species, rendering, breeding-edge, and matching-artifact checks remain open."
+}

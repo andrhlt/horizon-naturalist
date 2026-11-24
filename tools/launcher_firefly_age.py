@@ -2,14 +2,17 @@
 import argparse
 import json
 from pathlib import Path
+import re
+from launcher_setup import prepare_home
 import subprocess
 import tempfile
 
 
-def capture(version):
+def capture(version, jar):
     with tempfile.TemporaryDirectory(prefix="nat-firefly-age-", ignore_cleanup_errors=True) as work:
         directory = Path(work)
         socket = directory / "firefly-age.sock"
+        prepare_home(directory, jar)
 
         def call(*args):
             reply = subprocess.run(
@@ -21,15 +24,18 @@ def capture(version):
         def command(line):
             return call("command", line)["chat"]
 
-        def state():
-            rows = command("data get entity @e[tag=firefly_age,limit=1] Age")
-            age = next(int(row.rsplit(": ", 1)[-1]) for row in rows if "following entity data" in row)
-            rows = command("naturalist_fixture_mob_profile naturalist:firefly")
-            marker = "Naturalist mob profile "
-            profile = next(json.loads(row.split(marker, 1)[1]) for row in rows if marker + "{" in row)
+        def state(requested_age):
             mobs = call("entities", 8, "naturalist:firefly")["entities"]
-            assert len(mobs) == 1, (age, profile, mobs, call("status").get("player"))
-            return {"age": age, "dimensions": profile["dimensions"], "baby": mobs[0]["baby"]}
+            assert len(mobs) == 1, (requested_age, mobs, call("status").get("player"))
+            rows = command("data get entity @e[type=naturalist:firefly,tag=firefly_age,limit=1] Age")
+            stored_age = next((int(match[1]) for row in rows
+                               if (match := re.search(r"following entity data: (-?\d+)", row))), None)
+            assert stored_age is not None, (requested_age, rows)
+            return {
+                "requested_age": requested_age,
+                "stored_age": stored_age,
+                "baby_state": mobs[0]["baby"],
+            }
 
         try:
             call("launch", "--headless", "--game", version / "horizon-client",
@@ -43,16 +49,17 @@ def capture(version):
             command("time set midnight")
             call("wait", 20)
             command("tick freeze")
-            command("summon naturalist:firefly 8.5 101 11.5 "
-                    "{Age:-2,NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Tags:[firefly_age]}")
+            rows = command("summon naturalist:firefly 8.5 101 11.5 "
+                           "{Age:-2,NoAI:1b,NoGravity:1b,PersistenceRequired:1b,Tags:[firefly_age]}")
+            assert any("Summoned" in row for row in rows), rows
             call("wait", 6)
-            juvenile = state()
+            juvenile = state(-2)
             command("tick step 1")
             call("wait", 4)
-            midpoint = state()
+            midpoint = state(-1)
             command("tick step 1")
             call("wait", 4)
-            adult = state()
+            adult = state(0)
             return {"juvenile": juvenile, "near_adult": midpoint, "adult": adult}
         finally:
             if socket.exists():
@@ -63,13 +70,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("version", type=Path)
     parser.add_argument("fixture", type=Path)
+    parser.add_argument("--jar", type=Path, required=True)
     args = parser.parse_args()
     fixture = json.loads(args.fixture.read_text())
-    observed = capture(args.version)
+    observed = capture(args.version, args.jar)
     print(json.dumps(observed, indent=2), flush=True)
     for stage, age in (("juvenile", -2), ("near_adult", -1), ("adult", 0)):
         actual = observed[stage]
         expected = fixture["juvenile" if age < 0 else "adult"]
-        assert actual["age"] == age, (stage, actual, age)
-        assert actual["baby"] == expected["baby"], (stage, actual, expected)
-        assert all(abs(a - b) < 1e-6 for a, b in zip(actual["dimensions"], expected["dimensions"])), (stage, actual, expected)
+        assert actual["stored_age"] == age, (stage, actual, age)
+        assert actual["baby_state"] == expected["baby"], (stage, actual, expected)

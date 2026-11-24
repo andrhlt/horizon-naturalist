@@ -1,6 +1,7 @@
 """Compare the forest wildlife rows before and after a live native config change."""
 import argparse
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -8,8 +9,12 @@ import time
 
 
 def capture(version, reference):
+    resources = Path(os.environ.get("NATURALIST_RESOURCES", version / ".local/horizon-client/26.3"))
     with tempfile.TemporaryDirectory(prefix="nat-forest-config-", ignore_cleanup_errors=True) as work:
         home = Path(work)
+        jar_cache = os.environ.get("NATURALIST_JAR_CACHE")
+        if jar_cache:
+            (home / "jars").symlink_to(Path(jar_cache), target_is_directory=True)
         socket = home / "ctl.sock"
         config = home / "config/naturalist-server.toml"
 
@@ -37,7 +42,7 @@ def capture(version, reference):
         forest, taiga = "minecraft:forest", "minecraft:taiga"
         try:
             control("launch", "--headless", "--game", version / "horizon-client",
-                    "--resources", version / ".local/horizon-client/26.3", "--home", home,
+                    "--resources", resources, "--home", home,
                     "--game-dir", home, "--world", "Naturalist Forest Spawn Settings",
                     "--creative", "--test-terrain", "--render-distance", 4, "--wait")
             command("tp @s 8.5 107 8.5")

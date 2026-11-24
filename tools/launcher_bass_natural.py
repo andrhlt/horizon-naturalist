@@ -8,9 +8,13 @@ import tempfile
 import time
 
 version = Path(sys.argv[1])
+resources = Path(os.environ.get("NATURALIST_RESOURCES", version / ".local/horizon-client/26.3"))
 reference = json.loads(Path(sys.argv[2]).read_text())
 with tempfile.TemporaryDirectory(prefix="nat-bass-natural-", ignore_cleanup_errors=True) as work:
     home = Path(work)
+    jar_cache = os.environ.get("NATURALIST_JAR_CACHE")
+    if jar_cache:
+        (home / "jars").symlink_to(Path(jar_cache), target_is_directory=True)
     socket = home / "natural.sock"
 
     def ctl(*args):
@@ -38,7 +42,7 @@ with tempfile.TemporaryDirectory(prefix="nat-bass-natural-", ignore_cleanup_erro
                 raise RuntimeError("Timed out waiting for Horizon Play to load the fixture world")
         else:
             ctl("launch", "--headless", "--game", version / "horizon-client", "--resources",
-                version / ".local/horizon-client/26.3", "--home", home, "--game-dir", home,
+                resources, "--home", home, "--game-dir", home,
                 "--world", "Bass Natural Formation", "--creative", "--test-terrain", "--render-distance", 4, "--wait")
         result = ctl("command", "naturalist_fixture_bass_natural")
         assert result["ok"], result
