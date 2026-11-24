@@ -310,11 +310,17 @@ impl mod_api::Hooks for Naturalist {
 
     fn potential_spawns(
         &self,
-        _: &dyn mod_api::Host,
+        host: &dyn mod_api::Host,
         event: &mut mod_api::PotentialSpawnsEvent<'_>,
     ) -> mod_api::Flow {
+        use mod_api::Host;
+        let forest = host
+            .level(event.dimension)
+            .and_then(|level| level.biome_at(host, event.pos))
+            .as_deref()
+            == Some("minecraft:forest");
         if event.category == "creature" {
-            forest_config::filter(event.entries);
+            forest_config::filter(event.entries, forest);
         }
         mod_api::Flow::Continue
     }

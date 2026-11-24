@@ -32,7 +32,10 @@ pub fn remove_forest_rabbit() -> bool {
     DISABLED.load(Ordering::Acquire) & FOREST_RABBIT != 0
 }
 
-pub fn filter(entries: &mut Vec<mod_api::SpawnEntry>) {
+pub fn filter(entries: &mut Vec<mod_api::SpawnEntry>, forest: bool) {
+    if !forest {
+        return;
+    }
     let fox = remove_forest_fox();
     let rabbit = remove_forest_rabbit();
     entries.retain(|entry| {
@@ -51,6 +54,32 @@ mod tests {
         );
         assert!(remove_forest_fox());
         assert!(!remove_forest_rabbit());
+        let mut forest = vec![
+            mod_api::SpawnEntry {
+                entity: "minecraft:fox".into(),
+                weight: 10,
+                min: 1,
+                max: 2,
+                constant: false,
+            },
+            mod_api::SpawnEntry {
+                entity: "minecraft:rabbit".into(),
+                weight: 10,
+                min: 2,
+                max: 3,
+                constant: false,
+            },
+        ];
+        filter(&mut forest, true);
+        assert_eq!(
+            forest
+                .iter()
+                .map(|entry| entry.entity.as_str())
+                .collect::<Vec<_>>(),
+            ["minecraft:rabbit"]
+        );
+        filter(&mut forest, false);
+        assert_eq!(forest.len(), 1);
         update(default_config());
         assert!(!remove_forest_fox());
         assert!(!remove_forest_rabbit());
