@@ -6,7 +6,7 @@ side = "both"
 capabilities = ["registries"]
 [native]
 game = "26.3"
-horizon = "0a875da91dbb0fdcb7ba8c42c11341aa229af51a"
+horizon = "98a0fff291b65f8098700f08e9dd0f29df2985b4"
 mixins = "e59da9094f0c2fdda6c627fe9eff22dec6a906f0"
 [[native.mixin]]
 id = "metadata"

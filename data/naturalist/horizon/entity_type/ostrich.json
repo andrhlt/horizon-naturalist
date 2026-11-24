@@ -1,3 +1,8 @@
 {
-  "template": "minecraft:wandering_trader"
+  "template": "minecraft:wandering_trader",
+  "attributes": {
+    "minecraft:max_health": 30.0,
+    "minecraft:movement_speed": 0.24,
+    "minecraft:step_height": 4.0
+  }
 }

@@ -23,6 +23,8 @@ mod whale_behavior;
 mod aquatic_placements;
 mod aquatic_spawn;
 pub mod ant_worker;
+mod bird;
+mod vulture;
 mod appearance;
 mod duck_appearance;
 mod duck_renderer;
@@ -233,6 +235,7 @@ impl Default for Naturalist {
 impl mod_api::Hooks for Naturalist {
     fn register(&self, registrar: &mut dyn mod_api::Registrar, _: &mod_api::RegistrationContext) {
         net::register(registrar);
+        bird::register(registrar);
         alligator_egg_part::register(registrar);
         elephant_melon::register(registrar);
         ant_hill::register(registrar);
@@ -635,6 +638,18 @@ impl mod_api::Hooks for Naturalist {
         host: &mut dyn mod_api::ServerHost,
         event: &mut mod_api::EntityTickPreEvent<'_>,
     ) -> mod_api::Flow {
+        if event.kind == "naturalist:bird" {
+            if let Some(bird) = host.entity(event.entity) {
+                if let Err(error) = bird::eat_nearby_seeds(host, bird) {
+                    eprintln!("Naturalist: bird seed feeding failed: {error:?}");
+                }
+            }
+        }
+        if event.kind == "naturalist:vulture" {
+            if let Some(vulture) = host.entity(event.entity) {
+                vulture::tick(host, vulture);
+            }
+        }
         if event.kind == "naturalist:great_white_shark" {
             shark_behavior::update_target_gate(host, event.entity);
         }
