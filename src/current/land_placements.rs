@@ -11,6 +11,7 @@ pub fn register(registrar: &mut dyn mod_api::Registrar) {
         "giraffe",
         "boar",
         "lizard",
+        "komodo_dragon",
         "tortoise",
         "mole",
         "rat",

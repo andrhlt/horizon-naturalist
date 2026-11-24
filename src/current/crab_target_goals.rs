@@ -7,7 +7,10 @@ use horizon_client::mobs::{
 
 fn owner<'a>(m: &Mob, world: &'a MobWorld<'_>) -> Option<&'a horizon_client::mobs::PlayerView> {
     let uuid = m.extra.owner?;
-    m.extra.tame.then(|| world.player_by_uuid(uuid)).flatten()
+    if !m.extra.tame || !world.player_identity.is_some_and(|(player, _)| player == uuid) {
+        return None;
+    }
+    world.selected_player()
 }
 fn armed(m: &Mob) -> bool {
     m.extra.main_hand_id().is_some()

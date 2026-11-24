@@ -1,0 +1,47 @@
+{
+  "issue": "APP-2132",
+  "purpose": "Focused Lizard ordered-sitting and persistence follow-up",
+  "candidate": {
+    "version": "native-4a73697-f9cbafc0936a",
+    "platform": "macOS arm64",
+    "horizon_source": "4a73697c944981fb3fdd066ebfcd926605e9fbc6",
+    "minecraft": "26.3",
+    "sdk": "developer-3fcc99b6270e36667e4ca67c2ccbe265ce0016e8a5155f9104ada4b29f4eed16",
+    "rust": "1.99.1",
+    "profile": "optimized",
+    "resources": {
+      "path": "/private/tmp/app2145-launcher-home/versions/nightly-2026-11-20-0a875da/.local/horizon-client/26.3",
+      "tree_sha256": "75ebb227edcf56bcd67b11a983e08eafc34339864ba27b05ae6bd469bc6f5a8c",
+      "read_only": true
+    },
+    "hashes": {
+      "naturalist_package_sha256": "4e7017e0b4b988195d9ec0dc1141c17f739a12972800f98c0d5b8369066f7d8c",
+      "libnaturalist_sha256": "ffdd4af2207aeb87eaff04c6dca31a44c18aa1f7acb7d049a9c33addf258b178",
+      "libhorizon_patch_sha256": "85191c920027ba0579e61692731ce570d676d01ada8d25c4e5e8c74b3297ff2f",
+      "horizon_client_sha256": "74b8f453c19b4d93dd356b6e8ae7ea2d644164c5d89a5dd04682f85687eb2f11",
+      "horizon_server_sha256": "5e53e663efdbc4b5e1519c45132888ae3cceeda412353f723f1443a825610da0"
+    }
+  },
+  "commands": {
+    "build": "HORIZON_LAUNCHER_DEVELOPER_SDK=/private/tmp/app2132-sitting-sdk-final HORIZON_LAUNCHER_HOME=/private/tmp/app2132-launcher HORIZON_HOME=/private/tmp/app2132-game horizon-launcher native-build <Naturalist worktree> --instance app2132-lizard-sitting --version developer-3fcc99b6270e36667e4ca67c2ccbe265ce0016e8a5155f9104ada4b29f4eed16 --trust-native-code --json",
+    "fixture": "python3 tools/launcher_lizard.py /private/tmp/app2132-launcher/versions/native-4a73697-f9cbafc0936a fixtures/lizard-java.json"
+  },
+  "checks": {
+    "native_build": "PASS; launcher installed native-4a73697-f9cbafc0936a",
+    "lizard_java_fixture": "PASS for captured Java fixture fields",
+    "taming_sits_after_normal_tick": "PASS",
+    "owner_main_hand_toggle_unsits_and_resits": "PASS",
+    "tail_drop_heal_and_regrowth": "PASS; health 20, tail restored",
+    "save_reopen": "PASS; owner, sitting, health, variant, and tail state preserved",
+    "python_compile": "PASS; launcher_lizard.py and launcher_managed.py",
+    "diff_check": "PASS",
+    "rendering": "Not rerun; prior matching source evidence retained",
+    "lan": "Not run; not required for this focused sitting change"
+  },
+  "diagnosis": "A successful main-hand feeding/taming interaction was followed by the same click's empty off-hand callback. The owner sitting-toggle handler treated it as a separate command and immediately unsat the Lizard. Empty-hand owner toggles now accept only the main-hand callback.",
+  "retained_species_evidence": {
+    "komodo": "Prior passing mating/healing evidence retained; no Komodo behavior source changed in this follow-up.",
+    "mole": "PASS on native-0a875da-b8fcdd9a8037/source e9f9267: Zombie flee and dirt-trail behavior; Mole source unchanged.",
+    "tortoise": "Prior passing Java behavior and spawn-path evidence retained; Tortoise source unchanged."
+  }
+}
