@@ -531,6 +531,10 @@ impl mod_api::Hooks for Naturalist {
             ("naturalist:rhino", self.rhino.clone()),
             ("naturalist:tiger", self.tiger.clone()),
             ("naturalist:zebra", self.zebra.clone()),
+        ] {
+            event.renderers.register(id.into(), renderer);
+        }
+        for (id, renderer) in [
             ("naturalist:alligator", self.alligator.clone()),
             ("naturalist:capybara", self.capybara.clone()),
             ("naturalist:catfish", self.catfish.clone()),
