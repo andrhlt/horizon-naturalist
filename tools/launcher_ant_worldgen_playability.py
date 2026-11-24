@@ -2,12 +2,13 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
-import time
+import uuid
 
+from launcher_managed import launch_managed, wait_managed
 from prepare import JAR_SHA
 
 
@@ -25,10 +26,11 @@ def capture(version: Path, jar: Path) -> dict:
         raise ValueError("expected the pinned Naturalist Java jar")
     with tempfile.TemporaryDirectory(prefix="nat-ant-worldgen-") as temp:
         home = Path(temp)
-        (home / "jars").mkdir()
-        shutil.copyfile(jar, home / "jars" / f"{JAR_SHA}.jar")
-        (home / "horizon-mods.txt").write_text("mod.naturalist:true\n")
         socket = home / "ant-worldgen.sock"
+        world_suffix = uuid.uuid4().hex[:8]
+        os.environ.setdefault("NATURALIST_TEST_LAUNCHER_HOME", str(version.parent.parent))
+        os.environ.setdefault("NATURALIST_TEST_INSTANCE", f"app-2124-ant-{world_suffix}")
+        process = None
 
         def ctl(*args):
             result = subprocess.run(
@@ -42,17 +44,17 @@ def capture(version: Path, jar: Path) -> dict:
             return ctl("command", line)["chat"]
 
         def launch():
-            ctl("launch", "--headless", "--game", version / "horizon-client",
-                "--resources", version / ".local/horizon-client/26.3",
-                "--home", home, "--game-dir", home, "--world", "Natural Ant Hill Playability",
-                "--seed", 42, "--creative", "--render-distance", 6, "--wait")
+            nonlocal process
+            process = launch_managed(
+                version, socket, home, "Natural Ant Hill Playability", creative=True,
+                render_distance=6, world_suffix=world_suffix, seed=42,
+            )
 
         def close():
+            nonlocal process
             ctl("quit")
-            deadline = time.monotonic() + 15
-            while socket.exists() and time.monotonic() < deadline:
-                time.sleep(0.1)
-            assert not socket.exists(), "Horizon did not stop after quit"
+            wait_managed(process)
+            process = None
 
         def snapshot(anchor, expected_cells, require_pristine_queen=True):
             scan = ctl("find-block", "naturalist:ant_hill", 10)
@@ -142,7 +144,10 @@ def capture(version: Path, jar: Path) -> dict:
                     "save_reopen_identical": True}
         finally:
             if socket.exists():
-                ctl("quit")
+                try:
+                    ctl("quit")
+                finally:
+                    wait_managed(process)
 
 
 if __name__ == "__main__":
