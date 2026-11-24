@@ -2,7 +2,6 @@
 use horizon_core::{geometry::Vec3, nbt::Tag};
 use horizon_core::random::RandomSource;
 use horizon_client::mobs::{Damage, DamageKind, Mob, MobEvent, Who, goals::{Cx, Goal, LOOK, MOVE}};
-use super::Game;
 use std::collections::HashSet;
 
 #[derive(Clone, Debug, Default)]
@@ -171,7 +170,7 @@ impl Goal for LargeCatPreyTarget {
     }
 }
 
-pub fn install_large_cat(game: &mut crate::game::Game<'_>, entity: u32, kind: &str) {
+pub fn install_large_cat(game: &mut horizon_client::game::Game<'_>, entity: u32, kind: &str) {
     let tag = match kind {
         "naturalist:lion" => "naturalist:lion_hostiles",
         "naturalist:tiger" => "naturalist:tiger_hostiles",
@@ -271,7 +270,7 @@ impl Goal for RhinoCharge {
     }
 }
 
-pub fn stun(game: &mut crate::game::Game<'_>, id: u32) {
+pub fn stun(game: &mut horizon_client::game::Game<'_>, id: u32) {
     let Some(mob) = game.mobs.iter_mut().find(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     mob.extra.counter2 = 60;
     mob.extra.ints[4] = 0;
@@ -281,7 +280,7 @@ pub fn stun(game: &mut crate::game::Game<'_>, id: u32) {
     if let Tag::Compound(fields) = raw { fields.insert("StunTick".into(), Tag::Int(60)); }
 }
 
-pub fn tick(game: &mut crate::game::Game<'_>, id: u32) {
+pub fn tick(game: &mut horizon_client::game::Game<'_>, id: u32) {
     let Some(index) = game.mobs.iter().position(|mob| mob.id == id && mob.kind.id == "naturalist:rhino") else { return; };
     let stun = game.persist.raw.get(&id).and_then(|tag| tag.get("StunTick"))
         .and_then(horizon_world::datafix::dynamic::as_number).map_or(0, |value| value.int_value());
@@ -297,7 +296,7 @@ pub fn tick(game: &mut crate::game::Game<'_>, id: u32) {
     }
 }
 
-pub fn break_charge_blocks(game: &mut crate::game::Game<'_>, index: usize) {
+pub fn break_charge_blocks(game: &mut horizon_client::game::Game<'_>, index: usize) {
     use mod_api::BlockUpdateFlags;
 
     if game.mobs[index].extra.ints[4] == 0
