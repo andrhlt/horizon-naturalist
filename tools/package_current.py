@@ -48,7 +48,7 @@ def build(jar: Path, output: Path):
     }
     for path in paths:
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
-    for path in sorted((ROOT / 'src/current').rglob('*.rs')):
+    for path in sorted((ROOT / 'src').rglob('*.rs')):
         payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     with ZipFile(jar) as original:
         for name in CAPTURE_NET_PARTICLE_RESOURCES:
