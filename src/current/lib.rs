@@ -13,7 +13,6 @@ mod anglerfish_bucket_pickup;
 mod blobfish_behavior;
 mod isopod_behavior;
 mod jellyfish_behavior;
-mod ocean_bucket_item;
 mod ocean_feeding;
 mod ocean_placements;
 mod ocean_renderer;
@@ -467,6 +466,7 @@ impl mod_api::Hooks for Naturalist {
         event: &mut mod_api::LivingDropsEvent<'_>,
     ) -> mod_api::Flow {
         starfish_behavior::drops(host, event);
+        rat_cargo_drops::drops(host, event);
         mod_api::Flow::Continue
     }
 
@@ -851,14 +851,6 @@ impl mod_api::Hooks for Naturalist {
         for renderer in &self.ocean { renderer.clear(); }
     }
 
-    fn living_drops(
-        &self,
-        host: &mut dyn mod_api::ServerHost,
-        event: &mut mod_api::LivingDropsEvent<'_>,
-    ) -> mod_api::Flow {
-        rat_cargo_drops::drops(host, event);
-        mod_api::Flow::Continue
-    }
 }
 
 #[cfg(test)]
