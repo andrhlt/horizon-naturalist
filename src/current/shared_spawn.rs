@@ -107,7 +107,6 @@ fn natural_age_group(kind: &str) -> Option<Ageable> {
     const ALWAYS_BABY: &[&str] = &[
         "naturalist:bear",
         "naturalist:black_bear",
-        "naturalist:rhino",
         "naturalist:whale",
     ];
     const FIVE_PERCENT: &[&str] = &[
@@ -137,6 +136,10 @@ fn apply_natural_age_group(kind: &str, group: &mut Option<Group>) {
                 *group = Some(Group::Ageable(Ageable::chance(1.0)));
             } else if kind == "naturalist:lion" {
                 *group = Some(Group::Ageable(Ageable::chance(0.05)));
+            } else if kind == "naturalist:rhino" {
+                // Java starts a Rhino group with one adult, then makes every
+                // later member a calf.
+                *group = Some(Group::Ageable(Ageable::chance(0.0)));
             } else if kind == "naturalist:zebra" {
                 *group = Some(Group::Ageable(Ageable::chance(0.20)));
             }
@@ -152,6 +155,10 @@ fn apply_natural_age_group(kind: &str, group: &mut Option<Group>) {
             "naturalist:lion" => {
                 existing.should_spawn_baby = true;
                 existing.baby_chance = if existing.size <= 1 { 0.05 } else { 0.75 };
+            }
+            "naturalist:rhino" => {
+                existing.should_spawn_baby = true;
+                existing.baby_chance = 1.0;
             }
             "naturalist:zebra" => {
                 existing.should_spawn_baby = true;
@@ -196,9 +203,29 @@ mod tests {
         assert!(natural_age_group("naturalist:bird").is_some());
         assert!(natural_age_group("naturalist:bear").is_some());
         assert!(natural_age_group("naturalist:deer").is_some());
+        assert!(natural_age_group("naturalist:rhino").is_none());
         assert!(natural_age_group("naturalist:elephant").is_none());
         assert!(natural_age_group("naturalist:lion").is_none());
         assert!(natural_age_group("naturalist:mammoth").is_none());
         assert!(natural_age_group("naturalist:zebra").is_none());
+    }
+
+    #[test]
+    fn rhino_group_starts_adult_then_uses_calf_members() {
+        use super::apply_natural_age_group;
+
+        let mut group = None;
+        apply_natural_age_group("naturalist:rhino", &mut group);
+        let Some(Group::Ageable(first)) = group.as_ref() else {
+            panic!("Rhino group did not initialize");
+        };
+        assert_eq!(first.baby_chance, 0.0);
+
+        apply_natural_age_group("naturalist:rhino", &mut group);
+        let Some(Group::Ageable(next)) = group.as_ref() else {
+            panic!("Rhino group was lost");
+        };
+        assert!(next.should_spawn_baby);
+        assert_eq!(next.baby_chance, 1.0);
     }
 }

@@ -36,7 +36,7 @@ def pack_giraffe(jar, pack, dump):
             dump(pack, file, combined)
     dump(pack, f"data/naturalist/horizon/item/{egg}.json", {"template": "minecraft:cow_spawn_egg"})
     dump(pack, "data/naturalist/horizon/entity_type/giraffe.json", {
-        "template": "minecraft:wandering_trader",
+        "template": "minecraft:horse",
         "attributes": {"minecraft:max_health": 32, "minecraft:movement_speed": 0.25, "minecraft:step_height": 1},
     })
     dump(pack, "data/naturalist/neoforge/biome_modifier/giraffe.json", {

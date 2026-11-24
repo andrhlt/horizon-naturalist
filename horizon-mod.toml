@@ -8,104 +8,6 @@ capabilities = ["registries"]
 game = "26.3"
 horizon = "0a875da91dbb0fdcb7ba8c42c11341aa229af51a"
 mixins = "e59da9094f0c2fdda6c627fe9eff22dec6a906f0"
-
-[[native.mixin]]
-id = "headless-entity-state-fixture"
-target = "horizon_client::game::commands::Game<'_>::run_command"
-kind = "HEAD"
-cancellable = true
-helper = "src/current/headless_state_fixture.rs"
-bindings = [
- {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
- {name = "command", ty = "&str", value = "command"},
-]
-[[native.mixin]]
-id = "forest-spawns-config-fixture"
-target = "horizon_client::game::commands::Game<'_>::run_command"
-kind = "HEAD"
-cancellable = true
-helper = "src/legacy_reference/horizon/forest_spawns_config_fixture.rs"
-bindings = [
- {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
- {name = "command", ty = "&str", value = "command"},
-]
-
-[[native.module]]
-id = "anglerfish-goals"
-file = "crates/horizon-client/src/game.rs"
-name = "naturalist_anglerfish_goals"
-source = "src/current/anglerfish_goals.rs"
-
-[[native.mixin]]
-id = "anglerfish-goals-join"
-target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
-kind = "HEAD"
-helper = "src/current/anglerfish_goals_join.rs"
-bindings = [
- { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
- { name = "entity", ty = "u32", value = "entity" },
- { name = "kind", ty = "&str", value = "kind" },
-]
-
-[[native.mixin]]
-id = "anglerfish-attack"
-target = "horizon_client::game::combat::Game<'_>::mob_attacks_mob"
-kind = "WRAP_OPERATION"
-selector = "self.mob_hits_mob"
-ordinal = 0
-require = 1
-helper = "src/current/anglerfish_attack.rs"
-bindings = [
- { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
- { name = "target", ty = "u32", value = "$arg0" },
- { name = "amount", ty = "f32", value = "$arg1" },
- { name = "source", ty = "horizon_client::mobs::Damage", value = "$arg2" },
- { name = "original", ty = "impl FnOnce(&mut Game<'_>, u32, f32, horizon_client::mobs::Damage) -> bool", value = "$operation" },
-]
-
-[[native.mixin]]
-id = "anglerfish-cooldown"
-target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
-kind = "HEAD"
-helper = "src/current/anglerfish_tick.rs"
-bindings = [
- { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
- { name = "entity", ty = "u32", value = "entity" },
- { name = "kind", ty = "&str", value = "kind" },
-]
-
-[[native.mixin]]
-id = "anglerfish-bucket-release"
-target = "horizon_client::game::native_hooks::base::Game<'_>::native_use_item"
-kind = "WRAP_OPERATION"
-selector = "self.fire_use_item"
-require = 1
-ordinal = 0
-helper = "src/current/anglerfish_bucket_release.rs"
-bindings = [
- { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
- { name = "call", ty = "mod_api::__private::UseItemCall<'_>", value = "$arg0" },
- { name = "original", ty = "impl FnOnce(&mut Game<'_>, mod_api::__private::UseItemCall<'_>) -> ()", value = "$operation" },
-]
-
-[[native.module]]
-id = "anglerfish-bucket"
-file = "crates/horizon-client/src/game.rs"
-name = "naturalist_anglerfish_bucket"
-source = "src/current/anglerfish_bucket.rs"
-
-[[native.mixin]]
-id = "anglerfish-bucket-dispense"
-target = "horizon_client::game::dispense_bucket::Game<'_>::empty_bucket_contents"
-kind = "HEAD"
-cancellable = true
-helper = "src/current/anglerfish_bucket_dispense.rs"
-bindings = [
- { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
- { name = "target", ty = "Pos", value = "target" },
- { name = "stack", ty = "&ItemStack", value = "stack" },
-]
-
 [[native.mixin]]
 id = "metadata"
 target = "horizon_client::game::resource_load::take_modified_attribute_rows"
@@ -121,12 +23,6 @@ id = "biome-routes"
 file = "crates/horizon-client/src/game.rs"
 name = "naturalist_spawn_routes"
 source = "src/current/biome_routes.rs"
-
-[[native.module]]
-id = "whale-behavior"
-file = "crates/horizon-client/src/game.rs"
-name = "naturalist_whale_behavior"
-source = "src/current/whale_behavior.rs"
 
 [[native.module]]
 id = "caterpillar-cocoon-goal"
@@ -225,10 +121,16 @@ name = "naturalist_deer_goals"
 source = "src/current/deer_goals_native.rs"
 
 [[native.module]]
-id = "shared-spawn"
+id = "zebra-breed-goal"
 file = "crates/horizon-client/src/game.rs"
-name = "naturalist_shared_spawn"
-source = "src/current/shared_spawn.rs"
+name = "naturalist_zebra_breed"
+source = "src/current/zebra_breed_goal.rs"
+
+[[native.module]]
+id = "rhino-goals"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_rhino_goals"
+source = "src/current/rhino_ai.rs"
 
 [[native.module]]
 id = "deer_appearance"
@@ -375,7 +277,6 @@ helper = "src/current/deer_finalize_variant.rs"
 bindings = [
   { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
   { name = "mob", ty = "&horizon_client::mobs::Mob", value = "&*mob" },
-  { name = "group", ty = "&mut Option<horizon_client::mobs::finalize::Group>", value = "$local_mut:group:0" },
 ]
 
 [[native.mixin]]
@@ -758,6 +659,76 @@ bindings = [
  {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
  {name = "target", ty = "Option<InteractTarget>", value = "target"},
 ]
+
+[[native.mixin]]
+id = "elephant-cake-tame"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/elephant_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "giraffe-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/giraffe_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "lion-tiger-interact"
+target = "horizon_client::game::creatures::Game<'_>::interact_mob"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/large_cat_interact.rs"
+bindings = [
+ {name = "game", ty = "&mut horizon_client::game::Game<'_>", value = "&mut *self"},
+ {name = "target", ty = "Option<InteractTarget>", value = "target"},
+]
+
+[[native.mixin]]
+id = "zebra-same-species-breeding"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/zebra_breed_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "rhino-calf-defense-goals"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_pre"
+kind = "HEAD"
+helper = "src/current/rhino_ai_tick.rs"
+bindings = [
+ {name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self"},
+ {name = "entity", ty = "u32", value = "entity"},
+ {name = "kind", ty = "&str", value = "kind"},
+]
+
+[[native.mixin]]
+id = "rhino-shield-stun"
+target = "horizon_client::game::shield::Game<'_>::after_block"
+kind = "BEFORE_CALL"
+selector = "self.blocked_by_attacker"
+ordinal = 1
+require = 2
+helper = "src/current/rhino_shield_block.rs"
+bindings = [
+ {name = "game", ty = "&mut Game<'_>", value = "&mut *self"},
+ {name = "attack", ty = "&horizon_client::health::Attack", value = "attack"},
+ {name = "outcome", ty = "BlockOutcome", value = "outcome"},
+]
+
 
 [[native.mixin]]
 id = "duck-client-pet"

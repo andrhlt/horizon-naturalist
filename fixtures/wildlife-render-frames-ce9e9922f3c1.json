@@ -1,0 +1,14 @@
+{
+  "artifact": "native-0a875da-ce9e9922f3c1",
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "capture_mode": "headless offscreen",
+  "species": {
+    "alligator": {"path": "/private/tmp/app2129-render-ce9e9922f3c1/alligator.png", "rendered": true, "visually_inspected": true},
+    "capybara": {"path": "/private/tmp/app2129-render-ce9e9922f3c1/capybara.png", "rendered": true, "visually_inspected": true},
+    "catfish": {"path": "/private/tmp/app2129-render-ce9e9922f3c1/catfish.png", "rendered": true, "visually_inspected": true},
+    "clam": {"path": "/private/tmp/app2129-render-ce9e9922f3c1/clam.png", "rendered": true, "visually_inspected": true},
+    "hippo": {"path": "/private/tmp/app2129-render-ce9e9922f3c1/hippo.png", "rendered": true, "visually_inspected": true},
+    "piranha": {"path": "/private/tmp/app2129-render-ce9e9922f3c1/piranha.png", "rendered": true, "visually_inspected": true}
+  },
+  "limits": ["screenshots include HUD and chat overlay", "juvenile frames and Java pixel comparison were not captured"]
+}

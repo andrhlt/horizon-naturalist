@@ -1,0 +1,145 @@
+{
+  "artifact": "native-0a875da-9d680d8dec7c",
+  "horizon": "0a875da91dbb0fdcb7ba8c42c11341aa229af51a",
+  "world": "APP2129 persistence",
+  "dimension": "minecraft:overworld",
+  "disk_record_parse_attempted": false,
+  "disk_record_note": "Skipped because same-world runtime observations compare stable UUIDs and meaningful entity state before and after reopen.",
+  "force_loaded_chunks": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "pre_reopen_state": {
+    "alligator": {
+      "UUID": "[I; 57345562, 1136085224, -1804707777, 263799476]",
+      "Health": "20.0f",
+      "Age": "-6000"
+    },
+    "capybara": {
+      "UUID": "[I; 1738147862, 1531462941, -1771288238, -1015478399]",
+      "Health": "6.0f",
+      "Age": "-6000",
+      "Owner": "[I; -161979241, -1388495694, -1948037184, 2140367905]",
+      "Tame": "1b",
+      "DyeColor": "14",
+      "FollowingOwner": "1b",
+      "Sitting": "0b"
+    },
+    "catfish": {
+      "UUID": "[I; -59030920, 1173635423, -1752225609, 246875723]",
+      "Health": "4.0f",
+      "HuntingCooldown": "17"
+    },
+    "clam": {
+      "UUID": "[I; -1107710866, 1222659275, -1831408548, -2109725929]",
+      "Health": "20.0f",
+      "NaturalistClamOpen": "1b",
+      "NaturalistClamTimer": "127",
+      "NaturalistClamCooldown": "27"
+    },
+    "hippo": {
+      "UUID": "[I; 689534270, 1917994601, -1088768288, 199462739]",
+      "Health": "50.0f",
+      "Age": "-6000"
+    },
+    "piranha": {
+      "UUID": "[I; 835774110, 741884575, -1150535105, -990572793]",
+      "Health": "4.0f"
+    }
+  },
+  "post_reopen_state": {
+    "alligator": {
+      "UUID": "[I; 57345562, 1136085224, -1804707777, 263799476]",
+      "Health": "20.0f",
+      "Age": "-5993"
+    },
+    "capybara": {
+      "UUID": "[I; 1738147862, 1531462941, -1771288238, -1015478399]",
+      "Health": "6.0f",
+      "Age": "-5993",
+      "Owner": "[I; -161979241, -1388495694, -1948037184, 2140367905]",
+      "Tame": "1b",
+      "DyeColor": "14",
+      "FollowingOwner": "1b",
+      "Sitting": "0b"
+    },
+    "catfish": {
+      "UUID": "[I; -59030920, 1173635423, -1752225609, 246875723]",
+      "Health": "4.0f",
+      "HuntingCooldown": "10"
+    },
+    "clam": {
+      "UUID": "[I; -1107710866, 1222659275, -1831408548, -2109725929]",
+      "Health": "20.0f",
+      "NaturalistClamOpen": "1b",
+      "NaturalistClamTimer": "120",
+      "NaturalistClamCooldown": "20"
+    },
+    "hippo": {
+      "UUID": "[I; 689534270, 1917994601, -1088768288, 199462739]",
+      "Health": "50.0f",
+      "Age": "-5993"
+    },
+    "piranha": {
+      "UUID": "[I; 835774110, 741884575, -1150535105, -990572793]",
+      "Health": "4.0f"
+    }
+  },
+  "uuid_matches": {
+    "alligator": true,
+    "capybara": true,
+    "catfish": true,
+    "clam": true,
+    "hippo": true,
+    "piranha": true
+  },
+  "all_six_post_reopen_uuid_matches": true,
+  "state_matches": {
+    "alligator": {
+      "UUID": true,
+      "Health": true,
+      "Age": true
+    },
+    "capybara": {
+      "UUID": true,
+      "Health": true,
+      "Age": true,
+      "Owner": true,
+      "Tame": true,
+      "DyeColor": true,
+      "FollowingOwner": true,
+      "Sitting": true
+    },
+    "catfish": {
+      "UUID": true,
+      "Health": true,
+      "HuntingCooldown": true
+    },
+    "clam": {
+      "UUID": true,
+      "Health": true,
+      "NaturalistClamOpen": true,
+      "NaturalistClamTimer": true,
+      "NaturalistClamCooldown": true
+    },
+    "hippo": {
+      "UUID": true,
+      "Health": true,
+      "Age": true
+    },
+    "piranha": {
+      "UUID": true,
+      "Health": true
+    }
+  },
+  "all_saved_runtime_fields_match": true,
+  "capybara_owner_interaction_after_reopen": false,
+  "owner_player_uuid": "[I; -161979241, -1388495694, -1948037184, 2140367905]",
+  "query": "execute in minecraft:overworld run data get entity @e[type=naturalist:<species>,tag=app2129_<species>,limit=1] UUID"
+}
