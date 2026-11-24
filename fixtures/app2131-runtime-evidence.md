@@ -1,6 +1,6 @@
 # APP-2131 runtime evidence
 
-Status: partial evidence for review. APP-2131 remains open. Elephant/Mammoth interactions and Giraffe feeding/taming/mount checks were run headlessly on managed developer-offline candidates. Elephant rider placement, dismount, cake taming, chests, saddle, shearing and owner healing passed. Giraffe feeding, juvenile taming, healing and boarding passed; after fixing the Java string variant and mounted-control lifetime, APP-2135's source-matched candidate also passed mounted movement, dismount and control-flag clearing. Rhino shield stun with mob griefing disabled failed on an older candidate. Zebra feeding/equipment ran; that older candidate allowed Zebra×Donkey breeding and used a 0.5 jump strength where Java expects 0.7. Lion/Tiger runtime behavior and these updated Rhino/Zebra source fixes still need source-matched gameplay checks. Authenticated host/guest LAN remains separately pending. This does not claim full species parity.
+Status: APP-2131 remains open for integrated review. The latest managed developer candidate `native-0a875da-03265abdf467` passed focused headless gameplay checks for Elephant/Mammoth, Giraffe, Lion, Rhino, Tiger and Zebra; representative Elephant save/reopen also passed. Zebra jump strength and crossbreeding now match the Java fixture, and Rhino shield stun/charge passed. See the final candidate record below. Offline host/guest distinct-UUID coverage is reusable from the prior SelectedHeadless check; authenticated-account play is outside this offline beta gate. Exhaustive lifecycle, RNG and cosmetic parity are not claimed.
 
 ## Candidate identity
 
@@ -73,7 +73,9 @@ That runtime reported Metal at 2560×1440 and 93,577 rendered frames. Offscreen 
 
 The captured `9aa2d80bd80f` movement candidate and final `97b13615be3b` candidate use the same renderer and animation source inputs. `src/current/large_renderer.rs` is SHA-256 `e85e3ce23030bfa8b86ce3f2cb8392817129bc7dd5c30eed7c485bcf6806ab52`; model inputs are `elephant_models.rs` `eb1ad0848b50dc73e14bb7b7a54920c6ed986b01d65b6ccc7b3ecf71a48afd26`, `mammoth_models.rs` `1756f0a088cf10f9bacc8e4e42ab5d4fed2f69eead7163b43eea7f9402639009`, `giraffe_models.rs` `55a6fc7561a88fd629b5b8275d8518a75952dceaed170f2e25a7f3eea702465a`, `lion_models.rs` `384dc91ae3a1692dfc983d25a70a491334f66c551d8907c798a8d7d806e6406b`, `rhino_models.rs` `891a239e13ef954067f82942255fe7b29a7670fe14cd5e1c9a5a9bdc51390493`, `tiger_models.rs` `863716fbd66e1b9b295b09155e1f07c5755b4e6b29d51c1eb1353c7e6b789dfe`, and `zebra_models.rs` `0d91c60d5bdebf2912ae12041a9717cc9b2c364fdae8a132ba5abef7fe4030e5`. The corresponding animation inputs are Elephant `8beac72f7a8e9aec64bd9d69343d40077cabec13b57620179e0061c1371687ac`, Giraffe `48ca79f558f373c8fdd9343747274ddccf725750f251a3bc7b13292de73a126d`, Lion `952e89379f98f18b4152ee93bde3aa980b46d6107a2025269dd3a4be73fd1656`, Rhino `0e67d818c068a2f2530cf9510adce9fb94cbaa35e5e4da4a662f169001157441`, Tiger `3008e3958c008a3613488ee7d50f7e1fa6d38be9e82aa52363a492ebcc5223ec`, and Zebra `41585a82f5ee8830e757b28ec5743985b5e4995738dbb27275c99bf26c25b5cc` (all files under `src/`). Mammoth uses the Elephant animation input. Both candidates are Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`, optimized Rust `1.99.1`, and the same prepared 26.3 resources at `nightly-2026-11-20-0a875da/.local/horizon-client/26.3`. The package and library hashes differ between the builds; the only source edit between them was rustfmt formatting in `src/current/elephant_melon.rs`. No renderer, model, animation, or prepared-resource input changed. The prior gait evidence therefore applies to the final renderer inputs without a new client launch.
 
-## Independent species behavior check status
+## Historical independent species behavior check status
+
+The following observations are from earlier candidates and are retained for history. The final Pod B candidate results below supersede earlier failures where source was updated.
 
 Previously recorded evidence: the former `97b13615be3b` candidate builds through managed `native-build`; its recorded `cargo test --offline --lib` passed all 20 tests; Elephant owner melon healing, consumption, max-health and save/reopen cases passed; all seven species have offscreen static rendered output; and Elephant has the movement sequence above. The gameplay findings in this update are on the newer managed developer candidate `04848d315bac`; they are not evidence that all seven species' behaviors match Java.
 
@@ -126,11 +128,11 @@ On candidate `native-0a875da-53ec73086c7c` / integrated source `1ccec01`, correc
 
 APP-2135 integrated `2749649` and passed the focused headless Giraffe gate on fresh candidate `native-0a875da-5a8e87e09f34`, Horizon `0a875da` / MC 26.3. `Variant="naturalist:giraffe"`, owner mount, mounted control flag, mounted movement, dismount, and control flag clearing all passed. The built library SHA-256 is `fdb5c4807b251414d4afa1abfa3eb9e9d004f2e202667e3ac167679ce48d3a62`; APP-2135 recorded this in PR #34 at `d1d6022`. The rider fix accounts for players in `Game.riding` / the passenger list; checking only `Mob.rider` had cleared the virtual saddle on the first mounted tick. This confirms the focused Giraffe gate, not the other APP-2131 species gates or authenticated LAN.
 
-## LAN identity blocker
+## Offline and authenticated LAN scope
 
 APP-2126's successful two-client checkpoint is present under `/private/tmp/app2126-lan-630xzl4c`. Its host log records the LAN server and `APP2126Guest joined the game`; the host's local player file names the player `Player54777`. Those records establish that the test harness can create distinct local test names. They do not record distinct Microsoft account UUIDs or authenticated sessions, so they are not evidence of two owning accounts under managed Play.
 
-The supported managed setup is two separate launcher-managed Play sessions on the pinned candidate, each with its own instance, control socket and signed-in account. `play --account <WHO>` selects a signed-in account name or UUID; launcher help says multiple games can play as multiple accounts. Use the same prepared 26.3 resources on both processes. For example, with `HOST_ACCOUNT` and `GUEST_ACCOUNT` set to different signed-in Java-owning accounts:
+For authenticated account play, the supported setup is two launcher-managed Play sessions on the pinned candidate, each with its own instance, control socket and signed-in account. `play --account <WHO>` selects a signed-in account name or UUID; launcher help says multiple games can play as multiple accounts. That is separate from the offline beta baseline.
 
 ```sh
 LAUNCHER=/Applications/Horizon.app/Contents/MacOS/horizon-launcher
@@ -141,11 +143,11 @@ HORIZON_LAUNCHER_HOME="$HOME/Library/Application Support/horizon-launcher" HORIZ
 "$HOME/Library/Application Support/horizon-launcher/versions/native-0a875da-97b13615be3b/horizon-ctl" --socket /private/tmp/app2131-guest.sock connect "127.0.0.1:${PORT}"
 ```
 
-The host opens its test world to LAN; then the guest control socket connects to the reported host port. Both sessions must retain managed Play so cache leases are acquired. The same profile was rejected by the host as `That name is already taken`; therefore a distinct authenticated identity is needed, and the guest also needs a signed-in Microsoft account that owns Minecraft: Java Edition. The developer-offline launcher mode is single-player-only. APP-2126’s separate local names are not authentication. Its saved checkpoint logs show Horizon `0.1.0`, distinct cache directories and local names; they do not show distinct Microsoft UUIDs or prove this is a supported authenticated LAN result. No authentication bypass is used. LAN remains pending.
+The earlier supported `SelectedHeadless` two-client check established host/guest connection with distinct local UUIDs and is reused for this offline-only beta. I also attempted `lan open 0 commands` on final candidate `native-0a875da-03265abdf467` after a managed headless developer-offline Play; the candidate returned exactly `{"error":"Offline developer session: single-player only."}`. No unmanaged launch or authentication bypass was used. Authenticated account play was not tested and is not treated as a blocker for the offline baseline.
 
 ## Remaining coverage
 
-The unverified cases are listed under “Independent species behavior check status.” Authenticated host/guest LAN remains open pending a second signed-in account that owns Minecraft: Java Edition.
+The final-candidate focused checks and remaining full-parity limits are recorded below. The offline LAN path was verified in the earlier SelectedHeadless two-client check; the current developer-offline candidate itself rejects hosting with the single-player-only message above. Authenticated account play remains outside this offline-only acceptance scope.
 
 ## Pod B source-matched candidate — launch eligibility
 
@@ -167,4 +169,21 @@ The managed developer candidate `native-0a875da-a595fffd11c1` (source `90e23ca80
 
 A second launcher-managed headless Play session reopened the same deterministic world (`APP2131-Elephant-Persistence-5`) on that candidate. Elephant owner UUID, `Age=0`, `Health=56`, `ChestedHorse=1`, saddle equipment and `TamingFood=5` were present after reopen and matched the pre-save state; the managed run exited 0. The test helper accepts `NATURALIST_TEST_WORLD_NAME` to select that same world for the reopen session while preserving launcher Play and managed cache leases. This is representative Elephant ownership, health, taming-progress and equipment persistence, not a full persistence matrix.
 
-Developer-offline mode is single-player-only, so authenticated LAN remains pending a second signed-in owning account. The earlier seven-species offscreen rendered frames and Elephant movement sequence remain reusable because renderer/model/animation inputs are unchanged; latest-candidate interactive LAN and a new all-species visual capture were not run.
+Developer-offline mode is single-player-only; authenticated-account LAN is outside this offline-only beta baseline. The earlier seven-species offscreen rendered frames and Elephant movement sequence remain reusable because renderer/model/animation inputs are unchanged; latest-candidate interactive LAN and a new all-species visual capture were not run.
+
+## Pod B baseline candidate — `03265abdf467`
+
+Final focused runtime checks were run on installed managed developer candidate `native-0a875da-03265abdf467` using Horizon Launcher Play, managed cache leases, MC 26.3 resources, Horizon `0a875da91dbb0fdcb7ba8c42c11341aa229af51a`, Rust 1.99.1, and headless gameplay. Package hashes: `libnaturalist.dylib` `bc510b29c9690a617205a568df3a965759fbf84efa29ae73392dd15d0b7eae71`; `libhorizon_patch.dylib` `a8b163f064b370a4a422a1a93c70d79894d1cbbb767c145c57040d20cddcd4bf`. The candidate's Rhino AI, Giraffe control cleanup, and Zebra breeding-goal sources match this worktree byte-for-byte.
+
+| Scope | Command/result |
+|---|---|
+| Rhino | `python3 tools/launcher_rhino.py <candidate> fixtures/rhino-java.json` — PASS: shield stun 60 ticks, recovery to speed 0.2, charge broke dandelion/preserved torch, and mob-griefing-off dandelion survived. |
+| Zebra | `python3 tools/launcher_zebra.py <candidate> fixtures/zebra-java.json` — PASS: Java feeding behavior, chest/saddle, jump strength 0.7, Zebra×Zebra allowed, Zebra×Donkey/Horse rejected. Variant NBT and exact spawn RNG remain unprobed. |
+| Lion | `python3 tools/launcher_lion.py <candidate> fixtures/lion-java.json` — PASS: owner heal/consumption, cub growth, owner sitting and whistle stop-follow. |
+| Tiger | `python3 tools/launcher_tiger.py <candidate> fixtures/tiger-java.json` — PASS: owner interactions and night hunt (prey health reached 2.0). |
+| Giraffe | `python3 tools/launcher_giraffe.py <candidate> fixtures/giraffe-java.json` — PASS: string variant, adult/baby feeding/taming behavior, owner healing, mounted movement, dismount and control-flag clearing. |
+| Elephant/Mammoth | `python3 tools/launcher_elephant.py <candidate> fixtures/elephant-java.json --live-melee` — PASS: five-cake baby taming, one-item consumption, melon healing, chest/saddle, rider seats (3.22/4.20), safe dismount, chest-then-saddle shearing and live melee fixture. |
+| Persistence | `python3 /private/tmp/app2131_elephant_reopen_final.py <candidate>` — PASS after a fresh managed Play reopen: Elephant owner, age 0, health 56, taming count 5, chest and saddle were identical before save and after reopen. |
+| Offline host/guest | The prior SelectedHeadless two-client check is reused for distinct local UUIDs and host/guest connection. An additional attempt on this candidate through managed Play returned exactly `{"error":"Offline developer session: single-player only."}` from `lan open 0 commands`; no alternate unmanaged/authentication path was attempted. Authenticated Microsoft-account play is outside this offline-only baseline. |
+
+These checks cover representative ordinary use and save safety; they are not a complete lifecycle, every-variant, or full 1:1 parity audit. Earlier captured static species frames and Elephant movement sequence remain reusable where renderer/model/animation inputs are unchanged.
