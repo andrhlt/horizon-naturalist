@@ -1,7 +1,5 @@
-use horizon_client::game::Game;
-
 fn large_cat_interact(
-    game: &mut Game<'_>,
+    game: &mut horizon_client::game::Game<'_>,
     target: Option<InteractTarget>,
 ) -> std::ops::ControlFlow<Result<bool>> {
     use horizon_core::nbt::Tag;
