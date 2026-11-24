@@ -277,6 +277,7 @@ helper = "src/current/deer_finalize_variant.rs"
 bindings = [
   { name = "game", ty = "&mut crate::game::Game<'_>", value = "&mut *self" },
   { name = "mob", ty = "&horizon_client::mobs::Mob", value = "&*mob" },
+  { name = "group", ty = "&mut Option<horizon_client::mobs::finalize::Group>", value = "$local_mut:group:0" },
 ]
 
 [[native.mixin]]
@@ -921,3 +922,92 @@ id = "duck-variant-reload"
 target = "horizon_client::game::native_hooks::base::Game<'_>::native_data_pack_files"
 kind = "HEAD"
 helper = "src/current/duck_variant_reload.rs"
+
+# Restored Pod C aquatic runtime registrations omitted by the Pod B manifest integration.
+[[native.module]]
+id = "anglerfish-goals"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_anglerfish_goals"
+source = "src/current/anglerfish_goals.rs"
+
+[[native.mixin]]
+id = "anglerfish-goals-join"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_join_level"
+kind = "HEAD"
+helper = "src/current/anglerfish_goals_join.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "entity", ty = "u32", value = "entity" },
+ { name = "kind", ty = "&str", value = "kind" },
+]
+
+[[native.mixin]]
+id = "anglerfish-attack"
+target = "horizon_client::game::combat::Game<'_>::mob_attacks_mob"
+kind = "WRAP_OPERATION"
+selector = "self.mob_hits_mob"
+ordinal = 0
+require = 1
+helper = "src/current/anglerfish_attack.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
+ { name = "target", ty = "u32", value = "$arg0" },
+ { name = "amount", ty = "f32", value = "$arg1" },
+ { name = "source", ty = "horizon_client::mobs::Damage", value = "$arg2" },
+ { name = "original", ty = "impl FnOnce(&mut Game<'_>, u32, f32, horizon_client::mobs::Damage) -> bool", value = "$operation" },
+]
+
+[[native.mixin]]
+id = "anglerfish-cooldown"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_entity_tick_post"
+kind = "HEAD"
+helper = "src/current/anglerfish_tick.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "entity", ty = "u32", value = "entity" },
+ { name = "kind", ty = "&str", value = "kind" },
+]
+
+[[native.mixin]]
+id = "anglerfish-bucket-release"
+target = "horizon_client::game::native_hooks::base::Game<'_>::native_use_item"
+kind = "WRAP_OPERATION"
+selector = "self.fire_use_item"
+require = 1
+ordinal = 0
+helper = "src/current/anglerfish_bucket_release.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "$receiver" },
+ { name = "call", ty = "mod_api::__private::UseItemCall<'_>", value = "$arg0" },
+ { name = "original", ty = "impl FnOnce(&mut Game<'_>, mod_api::__private::UseItemCall<'_>) -> ()", value = "$operation" },
+]
+
+[[native.module]]
+id = "anglerfish-bucket"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_anglerfish_bucket"
+source = "src/current/anglerfish_bucket.rs"
+
+[[native.mixin]]
+id = "anglerfish-bucket-dispense"
+target = "horizon_client::game::dispense_bucket::Game<'_>::empty_bucket_contents"
+kind = "HEAD"
+cancellable = true
+helper = "src/current/anglerfish_bucket_dispense.rs"
+bindings = [
+ { name = "game", ty = "&mut Game<'_>", value = "&mut *self" },
+ { name = "target", ty = "Pos", value = "target" },
+ { name = "stack", ty = "&ItemStack", value = "stack" },
+]
+
+[[native.module]]
+id = "whale-behavior"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_whale_behavior"
+source = "src/current/whale_behavior.rs"
+
+[[native.module]]
+id = "shared-spawn"
+file = "crates/horizon-client/src/game.rs"
+name = "naturalist_shared_spawn"
+source = "src/current/shared_spawn.rs"
