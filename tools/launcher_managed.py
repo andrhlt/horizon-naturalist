@@ -38,7 +38,7 @@ def launch_managed(version, socket, game_dir, world, *, creative=False,
         raise RuntimeError(f"Prepared 26.3 resources are absent: {resources}")
 
     game_dir.mkdir(parents=True, exist_ok=True)
-    world = f"{world} {uuid.uuid4().hex[:8]}"
+    world = os.environ.get("NATURALIST_TEST_WORLD_NAME") or f"{world} {uuid.uuid4().hex[:8]}"
     command = [str(LAUNCHER), "play", "--instance", instance,
                "--version", version.name, "--world", world, "--json"]
     if creative:
