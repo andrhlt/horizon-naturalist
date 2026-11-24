@@ -1,6 +1,6 @@
 # Naturalist Pod B
 
-Iteration freeze: pending owner handoffs; no heavy build started in Pod B.
+Iteration freeze: scoped delivery complete for APP-2128, APP-2129, and APP-2131; APP-2132 remains a separate follow-up.
 
 ## Scope
 
@@ -20,6 +20,13 @@ All source inputs are based on reviewed `main` ancestry; owner handoffs must con
 - Exactly one heavy build slot across Pods A/B/C/Sable/Create. Pod B does not build until the coordinator confirms the slot and the frozen manifest is immutable.
 
 ## Acceptance checklist
+
+- [x] Practical baseline accepted for APP-2128: headless Butterfly capture/release, Snail save/reopen/hatch, Scorpion attack/poison, and Butterfly breeding.
+- [x] Practical baseline accepted for APP-2129: Capybara tame/owner interaction and sitting across save/reopen; Alligator egg behavior; Catfish/Clam historical unchanged passes retained.
+- [x] Practical baseline accepted for APP-2131: Rhino, Zebra, Lion, Tiger, Giraffe, Elephant/Mammoth representative interactions and Elephant save/reopen.
+- [x] Scoped delivery build: `native-0a875da-7df1b669a7d6`, source `7f38943`; `native-build` succeeded on the pinned developer base.
+- [ ] APP-2132 Lizard ordered sitting remains blocked by the frozen SDK; Mole flee/trail passes on its owner’s separate candidate and is handed back for follow-up.
+- [ ] Offline developer multiplayer is a runtime capability boundary: `lan open` reports single-player-only; no sign-in or lease bypass used.
 
 - [x] Four owner handoffs received and clean heads/base/owned files recorded; APP-2128 and APP-2129 are pending only for the final integrated source/build selection.
 - [ ] Shared manifest records source commit, included heads, staged hash, SDK/toolchain, launcher, client/server/resource paths and hashes, supported launch command, and isolated world/socket instructions.
