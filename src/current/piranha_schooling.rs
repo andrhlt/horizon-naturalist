@@ -21,9 +21,6 @@ pub(crate) fn tick(host: &mut dyn ServerHost, id: u32) {
     if !is_piranha(host, current) {
         return;
     }
-    if host.entity_tick_count(current).unwrap_or_default() % 10 != 0 {
-        return;
-    }
     let Some(position) = current.position(host) else {
         return;
     };
@@ -133,12 +130,13 @@ pub(crate) fn tick(host: &mut dyn ServerHost, id: u32) {
     }
 }
 
-fn is_piranha(host: &dyn Host, entity: EntityRef) -> bool {
-    host.entity_kind(entity)
-        .is_some_and(|kind| host.entity_type_key_id(kind) == "naturalist:piranha")
+fn is_piranha(host: &mut dyn ServerHost, entity: EntityRef) -> bool {
+    host.entity(entity)
+        .and_then(|entity| entity.kind(host))
+        .is_some_and(|kind| kind.id(host) == "naturalist:piranha")
 }
 
-fn school_leader(host: &dyn Host, entity: EntityRef) -> i32 {
+fn school_leader(host: &mut dyn ServerHost, entity: EntityRef) -> i32 {
     entity
         .nbt(host)
         .and_then(|data| data.get(&LEADER_FIELD.into()).cloned())
