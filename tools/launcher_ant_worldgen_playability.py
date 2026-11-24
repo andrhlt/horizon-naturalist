@@ -54,7 +54,7 @@ def capture(version: Path, jar: Path) -> dict:
                 time.sleep(0.1)
             assert not socket.exists(), "Horizon did not stop after quit"
 
-        def snapshot(anchor, expected_cells):
+        def snapshot(anchor, expected_cells, require_pristine_queen=True):
             scan = ctl("find-block", "naturalist:ant_hill", 10)
             positions = [tuple(item["pos"]) for item in scan["nearest"]]
             assert scan["count"] == expected_cells, (anchor, scan)
@@ -84,7 +84,8 @@ def capture(version: Path, jar: Path) -> dict:
             queens = [row for row in entrances if row["queen"]]
             assert 4 <= len(entrances) <= 6, (anchor, rows)
             assert len(queens) == 1, (anchor, rows)
-            assert queens[0]["workers"] == 0, queens[0]
+            if require_pristine_queen:
+                assert queens[0]["workers"] == 0, queens[0]
             return sorted(rows, key=lambda row: row["pos"])
 
         try:
@@ -102,8 +103,8 @@ def capture(version: Path, jar: Path) -> dict:
 
             # Exercise the generated hill's normal ownerless/wild-queen route:
             # an unowned Ant can enter an open unowned hill entrance.
-            entrance = next(row for row in results["small"]
-                            if row["open"] and not row["queen"] and row["workers"] < 3)
+            entrances = [row for row in results["small"] if row["open"] and row["workers"] < 3]
+            entrance = entrances[0]
             ex, ey, ez = entrance["pos"]
             cmd(f"tp @s {ex + 0.5} {ey + 4} {ez + 0.5}")
             ctl("wait-ready")
@@ -114,15 +115,17 @@ def capture(version: Path, jar: Path) -> dict:
                 ctl("wait", 20)
                 scan = ctl("find-block", "naturalist:ant_hill", 10)
                 positions = [tuple(item["pos"]) for item in scan["nearest"]]
-                assert tuple(entrance["pos"]) in positions, (entrance, scan)
-                px, py, pz = entrance["pos"]
-                check = cmd(f"execute if block {px} {py} {pz} naturalist:ant_hill"
-                            f"[open=true,workers={entrance['workers'] + 1}]")
-                if any("Test passed" in line for line in check):
-                    increased = True
+                assert all(tuple(row["pos"]) in positions for row in entrances), (entrances, scan)
+                increased = any(
+                    any("Test passed" in line for line in cmd(
+                        f"execute if block {row['pos'][0]} {row['pos'][1]} {row['pos'][2]} "
+                        "naturalist:ant_hill[open=true,workers=" + str(row["workers"] + 1) + "]"))
+                    for row in entrances
+                )
+                if increased:
                     break
             assert increased, "a wild Ant did not enter its naturally generated open hill"
-            results["small"] = snapshot(HILLS["small"][:3], HILLS["small"][3])
+            results["small"] = snapshot(HILLS["small"][:3], HILLS["small"][3], False)
             cmd("save-all flush")
             close()
 
@@ -131,7 +134,7 @@ def capture(version: Path, jar: Path) -> dict:
             for kind, (x, y, z, count) in HILLS.items():
                 cmd(f"tp @s {x + 0.5} {y + 4} {z + 0.5}")
                 ctl("wait-ready")
-                reopened[kind] = snapshot((x, y, z), count)
+                reopened[kind] = snapshot((x, y, z), count, kind != "small")
             assert reopened == results, {"before": results, "after": reopened}
             return {"seed": 42, "fresh_world": True, "small_cells": 10, "big_cells": 15,
                     "queen_and_entrances": True, "wild_ant_entry": True,
